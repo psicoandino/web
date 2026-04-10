@@ -3,60 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Psicoandino | Ricardo</title>
+    <title>Psicoandino | Ecosistema</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <header class="hero">
+    <div class="top-bar desktop-only">
+        <div class="brand-text">
+            <span class="brand-name">PSICOANDINO</span>
+            <span class="brand-author">/ Ricardo Alberto</span>
+            <span class="brand-concept">— Método y Texturas.</span>
+        </div>
+        <div class="top-socials">
+            <a href="https://linkedin.com/in/psicoandino" target="_blank" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            </a>
+            <a href="https://x.com/psicoandino" target="_blank" aria-label="X">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+        </div>
+    </div>
+
+    <section class="hero" id="inicio">
         <h1>PSICOANDINO</h1>
         <div class="dynamic-text-container">
             <span id="changing-text">En Desarrollo...</span>
         </div>
-        <div class="scroll-indicator">↓</div>
-    </header>
+    </section>
 
-    <section class="module logica" id="logica">
-        <h2>I. Lógica y Estructura</h2>
+    <nav class="sticky-nav">
+        <div class="mobile-brand">PSICOANDINO</div>
+        
+        <button class="hamburger" aria-label="Abrir menú" id="hamburger-btn">
+            <span></span><span></span><span></span>
+        </button>
+
+        <ul class="nav-links" id="nav-links">
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#estructuras">I. Estructuras y Colectivos</a></li>
+            <li><a href="#forma">II. La Forma y el Tiempo</a></li>
+            <li><a href="#percepcion">III. Percepción y Silencio</a></li>
+        </ul>
+    </nav>
+
+    <section class="module logica" id="estructuras">
+        <h2>I. Estructuras y Colectivos</h2>
         <div class="grid-container">
             <div class="card">
-                <h3>Control de Gestión & Datos</h3>
-                <p>Análisis métrico, estructuración de bases de datos y optimización de procesos mediante Python y R.</p>
+                <h3>Sistemas e Incentivos</h3>
+                <p>Las organizaciones no son máquinas, son ecosistemas de relaciones. El rendimiento no se fuerza, se diseña interviniendo el sistema que lo contiene.</p>
+                <p style="font-size: 0.8rem; color: #555; margin-top: 15px;">[ Apuntes sobre modelos de gestión y arquitectura de la información. ]</p>
             </div>
             <div class="card">
-                <h3>Arquitectura Web</h3>
-                <p>Desarrollo de ecosistemas digitales y aplicaciones funcionales como True Spaces.</p>
+                <h3>Interfaces y Operatividad</h3>
+                <p>La tecnología debe mediar, no interrumpir. Levantamiento de estructuras digitales centradas en la claridad operativa y el factor humano.</p>
+                <p style="font-size: 0.8rem; color: #555; margin-top: 15px;">[ Archivo de ecosistemas y diseño funcional. ]</p>
             </div>
         </div>
     </section>
 
-    <section class="module materia" id="materia">
-        <h2>II. Materia y Frecuencia</h2>
+    <section class="module materia" id="forma">
+        <h2>II. La Forma y el Tiempo</h2>
         <div class="gallery">
             <div class="art-item">
-                <div class="image-placeholder">Arcilla</div> 
-                <h3>Modelado Físico</h3>
-                <p>Figuras tangibles y texturas orgánicas.</p>
+                <div class="image-placeholder">[ Ø ]</div> 
+                <h3>Materia y Volumen</h3>
+                <p>La materia como resistencia física frente a la abstracción. Lo táctil y lo visual para ocupar y entender el espacio.</p>
+                <p style="font-size: 0.8rem; color: #555; margin-top: 15px;">[ Catálogo de exploración física y texturas análogas. ]</p>
             </div>
             <div class="art-item">
-                <div class="image-placeholder">Música</div>
-                <h3>Diseño Sonoro</h3>
-                <p>Progresiones de acordes y composición lírica.</p>
+                <div class="image-placeholder">[ ~ ]</div>
+                <h3>Frecuencia y Movimiento</h3>
+                <p>El sonido y la imagen en movimiento como herramientas para medir y fragmentar el tiempo.</p>
+                <p style="font-size: 0.8rem; color: #555; margin-top: 15px;">[ Registro sonoro y composiciones audiovisuales. ]</p>
             </div>
         </div>
     </section>
 
-    <section class="module narrativa" id="narrativa">
-        <h2>III. Narrativa y Reflexión</h2>
+    <section class="module narrativa" id="percepcion">
+        <h2>III. Percepción y Silencio</h2>
         <article class="essay-container">
-            <h3>Dios, Ciencia & Mente</h3>
-            <p>Una exploración teórica sobre los puntos de intersección entre la percepción humana, el método científico riguroso y la fenomenología de lo intangible. La búsqueda constante de espacios verdaderos dentro y fuera del sistema.</p>
-            </article>
+            <h3>El Método y la Abstracción</h3>
+            <p>Escribir como herramienta para estructurar el caos. Un espacio destinado a cuestionar los límites entre lo lógico, lo medible y aquello que escapa a la observación directa.</p>
+            <br>
+            <p style="color: #555; font-style: italic;">[ Bitácora de ensayos, reflexiones y desarrollo de pensamiento en curso. ]</p>
+        </article>
     </section>
 
     <footer>
-        <a href="mailto:hola@psicoandino.cl" class="contact-link">hola@psicoandino.cl</a>
+        <div class="social-links">
+            <a href="https://linkedin.com/in/psicoandino" target="_blank" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            </a>
+            <span class="separator"></span>
+            <a href="https://x.com/psicoandino" target="_blank" aria-label="X">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+        </div>
+        <a href="mailto:pscndn@gmail.com" class="contact-link">pscndn@gmail.com</a>
         <p class="copyright">Santiago, Chile.</p>
     </footer>
 

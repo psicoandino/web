@@ -1,30 +1,32 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Palabras que rotarán en el Hero
+    // Palabras dinámicas alineadas con los nuevos territorios
     const words = [
         "En Desarrollo...", 
-        "Control de Gestión", 
-        "Arquitectura Web", 
-        "Materia & Arcilla", 
-        "Ciencia y Mente"
+        "Estructuras y Colectivos", 
+        "La Forma y el Tiempo", 
+        "Percepción y Silencio", 
+        "Método y Texturas"
     ];
     
     const textElement = document.getElementById('changing-text');
     let index = 0;
 
-    // Función para cambiar el texto con transición suave
     setInterval(() => {
-        // Desvanece el texto actual
         textElement.style.opacity = 0;
-        
         setTimeout(() => {
-            // Cambia la palabra mientras está invisible
             index = (index + 1) % words.length;
             textElement.innerText = words[index];
-            
-            // Aparece la nueva palabra
             textElement.style.opacity = 1;
-            textElement.style.transition = "opacity 0.5s ease";
-        }, 500); 
+        }, 500);
+    }, 3000);
 
-    }, 3000); // Se ejecuta cada 3 segundos
+    // Lógica del menú móvil (Hamburguesa)
+    const btn = document.getElementById('hamburger-btn');
+    const menu = document.getElementById('nav-links');
+    
+    btn.onclick = () => menu.classList.toggle('active');
+    
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.onclick = () => menu.classList.remove('active');
+    });
 });
