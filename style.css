@@ -1,10 +1,8 @@
-html { scroll-behavior: smooth; }
-
 :root {
     --bg-color: #0a0a0a;
     --text-main: #f4f4f4;
     --text-muted: #888888;
-    --top-bar-height: 45px;
+    --top-bar-height: 50px;
 }
 
 body {
@@ -13,18 +11,15 @@ body {
     color: var(--text-main);
     font-family: 'Helvetica Neue', Arial, sans-serif;
     line-height: 1.6;
+    overflow: hidden; /* Evita que el usuario haga scroll, anclándolo a la vista inicial */
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
-
-/* FIX: Ocultar estrictamente el título y botón móvil en escritorio */
-.mobile-brand { display: none !important; }
-.hamburger { display: none !important; }
 
 /* BARRA 1: SUPERIOR FIJA */
 .top-bar {
-    position: sticky;
-    top: 0;
     height: var(--top-bar-height);
-    z-index: 102;
     background-color: var(--bg-color);
     display: flex;
     justify-content: space-between;
@@ -34,109 +29,59 @@ body {
     font-size: 0.8rem;
 }
 
-.brand-name { font-weight: bold; color: var(--text-main); margin-right: 5px; }
+.brand-name { font-weight: bold; color: var(--text-main); margin-right: 5px; letter-spacing: 0.1em; }
 .brand-author, .brand-concept { color: var(--text-muted); margin-right: 5px; }
 
-/* Forzar SVGs a ser blancos/grises, nunca azules */
+/* Forzar SVGs a ser blancos/grises */
+.top-socials { display: flex; align-items: center; gap: 15px; }
 .top-socials a, .top-socials a:visited {
     color: var(--text-main) !important;
-    margin-left: 15px;
     display: inline-flex;
     align-items: center;
     transition: color 0.3s;
 }
 .top-socials a:hover { color: var(--text-muted) !important; }
 
-/* HERO SECTION */
+/* HERO SECTION (CENTRAL) */
 .hero {
-    height: 60vh;
+    flex-grow: 1; /* Ocupa todo el espacio sobrante */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    background-color: var(--bg-color);
-}
-.hero h1 { font-size: clamp(3rem, 10vw, 6rem); margin: 0; letter-spacing: 0.2em; }
-.dynamic-text-container { font-size: 1.5rem; color: var(--text-muted); font-weight: 300; height: 30px; }
-
-/* BARRA 2: NAVEGACIÓN APILADA */
-.sticky-nav {
-    position: sticky;
-    top: var(--top-bar-height);
-    z-index: 101;
-    background-color: rgba(10, 10, 10, 0.8);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid #222;
-    padding: 15px 5vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    padding: 0 5vw;
 }
 
-/* FIX: Aniquilar el punto blanco de la lista HTML */
-.nav-links { 
-    list-style: none !important; 
-    list-style-type: none !important;
-    margin: 0; 
-    padding: 0; 
-    display: flex; 
-    gap: 40px; 
-}
-.nav-links li {
-    list-style: none !important;
+/* FIX MÓVIL: Ajuste del título para que no se corte */
+.hero h1 { 
+    font-size: clamp(2rem, 10vw, 5rem); 
+    margin: 0 0 10px 0; 
+    letter-spacing: 0.2em; 
+    word-wrap: break-word; /* Evita que la palabra rompa el contenedor */
+    width: 100%;
 }
 
-.nav-links a { color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; transition: 0.3s; text-decoration: none; }
-.nav-links a:hover { color: var(--text-main); }
+.dynamic-text-container { 
+    font-size: clamp(1rem, 3vw, 1.2rem); 
+    color: var(--text-muted); 
+    font-weight: 300; 
+    height: 30px; 
+}
 
-/* MÓDULOS */
-.module { padding: 100px 10vw; border-top: 1px solid #222; scroll-margin-top: 100px; }
-.module h2 { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 50px; text-transform: uppercase; letter-spacing: 0.1em; }
-
-/* Grilla Lógica */
-.grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
-.card { border: 1px solid #333; padding: 25px; transition: 0.3s; }
-.card:hover { border-color: var(--text-main); }
-.card h3 { font-size: 1.2rem; margin-top: 0; text-transform: uppercase; }
-
-/* Galería Materia */
-.gallery { display: flex; flex-wrap: wrap; gap: 20px; }
-.art-item { flex: 1; min-width: 250px; }
-.image-placeholder { height: 250px; background: #151515; border: 1px solid #333; display: flex; justify-content: center; align-items: center; color: #444; transition: 0.4s; filter: grayscale(100%); }
-.art-item:hover .image-placeholder { filter: grayscale(0%); background: #222; }
-.art-item h3 { margin-top: 15px; text-transform: uppercase; font-size: 1rem; }
-
-/* Narrativa */
-.essay-container { max-width: 750px; margin: 0 auto; font-family: 'Lora', serif; font-size: 1.1rem; }
-.essay-container h3 { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 2rem; text-transform: uppercase; margin-bottom: 20px; }
-
-/* FOOTER */
-footer { text-align: center; padding: 80px 0; border-top: 1px solid #222; }
-.social-links { display: flex; justify-content: center; gap: 30px; margin-bottom: 30px; }
-.social-links a, .social-links a:visited { color: var(--text-main) !important; transition: color 0.3s; display: inline-block; }
-.social-links a:hover { color: var(--text-muted) !important; }
-.contact-link { font-size: 1.2rem; color: var(--text-main); text-decoration: none; border-bottom: 1px solid transparent; transition: 0.3s; }
-.contact-link:hover { border-bottom: 1px solid var(--text-main); }
-.copyright { color: var(--text-muted); font-size: 0.8rem; margin-top: 30px; }
+/* MENSAJE MINÚSCULO ABAJO */
+.status-msg {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 0.65rem;
+    color: #444;
+    font-family: monospace;
+    letter-spacing: 0.1em;
+}
 
 /* RESPONSIVE MÓVIL */
 @media (max-width: 768px) {
     .desktop-only { display: none !important; }
-    .sticky-nav { top: 0; justify-content: space-between; }
-    
-    /* Mostrar título móvil y botón hamburguesa */
-    .mobile-brand { display: block !important; font-weight: bold; letter-spacing: 0.1em; color: var(--text-main); }
-    .hamburger { display: flex !important; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 5px; }
-    .hamburger span { width: 25px; height: 2px; background: var(--text-main); transition: 0.3s; }
-    
-    .nav-links {
-        position: absolute; top: 100%; left: 0; width: 100%;
-        background: rgba(10, 10, 10, 0.98); flex-direction: column;
-        max-height: 0; overflow: hidden; transition: max-height 0.3s ease;
-    }
-    .nav-links.active { max-height: 400px; border-bottom: 1px solid #222; }
-    .nav-links li { border-top: 1px solid #1a1a1a; text-align: center; width: 100%; }
-    .nav-links a { display: block; padding: 20px; width: 100%; }
 }

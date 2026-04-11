@@ -1,32 +1,33 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Palabras dinámicas alineadas con los nuevos territorios
+    
+    // Pool de 11 aforismos Psicoandinos (Sin conceptos repetidos)
     const words = [
-        "En Desarrollo...", 
-        "Estructuras y Colectivos", 
-        "La Forma y el Tiempo", 
-        "Percepción y Silencio", 
-        "Método y Texturas"
+        "Método y Texturas.",
+        "La Forma y el Tiempo.",
+        "Percepción y Silencio.",
+        "Estructuras y Colectivos.",
+        "Código y Arcilla.",
+        "Lógica del Territorio.",
+        "Tensión Material.",
+        "Sistemas e Incentivos.",
+        "Frecuencia y Movimiento.",
+        "Síntesis del Caos.",
+        "Observación del Vacío."
     ];
     
     const textElement = document.getElementById('changing-text');
     let index = 0;
 
+    // Transición suave cada 3.5 segundos
     setInterval(() => {
         textElement.style.opacity = 0;
+        
         setTimeout(() => {
             index = (index + 1) % words.length;
             textElement.innerText = words[index];
             textElement.style.opacity = 1;
-        }, 500);
-    }, 3000);
-
-    // Lógica del menú móvil (Hamburguesa)
-    const btn = document.getElementById('hamburger-btn');
-    const menu = document.getElementById('nav-links');
-    
-    btn.onclick = () => menu.classList.toggle('active');
-    
-    document.querySelectorAll('.nav-links a').forEach(link => {
-        link.onclick = () => menu.classList.remove('active');
-    });
+            textElement.style.transition = "opacity 0.6s ease";
+        }, 600); // Espera a que desaparezca antes de inyectar el nuevo texto
+        
+    }, 3500); 
 });
