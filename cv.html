@@ -44,7 +44,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 50px;
+            height: 45px;
             display: flex;
             justify-content: flex-start;
             align-items: center;
@@ -84,10 +84,10 @@
             padding-bottom: 8px;
         }
         
-        .main-column { padding: 30mm 15mm 20mm 20mm; } /* Bajado un poco para alejarlo de la barra */
+        .main-column { padding: 25mm 15mm 20mm 20mm; }
         
         .side-column {
-            padding: 30mm 10mm 20mm 15mm; 
+            padding: 25mm 10mm 20mm 15mm; 
             background-color: #0d0d0d;
             border-left: 1px solid var(--border-color);
             position: relative;
@@ -130,16 +130,17 @@
         
         .block { margin-bottom: 25px; }
         
+        /* CORRECCIÓN: Títulos ahora usan variable inteligente en vez de blanco fijo */
         .block-title {
             font-weight: 600;
             font-size: 12px;
-            color: #ffffff;
+            color: var(--text-main); 
             letter-spacing: 0.02em;
         }
 
         .side-column .block-title {
             font-size: 11px; 
-            color: #ffffff;
+            color: var(--text-main); 
         }
         
         .block-subtitle {
@@ -225,11 +226,11 @@
             fill: var(--text-main);
         }
 
-        /* REGLAS MÓVILES (BREAKPOINT A 650PX) */
+        /* REGLAS MÓVILES */
         @media screen and (max-width: 650px) {
             body { grid-template-columns: 1fr; }
-            .top-bar { padding: 0 25px; height: 50px; }
-            .print-btn { display: block; font-size: 10px; } /* Botón visible en móviles */
+            .top-bar { padding: 0 20px; height: 50px; }
+            .print-btn { display: block; font-size: 9px; } 
             .main-column { padding: 50px 20px 25px 20px; }
             .side-column {
                 padding: 30px 20px; 
@@ -239,44 +240,58 @@
             .name-container, .surnames { text-align: center; }
         }
         
-        /* REGLAS ESTRICTAS DE IMPRESIÓN (BLINDAJE ABSOLUTO DE 1 PÁGINA) */
+        /* LA GUILLOTINA: BLINDAJE ABSOLUTO ANTI-SAFARI */
         @media print {
-            html, body {
-                width: 215.9mm !important; 
-                height: 279.4mm !important; 
-                max-height: 279.4mm !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                overflow: hidden !important;
-                background-color: #ffffff !important;
+            @page { 
+                size: letter portrait; 
+                margin: 0 !important; 
             }
+
+            html {
+                height: 100% !important;
+                overflow: hidden !important;
+            }
+
             :root {
                 --bg-color: #ffffff;
                 --text-main: #000000;
                 --text-muted: #333333;
-                --accent-gold: #555555;
-                --border-color: #eeeeee;
+                /* Oro adaptado para papel: Un gris oscuro sólido para no perder legibilidad */
+                --accent-gold: #444444; 
+                --border-color: #dddddd;
             }
+            
             body { 
                 grid-template-columns: 1fr 290px; 
-                /* El hack de Safari: Absoluto + Escala reducida */
-                position: absolute !important;
+                background-color: #ffffff !important;
+                
+                position: fixed !important;
                 top: 0 !important;
                 left: 0 !important;
-                transform: scale(0.95); 
+                width: 215.9mm !important; 
+                height: 279.4mm !important; 
+                margin: 0 !important;
+                padding: 0 !important;
+                overflow: hidden !important; 
+                
+                transform: scale(0.92); 
                 transform-origin: top left;
             }
-            .top-bar { display: none !important; }
+
+            .top-bar { display: none !important; } 
+            
+            .main-column { padding: 20mm 15mm 15mm 20mm !important; }
             .side-column { 
+                padding: 20mm 10mm 15mm 15mm !important;
                 background-color: #ffffff !important; 
                 border-left: 1px solid #eeeeee; 
                 border-top: none !important;
             }
+            
             .surnames { color: #555555; text-align: right; }
             .name-container { text-align: left; }
             .social-icons svg { fill: #333333; }
             
-            /* Fuerza a que los navegadores impriman los colores de fondo */
             * {
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
@@ -393,14 +408,14 @@
         <h2 style="margin-top: 45px;">Formación</h2>
         <div class="block">
             <div class="block-title" style="margin-bottom: 2px;">Diplomado</div>
-            <div style="font-size: 11px; color: #ffffff; margin-bottom: 5px;">Métodos Cuantitativos para la Investigación Social</div>
+            <div style="font-size: 11px; color: var(--text-main); margin-bottom: 5px;">Métodos Cuantitativos para la Investigación Social</div>
             <div class="block-subtitle">Facultad de Ciencias Sociales y Humanidades — Universidad Diego Portales</div>
             <div class="date">2026 — Presente</div>
         </div>
 
         <div class="block">
             <div class="block-title" style="margin-bottom: 2px;">Pregrado</div>
-            <div style="font-size: 11px; color: #ffffff; margin-bottom: 5px;">Ingeniería en Sistemas de Información y Control de Gestión</div>
+            <div style="font-size: 11px; color: var(--text-main); margin-bottom: 5px;">Ingeniería en Sistemas de Información y Control de Gestión</div>
             <div class="block-subtitle">Facultad de Economía y Negocios — Universidad de Chile</div>
             <div class="date">2018 — 2023</div>
         </div>
