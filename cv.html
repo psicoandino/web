@@ -21,46 +21,55 @@
         }
         
         body {
-            margin: 0 auto; /* Lo centra perfectamente en pantallas grandes */
+            margin: 0 auto;
             padding: 0;
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
-            width: 100%; /* Fluido para adaptarse al modal/iframe */
-            max-width: 210mm; /* Mantiene la proporción de papel como tope */
+            width: 100%;
+            max-width: 210mm;
             min-height: 297mm;
             display: grid;
             grid-template-columns: 1fr 310px; 
             font-size: 11px;
             line-height: 1.6;
             box-sizing: border-box;
-            position: relative; 
-            overflow-x: hidden; /* Evita scrolls horizontales raros */
+            position: relative;
+            overflow-x: hidden;
         }
 
-        /* BOTÓN DE IMPRESIÓN EDITORIAL */
-        .print-btn {
+        /* BARRA DE HERRAMIENTAS SUPERIOR */
+        .top-bar {
             position: absolute;
-            top: 35px;  
-            left: 35px; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 0 20mm;
+            box-sizing: border-box;
+            z-index: 100;
+        }
+
+        .print-btn {
             background: transparent;
-            color: var(--text-muted); 
+            color: var(--text-muted);
             border: none;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.3); 
-            padding: 0;
-            padding-bottom: 3px; 
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 2px 0;
             font-family: 'Space Mono', monospace;
             font-size: 9px;
             letter-spacing: 0.1em;
             text-transform: uppercase;
             cursor: pointer;
             transition: all 0.3s ease;
-            z-index: 10;
         }
 
         .print-btn:hover {
-            color: var(--accent-gold); 
-            border-bottom-color: var(--accent-gold); 
+            color: var(--accent-gold);
+            border-bottom-color: var(--accent-gold);
         }
         
         h2 {
@@ -75,10 +84,10 @@
             padding-bottom: 8px;
         }
         
-        .main-column { padding: 30px 25px 30px 35px; }
+        .main-column { padding: 30mm 15mm 20mm 20mm; } /* Bajado un poco para alejarlo de la barra */
         
         .side-column {
-            padding: 30px 20px 30px 25px; 
+            padding: 30mm 10mm 20mm 15mm; 
             background-color: #0d0d0d;
             border-left: 1px solid var(--border-color);
             position: relative;
@@ -120,13 +129,6 @@
         }
         
         .block { margin-bottom: 25px; }
-        
-        .block-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 6px;
-        }
         
         .block-title {
             font-weight: 600;
@@ -223,36 +225,31 @@
             fill: var(--text-main);
         }
 
-        /* REGLAS PARA DISPOSITIVOS MÓVILES (IFRAME FLUIDO) */
+        /* REGLAS MÓVILES (BREAKPOINT A 650PX) */
         @media screen and (max-width: 650px) {
-            body {
-                grid-template-columns: 1fr; 
-            }
-            
-            .main-column { padding: 25px 20px; }
-            
+            body { grid-template-columns: 1fr; }
+            .top-bar { padding: 0 25px; height: 50px; }
+            .print-btn { display: block; font-size: 10px; } /* Botón visible en móviles */
+            .main-column { padding: 50px 20px 25px 20px; }
             .side-column {
                 padding: 30px 20px; 
                 border-left: none; 
                 border-top: 1px solid var(--border-color); 
             }
-            
             .name-container, .surnames { text-align: center; }
-
-            .print-btn { display: none; } 
         }
         
-        /* REGLAS ESTRICTAS DE IMPRESIÓN (BLINDAJE DE 1 PÁGINA) */
+        /* REGLAS ESTRICTAS DE IMPRESIÓN (BLINDAJE ABSOLUTO DE 1 PÁGINA) */
         @media print {
             html, body {
                 width: 215.9mm !important; 
-                max-width: 215.9mm !important;
-                height: 279mm !important; 
+                height: 279.4mm !important; 
+                max-height: 279.4mm !important;
                 margin: 0 !important;
                 padding: 0 !important;
-                overflow: hidden !important; 
+                overflow: hidden !important;
+                background-color: #ffffff !important;
             }
-
             :root {
                 --bg-color: #ffffff;
                 --text-main: #000000;
@@ -260,31 +257,38 @@
                 --accent-gold: #555555;
                 --border-color: #eeeeee;
             }
-            
             body { 
                 grid-template-columns: 1fr 290px; 
-                background-color: #ffffff !important;
-                transform: scale(0.97); 
+                /* El hack de Safari: Absoluto + Escala reducida */
+                position: absolute !important;
+                top: 0 !important;
+                left: 0 !important;
+                transform: scale(0.95); 
                 transform-origin: top left;
             }
-
-            .print-btn { display: none !important; } 
-            
+            .top-bar { display: none !important; }
             .side-column { 
                 background-color: #ffffff !important; 
                 border-left: 1px solid #eeeeee; 
                 border-top: none !important;
             }
-            
             .surnames { color: #555555; text-align: right; }
             .name-container { text-align: left; }
             .social-icons svg { fill: #333333; }
+            
+            /* Fuerza a que los navegadores impriman los colores de fondo */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
         }
     </style>
 </head>
 <body>
 
-    <button class="print-btn" onclick="window.print()">[ Imprimir PDF ]</button>
+    <div class="top-bar">
+        <button class="print-btn" onclick="window.print()">[ Imprimir PDF ]</button>
+    </div>
 
     <div class="main-column">
         <header>
@@ -298,7 +302,6 @@
         </header>
 
         <h2>Experiencia Sistémica</h2>
-        
         <div class="block">
             <div class="block-header">
                 <span class="block-title">Analista de Datos</span>
@@ -325,7 +328,6 @@
         </div>
 
         <h2>Proyectos y Ecosistemas</h2>
-
         <div class="block">
             <div class="block-header">
                 <span class="block-title">"what-every-thing"</span>
@@ -358,7 +360,6 @@
     </div>
 
     <div class="side-column">
-        
         <h2 style="margin-top: 20px;">Contacto</h2>
         <div class="contact-info">
             rmorenoga@fen.uchile.cl<br>
@@ -390,60 +391,37 @@
         </div>
 
         <h2 style="margin-top: 45px;">Formación</h2>
-        
         <div class="block">
             <div class="block-title" style="margin-bottom: 2px;">Diplomado</div>
             <div style="font-size: 11px; color: #ffffff; margin-bottom: 5px;">Métodos Cuantitativos para la Investigación Social</div>
-            <div class="block-subtitle" style="margin-bottom: 2px;">Facultad de Ciencias Sociales y Humanidades</div>
-            <div class="block-subtitle" style="margin-bottom: 8px;">Universidad Diego Portales</div>
+            <div class="block-subtitle">Facultad de Ciencias Sociales y Humanidades — Universidad Diego Portales</div>
             <div class="date">2026 — Presente</div>
         </div>
 
         <div class="block">
             <div class="block-title" style="margin-bottom: 2px;">Pregrado</div>
             <div style="font-size: 11px; color: #ffffff; margin-bottom: 5px;">Ingeniería en Sistemas de Información y Control de Gestión</div>
-            <div class="block-subtitle" style="margin-bottom: 2px;">Facultad de Economía y Negocios</div>
-            <div class="block-subtitle" style="margin-bottom: 8px;">Universidad de Chile</div>
+            <div class="block-subtitle">Facultad de Economía y Negocios — Universidad de Chile</div>
             <div class="date">2018 — 2023</div>
         </div>
 
         <h2 style="margin-top: 45px;">Arquitectura</h2>
         <div class="skills-list">
             <strong>Lenguajes y Datos</strong>
-            <div class="skills-item">
-                <span>—</span><span>Python y R (Anál. Cuantitativo)</span>
-            </div>
-            <div class="skills-item">
-                <span>—</span><span>SQL (Arq. Relacional)</span>
-            </div>
-            <div class="skills-item">
-                <span>—</span><span>JS y JSON (Estructuración)</span>
-            </div>
+            <div class="skills-item"><span>—</span><span>Python y R (Anál. Cuantitativo)</span></div>
+            <div class="skills-item"><span>—</span><span>SQL (Arq. Relacional)</span></div>
+            <div class="skills-item"><span>—</span><span>JS y JSON (Estructuración)</span></div>
             
             <strong>Estructura Web</strong>
-            <div class="skills-item">
-                <span>—</span><span>HTML5, CSS3 (Arq. Visual)</span>
-            </div>
-            <div class="skills-item">
-                <span>—</span><span>UI/UX (Interfaces Dinámicas)</span>
-            </div>
-            <div class="skills-item">
-                <span>—</span><span>Despliegue e Infraestructura</span>
-            </div>
+            <div class="skills-item"><span>—</span><span>HTML5, CSS3 (Arq. Visual)</span></div>
+            <div class="skills-item"><span>—</span><span>UI/UX (Interfaces Dinámicas)</span></div>
+            <div class="skills-item"><span>—</span><span>Despliegue e Infraestructura</span></div>
             
             <strong>Método</strong>
-            <div class="skills-item">
-                <span>—</span><span>Control de Gestión</span>
-            </div>
-            <div class="skills-item">
-                <span>—</span><span>Investigación Cuantitativa</span>
-            </div>
-            <div class="skills-item">
-                <span>—</span><span>Modelamiento Estadístico</span>
-            </div>
-            <div class="skills-item">
-                <span>—</span><span>Desarrollo Asistido por IA</span>
-            </div>
+            <div class="skills-item"><span>—</span><span>Control de Gestión</span></div>
+            <div class="skills-item"><span>—</span><span>Investigación Cuantitativa</span></div>
+            <div class="skills-item"><span>—</span><span>Modelamiento Estadístico</span></div>
+            <div class="skills-item"><span>—</span><span>Desarrollo Asistido por IA</span></div>
         </div>
 
         <h2 style="margin-top: 45px;">Hitos</h2>
