@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CV Ricardo Alberto Moreno Garrido</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Lora:ital,wght@0,400;0,600;1,400&family=Space+Mono&display=swap');
+        
+        @page { size: A4; margin: 0; }
+        
+        :root {
+            --bg-color: #0a0a0a;
+            --text-main: #f4f4f4;
+            --text-muted: #9ca3af; 
+            --accent-gold: #d4af37; 
+            --border-color: #1f1f1f;
+        }
+        
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            width: 210mm; height: 297mm;
+            display: grid;
+            grid-template-columns: 1fr 310px; 
+            font-size: 11px;
+            line-height: 1.6;
+            box-sizing: border-box;
+        }
+        
+        h2 {
+            font-family: 'Lora', serif;
+            color: var(--text-main);
+            font-weight: 400;
+            font-size: 17px;
+            margin-top: 0;
+            margin-bottom: 18px;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+        
+        .main-column { padding: 20mm 15mm 20mm 20mm; }
+        
+        .side-column {
+            padding: 20mm 10mm 20mm 15mm; 
+            background-color: #0d0d0d;
+            border-left: 1px solid var(--border-color);
+        }
+        
+        .name-container {
+            display: inline-block; 
+            margin-bottom: 25px;
+            width: 100%;
+        }
+
+        header h1 {
+            font-family: 'Lora', serif;
+            font-size: 32px; 
+            font-weight: 400;
+            margin: 0;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            white-space: nowrap; 
+        }
+
+        .surnames {
+            font-family: 'Lora', serif;
+            font-size: 18px;
+            font-style: italic;
+            color: var(--text-muted);
+            margin-top: -2px;
+            letter-spacing: 0.05em;
+            text-align: right; 
+        }
+        
+        .summary {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            text-align: justify;
+            font-style: italic;
+            max-width: 95%;
+            margin-bottom: 35px;
+        }
+        
+        .block { margin-bottom: 25px; }
+        
+        .block-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 6px;
+        }
+        
+        .block-title {
+            font-weight: 600;
+            font-size: 12px;
+            color: #ffffff;
+            letter-spacing: 0.02em;
+        }
+
+        .side-column .block-title {
+            font-size: 11px; 
+            color: #ffffff;
+        }
+        
+        .block-subtitle {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .date {
+            color: var(--text-muted);
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+        }
+        
+        ul {
+            padding-left: 15px;
+            color: var(--text-muted);
+            margin-top: 5px;
+            list-style-type: none;
+        }
+
+        ul li {
+            margin-bottom: 6px;
+            position: relative;
+        }
+
+        ul li::before {
+            content: "—";
+            position: absolute;
+            left: -15px;
+            color: var(--accent-gold);
+        }
+        
+        .skills-list {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px; 
+            color: var(--text-muted);
+            line-height: 2.2; 
+        }
+
+        .skills-list strong {
+            color: var(--accent-gold);
+            display: block;
+            margin-top: 12px;
+            font-family: 'Lora', serif;
+            text-transform: none;
+            font-size: 12px;
+            white-space: normal;
+        }
+
+        .skills-item {
+            display: flex; 
+            gap: 6px; 
+            margin-bottom: 4px;
+            white-space: nowrap; 
+        }
+
+        .contact-info {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: var(--text-muted);
+            line-height: 2;
+            margin-bottom: 15px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .social-icons svg {
+            width: 15px;
+            height: 15px;
+            fill: var(--text-muted);
+            transition: fill 0.3s ease;
+        }
+
+        .social-icons svg:hover {
+            fill: var(--text-main);
+        }
+        
+        @media print {
+            :root {
+                --bg-color: #ffffff;
+                --text-main: #000000;
+                --text-muted: #444444;
+                --accent-gold: #555555;
+                --border-color: #dddddd;
+            }
+            body { grid-template-columns: 1fr 300px; } 
+            .side-column { background-color: #ffffff !important; border-left: 1px solid #eeeeee; }
+            .surnames { color: #666666; }
+            .social-icons svg { fill: #444444; }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-column">
+        <header>
+            <div class="name-container">
+                <h1>RICARDO ALBERTO</h1>
+                <div class="surnames">Moreno Garrido</div>
+            </div>
+            <div class="summary">
+                Ingeniero en Sistemas de Información y Control de Gestión. Entiendo los datos como valor en potencia: antes de construir, me dedico a analizar el contexto y el propósito de la persona u organización para que la información cuente con un relato estratégico común. Mi enfoque al diseñar sistemas, interfaces y modelos de análisis persigue dos principios fundamentales: solidez estructural y metodológica, y coherencia estética.
+            </div>
+        </header>
+
+        <h2>Experiencia Sistémica</h2>
+        
+        <div class="block">
+            <div class="block-header">
+                <span class="block-title">Analista de Datos</span>
+                <span class="date">2023 — 2025</span>
+            </div>
+            <div class="block-subtitle">DCS FEN Universidad de Chile</div>
+            <ul>
+                <li>Arquitectura de Datos y Escala: Orquesté el procesamiento automatizado de un ecosistema histórico de +250k contactos y +400k registros.</li>
+                <li>Código Auditable: Diseñé pipelines analíticos (Random Forest, Regresiones) bajo estándares de trazabilidad y reproducibilidad.</li>
+                <li>Uso Responsable: Integré reglas de negocio en SQL enfocadas en la privacidad y el respeto al usuario, gestionando +30k exclusiones.</li>
+                <li>Transparencia: Traduje la complejidad del sistema en interfaces limpias para la comprensión estratégica y proyección de demanda.</li>
+            </ul>
+        </div>
+
+        <div class="block">
+            <div class="block-header">
+                <span class="block-title">Colaborador en Área de Datos</span>
+                <span class="date">2022</span>
+            </div>
+            <div class="block-subtitle">Servicio Nacional del Consumidor</div>
+            <ul>
+                <li>Programación de scripts para la extracción y almacenamiento automatizado de datos de precios.</li>
+            </ul>
+        </div>
+
+        <h2>Proyectos y Ecosistemas</h2>
+
+        <div class="block">
+            <div class="block-header">
+                <span class="block-title">"what-every-thing"</span>
+                <span class="date">True Spaces</span>
+            </div>
+            <ul>
+                <li>Diseño de infraestructura para comunicación descentralizada, priorizando la soberanía de los datos y la privacidad del usuario.</li>
+            </ul>
+        </div>
+
+        <div class="block">
+            <div class="block-header">
+                <span class="block-title">Tarot Interactivo</span>
+                <span class="date">AI Systems</span>
+            </div>
+            <ul>
+                <li>Construcción de bases de datos relacionales complejas aplicadas a sistemas simbólicos y desarrollo asistido por IA.</li>
+            </ul>
+        </div>
+
+        <div class="block">
+            <div class="block-header">
+                <span class="block-title">True Astrology</span>
+                <span class="date">UI/UX Data</span>
+            </div>
+            <ul>
+                <li>Modelamiento de interfaces dinámicas para la visualización de datos astronómicos matemáticos de alta precisión.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="side-column">
+        <h2>Contacto</h2>
+        <div class="contact-info">
+            rmorenoga@fen.uchile.cl<br>
+            +56934545677<br>
+            Santiago, Chile
+        </div>
+        
+        <div class="social-icons">
+            <a href="https://linkedin.com/in/psicoandino" target="_blank" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            </a>
+            <a href="https://x.com/psicoandino" target="_blank" aria-label="X">
+                <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a href="https://youtube.com/@pscndn" target="_blank" aria-label="YouTube">
+                <svg viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+            </a>
+            <a href="https://psicoandino.cl" target="_blank" aria-label="Website">
+                <svg viewBox="0 0 24 24">
+                    <defs>
+                        <mask id="mask-ra">
+                            <rect width="24" height="24" fill="white" />
+                            <text x="12" y="17.5" font-family="'Lora', serif" font-size="14" font-weight="600" letter-spacing="0.02em" text-anchor="middle" fill="black">RA</text>
+                        </mask>
+                    </defs>
+                    <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12z" mask="url(#mask-ra)"/>
+                </svg>
+            </a>
+        </div>
+
+        <h2 style="margin-top: 45px;">Formación</h2>
+        
+        <div class="block">
+            <div class="block-title" style="margin-bottom: 2px;">Diplomado</div>
+            <div style="font-size: 11px; color: #ffffff; margin-bottom: 5px;">Métodos Cuantitativos para la Investigación Social</div>
+            <div class="block-subtitle" style="margin-bottom: 2px;">Facultad de Ciencias Sociales y Humanidades</div>
+            <div class="block-subtitle" style="margin-bottom: 8px;">Universidad Diego Portales</div>
+            <div class="date">2026 — Presente</div>
+        </div>
+
+        <div class="block">
+            <div class="block-title" style="margin-bottom: 2px;">Pregrado</div>
+            <div style="font-size: 11px; color: #ffffff; margin-bottom: 5px;">Ingeniería en Sistemas de Información y Control de Gestión</div>
+            <div class="block-subtitle" style="margin-bottom: 2px;">Facultad de Economía y Negocios</div>
+            <div class="block-subtitle" style="margin-bottom: 8px;">Universidad de Chile</div>
+            <div class="date">2018 — 2023</div>
+        </div>
+
+        <h2 style="margin-top: 45px;">Arquitectura</h2>
+        <div class="skills-list">
+            <strong>Lenguajes y Datos</strong>
+            <div class="skills-item">
+                <span>—</span><span>Python y R (Anál. Cuantitativo)</span>
+            </div>
+            <div class="skills-item">
+                <span>—</span><span>SQL (Arq. Relacional)</span>
+            </div>
+            <div class="skills-item">
+                <span>—</span><span>JS y JSON (Estructuración)</span>
+            </div>
+            
+            <strong>Estructura Web</strong>
+            <div class="skills-item">
+                <span>—</span><span>HTML5, CSS3 (Arq. Visual)</span>
+            </div>
+            <div class="skills-item">
+                <span>—</span><span>UI/UX (Interfaces Dinámicas)</span>
+            </div>
+            <div class="skills-item">
+                <span>—</span><span>Despliegue e Infraestructura</span>
+            </div>
+            
+            <strong>Método</strong>
+            <div class="skills-item">
+                <span>—</span><span>Control de Gestión</span>
+            </div>
+            <div class="skills-item">
+                <span>—</span><span>Investigación Cuantitativa</span>
+            </div>
+            <div class="skills-item">
+                <span>—</span><span>Modelamiento Estadístico</span>
+            </div>
+            <div class="skills-item">
+                <span>—</span><span>Desarrollo Asistido por IA</span>
+            </div>
+        </div>
+
+        <h2 style="margin-top: 45px;">Hitos</h2>
+        <div class="block">
+            <div class="block-title">Casos de Negocio</div>
+            <div style="font-size:10px; color:var(--text-muted); margin-top: 6px; line-height: 1.5;">
+                Encuentro Internacional de Casos Management Control. Resolución estratégica basada en datos, costos y sistemas.
+            </div>
+        </div>
+    </div>
+</body>
+</html>
