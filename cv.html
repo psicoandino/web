@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <title>CV Ricardo Alberto Moreno Garrido</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Lora:ital,wght@0,400;0,600;1,400&family=Space+Mono&display=swap');
@@ -20,31 +21,34 @@
         }
         
         body {
-            margin: 0; padding: 0;
+            margin: 0 auto; /* Lo centra perfectamente en pantallas grandes */
+            padding: 0;
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
-            width: 210mm; height: 297mm;
+            width: 100%; /* Fluido para adaptarse al modal/iframe */
+            max-width: 210mm; /* Mantiene la proporción de papel como tope */
+            min-height: 297mm;
             display: grid;
             grid-template-columns: 1fr 310px; 
             font-size: 11px;
             line-height: 1.6;
             box-sizing: border-box;
             position: relative; 
+            overflow-x: hidden; /* Evita scrolls horizontales raros */
         }
 
-        /* BOTÓN DE IMPRESIÓN EDITORIAL (Solución Psicoandina) */
+        /* BOTÓN DE IMPRESIÓN EDITORIAL */
         .print-btn {
             position: absolute;
-            top: 10mm;  
-            left: 20mm; 
+            top: 35px;  
+            left: 35px; 
             background: transparent;
-            color: var(--text-muted); /* Gris claro, 100% legible */
+            color: var(--text-muted); 
             border: none;
-            /* Línea arquitectónica dorada sutil como indicador de interacción */
             border-bottom: 1px solid rgba(212, 175, 55, 0.3); 
             padding: 0;
-            padding-bottom: 3px; /* Respira un poco antes de la línea */
+            padding-bottom: 3px; 
             font-family: 'Space Mono', monospace;
             font-size: 9px;
             letter-spacing: 0.1em;
@@ -55,8 +59,8 @@
         }
 
         .print-btn:hover {
-            color: var(--accent-gold); /* Se ilumina en oro */
-            border-bottom-color: var(--accent-gold); /* La línea se vuelve sólida */
+            color: var(--accent-gold); 
+            border-bottom-color: var(--accent-gold); 
         }
         
         h2 {
@@ -71,10 +75,10 @@
             padding-bottom: 8px;
         }
         
-        .main-column { padding: 20mm 15mm 20mm 20mm; }
+        .main-column { padding: 30px 25px 30px 35px; }
         
         .side-column {
-            padding: 20mm 10mm 20mm 15mm; 
+            padding: 30px 20px 30px 25px; 
             background-color: #0d0d0d;
             border-left: 1px solid var(--border-color);
             position: relative;
@@ -219,10 +223,9 @@
             fill: var(--text-main);
         }
 
-        @media screen and (max-width: 800px) {
+        /* REGLAS PARA DISPOSITIVOS MÓVILES (IFRAME FLUIDO) */
+        @media screen and (max-width: 650px) {
             body {
-                width: 100% !important; 
-                height: auto !important; 
                 grid-template-columns: 1fr; 
             }
             
@@ -236,13 +239,14 @@
             
             .name-container, .surnames { text-align: center; }
 
-            /* Ajuste del botón para móviles */
             .print-btn { display: none; } 
         }
         
+        /* REGLAS ESTRICTAS DE IMPRESIÓN (BLINDAJE DE 1 PÁGINA) */
         @media print {
             html, body {
                 width: 215.9mm !important; 
+                max-width: 215.9mm !important;
                 height: 279mm !important; 
                 margin: 0 !important;
                 padding: 0 !important;
@@ -269,9 +273,11 @@
             .side-column { 
                 background-color: #ffffff !important; 
                 border-left: 1px solid #eeeeee; 
+                border-top: none !important;
             }
             
-            .surnames { color: #555555; }
+            .surnames { color: #555555; text-align: right; }
+            .name-container { text-align: left; }
             .social-icons svg { fill: #333333; }
         }
     </style>
