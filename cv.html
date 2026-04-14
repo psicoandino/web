@@ -6,7 +6,10 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Lora:ital,wght@0,400;0,600;1,400&family=Space+Mono&display=swap');
         
-        @page { size: A4; margin: 0; }
+        @page { 
+            size: letter portrait; 
+            margin: 0; 
+        }
         
         :root {
             --bg-color: #0a0a0a;
@@ -27,6 +30,33 @@
             font-size: 11px;
             line-height: 1.6;
             box-sizing: border-box;
+            position: relative; 
+        }
+
+        /* BOTÓN DE IMPRESIÓN EDITORIAL (Solución Psicoandina) */
+        .print-btn {
+            position: absolute;
+            top: 10mm;  
+            left: 20mm; 
+            background: transparent;
+            color: var(--text-muted); /* Gris claro, 100% legible */
+            border: none;
+            /* Línea arquitectónica dorada sutil como indicador de interacción */
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3); 
+            padding: 0;
+            padding-bottom: 3px; /* Respira un poco antes de la línea */
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .print-btn:hover {
+            color: var(--accent-gold); /* Se ilumina en oro */
+            border-bottom-color: var(--accent-gold); /* La línea se vuelve sólida */
         }
         
         h2 {
@@ -47,6 +77,7 @@
             padding: 20mm 10mm 20mm 15mm; 
             background-color: #0d0d0d;
             border-left: 1px solid var(--border-color);
+            position: relative;
         }
         
         .name-container {
@@ -187,23 +218,68 @@
         .social-icons svg:hover {
             fill: var(--text-main);
         }
+
+        @media screen and (max-width: 800px) {
+            body {
+                width: 100% !important; 
+                height: auto !important; 
+                grid-template-columns: 1fr; 
+            }
+            
+            .main-column { padding: 25px 20px; }
+            
+            .side-column {
+                padding: 30px 20px; 
+                border-left: none; 
+                border-top: 1px solid var(--border-color); 
+            }
+            
+            .name-container, .surnames { text-align: center; }
+
+            /* Ajuste del botón para móviles */
+            .print-btn { display: none; } 
+        }
         
         @media print {
+            html, body {
+                width: 215.9mm !important; 
+                height: 279mm !important; 
+                margin: 0 !important;
+                padding: 0 !important;
+                overflow: hidden !important; 
+            }
+
             :root {
                 --bg-color: #ffffff;
                 --text-main: #000000;
-                --text-muted: #444444;
+                --text-muted: #333333;
                 --accent-gold: #555555;
-                --border-color: #dddddd;
+                --border-color: #eeeeee;
             }
-            body { grid-template-columns: 1fr 300px; } 
-            .side-column { background-color: #ffffff !important; border-left: 1px solid #eeeeee; }
-            .surnames { color: #666666; }
-            .social-icons svg { fill: #444444; }
+            
+            body { 
+                grid-template-columns: 1fr 290px; 
+                background-color: #ffffff !important;
+                transform: scale(0.97); 
+                transform-origin: top left;
+            }
+
+            .print-btn { display: none !important; } 
+            
+            .side-column { 
+                background-color: #ffffff !important; 
+                border-left: 1px solid #eeeeee; 
+            }
+            
+            .surnames { color: #555555; }
+            .social-icons svg { fill: #333333; }
         }
     </style>
 </head>
 <body>
+
+    <button class="print-btn" onclick="window.print()">[ Imprimir PDF ]</button>
+
     <div class="main-column">
         <header>
             <div class="name-container">
@@ -276,7 +352,8 @@
     </div>
 
     <div class="side-column">
-        <h2>Contacto</h2>
+        
+        <h2 style="margin-top: 20px;">Contacto</h2>
         <div class="contact-info">
             rmorenoga@fen.uchile.cl<br>
             +56934545677<br>
@@ -371,5 +448,13 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                window.parent.postMessage('closeCVModal', '*');
+            }
+        });
+    </script>
 </body>
 </html>
