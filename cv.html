@@ -28,15 +28,24 @@
             color: var(--text-main);
             width: 100%;
             max-width: 210mm;
-            min-height: 297mm;
+            /* Cambio: min-height en lugar de height fija para evitar cortes */
+            min-height: 100vh; 
             display: grid;
-            grid-template-columns: 1fr 310px; 
-            font-size: 11px;
-            line-height: 1.6;
+            /* Cambio: Reducimos un poco la columna lateral para dar aire a la principal */
+            grid-template-columns: 1fr 280px; 
+            font-size: 10.5px; /* Reducción mínima para ganar espacio vertical */
+            line-height: 1.5;
             box-sizing: border-box;
             position: relative;
-            overflow-x: hidden;
         }
+
+        /* Reducimos el padding superior para ganar espacio */
+        .main-column { padding: 15mm 12mm 15mm 15mm; }
+        .side-column { padding: 15mm 10mm 15mm 12mm; }
+        
+        /* Reducimos márgenes de los bloques para compactar verticalmente */
+        .block { margin-bottom: 18px; }
+        h2 { margin-top: 30px !important; margin-bottom: 12px; }
 
         /* BARRA DE HERRAMIENTAS SUPERIOR */
         .top-bar {
