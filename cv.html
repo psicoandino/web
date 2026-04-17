@@ -1,484 +1,459 @@
-<!DOCTYPE html> 
-<html lang="es"> 
-<head> 
-    <meta charset="UTF-8"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-    <title>CV Ricardo Alberto Moreno Garrido</title> 
-    <style> 
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Lora:ital,wght@0,400;0,600;1,400&family=Space+Mono&display=swap'); 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>CV Ricardo Alberto Moreno Garrido</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Lora:ital,wght@0,400;0,600;1,400&family=Space+Mono&display=swap');
         
-        @page {  
-            size: letter portrait;  
-            margin: 0;  
-        } 
-        
-        :root { 
-            --bg-color: #0a0a0a; 
-            --text-main: #f4f4f4; 
-            --text-muted: #9ca3af;  
-            --accent-gold: #d4af37;  
-            --border-color: #1f1f1f; 
-        } 
-        
-        body { 
-            margin: 0 auto; 
-            padding: 0; 
-            font-family: 'Inter', sans-serif; 
-            background-color: var(--bg-color); 
-            color: var(--text-main); 
-            width: 100%; 
-            max-width: 210mm; 
-            min-height: 297mm; 
-            display: grid; 
-            grid-template-columns: 1fr 310px;  
-            font-size: 11px; 
-            line-height: 1.6; 
-            box-sizing: border-box; 
-            position: relative; 
-            overflow-x: hidden; 
-        } 
-
-        /* BARRA DE HERRAMIENTAS SUPERIOR */ 
-        .top-bar { 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 45px; 
-            display: flex; 
-            justify-content: flex-start; 
-            align-items: center; 
-            padding: 0 20mm; 
-            box-sizing: border-box; 
-            z-index: 100; 
-        } 
-
-        .print-btn { 
-            background: transparent; 
-            color: var(--text-muted); 
-            border: none; 
-            border-bottom: 1px solid rgba(212, 175, 55, 0.3); 
-            padding: 2px 0; 
-            font-family: 'Space Mono', monospace; 
-            font-size: 9px; 
-            letter-spacing: 0.1em; 
-            text-transform: uppercase; 
-            cursor: pointer; 
-            transition: all 0.3s ease; 
-        } 
-
-        .print-btn:hover { 
-            color: var(--accent-gold); 
-            border-bottom-color: var(--accent-gold); 
-        } 
-        
-        h2 { 
-            font-family: 'Lora', serif; 
-            color: var(--text-main); 
-            font-weight: 400; 
-            font-size: 17px; 
-            margin-top: 0; 
-            margin-bottom: 18px; 
-            letter-spacing: 0.05em; 
-            border-bottom: 1px solid var(--border-color); 
-            padding-bottom: 8px; 
-        } 
-        
-        .main-column { padding: 25mm 15mm 20mm 20mm; } 
-        
-        .side-column { 
-            padding: 25mm 10mm 20mm 15mm;  
-            background-color: #0d0d0d; 
-            border-left: 1px solid var(--border-color); 
-            position: relative; 
-        } 
-        
-        .name-container { 
-            display: inline-block;  
-            margin-bottom: 25px; 
-            width: 100%; 
-        } 
-
-        header h1 { 
-            font-family: 'Lora', serif; 
-            font-size: 32px;  
-            font-weight: 400; 
+        @page { 
+            size: letter portrait; 
             margin: 0; 
-            letter-spacing: 0.1em; 
-            text-transform: uppercase; 
-            white-space: nowrap;  
-        } 
+        }
+        
+        :root {
+            --bg-color: #0a0a0a;
+            --text-main: #f4f4f4;
+            --text-muted: #9ca3af; 
+            --accent-gold: #d4af37; 
+            --border-color: #1f1f1f;
+        }
+        
+        body {
+            margin: 0 auto;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            width: 100%;
+            max-width: 210mm;
+            min-height: 297mm;
+            display: grid;
+            grid-template-columns: 1fr 310px; 
+            font-size: 11px;
+            line-height: 1.6;
+            box-sizing: border-box;
+            position: relative;
+            overflow-x: hidden;
+        }
 
-        .surnames { 
-            font-family: 'Lora', serif; 
-            font-size: 18px; 
-            font-style: italic; 
-            color: var(--text-muted); 
-            margin-top: -2px; 
-            letter-spacing: 0.05em; 
-            text-align: right;  
-        } 
-        
-        .summary { 
-            font-size: 11.5px; 
-            color: var(--text-muted); 
-            text-align: justify; 
-            font-style: italic; 
-            max-width: 95%; 
-            margin-bottom: 35px; 
-        } 
-        
-        .block { margin-bottom: 25px; } 
-        
-        /* OPTIMIZACIÓN DE ESPACIO: Reducimos el margen entre bloques solo en la barra lateral */
-        .side-column .block { margin-bottom: 16px; }
-        
-        .block-title { 
-            font-weight: 600; 
-            font-size: 12px; 
-            color: var(--text-main);  
-            letter-spacing: 0.02em; 
-        } 
+        /* BARRA DE HERRAMIENTAS SUPERIOR */
+        .top-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 45px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 0 20mm;
+            box-sizing: border-box;
+            z-index: 100;
+        }
 
-        .side-column .block-title { 
-            font-size: 11px;  
-            color: var(--text-main);  
-        } 
+        .print-btn {
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 2px 0;
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .print-btn:hover {
+            color: var(--accent-gold);
+            border-bottom-color: var(--accent-gold);
+        }
         
-        .block-subtitle { 
-            font-family: 'Space Mono', monospace; 
-            font-size: 10px; 
-            color: var(--accent-gold); 
-            text-transform: uppercase; 
-            margin-bottom: 8px; 
-            line-height: 1.4; 
-        } 
+        h2 {
+            font-family: 'Lora', serif;
+            color: var(--text-main);
+            font-weight: 400;
+            font-size: 17px;
+            margin-top: 0;
+            margin-bottom: 18px;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
         
-        .date { 
-            color: var(--text-muted); 
-            font-family: 'Space Mono', monospace; 
+        .main-column { padding: 25mm 15mm 20mm 20mm; }
+        
+        .side-column {
+            padding: 25mm 10mm 20mm 15mm; 
+            background-color: #0d0d0d;
+            border-left: 1px solid var(--border-color);
+            position: relative;
+        }
+        
+        .name-container {
+            display: inline-block; 
+            margin-bottom: 25px;
+            width: 100%;
+        }
+
+        header h1 {
+            font-family: 'Lora', serif;
+            font-size: 32px; 
+            font-weight: 400;
+            margin: 0;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            white-space: nowrap; 
+        }
+
+        .surnames {
+            font-family: 'Lora', serif;
+            font-size: 18px;
+            font-style: italic;
+            color: var(--text-muted);
+            margin-top: -2px;
+            letter-spacing: 0.05em;
+            text-align: right; 
+        }
+        
+        .summary {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            text-align: justify;
+            font-style: italic;
+            max-width: 95%;
+            margin-bottom: 35px;
+        }
+        
+        .block { margin-bottom: 25px; }
+        
+        /* CORRECCIÓN: Títulos ahora usan variable inteligente en vez de blanco fijo */
+        .block-title {
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--text-main); 
+            letter-spacing: 0.02em;
+        }
+
+        .side-column .block-title {
+            font-size: 11px; 
+            color: var(--text-main); 
+        }
+        
+        .block-subtitle {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .date {
+            color: var(--text-muted);
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+        }
+        
+        ul {
+            padding-left: 15px;
+            color: var(--text-muted);
+            margin-top: 5px;
+            list-style-type: none;
+        }
+
+        ul li {
+            margin-bottom: 6px;
+            position: relative;
+        }
+
+        ul li::before {
+            content: "—";
+            position: absolute;
+            left: -15px;
+            color: var(--accent-gold);
+        }
+        
+        .skills-list {
+            font-family: 'Space Mono', monospace;
             font-size: 9px; 
-        } 
-        
-        ul { 
-            padding-left: 15px; 
-            color: var(--text-muted); 
-            margin-top: 5px; 
-            list-style-type: none; 
-        } 
+            color: var(--text-muted);
+            line-height: 2.2; 
+        }
 
-        ul li { 
-            margin-bottom: 6px; 
-            position: relative; 
-        } 
+        .skills-list strong {
+            color: var(--accent-gold);
+            display: block;
+            margin-top: 12px;
+            font-family: 'Lora', serif;
+            text-transform: none;
+            font-size: 12px;
+            white-space: normal;
+        }
 
-        ul li::before { 
-            content: "—"; 
-            position: absolute; 
-            left: -15px; 
-            color: var(--accent-gold); 
-        } 
-        
-        /* OPTIMIZACIÓN DE ESPACIO: Interlineado más compacto */
-        .skills-list { 
-            font-family: 'Space Mono', monospace; 
-            font-size: 9px;  
-            color: var(--text-muted); 
-            line-height: 1.8;  
-        } 
-
-        /* OPTIMIZACIÓN DE ESPACIO: Menos margen superior */
-        .skills-list strong { 
-            color: var(--accent-gold); 
-            display: block; 
-            margin-top: 8px; 
-            font-family: 'Lora', serif; 
-            text-transform: none; 
-            font-size: 12px; 
-            white-space: normal; 
-        } 
-
-        .skills-item { 
-            display: flex;  
-            gap: 6px;  
-            margin-bottom: 4px; 
-            white-space: nowrap;  
-        } 
-
-        .contact-info { 
-            font-family: 'Space Mono', monospace; 
-            font-size: 10px; 
-            color: var(--text-muted); 
-            line-height: 2; 
-            margin-bottom: 15px; 
-        } 
-
-        .social-icons { 
+        .skills-item {
             display: flex; 
-            gap: 12px; 
-            margin-top: 10px; 
-        } 
+            gap: 6px; 
+            margin-bottom: 4px;
+            white-space: nowrap; 
+        }
 
-        .social-icons svg { 
-            width: 15px; 
-            height: 15px; 
-            fill: var(--text-muted); 
-            transition: fill 0.3s ease; 
-        } 
+        .contact-info {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: var(--text-muted);
+            line-height: 2;
+            margin-bottom: 15px;
+        }
 
-        .social-icons svg:hover { 
-            fill: var(--text-main); 
-        } 
+        .social-icons {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+        }
 
-        /* REGLAS MÓVILES */ 
-        @media screen and (max-width: 650px) { 
-            body { grid-template-columns: 1fr; } 
-            .top-bar { padding: 0 20px; height: 50px; } 
-            .print-btn { display: block; font-size: 9px; }  
-            .main-column { padding: 50px 20px 25px 20px; } 
-            .side-column { 
-                padding: 30px 20px;  
-                border-left: none;  
-                border-top: 1px solid var(--border-color);  
-            } 
-            .name-container, .surnames { text-align: center; } 
-        } 
+        .social-icons svg {
+            width: 15px;
+            height: 15px;
+            fill: var(--text-muted);
+            transition: fill 0.3s ease;
+        }
+
+        .social-icons svg:hover {
+            fill: var(--text-main);
+        }
+
+        /* REGLAS MÓVILES */
+        @media screen and (max-width: 650px) {
+            body { grid-template-columns: 1fr; }
+            .top-bar { padding: 0 20px; height: 50px; }
+            .print-btn { display: block; font-size: 9px; } 
+            .main-column { padding: 50px 20px 25px 20px; }
+            .side-column {
+                padding: 30px 20px; 
+                border-left: none; 
+                border-top: 1px solid var(--border-color); 
+            }
+            .name-container, .surnames { text-align: center; }
+        }
         
-        /* LA GUILLOTINA: BLINDAJE ABSOLUTO ANTI-SAFARI */ 
-        @media print { 
-            @page {  
-                size: letter portrait;  
-                margin: 0 !important;  
-            } 
-
-            html { 
-                height: 100% !important; 
-                overflow: hidden !important; 
-            } 
-
-            :root { 
-                --bg-color: #ffffff; 
-                --text-main: #000000; 
-                --text-muted: #333333; 
-                --accent-gold: #444444;  
-                --border-color: #dddddd; 
-            } 
-            
-            body {  
-                grid-template-columns: 1fr 290px;  
-                background-color: #ffffff !important; 
-                
-                position: fixed !important; 
-                top: 0 !important; 
-                left: 0 !important; 
-                width: 215.9mm !important;  
-                height: 279.4mm !important;  
+        /* LA GUILLOTINA: BLINDAJE ABSOLUTO ANTI-SAFARI */
+        @media print {
+            @page { 
+                size: letter portrait; 
                 margin: 0 !important; 
-                padding: 0 !important; 
-                overflow: hidden !important;  
+            }
+
+            html {
+                height: 100% !important;
+                overflow: hidden !important;
+            }
+
+            :root {
+                --bg-color: #ffffff;
+                --text-main: #000000;
+                --text-muted: #333333;
+                /* Oro adaptado para papel: Un gris oscuro sólido para no perder legibilidad */
+                --accent-gold: #444444; 
+                --border-color: #dddddd;
+            }
+            
+            body { 
+                grid-template-columns: 1fr 290px; 
+                background-color: #ffffff !important;
                 
-                transform: scale(0.92);  
-                transform-origin: top left; 
-            } 
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 215.9mm !important; 
+                height: 279.4mm !important; 
+                margin: 0 !important;
+                padding: 0 !important;
+                overflow: hidden !important; 
+                
+                transform: scale(0.92); 
+                transform-origin: top left;
+            }
 
-            .top-bar { display: none !important; }  
+            .top-bar { display: none !important; } 
             
-            .main-column { padding: 20mm 15mm 15mm 20mm !important; } 
-            .side-column {  
-                padding: 20mm 10mm 15mm 15mm !important; 
-                background-color: #ffffff !important;  
-                border-left: 1px solid #eeeeee;  
-                border-top: none !important; 
-            } 
+            .main-column { padding: 20mm 15mm 15mm 20mm !important; }
+            .side-column { 
+                padding: 20mm 10mm 15mm 15mm !important;
+                background-color: #ffffff !important; 
+                border-left: 1px solid #eeeeee; 
+                border-top: none !important;
+            }
             
-            .surnames { color: #555555; text-align: right; } 
-            .name-container { text-align: left; } 
-            .social-icons svg { fill: #333333; } 
+            .surnames { color: #555555; text-align: right; }
+            .name-container { text-align: left; }
+            .social-icons svg { fill: #333333; }
             
-            * { 
-                -webkit-print-color-adjust: exact !important; 
-                print-color-adjust: exact !important; 
-            } 
-        } 
-    </style> 
-</head> 
-<body> 
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+    </style>
+</head>
+<body>
 
-    <div class="top-bar"> 
-        <button class="print-btn" onclick="window.print()">[ Imprimir PDF ]</button> 
-    </div> 
+    <div class="top-bar">
+        <button class="print-btn" onclick="window.print()">[ Imprimir PDF ]</button>
+    </div>
 
-    <div class="main-column"> 
-        <header> 
-            <div class="name-container"> 
-                <h1>RICARDO ALBERTO</h1> 
-                <div class="surnames">Moreno Garrido</div> 
-            </div> 
-            <div class="summary"> 
-                Ingeniero en Sistemas de Información y Control de Gestión. Entiendo los datos como valor en potencia: antes de construir, me dedico a analizar el contexto y el propósito de la persona u organización para que la información cuente con un relato estratégico común. Mi enfoque al diseñar sistemas, interfaces y modelos de análisis persigue dos principios fundamentales: solidez estructural y metodológica, y coherencia estética. 
-            </div> 
-        </header> 
+    <div class="main-column">
+        <header>
+            <div class="name-container">
+                <h1>RICARDO ALBERTO</h1>
+                <div class="surnames">Moreno Garrido</div>
+            </div>
+            <div class="summary">
+                Ingeniero en Sistemas de Información y Control de Gestión. Entiendo los datos como valor en potencia: antes de construir, me dedico a analizar el contexto y el propósito de la persona u organización para que la información cuente con un relato estratégico común. Mi enfoque al diseñar sistemas, interfaces y modelos de análisis persigue dos principios fundamentales: solidez estructural y metodológica, y coherencia estética.
+            </div>
+        </header>
 
-        <h2>Experiencia Sistémica</h2> 
-        <div class="block"> 
-            <div class="block-header"> 
-                <span class="block-title">Analista de Datos</span> 
-                <span class="date">2023 — 2025</span> 
-            </div> 
-            <div class="block-subtitle">DCS FEN Universidad de Chile</div> 
-            <ul> 
-                <li>Arquitectura de Datos y Escala: Orquesté el procesamiento automatizado de un ecosistema histórico de +250k contactos y +400k registros.</li> 
-                <li>Código Auditable: Diseñé pipelines analíticos (Random Forest, Regresiones) bajo estándares de trazabilidad y reproducibilidad.</li> 
-                <li>Uso Responsable: Integré reglas de negocio en SQL enfocadas en la privacidad y el respeto al usuario, gestionando +30k exclusiones.</li> 
-                <li>Transparencia: Traduje la complejidad del sistema en interfaces limpias para la comprensión estratégica y proyección de demanda.</li> 
-            </ul> 
-        </div> 
+        <h2>Experiencia Sistémica</h2>
+        <div class="block">
+            <div class="block-header">
+                <span class="block-title">Analista de Datos</span>
+                <span class="date">2023 — 2025</span>
+            </div>
+            <div class="block-subtitle">DCS FEN Universidad de Chile</div>
+            <ul>
+                <li>Arquitectura de Datos y Escala: Orquesté el procesamiento automatizado de un ecosistema histórico de +250k contactos y +400k registros.</li>
+                <li>Código Auditable: Diseñé pipelines analíticos (Random Forest, Regresiones) bajo estándares de trazabilidad y reproducibilidad.</li>
+                <li>Uso Responsable: Integré reglas de negocio en SQL enfocadas en la privacidad y el respeto al usuario, gestionando +30k exclusiones.</li>
+                <li>Transparencia: Traduje la complejidad del sistema en interfaces limpias para la comprensión estratégica y proyección de demanda.</li>
+            </ul>
+        </div>
 
-        <div class="block"> 
-            <div class="block-header"> 
-                <span class="block-title">Colaborador en Área de Datos</span> 
-                <span class="date">2022</span> 
-            </div> 
-            <div class="block-subtitle">Servicio Nacional del Consumidor</div> 
-            <ul> 
-                <li>Programación de scripts para la extracción y almacenamiento automatizado de datos de precios.</li> 
-            </ul> 
-        </div> 
+        <div class="block">
+            <div class="block-header">
+                <span class="block-title">Colaborador en Área de Datos</span>
+                <span class="date">2022</span>
+            </div>
+            <div class="block-subtitle">Servicio Nacional del Consumidor</div>
+            <ul>
+                <li>Programación de scripts para la extracción y almacenamiento automatizado de datos de precios.</li>
+            </ul>
+        </div>
 
-        <h2>Proyectos y Ecosistemas</h2> 
-        <div class="block"> 
-            <div class="block-header"> 
-                <span class="block-title">"what-every-thing" | Repositorio de Conciencia</span> 
-                <span class="date">Full-stack Project</span> 
-            </div> 
-            <div class="block-subtitle">Infraestructura y Soberanía Digital</div> 
-            <ul> 
-                <li>Arquitectura Descentralizada: Desarrollo de un ecosistema web enfocado en la privacidad estructural, utilizando JSON y JS para la gestión de nodos de información sin dependencia de servidores centralizados.</li> 
-                <li>Filosofía Técnica: Implementación de protocolos de comunicación que priorizan la integridad del relato y la soberanía del dato del usuario.</li> 
-            </ul> 
-        </div> 
+        <h2>Proyectos y Ecosistemas</h2>
+        <div class="block">
+            <div class="block-header">
+                <span class="block-title">"what-every-thing"</span>
+                <span class="date">True Spaces</span>
+            </div>
+            <ul>
+                <li>Diseño de infraestructura para comunicación descentralizada, priorizando la soberanía de los datos y la privacidad del usuario.</li>
+            </ul>
+        </div>
 
-        <div class="block"> 
-            <div class="block-header"> 
-                <span class="block-title">Sistemas Simbólicos & IA</span> 
-                <span class="date">Data Architecture</span> 
-            </div> 
-            <div class="block-subtitle">Aplicación de Tarot Interactivo</div> 
-            <ul> 
-                <li>Modelamiento de Datos: Diseño de bases de datos relacionales complejas para mapear semántica esotérica, integrando lógica de programación con modelos de lenguaje (IA) para interpretaciones dinámicas.</li> 
-                <li>UX Engine: Desarrollo de una interfaz orientada a objetos con estados dinámicos (hover-states) y navegación fluida.</li> 
-            </ul> 
-        </div> 
+        <div class="block">
+            <div class="block-header">
+                <span class="block-title">Tarot Interactivo</span>
+                <span class="date">AI Systems</span>
+            </div>
+            <ul>
+                <li>Construcción de bases de datos relacionales complejas aplicadas a sistemas simbólicos y desarrollo asistido por IA.</li>
+            </ul>
+        </div>
 
-        <div class="block"> 
-            <div class="block-header"> 
-                <span class="block-title">Visualización Astronómica de Precisión</span> 
-                <span class="date">UI/UX Engine</span> 
-            </div> 
-            <div class="block-subtitle">True Astrology Dashboard</div> 
-            <ul> 
-                <li>Computación Matemática: Implementación de algoritmos para el cálculo y renderizado de posiciones astronómicas en tiempo real mediante manipulación del DOM y CSS avanzado.</li> 
-                <li>Data Storytelling: Traducción de variables matemáticas complejas en interfaces visuales minimalistas y funcionales de alta fidelidad.</li> 
-            </ul> 
-        </div> 
-    </div> 
+        <div class="block">
+            <div class="block-header">
+                <span class="block-title">True Astrology</span>
+                <span class="date">UI/UX Data</span>
+            </div>
+            <ul>
+                <li>Modelamiento de interfaces dinámicas para la visualización de datos astronómicos matemáticos de alta precisión.</li>
+            </ul>
+        </div>
+    </div>
 
-    <div class="side-column"> 
-        <h2 style="margin-top: 20px;">Contacto</h2> 
-        <div class="contact-info"> 
-            rmorenoga@fen.uchile.cl<br> 
-            +56934545677<br> 
-            Santiago, Chile 
-        </div> 
+    <div class="side-column">
+        <h2 style="margin-top: 20px;">Contacto</h2>
+        <div class="contact-info">
+            rmorenoga@fen.uchile.cl<br>
+            +56934545677<br>
+            Santiago, Chile
+        </div>
         
-        <div class="social-icons"> 
-            <a href="https://linkedin.com/in/psicoandino" target="_blank" aria-label="LinkedIn"> 
-                <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg> 
-            </a> 
-            <a href="https://x.com/psicoandino" target="_blank" aria-label="X"> 
-                <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> 
-            </a> 
-            <a href="https://youtube.com/@pscndn" target="_blank" aria-label="YouTube"> 
-                <svg viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg> 
-            </a> 
-            <a href="https://psicoandino.cl" target="_blank" aria-label="Website"> 
-                <svg viewBox="0 0 24 24"> 
-                    <defs> 
-                        <mask id="mask-ra"> 
-                            <rect width="24" height="24" fill="white" /> 
-                            <text x="12" y="17.5" font-family="'Lora', serif" font-size="14" font-weight="600" letter-spacing="0.02em" text-anchor="middle" fill="black">RA</text> 
-                        </mask> 
-                    </defs> 
-                    <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12z" mask="url(#mask-ra)"/> 
-                </svg> 
-            </a> 
-        </div> 
+        <div class="social-icons">
+            <a href="https://linkedin.com/in/psicoandino" target="_blank" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            </a>
+            <a href="https://x.com/psicoandino" target="_blank" aria-label="X">
+                <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a href="https://youtube.com/@pscndn" target="_blank" aria-label="YouTube">
+                <svg viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+            </a>
+            <a href="https://psicoandino.cl" target="_blank" aria-label="Website">
+                <svg viewBox="0 0 24 24">
+                    <defs>
+                        <mask id="mask-ra">
+                            <rect width="24" height="24" fill="white" />
+                            <text x="12" y="17.5" font-family="'Lora', serif" font-size="14" font-weight="600" letter-spacing="0.02em" text-anchor="middle" fill="black">RA</text>
+                        </mask>
+                    </defs>
+                    <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12z" mask="url(#mask-ra)"/>
+                </svg>
+            </a>
+        </div>
 
-        <h2 style="margin-top: 25px;">Formación</h2> 
-        <div class="block"> 
-            <div class="block-title" style="margin-bottom: 2px;">Diplomado</div> 
-            <div style="font-size: 11px; color: var(--text-main); margin-bottom: 5px;">Métodos Cuantitativos para la Investigación Social</div> 
-            <div class="block-subtitle">Facultad de Ciencias Sociales y Humanidades — Universidad Diego Portales</div> 
-            <div class="date">2026 — Presente</div> 
-        </div> 
+        <h2 style="margin-top: 45px;">Formación</h2>
+        <div class="block">
+            <div class="block-title" style="margin-bottom: 2px;">Diplomado</div>
+            <div style="font-size: 11px; color: var(--text-main); margin-bottom: 5px;">Métodos Cuantitativos para la Investigación Social</div>
+            <div class="block-subtitle">Facultad de Ciencias Sociales y Humanidades — Universidad Diego Portales</div>
+            <div class="date">2026 — Presente</div>
+        </div>
 
-        <div class="block"> 
-            <div class="block-title" style="margin-bottom: 2px;">Curso de Especialización</div> 
-            <div style="font-size: 11px; color: var(--text-main); margin-bottom: 5px;">Técnicas de Machine Learning</div> 
-            <div class="block-subtitle">Universidad Adolfo Ibáñez</div> 
-            <div class="date">2024</div> 
-        </div> 
-        
-        <div class="block"> 
-            <div class="block-title" style="margin-bottom: 2px;">Pregrado</div> 
-            <div style="font-size: 11px; color: var(--text-main); margin-bottom: 5px;">Ingeniería en Sistemas de Información y Control de Gestión</div> 
-            <div class="block-subtitle">Facultad de Economía y Negocios — Universidad de Chile</div> 
-            <div class="date">2018 — 2023</div> 
-        </div> 
+        <div class="block">
+            <div class="block-title" style="margin-bottom: 2px;">Pregrado</div>
+            <div style="font-size: 11px; color: var(--text-main); margin-bottom: 5px;">Ingeniería en Sistemas de Información y Control de Gestión</div>
+            <div class="block-subtitle">Facultad de Economía y Negocios — Universidad de Chile</div>
+            <div class="date">2018 — 2023</div>
+        </div>
 
-        <h2 style="margin-top: 25px;">Arquitectura</h2> 
-        <div class="skills-list"> 
-            <strong>Ciencia de Datos & SQL</strong> 
-            <div class="skills-item"><span>—</span><span>Python y R (ETL & Análisis Cuantitativo)</span></div> 
-            <div class="skills-item"><span>—</span><span>Standard SQL (DBeaver & Optimización de Consultas)</span></div> 
-            <div class="skills-item"><span>—</span><span>Arquitectura de BD (PostgreSQL / MySQL / JSON)</span></div> 
-        
-            <strong>Sistemas e Interfaces</strong> 
-            <div class="skills-item"><span>—</span><span>Desarrollo Frontend (HTML5, CSS3, JS)</span></div> 
-            <div class="skills-item"><span>—</span><span>Diseño UI/UX para Visualización de Datos</span></div> 
-            <div class="skills-item"><span>—</span><span>Gestión de Repositorios (Git & GitHub)</span></div> 
-        
-            <strong>Metodología Estratégica</strong> 
-            <div class="skills-item"><span>—</span><span>Control de Gestión e Inteligencia de Negocios</span></div> 
-            <div class="skills-item"><span>—</span><span>Modelamiento Predictivo y Machine Learning</span></div> 
-            <div class="skills-item"><span>—</span><span>Investigación Social y Cuantitativa</span></div> 
-            <div class="skills-item"><span>—</span><span>Desarrollo de Soluciones Asistidas por IA</span></div> 
-        </div> 
+        <h2 style="margin-top: 45px;">Arquitectura</h2>
+        <div class="skills-list">
+            <strong>Lenguajes y Datos</strong>
+            <div class="skills-item"><span>—</span><span>Python y R (Anál. Cuantitativo)</span></div>
+            <div class="skills-item"><span>—</span><span>SQL (Arq. Relacional)</span></div>
+            <div class="skills-item"><span>—</span><span>JS y JSON (Estructuración)</span></div>
+            
+            <strong>Estructura Web</strong>
+            <div class="skills-item"><span>—</span><span>HTML5, CSS3 (Arq. Visual)</span></div>
+            <div class="skills-item"><span>—</span><span>UI/UX (Interfaces Dinámicas)</span></div>
+            <div class="skills-item"><span>—</span><span>Despliegue e Infraestructura</span></div>
+            
+            <strong>Método</strong>
+            <div class="skills-item"><span>—</span><span>Control de Gestión</span></div>
+            <div class="skills-item"><span>—</span><span>Investigación Cuantitativa</span></div>
+            <div class="skills-item"><span>—</span><span>Modelamiento Estadístico</span></div>
+            <div class="skills-item"><span>—</span><span>Desarrollo Asistido por IA</span></div>
+        </div>
 
-        <h2 style="margin-top: 25px;">Hitos</h2> 
-        <div class="block"> 
-            <div class="block-title">Casos de Negocio</div> 
-            <div class="block-subtitle" style="margin-top: 2px;"></div> 
-            <div style="font-size:10px; color:var(--text-muted); margin-top: 6px; line-height: 1.5;"> 
-                Participación en Encuentro Internacional de Casos Management Control. Resolución estratégica basada en propuesta de sistema de costos. 
-            </div> 
-        </div> 
+        <h2 style="margin-top: 45px;">Hitos</h2>
+        <div class="block">
+            <div class="block-title">Casos de Negocio</div>
+            <div style="font-size:10px; color:var(--text-muted); margin-top: 6px; line-height: 1.5;">
+                Encuentro Internacional de Casos Management Control. Resolución estratégica basada en datos, costos y sistemas.
+            </div>
+        </div>
+    </div>
 
-        <div class="block"> 
-            <div class="block-title">Investigación y Desarrollo</div> 
-            <div class="block-subtitle" style="margin-top: 2px;">Hospital Clínico Universidad de Chile</div> 
-            <div style="font-size:10px; color:var(--text-muted); margin-top: 4px; line-height: 1.5;"> 
-                Departamento de Imagenología. Desarrollo y modelamiento de un sistema de costos basado en actividades (ABC) para la optimización de recursos institucionales. 
-            </div> 
-        </div> 
-    </div> 
-
-    <script> 
-        document.addEventListener('keydown', function(event) { 
-            if (event.key === "Escape") { 
-                window.parent.postMessage('closeCVModal', '*'); 
-            } 
-        }); 
-    </script> 
-</body> 
+    <script>
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                window.parent.postMessage('closeCVModal', '*');
+            }
+        });
+    </script>
+</body>
 </html>
