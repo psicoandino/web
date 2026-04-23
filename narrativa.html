@@ -1,0 +1,113 @@
+<!DOCTYPE html> 
+<html lang="es"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Psicoandino | Narrativa</title> 
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+</head> 
+<body> 
+
+    <div class="top-bar">
+        <div class="brand-text">
+            <span class="brand-name">PSICOANDINO</span>
+            <span class="desktop-only">
+                <span class="brand-author">/ Ricardo Alberto</span>
+                <span class="brand-concept">— Dios, Ciencia & Mente</span>
+            </span>
+        </div>
+        <div class="top-socials">
+             <a href="index.html" class="nav-btn">inicio</a>
+        </div>
+    </div>
+
+    <div class="reading-layout">
+        
+        <div id="tag-filters" style="display: flex; gap: 10px; margin-bottom: 40px; flex-wrap: wrap; justify-content: flex-start; border-bottom: 1px solid var(--border-color); padding-bottom: 20px;">
+            </div>
+
+        <div id="feed-list">
+            <div style="font-family: monospace; font-size: 10px; color: #888; text-align: center;">[ Inicializando motor de renderizado... ]</div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const feedList = document.getElementById('feed-list');
+            const filterContainer = document.getElementById('tag-filters');
+            let allPosts = [];
+
+            fetch('posts.json')
+                .then(response => response.json())
+                .then(posts => {
+                    allPosts = posts.reverse();
+                    
+                    // 1. Extraer tags únicos automáticamente
+                    const allTags = new Set();
+                    allPosts.forEach(post => post.tags.forEach(tag => allTags.add(tag)));
+                    
+                    // 2. Construir la UI de Filtros
+                    filterContainer.innerHTML = `<button class="nav-btn active-filter" data-tag="all">[ TODOS ]</button>`;
+                    allTags.forEach(tag => {
+                        filterContainer.innerHTML += `<button class="nav-btn" data-tag="${tag}">[ ${tag.toUpperCase()} ]</button>`;
+                    });
+
+                    // 3. Render Inicial
+                    renderFeed(allPosts);
+
+                    // 4. Lógica de Filtrado al hacer click
+                    filterContainer.addEventListener('click', (e) => {
+                        if(e.target.tagName === 'BUTTON') {
+                            // Actualizar estilos visuales
+                            document.querySelectorAll('#tag-filters button').forEach(btn => btn.classList.remove('active-filter'));
+                            e.target.classList.add('active-filter');
+
+                            // Filtrar matriz
+                            const selectedTag = e.target.getAttribute('data-tag');
+                            const filteredPosts = selectedTag === 'all' 
+                                ? allPosts 
+                                : allPosts.filter(p => p.tags.includes(selectedTag));
+                            
+                            renderFeed(filteredPosts);
+                        }
+                    });
+                })
+                .catch(error => {
+                    feedList.innerHTML = `<div style="color: red; font-family: monospace;">[ Error de Sistema: ${error.message} ]</div>`;
+                });
+
+            // Función de Renderizado
+            function renderFeed(postsToRender) {
+                feedList.innerHTML = ''; 
+                if(postsToRender.length === 0) {
+                    feedList.innerHTML = `<div style="font-family: monospace; font-size: 11px; color: #888;">[ No hay registros en este vector. ]</div>`;
+                    return;
+                }
+
+                postsToRender.forEach(post => {
+                    // Cálculo de carga cognitiva (Tiempo de lectura)
+                    const wordCount = post.content.replace(/<[^>]*>?/gm, '').split(/\s+/).length;
+                    const readingTime = Math.ceil(wordCount / 200);
+
+                    const tagsHtml = post.tags.map(tag => `<span style="color: var(--text-muted);">[${tag}]</span>`).join(' ');
+                    const article = document.createElement('article');
+                    article.className = 'post-card';
+                    
+                    article.innerHTML = `
+                        <h2 class="post-title"><a href="post.html?id=${post.id}">${post.title}</a></h2>
+                        <div class="post-meta">
+                            <span>${post.date}</span>
+                            <span>// ${readingTime} MIN LECTURA</span>
+                            <span>${tagsHtml}</span>
+                        </div>
+                        <a href="post.html?id=${post.id}" class="read-btn">Leer Estructura &rarr;</a>
+                    `;
+                    feedList.appendChild(article);
+                });
+            }
+        });
+    </script> 
+</body> 
+</html>

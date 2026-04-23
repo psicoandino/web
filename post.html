@@ -1,0 +1,110 @@
+<!DOCTYPE html> 
+<html lang="es"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Psicoandino | Lectura</title>
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+</head> 
+<body> 
+
+    <div class="top-bar">
+        <div class="brand-text">
+            <span class="brand-name">PSICOANDINO</span>
+            <span class="desktop-only">
+                <span class="brand-author">/ Ricardo Alberto</span>
+                <span class="brand-concept">— Dios, Ciencia & Mente</span>
+            </span>
+        </div>
+        <div class="top-socials">
+             <a href="index.html" class="nav-btn">inicio</a>
+        </div>
+    </div>
+
+    <div class="reading-layout">
+        <nav class="post-nav">
+            <a href="narrativa.html" class="back-btn">[ Volver a Narrativa ]</a>
+        </nav>
+
+        <article id="article-container">
+            <div style="font-family: monospace; font-size: 11px; color: #888; text-align: center; margin-top: 50px;">[ Extrayendo vector de información... ]</div>
+        </article>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const articleContainer = document.getElementById('article-container');
+            const urlParams = new URLSearchParams(window.location.search);
+            const targetId = parseInt(urlParams.get('id'));
+
+            if (!targetId) {
+                articleContainer.innerHTML = "<span style='color: red; font-family: monospace;'>[ Error: Parámetro de ruta inválido. Falta ID estructural. ]</span>";
+                return;
+            }
+
+            fetch('posts.json')
+                .then(response => response.json())
+                .then(posts => {
+                    const post = posts.find(p => p.id === targetId);
+                    if (!post) {
+                        articleContainer.innerHTML = "<span style='color: red; font-family: monospace;'>[ Error: Nodo de información no encontrado en la matriz. ]</span>";
+                        return;
+                    }
+
+                    // Cálculo de carga cognitiva
+                    const wordCount = post.content.replace(/<[^>]*>?/gm, '').split(/\s+/).length;
+                    const readingTime = Math.ceil(wordCount / 200);
+
+                    const tagsHtml = post.tags.map(tag => `<span style="color: var(--text-muted);">[${tag}]</span>`).join(' ');
+                    document.title = `Psicoandino | ${post.title}`;
+
+                    articleContainer.innerHTML = `
+                        <header style="margin-bottom: 30px;">
+                            <h1 class="post-title">${post.title}</h1>
+                            <div class="post-meta">
+                                <span>${post.date}</span>
+                                <span>// ${readingTime} MIN LECTURA</span>
+                                <span>${tagsHtml}</span>
+                            </div>
+                        </header>
+                        <div class="post-content">
+                            ${post.content}
+                        </div>
+                    `;
+                    // MOTOR DE RENDERIZADO MATEMÁTICO ASÍNCRONO
+                    // ==========================================
+                    const renderMath = () => {
+                        // Verifica si el motor ya se descargó y está listo
+                        if (window.MathJax && window.MathJax.typesetPromise) {
+                            window.MathJax.typesetPromise([articleContainer]).catch(err => {
+                                console.error('Error estructural matemático:', err.message);
+                            });
+                        } else {
+                            // Si el internet es lento y no ha llegado, espera 50ms y vuelve a intentar
+                            setTimeout(renderMath, 50);
+                        }
+                    };
+                    
+                    renderMath(); // Ejecutar el motor
+                    // ==========================================
+                    // ==========================================
+                })
+                .catch(error => {
+                    articleContainer.innerHTML = `<span style='color: red; font-family: monospace;'>[ Falla Crítica: ${error.message} ]</span>`;
+                });
+        });
+    </script> 
+</body> 
+</html>

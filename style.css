@@ -2,6 +2,8 @@
     --bg-color: #0a0a0a;
     --text-main: #f4f4f4;
     --text-muted: #888888;
+    --accent-gold: #d4af37;
+    --border-color: #1f1f1f;
     --top-bar-height: 50px;
 }
 
@@ -9,167 +11,76 @@ body {
     margin: 0; padding: 0;
     background-color: var(--bg-color);
     color: var(--text-main);
-    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
     line-height: 1.6;
-    overflow: hidden; /* Evita que el usuario haga scroll, anclándolo a la vista inicial */
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
+    animation: systemFadeIn 0.4s ease-in-out;
 }
 
-/* BARRA 1: SUPERIOR FIJA */
+@keyframes systemFadeIn {
+    0% { opacity: 0; background-color: var(--bg-color); }
+    100% { opacity: 1; background-color: var(--bg-color); }
+}
+
+.home-locked {
+    overflow: hidden; height: 100vh; display: flex; flex-direction: column;
+}
+
 .top-bar {
-    height: var(--top-bar-height);
-    background-color: var(--bg-color);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 5vw;
-    border-bottom: 1px solid #1a1a1a;
-    font-size: 0.8rem;
+    position: fixed; top: 0; left: 0; width: 100%; height: var(--top-bar-height);
+    background-color: var(--bg-color); display: flex; justify-content: space-between;
+    align-items: center; padding: 0 5vw; border-bottom: 1px solid var(--border-color);
+    box-sizing: border-box; z-index: 999;
 }
 
-.brand-name { font-weight: bold; color: var(--text-main); margin-right: 5px; letter-spacing: 0.1em; }
-.brand-author, .brand-concept { color: var(--text-muted); margin-right: 5px; }
+.brand-name { font-weight: bold; color: var(--text-main); margin-right: 5px; letter-spacing: 0.1em; font-size: 0.8rem; }
+.brand-author, .brand-concept { color: var(--text-muted); margin-right: 5px; font-size: 0.8rem; }
 
-/* Forzar SVGs a ser blancos/grises */
 .top-socials { display: flex; align-items: center; gap: 15px; }
-.top-socials a, .top-socials a:visited {
-    color: var(--text-main) !important;
-    display: inline-flex;
-    align-items: center;
-    transition: color 0.3s;
-}
+.top-socials a, .top-socials a:visited { color: var(--text-main) !important; display: inline-flex; align-items: center; transition: color 0.3s; }
 .top-socials a:hover { color: var(--text-muted) !important; }
 
-/* HERO SECTION (CENTRAL) */
+.nav-btn {
+    font-family: monospace; font-weight: bold; text-decoration: none;
+    border: 1px solid var(--text-muted); padding: 2px 6px; border-radius: 3px;
+    font-size: 0.75rem; color: var(--text-muted) !important; margin-right: 5px; transition: all 0.3s; cursor: pointer; background: transparent;
+}
+.nav-btn:hover { border-color: var(--text-main); color: var(--text-main) !important; }
+
+/* NUEVO: Clase para el filtro activo */
+.active-filter { border-color: var(--accent-gold); color: var(--text-main) !important; }
+
 .hero {
-    flex-grow: 1; /* Ocupa todo el espacio sobrante */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 0 5vw;
+    flex-grow: 1; display: flex; flex-direction: column; justify-content: center;
+    align-items: center; text-align: center; padding: 0 5vw; margin-top: var(--top-bar-height);
 }
+.hero h1 { font-family: 'Lora', serif; font-size: clamp(2rem, 8vw, 5rem); margin: 0 0 10px 0; letter-spacing: 0.2em; white-space: nowrap; font-weight: 400;}
+.dynamic-text-container { font-size: clamp(1rem, 3vw, 1.2rem); color: var(--text-muted); font-weight: 300; height: 30px; }
+.status-msg { position: absolute; bottom: 20px; width: 100%; text-align: center; font-size: 0.65rem; color: #444; font-family: monospace; letter-spacing: 0.1em; }
 
-/* FIX MÓVIL: Ajuste del título para que no se corte NUNCA */
-.hero h1 { 
-    font-size: clamp(2rem, 8vw, 5rem); 
-    margin: 0 0 10px 0; 
-    letter-spacing: 0.2em; 
-    white-space: nowrap; /* Prohíbe que la palabra se divida en dos líneas */
-}
+.reading-layout { max-width: 600px; margin: 0 auto; padding: 100px 20px 60px 20px; box-sizing: border-box; }
 
-.dynamic-text-container { 
-    font-size: clamp(1rem, 3vw, 1.2rem); 
-    color: var(--text-muted); 
-    font-weight: 300; 
-    height: 30px; 
-}
+.post-nav { margin-bottom: 50px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); }
+.back-btn { color: var(--text-muted); text-decoration: none; font-family: monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; transition: color 0.3s; }
+.back-btn:hover { color: var(--text-main); }
 
-/* MENSAJE MINÚSCULO ABAJO */
-.status-msg {
-    position: absolute;
-    bottom: 20px;
-    width: 100%;
-    text-align: center;
-    font-size: 0.65rem;
-    color: #444;
-    font-family: monospace;
-    letter-spacing: 0.1em;
-}
+.post-card { margin-bottom: 40px; padding-bottom: 25px; border-bottom: 1px solid var(--border-color); }
+.post-card:last-child { border-bottom: none; }
 
-/* RESPONSIVE MÓVIL */
+.post-title { font-family: 'Lora', serif; font-weight: 400; font-size: 24px; margin: 0 0 10px 0; letter-spacing: 0.05em; line-height: 1.3; }
+.post-title a { color: var(--text-main); text-decoration: none; transition: color 0.3s; }
+.post-title a:hover { color: var(--accent-gold); }
+
+.post-meta { font-family: monospace; font-size: 10px; color: var(--accent-gold); text-transform: uppercase; display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap;}
+
+.read-btn { display: inline-block; color: var(--text-muted); text-decoration: none; font-family: monospace; font-size: 10px; letter-spacing: 0.1em; border: 1px solid var(--border-color); padding: 6px 12px; transition: all 0.3s; }
+.read-btn:hover { border-color: var(--accent-gold); color: var(--text-main); }
+
+.post-content { color: var(--text-muted); text-align: justify; font-size: 14px; }
+.post-content p { margin-bottom: 20px; }
+.post-content ul { padding-left: 20px; margin-bottom: 20px; }
+.post-content li { margin-bottom: 8px; }
+
 @media (max-width: 768px) {
     .desktop-only { display: none !important; }
-    
-    .hero h1 {
-        font-size: 9vw; /* Obliga a la fuente a ser exactamente el 90% del ancho de la pantalla */
-        letter-spacing: 0.1em; /* Reduce el espacio entre letras solo en móvil para que quepa mejor */
-    }
-}
-
-/* =========================================
-   ESTILOS NUEVOS: MODAL CV Y BOTÓN
-   ========================================= */
-
-/* BOTÓN CV */
-.cv-btn {
-    font-family: monospace;
-    font-weight: bold;
-    text-decoration: none;
-    border: 1px solid var(--text-muted);
-    padding: 2px 6px;
-    border-radius: 3px;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    margin-right: 5px;
-}
-.cv-btn:hover {
-    border-color: var(--text-main);
-    color: var(--text-main) !important;
-}
-
-/* MODAL OVERLAY (Fondo difuminado) */
-.modal-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(10, 10, 10, 0.85);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.modal-overlay.active {
-    display: flex;
-    opacity: 1;
-}
-
-/* CONTENEDOR DEL CV */
-.modal-content {
-    position: relative;
-    width: 90vw;
-    max-width: 210mm; 
-    height: 85vh; 
-    background-color: #0d0d12;
-    border: 1px solid #1a1a1a;
-    border-radius: 4px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.8);
-    overflow: hidden;
-}
-
-.modal-content iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-    display: block;
-    background-color: #0d0d12;
-}
-
-/* BOTÓN CERRAR (La X) */
-.close-btn {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    background: none;
-    border: none;
-    color: #f4f4f4;
-    font-size: 28px;
-    line-height: 1;
-    cursor: pointer;
-    z-index: 1001;
-    font-family: monospace;
-    transition: color 0.3s;
-}
-.close-btn:hover {
-    color: #d97706;
+    .hero h1 { font-size: 9vw; letter-spacing: 0.1em; }
 }
