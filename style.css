@@ -21,9 +21,7 @@ body {
     100% { opacity: 1; background-color: var(--bg-color); }
 }
 
-.home-locked {
-    overflow: hidden; height: 100vh; display: flex; flex-direction: column;
-}
+.home-locked { overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
 
 .top-bar {
     position: fixed; top: 0; left: 0; width: 100%; height: var(--top-bar-height);
@@ -40,14 +38,13 @@ body {
 .top-socials a:hover { color: var(--text-muted) !important; }
 
 .nav-btn {
-    font-family: monospace; font-weight: bold; text-decoration: none;
-    border: 1px solid var(--text-muted); padding: 2px 6px; border-radius: 3px;
-    font-size: 0.75rem; color: var(--text-muted) !important; margin-right: 5px; transition: all 0.3s; cursor: pointer; background: transparent;
+    font-family: 'Space Mono', monospace; font-weight: bold; text-decoration: none;
+    border: 1px solid var(--text-muted); padding: 4px 8px; border-radius: 3px;
+    font-size: 0.70rem; color: var(--text-muted) !important; transition: all 0.3s; cursor: pointer; background: transparent;
 }
 .nav-btn:hover { border-color: var(--text-main); color: var(--text-main) !important; }
 
-/* NUEVO: Clase para el filtro activo */
-.active-filter { border-color: var(--accent-gold); color: var(--text-main) !important; }
+.active-filter { border-color: var(--accent-gold); color: var(--accent-gold) !important; }
 
 .hero {
     flex-grow: 1; display: flex; flex-direction: column; justify-content: center;
@@ -57,8 +54,96 @@ body {
 .dynamic-text-container { font-size: clamp(1rem, 3vw, 1.2rem); color: var(--text-muted); font-weight: 300; height: 30px; }
 .status-msg { position: absolute; bottom: 20px; width: 100%; text-align: center; font-size: 0.65rem; color: #444; font-family: monospace; letter-spacing: 0.1em; }
 
-.reading-layout { max-width: 600px; margin: 0 auto; padding: 100px 20px 60px 20px; box-sizing: border-box; }
+.reading-layout { max-width: 650px; margin: 0 auto; padding: 100px 20px 60px 20px; box-sizing: border-box; }
 
+/* =========================================
+   COMMAND CONSOLE (Barra Sticky Expansible)
+   ========================================= */
+.command-bar {
+    position: sticky;
+    top: var(--top-bar-height);
+    background-color: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(5px);
+    z-index: 90;
+    padding: 15px 0;
+    margin-top: -15px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column; /* Permite apilar la barra y la bandeja */
+    transition: all 0.3s ease;
+}
+
+.command-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+}
+
+.search-input {
+    flex-grow: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-main);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    outline: none;
+    min-width: 100px;
+}
+.search-input::placeholder { color: #555; }
+
+.command-controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+
+/* =========================================
+   MATRIX TRAY (Bandeja Multiselección)
+   ========================================= */
+.matrix-tray {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 1px dashed transparent;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+    
+    /* Físicas de CIERRE: Rápidas, sin zona muerta */
+    transition: all 0.25s cubic-bezier(0.4, 0, 1, 1);
+}
+
+.matrix-tray.active {
+    max-height: 150px; /* Límite más estricto para eliminar el lag */
+    opacity: 1;
+    padding-top: 15px;
+    margin-top: 15px;
+    border-top: 1px dashed var(--border-color);
+    
+    /* Físicas de APERTURA: Suaves y calculadas */
+    transition: all 0.35s cubic-bezier(0, 0, 0.2, 1);
+}
+
+.results-counter {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    width: 100%;
+    margin-top: 10px;
+    text-align: right;
+    animation: systemFadeIn 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .command-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .search-input { width: 100%; }
+    .command-controls { width: 100%; justify-content: space-between; }
+    .matrix-tray.active { max-height: 250px; } /* Ajuste seguro para móviles */
+}
+
+/* ESTILOS DEL POST */
 .post-nav { margin-bottom: 50px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); }
 .back-btn { color: var(--text-muted); text-decoration: none; font-family: monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; transition: color 0.3s; }
 .back-btn:hover { color: var(--text-main); }
@@ -83,4 +168,7 @@ body {
 @media (max-width: 768px) {
     .desktop-only { display: none !important; }
     .hero h1 { font-size: 9vw; letter-spacing: 0.1em; }
+    .command-bar { flex-direction: column; align-items: flex-start; padding: 10px 0; }
+    .search-input { width: 100%; margin-bottom: 10px; }
+    .command-controls { width: 100%; justify-content: space-between; }
 }

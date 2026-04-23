@@ -3,19 +3,16 @@
 <head> 
     <meta charset="UTF-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-    <title>Psicoandino | Lectura</title>
+    <title>Psicoandino | Lectura</title> 
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Lora:ital,wght@0,400;0,600;1,400&family=Space+Mono&display=swap" rel="stylesheet">
+    
     <script>
         MathJax = {
-            tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['$$', '$$'], ['\\[', '\\]']]
-            }
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] }
         };
     </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-
 </head> 
 <body> 
 
@@ -33,8 +30,13 @@
     </div>
 
     <div class="reading-layout">
-        <nav class="post-nav">
+        <nav class="post-nav" style="display: flex; justify-content: space-between; align-items: center; position: sticky; top: var(--top-bar-height); background-color: var(--bg-color); z-index: 90; padding: 15px 0; margin-top: -15px;">
             <a href="narrativa.html" class="back-btn">[ Volver a Narrativa ]</a>
+            
+            <div id="vector-toggle" style="display: flex; gap: 10px;">
+                <button class="nav-btn active-filter" data-lang="en">[ VECTOR: EN ]</button>
+                <button class="nav-btn" data-lang="es">[ VECTOR: ES ]</button>
+            </div>
         </nav>
 
         <article id="article-container">
@@ -48,6 +50,9 @@
             const articleContainer = document.getElementById('article-container');
             const urlParams = new URLSearchParams(window.location.search);
             const targetId = parseInt(urlParams.get('id'));
+            
+            let currentPost = null;
+            let currentLang = 'en'; // ESTADO INICIAL ACTUALIZADO A INGLÉS
 
             if (!targetId) {
                 articleContainer.innerHTML = "<span style='color: red; font-family: monospace;'>[ Error: Parámetro de ruta inválido. Falta ID estructural. ]</span>";
@@ -57,53 +62,65 @@
             fetch('posts.json')
                 .then(response => response.json())
                 .then(posts => {
-                    const post = posts.find(p => p.id === targetId);
-                    if (!post) {
+                    currentPost = posts.find(p => p.id === targetId);
+                    if (!currentPost) {
                         articleContainer.innerHTML = "<span style='color: red; font-family: monospace;'>[ Error: Nodo de información no encontrado en la matriz. ]</span>";
                         return;
                     }
-
-                    // Cálculo de carga cognitiva
-                    const wordCount = post.content.replace(/<[^>]*>?/gm, '').split(/\s+/).length;
-                    const readingTime = Math.ceil(wordCount / 200);
-
-                    const tagsHtml = post.tags.map(tag => `<span style="color: var(--text-muted);">[${tag}]</span>`).join(' ');
-                    document.title = `Psicoandino | ${post.title}`;
-
-                    articleContainer.innerHTML = `
-                        <header style="margin-bottom: 30px;">
-                            <h1 class="post-title">${post.title}</h1>
-                            <div class="post-meta">
-                                <span>${post.date}</span>
-                                <span>// ${readingTime} MIN LECTURA</span>
-                                <span>${tagsHtml}</span>
-                            </div>
-                        </header>
-                        <div class="post-content">
-                            ${post.content}
-                        </div>
-                    `;
-                    // MOTOR DE RENDERIZADO MATEMÁTICO ASÍNCRONO
-                    // ==========================================
-                    const renderMath = () => {
-                        // Verifica si el motor ya se descargó y está listo
-                        if (window.MathJax && window.MathJax.typesetPromise) {
-                            window.MathJax.typesetPromise([articleContainer]).catch(err => {
-                                console.error('Error estructural matemático:', err.message);
-                            });
-                        } else {
-                            // Si el internet es lento y no ha llegado, espera 50ms y vuelve a intentar
-                            setTimeout(renderMath, 50);
-                        }
-                    };
-                    
-                    renderMath(); // Ejecutar el motor
-                    // ==========================================
-                    // ==========================================
+                    renderPost();
                 })
                 .catch(error => {
                     articleContainer.innerHTML = `<span style='color: red; font-family: monospace;'>[ Falla Crítica: ${error.message} ]</span>`;
                 });
+
+            // Motor de Renderizado Lingüístico
+            function renderPost() {
+                const title = currentLang === 'en' ? currentPost.title_en : currentPost.title_es;
+                const content = currentLang === 'en' ? currentPost.content_en : currentPost.content_es;
+                
+                const wordCount = content.replace(/<[^>]*>?/gm, '').split(/\s+/).length;
+                const readingTime = Math.ceil(wordCount / 200);
+
+                const tagsHtml = currentPost.tags.map(tag => `<span style="color: var(--text-muted);">[${tag}]</span>`).join(' ');
+                document.title = `Psicoandino | ${title}`;
+
+                articleContainer.innerHTML = `
+                    <header style="margin-bottom: 30px; margin-top: 20px;">
+                        <h1 class="post-title" style="animation: systemFadeIn 0.5s;">${title}</h1>
+                        <div class="post-meta">
+                            <span>${currentPost.date}</span>
+                            <span>// ${readingTime} MIN</span>
+                            <span>${tagsHtml}</span>
+                        </div>
+                    </header>
+                    <div class="post-content" style="animation: systemFadeIn 0.5s;">
+                        ${content}
+                    </div>
+                `;
+
+                // Re-ejecutar el Motor Matemático
+                const renderMath = () => {
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        window.MathJax.typesetPromise([articleContainer]).catch(err => {
+                            console.error('Error estructural matemático:', err.message);
+                        });
+                    } else {
+                        setTimeout(renderMath, 50);
+                    }
+                };
+                renderMath();
+            }
+
+            // Listeners para los Botones Vectoriales
+            document.querySelectorAll('#vector-toggle button').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('#vector-toggle button').forEach(b => b.classList.remove('active-filter'));
+                    e.target.classList.add('active-filter');
+                    
+                    currentLang = e.target.getAttribute('data-lang');
+                    renderPost();
+                });
+            });
         });
     </script> 
 </body> 

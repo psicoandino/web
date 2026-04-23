@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
     <title>Psicoandino | Narrativa</title> 
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Lora:ital,wght@0,400;0,600;1,400&family=Space+Mono&display=swap" rel="stylesheet">
 </head> 
 <body> 
 
@@ -24,8 +24,20 @@
 
     <div class="reading-layout">
         
-        <div id="tag-filters" style="display: flex; gap: 10px; margin-bottom: 40px; flex-wrap: wrap; justify-content: flex-start; border-bottom: 1px solid var(--border-color); padding-bottom: 20px;">
+        <div class="command-bar">
+            <div class="command-row">
+                <input type="text" id="search-input" class="search-input" placeholder=">_ Buscar estructura o concepto..." autocomplete="off">
+                <div class="command-controls">
+                    <button id="sort-btn" class="nav-btn">[ ORDEN: NUEVO ]</button>
+                    <button id="open-matrix-btn" class="nav-btn">[ MATRIZ ]</button>
+                    <button id="reset-btn" class="nav-btn" style="display: none; color: var(--accent-gold); border-color: var(--accent-gold);">[ RESET ]</button>
+                </div>
             </div>
+            
+            <div id="matrix-tray" class="matrix-tray">
+                </div>
+            <div id="results-counter" class="results-counter" style="display: none;"></div>
+        </div>
 
         <div id="feed-list">
             <div style="font-family: monospace; font-size: 10px; color: #888; text-align: center;">[ Inicializando motor de renderizado... ]</div>
@@ -36,77 +48,181 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const feedList = document.getElementById('feed-list');
-            const filterContainer = document.getElementById('tag-filters');
-            let allPosts = [];
+            const searchInput = document.getElementById('search-input');
+            const sortBtn = document.getElementById('sort-btn');
+            const openMatrixBtn = document.getElementById('open-matrix-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const matrixTray = document.getElementById('matrix-tray');
+            const resultsCounter = document.getElementById('results-counter');
 
+            // Memoria de Estado del Sistema
+            let allPosts = [];
+            let activeTags = new Set(); // Ahora usamos un Set para múltiples tags
+            let currentSort = 'new';
+            let currentSearch = '';
+
+            // Extracción de Datos
             fetch('posts.json')
                 .then(response => response.json())
                 .then(posts => {
-                    allPosts = posts.reverse();
+                    allPosts = posts;
                     
-                    // 1. Extraer tags únicos automáticamente
+                    // Extraer Tags y Construir Bandeja
                     const allTags = new Set();
                     allPosts.forEach(post => post.tags.forEach(tag => allTags.add(tag)));
                     
-                    // 2. Construir la UI de Filtros
-                    filterContainer.innerHTML = `<button class="nav-btn active-filter" data-tag="all">[ TODOS ]</button>`;
+                    matrixTray.innerHTML = `<button class="nav-btn active-filter" data-tag="all">[ TODOS ]</button>`;
                     allTags.forEach(tag => {
-                        filterContainer.innerHTML += `<button class="nav-btn" data-tag="${tag}">[ ${tag.toUpperCase()} ]</button>`;
+                        matrixTray.innerHTML += `<button class="nav-btn" data-tag="${tag}">[ ${tag.toUpperCase()} ]</button>`;
                     });
 
-                    // 3. Render Inicial
-                    renderFeed(allPosts);
-
-                    // 4. Lógica de Filtrado al hacer click
-                    filterContainer.addEventListener('click', (e) => {
-                        if(e.target.tagName === 'BUTTON') {
-                            // Actualizar estilos visuales
-                            document.querySelectorAll('#tag-filters button').forEach(btn => btn.classList.remove('active-filter'));
-                            e.target.classList.add('active-filter');
-
-                            // Filtrar matriz
-                            const selectedTag = e.target.getAttribute('data-tag');
-                            const filteredPosts = selectedTag === 'all' 
-                                ? allPosts 
-                                : allPosts.filter(p => p.tags.includes(selectedTag));
-                            
-                            renderFeed(filteredPosts);
-                        }
-                    });
+                    renderFeed();
                 })
                 .catch(error => {
                     feedList.innerHTML = `<div style="color: red; font-family: monospace;">[ Error de Sistema: ${error.message} ]</div>`;
                 });
 
-            // Función de Renderizado
-            function renderFeed(postsToRender) {
+            // ==========================================
+            // LOGICA DEL MOTOR DE SÍNTESIS
+            // ==========================================
+            function renderFeed() {
+                // 1. Filtrar por Búsqueda y Tags Múltiples
+                let processedPosts = allPosts.filter(post => {
+                    const textToSearch = `${post.title_en} ${post.title_es} ${post.content_en} ${post.content_es} ${post.tags.join(' ')}`.toLowerCase();
+                    const matchesSearch = textToSearch.includes(currentSearch.toLowerCase());
+                    
+                    // Lógica de Intersección: Si activeTags está vacío, muestra todo. 
+                    // Si tiene tags, el post debe contener AL MENOS UNO de los tags activos.
+                    const matchesTag = activeTags.size === 0 || post.tags.some(tag => activeTags.has(tag));
+                    
+                    return matchesSearch && matchesTag;
+                });
+
+                // 2. Ordenar
+                processedPosts.sort((a, b) => {
+                    const dateA = new Date(a.date);
+                    const dateB = new Date(b.date);
+                    return currentSort === 'new' ? dateB - dateA : dateA - dateB;
+                });
+
+                // 3. Manejo Visual del Botón Reset y Contador
+                if (activeTags.size > 0 || currentSearch !== '') {
+                    resetBtn.style.display = 'inline-block';
+                    resultsCounter.style.display = 'block';
+                    resultsCounter.innerText = `>_ [ ${processedPosts.length} VECTORES ENCONTRADOS ]`;
+                } else {
+                    resetBtn.style.display = 'none';
+                    resultsCounter.style.display = 'none';
+                }
+
+                // 4. Inyección HTML
                 feedList.innerHTML = ''; 
-                if(postsToRender.length === 0) {
-                    feedList.innerHTML = `<div style="font-family: monospace; font-size: 11px; color: #888;">[ No hay registros en este vector. ]</div>`;
+                if(processedPosts.length === 0) {
+                    feedList.innerHTML = `<div style="font-family: monospace; font-size: 11px; color: #888; text-align: center; margin-top: 40px;">[ Vector no encontrado en la matriz. ]</div>`;
                     return;
                 }
 
-                postsToRender.forEach(post => {
-                    // Cálculo de carga cognitiva (Tiempo de lectura)
-                    const wordCount = post.content.replace(/<[^>]*>?/gm, '').split(/\s+/).length;
+                processedPosts.forEach(post => {
+                    const wordCount = post.content_en.replace(/<[^>]*>?/gm, '').split(/\s+/).length;
                     const readingTime = Math.ceil(wordCount / 200);
-
-                    const tagsHtml = post.tags.map(tag => `<span style="color: var(--text-muted);">[${tag}]</span>`).join(' ');
+                    
+                    // Resaltar tags que coinciden con la búsqueda actual
+                    const tagsHtml = post.tags.map(tag => {
+                        const isMatch = activeTags.has(tag) ? 'color: var(--accent-gold);' : 'color: var(--text-muted);';
+                        return `<span style="${isMatch}">[${tag}]</span>`;
+                    }).join(' ');
+                    
                     const article = document.createElement('article');
                     article.className = 'post-card';
-                    
                     article.innerHTML = `
-                        <h2 class="post-title"><a href="post.html?id=${post.id}">${post.title}</a></h2>
+                        <h2 class="post-title"><a href="post.html?id=${post.id}">${post.title_en}</a></h2>
                         <div class="post-meta">
                             <span>${post.date}</span>
-                            <span>// ${readingTime} MIN LECTURA</span>
+                            <span>// ${readingTime} MIN READ</span>
                             <span>${tagsHtml}</span>
                         </div>
-                        <a href="post.html?id=${post.id}" class="read-btn">Leer Estructura &rarr;</a>
+                        <a href="post.html?id=${post.id}" class="read-btn">Read Structure &rarr;</a>
                     `;
                     feedList.appendChild(article);
                 });
             }
+
+            // ==========================================
+            // LISTENERS DE INTERFAZ MULTI-SELECT
+            // ==========================================
+            
+            searchInput.addEventListener('input', (e) => {
+                currentSearch = e.target.value;
+                renderFeed();
+            });
+
+            sortBtn.addEventListener('click', () => {
+                currentSort = currentSort === 'new' ? 'old' : 'new';
+                sortBtn.innerText = currentSort === 'new' ? '[ ORDEN: NUEVO ]' : '[ ORDEN: ANTIGUO ]';
+                renderFeed();
+            });
+
+            // Toggle Bandeja Expansible
+            openMatrixBtn.addEventListener('click', () => {
+                matrixTray.classList.toggle('active');
+                if (matrixTray.classList.contains('active')) {
+                    openMatrixBtn.style.color = 'var(--text-main)';
+                    openMatrixBtn.style.borderColor = 'var(--text-main)';
+                } else {
+                    openMatrixBtn.style.color = '';
+                    openMatrixBtn.style.borderColor = '';
+                }
+            });
+
+            // Lógica de Multiselección
+            matrixTray.addEventListener('click', (e) => {
+                if(e.target.tagName === 'BUTTON') {
+                    const selectedTag = e.target.getAttribute('data-tag');
+                    const btnTodos = document.querySelector('#matrix-tray button[data-tag="all"]');
+
+                    if (selectedTag === 'all') {
+                        // Resetear selección
+                        activeTags.clear();
+                        document.querySelectorAll('#matrix-tray button').forEach(b => b.classList.remove('active-filter'));
+                        btnTodos.classList.add('active-filter');
+                        openMatrixBtn.innerText = '[ MATRIZ ]';
+                    } else {
+                        // Quitar el estado "TODOS"
+                        btnTodos.classList.remove('active-filter');
+                        
+                        // Toggle del Tag específico
+                        if (activeTags.has(selectedTag)) {
+                            activeTags.delete(selectedTag);
+                            e.target.classList.remove('active-filter');
+                        } else {
+                            activeTags.add(selectedTag);
+                            e.target.classList.add('active-filter');
+                        }
+
+                        // Si se deseleccionan todos manualmente, vuelve a "TODOS"
+                        if (activeTags.size === 0) {
+                            btnTodos.classList.add('active-filter');
+                            openMatrixBtn.innerText = '[ MATRIZ ]';
+                        } else {
+                            openMatrixBtn.innerText = `[ MATRIZ: ${activeTags.size} ]`;
+                        }
+                    }
+                    renderFeed();
+                }
+            });
+
+            // Botón Reset Global
+            resetBtn.addEventListener('click', () => {
+                currentSearch = '';
+                activeTags.clear();
+                searchInput.value = '';
+                
+                openMatrixBtn.innerText = '[ MATRIZ ]';
+                document.querySelectorAll('#matrix-tray button').forEach(btn => btn.classList.remove('active-filter'));
+                document.querySelector('#matrix-tray button[data-tag="all"]').classList.add('active-filter');
+                
+                renderFeed();
+            });
         });
     </script> 
 </body> 
