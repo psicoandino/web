@@ -30,6 +30,168 @@ const SECTIONS = [
   },
 ] as const;
 
+type RadioMode = "ruido-blanco" | "psicoandino" | "nacionales";
+
+const RADIO_SELECTORS: { mode: RadioMode; label: string }[] = [
+  { mode: "ruido-blanco", label: "> RUIDO BLANCO (Frecuencia Base)" },
+  { mode: "psicoandino", label: "> ESTACIÓN PSICOANDINO (Soberana)" },
+  { mode: "nacionales", label: "> EMISORAS NACIONALES (Externa)" },
+];
+
+function getRadioDisplayText(isPowerOn: boolean, activeMode: RadioMode): string {
+  if (!isPowerOn) return "FREQ: 00.0 MHZ | APAGADO";
+
+  switch (activeMode) {
+    case "ruido-blanco":
+      return "FREQ: 00.0 MHZ | RUIDO BLANCO";
+    case "psicoandino":
+      return "FREQ: 99.9 MHZ | PSICOANDINO [FALSO VIVO ACTIVO]";
+    case "nacionales":
+      return "FREQ: 94.1 MHZ | EMISORAS NACIONALES";
+  }
+}
+
+function RadioConsole() {
+  const [isPowerOn, setIsPowerOn] = useState(false);
+  const [activeMode, setActiveMode] = useState<RadioMode>("ruido-blanco");
+
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const gainNodeRef = useRef<GainNode | null>(null);
+  const sourceNodeRef = useRef<AudioBufferSourceNode | null>(null);
+
+  const stopAudio = useCallback(() => {
+    if (sourceNodeRef.current) {
+      try {
+        sourceNodeRef.current.stop();
+      } catch {
+        // Source may already be stopped.
+      }
+      sourceNodeRef.current.disconnect();
+      sourceNodeRef.current = null;
+    }
+
+    if (gainNodeRef.current) {
+      gainNodeRef.current.disconnect();
+      gainNodeRef.current = null;
+    }
+
+    if (audioContextRef.current) {
+      void audioContextRef.current.close();
+      audioContextRef.current = null;
+    }
+  }, []);
+
+  const startWhiteNoise = useCallback(async () => {
+    stopAudio();
+
+    const ctx = new AudioContext();
+    audioContextRef.current = ctx;
+
+    const bufferSize = ctx.sampleRate * 2;
+    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const channelData = buffer.getChannelData(0);
+
+    for (let i = 0; i < bufferSize; i++) {
+      channelData[i] = Math.random() * 2 - 1;
+    }
+
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+    source.loop = true;
+
+    const gain = ctx.createGain();
+    gain.gain.value = 0.02;
+
+    source.connect(gain);
+    gain.connect(ctx.destination);
+
+    if (ctx.state === "suspended") {
+      await ctx.resume();
+    }
+
+    source.start();
+
+    sourceNodeRef.current = source;
+    gainNodeRef.current = gain;
+  }, [stopAudio]);
+
+  useEffect(() => {
+    if (isPowerOn && activeMode === "ruido-blanco") {
+      void startWhiteNoise();
+    } else {
+      stopAudio();
+    }
+  }, [isPowerOn, activeMode, startWhiteNoise, stopAudio]);
+
+  useEffect(() => () => stopAudio(), [stopAudio]);
+
+  const togglePower = () => {
+    if (isPowerOn) {
+      stopAudio();
+      setIsPowerOn(false);
+      return;
+    }
+
+    setActiveMode("ruido-blanco");
+    setIsPowerOn(true);
+  };
+
+  const selectMode = (mode: RadioMode) => {
+    if (!isPowerOn) return;
+    setActiveMode(mode);
+  };
+
+  return (
+    <div className="flex h-full w-full flex-col items-center justify-center gap-8 px-6 py-8">
+      <div className="w-full max-w-sm border border-[#555555] px-4 py-3 text-center">
+        <p className="text-xs tracking-wider text-white sm:text-sm">
+          {getRadioDisplayText(isPowerOn, activeMode)}
+        </p>
+      </div>
+
+      <button
+        type="button"
+        onClick={togglePower}
+        className={`flex h-16 w-16 items-center justify-center rounded-full border-2 text-sm tracking-wider transition-colors duration-300 ${
+          isPowerOn
+            ? "border-white text-white"
+            : "border-[#555555] text-[#555555]"
+        }`}
+        aria-label={isPowerOn ? "Apagar radio" : "Encender radio"}
+        aria-pressed={isPowerOn}
+      >
+        ( O )
+      </button>
+
+      <div className="flex w-full max-w-sm flex-col gap-3">
+        {RADIO_SELECTORS.map(({ mode, label }) => {
+          const isActive = isPowerOn && activeMode === mode;
+
+          return (
+            <button
+              key={mode}
+              type="button"
+              onClick={() => selectMode(mode)}
+              disabled={!isPowerOn}
+              className={`border px-4 py-3 text-left text-xs tracking-wider transition-colors duration-300 sm:text-sm ${
+                !isPowerOn
+                  ? "cursor-not-allowed border-[#1a1a1a] text-[#333333]"
+                  : isActive
+                    ? "border-white text-white"
+                    : "border-[#555555] text-[#555555] hover:border-[#777777] hover:text-[#777777]"
+              }`}
+              aria-pressed={isActive}
+              aria-disabled={!isPowerOn}
+            >
+              {label}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const [activated, setActivated] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -76,6 +238,7 @@ export default function Home() {
 
   return (
     <div className="relative h-dvh w-full overflow-hidden bg-black font-mono">
+      {/* ESTADO CERO — AJUSTADO EL TAMAÑO DE TEXTO A text-xl */}
       <div
         className={`fixed inset-0 z-20 flex flex-col items-center justify-center bg-black transition-opacity duration-700 ease-out ${
           activated
@@ -94,10 +257,10 @@ export default function Home() {
         aria-label="Tocar para ingresar al sistema"
       >
         <div className="flex flex-col items-center gap-3 text-center">
-          <h1 className="text-2xl tracking-[0.35em] text-white sm:text-3xl">
+          <h1 className="text-xl tracking-[0.45em] text-white sm:text-2xl">
             PSICOANDINO
           </h1>
-          <p className="text-sm tracking-widest text-[#555555] sm:text-base">
+          <p className="text-xs tracking-widest text-[#555555] sm:text-sm">
             Dios · Ciencia · Mente
           </p>
         </div>
@@ -117,31 +280,33 @@ export default function Home() {
         aria-hidden={!activated}
       >
         <header className="sticky top-0 z-10 shrink-0 bg-black pt-[env(safe-area-inset-top)]">
+          {/* HEADER PRINCIPAL — AJUSTADO A UN ESTILO DE SUB-CONSOLA COMPACTA */}
           <div
-            className={`px-4 pb-3 pt-4 transition-all duration-700 ease-out ${
+            className={`px-4 pb-2 pt-4 transition-all duration-700 ease-out ${
               activated ? "opacity-100" : "opacity-0"
             }`}
           >
-            <h1 className="text-center text-lg tracking-[0.3em] text-white sm:text-xl">
+            <h1 className="text-center text-xs tracking-[0.4em] text-white uppercase sm:text-sm">
               PSICOANDINO
             </h1>
           </div>
 
-          <nav
-            className={`flex justify-center gap-6 border-b border-[#1a1a1a] px-4 pb-3 transition-all duration-700 delay-150 ease-out ${
-              activated
-                ? "translate-y-0 opacity-100"
-                : "pointer-events-none translate-y-2 opacity-0"
-            }`}
-            aria-label="Navegación principal"
-          >
+          {/* NAVEGACIÓN — ICONOS ESCALADOS A text-2xl / sm:text-3xl PARA MÁXIMA SOBERANÍA VISUAL */}
+<nav
+  className={`grid grid-cols-5 justify-items-center w-full border-b border-[#1a1a1a] px-0 pb-4 transition-all duration-700 delay-150 ease-out ${
+    activated
+      ? "translate-y-0 opacity-100"
+      : "pointer-events-none translate-y-2 opacity-0"
+  }`}
+  aria-label="Navegación principal"
+>
             {SECTIONS.map((section, index) => (
               <button
                 key={section.label}
                 type="button"
                 onClick={() => scrollToSection(index)}
-                className={`text-xl leading-none transition-colors duration-300 ${
-                  activeIndex === index ? "text-white" : "text-[#555555]"
+                className={`text-2xl leading-none transition-all duration-300 sm:text-3xl hover:text-white ${
+                  activeIndex === index ? "text-white scale-110" : "text-[#555555]"
                 }`}
                 aria-label={`${section.label}${activeIndex === index ? " (sección actual)" : ""}`}
                 aria-current={activeIndex === index ? "true" : undefined}
@@ -168,13 +333,13 @@ export default function Home() {
               className="flex h-full w-full shrink-0 snap-center snap-always bg-black"
             >
               {index === 4 ? (
-                <div className="h-full w-full bg-black" />
+                <RadioConsole />
               ) : (
                 <div className="flex h-full flex-col items-center justify-center gap-6 px-6">
-                  <p className="text-center text-sm tracking-[0.25em] text-[#555555] sm:text-base">
+                  <p className="text-center text-xs tracking-[0.25em] text-[#555555] sm:text-sm">
                     {section.title}
                   </p>
-                  <p className="text-xs tracking-widest text-[#555555]">
+                  <p className="text-xs tracking-widest text-[#333333]">
                     [ SISTEMA EN CONSTRUCCIÓN ]
                   </p>
                 </div>
