@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es" style="scroll-snap-type: y mandatory; scroll-behavior: smooth;">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PSICOANDINO · Proyectos</title>
+  <style>
+    :root {
+      --bg: #000000;
+      --surface: #121212;
+      --border: #222222;
+      --border-focus: #555555;
+      --text-primary: #e8e4dc;
+      --text-secondary: #b0ac9f;
+      --text-muted: #555555;
+      --text-dim: #333333;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
+
+    body { 
+      background: var(--bg); 
+      color: var(--text-primary); 
+      font-family: var(--font-mono); 
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath d='M 40 0 L 0 0 0 40' fill='none' stroke='%231a1a1a' stroke-width='0.5'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      z-index: -1000;
+      pointer-events: none;
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .pa-header { 
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      right: 0; 
+      height: 4.5rem; 
+      background: var(--bg); 
+      border-bottom: 0.5px solid var(--border); 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      padding: 0 3rem; 
+      z-index: 1000; 
+    }
+    
+    .pa-logo { 
+      font-size: 13px; 
+      color: var(--text-primary); 
+      letter-spacing: 0.15em; 
+      text-decoration: none; 
+      font-weight: 500; 
+    }
+    
+    .pa-nav-links { 
+      display: flex; 
+      gap: 2.5rem; 
+    }
+    
+    .pa-nav-link { 
+      font-size: 11px; 
+      color: var(--text-muted); 
+      letter-spacing: 0.1em; 
+      text-decoration: none; 
+      transition: color 0.2s ease; 
+    }
+    
+    .pa-nav-link:hover, .pa-nav-link.active-page { 
+      color: var(--text-primary); 
+    }
+
+    .pa-menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+    }
+
+    .pa-wrapper { 
+      display: flex; 
+      margin-top: 4.5rem; 
+      min-height: calc(100vh - 4.5rem); 
+    }
+
+    .pa-sidenav { 
+      position: fixed; 
+      top: 4.5rem; 
+      left: 0; 
+      width: 18rem; 
+      bottom: 0; 
+      border-right: 0.5px solid var(--border); 
+      padding: 4rem 3rem; 
+      display: flex; 
+      flex-direction: column; 
+      gap: 1.25rem; 
+      background: var(--bg); 
+      z-index: 900; 
+      transition: transform 0.3s ease, width 0.3s ease, padding 0.3s ease;
+    }
+    
+    .pa-side-link { 
+      font-size: 11px; 
+      color: var(--text-muted); 
+      letter-spacing: 0.15em; 
+      text-decoration: none; 
+      transition: color 0.2s ease, padding-left 0.2s ease; 
+      display: flex;
+      align-items: center;
+    }
+    
+    .pa-side-link::before {
+      content: "·";
+      margin-right: 0.5rem;
+      color: transparent;
+    }
+    
+    .pa-side-link:hover { 
+      color: var(--text-secondary); 
+    }
+    
+    .pa-side-link.active { 
+      color: var(--text-primary); 
+      padding-left: 0.25rem;
+    }
+    
+    .pa-side-link.active::before {
+      color: var(--text-primary);
+    }
+
+    .pa-sidenav.collapsed {
+      width: 3rem;
+      padding: 4rem 0;
+      align-items: center;
+    }
+
+    .pa-sidenav.collapsed .pa-side-text {
+      display: none;
+    }
+
+    .pa-sidenav.collapsed .pa-side-link {
+      justify-content: center;
+      padding-left: 0;
+      width: 100%;
+    }
+
+    .pa-sidenav.collapsed .pa-side-link::before {
+      margin-right: 0;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .pa-sidenav.collapsed .pa-side-link.active::before {
+      color: var(--text-primary);
+    }
+
+    .pa-toggle-btn {
+      position: absolute;
+      top: 1.5rem;
+      right: -10px;
+      width: 20px;
+      height: 20px;
+      background: var(--bg);
+      border: 0.5px solid var(--border);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1005;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .pa-toggle-btn:hover {
+      border-color: var(--border-focus);
+      color: var(--text-primary);
+    }
+
+    .pa-main { 
+      margin-left: 18rem; 
+      flex: 1; 
+      max-width: 900px; 
+      transition: margin-left 0.3s ease;
+    }
+
+    .pa-main.expanded {
+      margin-left: 3rem;
+    }
+
+    .pa-section { 
+      height: calc(100vh - 4.5rem);
+      padding: 4.5rem 3rem; 
+      border-bottom: 0.5px solid var(--border); 
+      scroll-margin-top: 4.5rem;
+      scroll-snap-align: start;
+      overflow-y: auto;
+    }
+    
+    .pa-section:last-child { 
+      border-bottom: none; 
+    }
+
+    .pa-section-label { font-size: 10px; color: var(--text-dim); letter-spacing: 0.25em; margin-bottom: 2rem; }
+    .pa-project-tag { font-size: 11px; color: var(--text-muted); letter-spacing: 0.15em; margin-bottom: 0.5rem; }
+    .pa-project-title { font-size: 28px; font-weight: 500; color: var(--text-primary); letter-spacing: -0.01em; margin-bottom: 1.5rem; }
+    .pa-project-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.8; max-width: 600px; margin-bottom: 2rem; }
+    
+    .pa-thumbnail { 
+      background: var(--surface); 
+      border: 0.5px solid var(--border); 
+      height: 280px; 
+      max-width: 600px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      color: var(--text-dim); 
+      font-size: 11px; 
+      letter-spacing: 0.15em; 
+      margin-bottom: 2rem; 
+    }
+    
+    .pa-project-tech { font-size: 11px; color: var(--text-muted); letter-spacing: 0.1em; margin-bottom: 2rem; }
+    .pa-project-tech span { color: var(--text-dim); margin-right: 0.5rem; }
+    
+    .pa-testimonial { 
+      border-left: 1px solid var(--border-focus); 
+      padding-left: 1.25rem; 
+      max-width: 600px; 
+      margin-top: 2rem;
+    }
+    .pa-testimonial-text { font-size: 13px; color: var(--text-secondary); line-height: 1.6; font-style: italic; }
+
+    @media (max-width: 768px) {
+      .pa-header { padding: 0 1.5rem; }
+      .pa-menu-toggle { display: block; }
+      .pa-nav-links { display: none; }
+      
+      .pa-sidenav { 
+        transform: translateX(-100%); 
+        width: 100% !important; 
+        top: 4.5rem; 
+        height: calc(100vh - 4.5rem); 
+        border-right: none;
+        padding: 3rem 1.5rem;
+      }
+      .pa-sidenav.open { 
+        transform: translateX(0); 
+      }
+      
+      .pa-toggle-btn { display: none; }
+      .pa-main { margin-left: 0 !important; width: 100%; }
+      .pa-section { padding: 3.5rem 1.5rem; height: calc(100vh - 4.5rem); }
+      .pa-thumbnail { height: 200px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="pa-header">
+    <a href="index.html" class="pa-logo">RA</a>
+    <button class="pa-menu-toggle" aria-label="Toggle Menu">MENU</button>
+    <nav class="pa-nav-links">
+      <a href="index.html" class="pa-nav-link">laboratorio</a>
+      <a href="manifiesto.html" class="pa-nav-link">manifiesto</a>
+      <a href="proyectos.html" class="pa-nav-link active-page">proyectos</a>
+    </nav>
+  </header>
+
+  <div class="pa-wrapper">
+    <aside class="pa-sidenav">
+      <a href="#001" class="pa-side-link"><span class="pa-side-text">001</span></a>
+      <a href="#002" class="pa-side-link"><span class="pa-side-text">002</span></a>
+    </aside>
+
+    <main class="pa-main">
+      
+      <section id="001" class="pa-section" style="padding-top: 6rem;">
+        <p class="pa-section-label fade-in">// REGISTRO ARCHIVÍSTICO</p>
+        <p class="pa-project-tag fade-in">001 · CLIENTE</p>
+        <h2 class="pa-project-title fade-in">SOY AUTOCONOCIMIENTO</h2>
+        <p class="pa-project-desc fade-in">
+          Diseño e implementación de una infraestructura digital soberana para la gestión integral de servicios profesionales y repositorio de conocimiento transpersonal. Interfaz minimalista optimizada para la autonomía total del ecosistema sin dependencias propietarias opacas.
+        </p>
+        <div class="pa-thumbnail fade-in">
+          [ VISUAL_PLACEHOLDER · 001 · RESOLUTION_MATRIX ]
+        </div>
+        <p class="pa-project-tech fade-in"><span>STACK:</span> HTML · CSS · VANILLA JS</p>
+        <div class="pa-testimonial fade-in">
+          <p class="pa-testimonial-text">
+            "La claridad de la arquitectura me devolvió el control absoluto sobre mi consulta y canales de difusión, eliminando intermediarios técnicos innecesarios." — Cliente
+          </p>
+        </div>
+      </section>
+
+      <section id="002" class="pa-section">
+        <p class="pa-section-label fade-in">// REGISTRO ARCHIVÍSTICO</p>
+        <p class="pa-project-tag fade-in">002 · EXPERIMENTO</p>
+        <h2 class="pa-project-title fade-in">ASTROLOGY ARCHIVE</h2>
+        <p class="pa-project-desc fade-in">
+          Motor experimental de renderizado gráfico de datos efemérides y cálculo posicional simbólico. Desarrollado enteramente bajo filosofías puristas de vanilla script sobre pantallas con tecnología OLED de alto contraste y nula sobrecarga de memoria de ejecución.
+        </p>
+        <div class="pa-thumbnail fade-in">
+          [ VISUAL_PLACEHOLDER · 002 · EMISSION_SPECTRUM ]
+        </div>
+        <p class="pa-project-tech fade-in"><span>STACK:</span> HTML · VANILLA JS · SVG MATRIX</p>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.pa-sidenav .pa-side-link');
+      const toggleBtn = document.querySelector('.pa-menu-toggle');
+      const sidenav = document.querySelector('.pa-sidenav');
+      const mainContent = document.querySelector('.pa-main');
+
+      const observerOptions = {
+        root: null,
+        rootMargin: '-20% 0px -60% 0px',
+        threshold: 0
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('id');
+            navLinks.forEach(link => {
+              if (link.getAttribute('href') === `#${id}`) {
+                link.classList.add('active');
+              } else {
+                link.classList.remove('active');
+              }
+            });
+
+            entry.target.querySelectorAll('.fade-in').forEach(el => {
+              el.classList.add('visible');
+            });
+          }
+        });
+      }, observerOptions);
+
+      sections.forEach(section => observer.observe(section));
+
+      const toggleSidenavBtn = document.createElement('button');
+      toggleSidenavBtn.className = 'pa-toggle-btn';
+      toggleSidenavBtn.setAttribute('aria-label', 'Toggle Sidebar');
+      toggleSidenavBtn.textContent = '‹';
+      sidenav.appendChild(toggleSidenavBtn);
+
+      toggleSidenavBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isCollapsed = sidenav.classList.toggle('collapsed');
+        mainContent.classList.toggle('expanded', isCollapsed);
+        toggleSidenavBtn.textContent = isCollapsed ? '›' : '‹';
+      });
+
+      if (toggleBtn && sidenav) {
+        toggleBtn.addEventListener('click', () => {
+          const isOpen = sidenav.classList.toggle('open');
+          toggleBtn.textContent = isOpen ? 'CLOSE' : 'MENU';
+        });
+
+        navLinks.forEach(link => {
+          link.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+              sidenav.classList.remove('open');
+              toggleBtn.textContent = 'MENU';
+            }
+          });
+        });
+      }
+    });
+  </script>
+</body>
+</html>

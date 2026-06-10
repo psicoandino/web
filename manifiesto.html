@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="es" style="scroll-snap-type: y mandatory; scroll-behavior: smooth;">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PSICOANDINO · Manifiesto Fundacional</title>
+  <style>
+    :root {
+      --bg: #000000;
+      --surface: #121212;
+      --border: #222222;
+      --border-focus: #555555;
+      --text-primary: #e8e4dc;
+      --text-secondary: #b0ac9f;
+      --text-muted: #555555;
+      --text-dim: #333333;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
+
+    body { 
+      background: var(--bg); 
+      color: var(--text-primary); 
+      font-family: var(--font-mono); 
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath d='M 40 0 L 0 0 0 40' fill='none' stroke='%231a1a1a' stroke-width='0.5'/%3E%3C/svg%3E");
+        background-repeat: repeat;
+        z-index: -1000;
+        pointer-events: none;
+    }
+
+    .fade-in {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Global Header */
+    .pa-header { 
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      right: 0; 
+      height: 4.5rem; 
+      background: var(--bg); 
+      border-bottom: 0.5px solid var(--border); 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      padding: 0 3rem; 
+      z-index: 1000; 
+    }
+    
+    .pa-logo { 
+      font-size: 13px; 
+      color: var(--text-primary); 
+      letter-spacing: 0.15em; 
+      text-decoration: none; 
+      font-weight: 500; 
+    }
+    
+    .pa-nav-links { 
+      display: flex; 
+      gap: 2.5rem; 
+    }
+    
+    .pa-nav-link { 
+      font-size: 11px; 
+      color: var(--text-muted); 
+      letter-spacing: 0.1em; 
+      text-decoration: none; 
+      transition: color 0.2s ease; 
+    }
+    
+    .pa-nav-link:hover, .pa-nav-link.active-page { 
+      color: var(--text-primary); 
+    }
+
+    .pa-menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+    }
+
+    /* Layout Wrapper */
+    .pa-wrapper { 
+      display: flex; 
+      margin-top: 4.5rem; 
+      min-height: calc(100vh - 4.5rem); 
+    }
+
+    /* Fixed Sidenav */
+    .pa-sidenav { 
+      position: fixed; 
+      top: 4.5rem; 
+      left: 0; 
+      width: 18rem; 
+      bottom: 0; 
+      border-right: 0.5px solid var(--border); 
+      padding: 4rem 3rem; 
+      display: flex; 
+      flex-direction: column; 
+      gap: 1.25rem; 
+      background: var(--bg); 
+      z-index: 900; 
+      transition: transform 0.3s ease, width 0.3s ease, padding 0.3s ease;
+    }
+    
+    .pa-side-link { 
+      font-size: 11px; 
+      color: var(--text-muted); 
+      letter-spacing: 0.15em; 
+      text-decoration: none; 
+      transition: color 0.2s ease, padding-left 0.2s ease; 
+      display: flex;
+      align-items: center;
+    }
+    
+    .pa-side-link::before {
+      content: "·";
+      margin-right: 0.5rem;
+      color: transparent;
+    }
+    
+    .pa-side-link:hover { 
+      color: var(--text-secondary); 
+    }
+    
+    .pa-side-link.active { 
+      color: var(--text-primary); 
+      padding-left: 0.25rem;
+    }
+    
+    .pa-side-link.active::before {
+      color: var(--text-primary);
+    }
+
+    /* Collapsible Sidenav States */
+    .pa-sidenav.collapsed {
+      width: 3rem;
+      padding: 4rem 0;
+      align-items: center;
+    }
+
+    .pa-sidenav.collapsed .pa-side-text {
+      display: none;
+    }
+
+    .pa-sidenav.collapsed .pa-side-link {
+      justify-content: center;
+      padding-left: 0;
+      width: 100%;
+    }
+
+    .pa-sidenav.collapsed .pa-side-link::before {
+      margin-right: 0;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .pa-sidenav.collapsed .pa-side-link.active::before {
+      color: var(--text-primary);
+    }
+
+    /* Sidenav Collapse Toggle Button */
+    .pa-toggle-btn {
+      position: absolute;
+      top: 1.5rem;
+      right: -10px;
+      width: 20px;
+      height: 20px;
+      background: var(--bg);
+      border: 0.5px solid var(--border);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1005;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .pa-toggle-btn:hover {
+      border-color: var(--border-focus);
+      color: var(--text-primary);
+    }
+
+    /* Main Content Region */
+    .pa-main { 
+      margin-left: 18rem; 
+      flex: 1; 
+      max-width: 900px; 
+      transition: margin-left 0.3s ease;
+    }
+
+    .pa-main.expanded {
+      margin-left: 3rem;
+    }
+
+    .pa-section { 
+      padding: 4.5rem 3rem; 
+      border-bottom: 0.5px solid var(--border); 
+      scroll-margin-top: 4.5rem;
+      height: calc(100vh - 4.5rem);
+      scroll-snap-align: start;
+      overflow-y: auto;   
+    }
+    
+    .pa-section:last-child { 
+      border-bottom: none; 
+    }
+
+    /* Section Specific Styles */
+    .pa-section-label { font-size: 10px; color: var(--text-dim); letter-spacing: 0.25em; margin-bottom: 2rem; }
+    .pa-manifesto-title { font-size: 24px; font-weight: 500; color: var(--text-primary); margin-bottom: 1.5rem; letter-spacing: -0.01em; }
+    .pa-manifesto-text { font-size: 14px; color: var(--text-secondary); line-height: 1.8; max-width: 600px; }
+    .pa-manifesto-text span { color: var(--text-primary); }
+
+    /* Responsive Queries */
+    @media (max-width: 768px) {
+      .pa-header { padding: 0 1.5rem; }
+      .pa-menu-toggle { display: block; }
+      .pa-nav-links { display: none; }
+      
+      .pa-sidenav { 
+        transform: translateX(-100%); 
+        width: 100% !important; 
+        top: 4.5rem; 
+        height: calc(100vh - 4.5rem); 
+        border-right: none;
+        padding: 3rem 1.5rem;
+      }
+      .pa-sidenav.open { 
+        transform: translateX(0); 
+      }
+      
+      .pa-toggle-btn { display: none; }
+      .pa-main { margin-left: 0 !important; width: 100%; }
+      .pa-section { padding: 3.5rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="pa-header">
+    <a href="index.html" class="pa-logo">RA</a>
+    <button class="pa-menu-toggle" aria-label="Toggle Menu">MENU</button>
+    <nav class="pa-nav-links">
+      <a href="index.html" class="pa-nav-link">laboratorio</a>
+      <a href="manifiesto.html" class="pa-nav-link active-page">manifiesto</a>
+      <a href="proyectos.html" class="pa-nav-link">proyectos</a>
+    </nav>
+  </header>
+
+  <div class="pa-wrapper">
+    <aside class="pa-sidenav">
+      <a href="#mision" class="pa-side-link"><span class="pa-side-text">misión</span></a>
+      <a href="#vision" class="pa-side-link"><span class="pa-side-text">visión</span></a>
+      <a href="#valores" class="pa-side-link"><span class="pa-side-text">valores</span></a>
+      <a href="#quienes-somos" class="pa-side-link"><span class="pa-side-text">quiénes somos</span></a>
+    </aside>
+
+    <main class="pa-main">
+      
+      <section id="mision" class="pa-section" style="padding-top: 6rem;">
+        <p class="pa-section-label fade-in">// IDENTIDAD · 01</p>
+        <h2 class="pa-manifesto-title fade-in">MISIÓN</h2>
+        <p class="pa-manifesto-text fade-in">
+          <span>Propiciar la soberanía digital</span> mediante el diseño e implementación de sistemas limpios, lógicos y autónomos. Reivindicar el desarrollo web como un acto de artesanía precisa, devolviendo el control absoluto de la infraestructura y el conocimiento al usuario.
+        </p>
+      </section>
+
+      <section id="vision" class="pa-section">
+        <p class="pa-section-label fade-in">// IDENTIDAD · 02</p>
+        <h2 class="pa-manifesto-title fade-in">VISIÓN</h2>
+        <p class="pa-manifesto-text fade-in">
+          Un ecosistema digital donde la complejidad innecesaria sea sustituida por <span>estructuras transparentes</span>. Un retorno a la web independiente, donde cada entidad posea arquitecturas sólidas sin depender de abstracciones monolíticas o intermediarios redundantes.
+        </p>
+      </section>
+
+      <section id="valores" class="pa-section">
+        <p class="pa-section-label fade-in">// IDENTIDAD · 03</p>
+        <h2 class="pa-manifesto-title fade-in">VALORES</h2>
+        <p class="pa-manifesto-text fade-in">
+          · <span>Soberanía</span>: El código, los datos y la infraestructura pertenecen íntegramente a quien los origina.<br>
+          · <span>Esencialismo</span>: Enfoque riguroso en la utilidad funcional; rechazo al adorno técnico innecesario.<br>
+          · <span>Transparencia</span>: Estructuras legibles y metodologías claras que educan durante el proceso.
+        </p>
+      </section>
+
+      <section id="quienes-somos" class="pa-section">
+        <p class="pa-section-label fade-in">// IDENTIDAD · 04</p>
+        <h2 class="pa-manifesto-title fade-in">QUIÉNES SOMOS</h2>
+        <p class="pa-manifesto-text fade-in">
+          PSICOANDINO ó un espacio de convergencia entre <span>Dios, Ciencia y Mente</span>. No operamos como una factoría masiva de software, sino como un taller de arquitectura digital conceptual enfocado en resolver problemas profundos a través de herramientas perennes.
+        </p>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.pa-sidenav .pa-side-link');
+      const toggleBtn = document.querySelector('.pa-menu-toggle');
+      const sidenav = document.querySelector('.pa-sidenav');
+      const mainContent = document.querySelector('.pa-main');
+
+      // ScrollSpy Logic via IntersectionObserver
+      const observerOptions = {
+        root: null,
+        rootMargin: '-20% 0px -60% 0px',
+        threshold: 0
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('id');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === `#${id}`) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+                });
+
+                entry.target.querySelectorAll('.fade-in').forEach(el => {
+                el.classList.add('visible');
+                });
+          }
+        });
+      }, observerOptions);
+
+      sections.forEach(section => observer.observe(section));
+
+      // Sidenav Dynamic Collapse Button Setup
+      const toggleSidenavBtn = document.createElement('button');
+      toggleSidenavBtn.className = 'pa-toggle-btn';
+      toggleSidenavBtn.setAttribute('aria-label', 'Toggle Sidebar');
+      toggleSidenavBtn.textContent = '‹';
+      sidenav.appendChild(toggleSidenavBtn);
+
+      toggleSidenavBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isCollapsed = sidenav.classList.toggle('collapsed');
+        mainContent.classList.toggle('expanded', isCollapsed);
+        toggleSidenavBtn.textContent = isCollapsed ? '›' : '‹';
+      });
+
+      // Mobile Menu Interaction
+      if (toggleBtn && sidenav) {
+        toggleBtn.addEventListener('click', () => {
+          const isOpen = sidenav.classList.toggle('open');
+          toggleBtn.textContent = isOpen ? 'CLOSE' : 'MENU';
+        });
+
+        navLinks.forEach(link => {
+          link.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+              sidenav.classList.remove('open');
+              toggleBtn.textContent = 'MENU';
+            }
+          });
+        });
+      }
+    });
+  </script>
+</body>
+</html>
