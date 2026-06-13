@@ -1,0 +1,1216 @@
+/* ============================================================
+   PSICOANDINO · GLOBAL STYLES
+   ============================================================ */
+
+
+/* === VARIABLES === */
+
+:root {
+  --bg: #000000;
+  --surface: #121212;
+  --border: #222222;
+  --border-focus: #555555;
+  --text-primary: #e8e4dc;
+  --text-secondary: #b0ac9f;
+  --text-muted: #555555;
+  --text-dim: #333333;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+
+/* === RESET === */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* === BASE === */
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath d='M 40 0 L 0 0 0 40' fill='none' stroke='%231a1a1a' stroke-width='0.5'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  z-index: -1000;
+  pointer-events: none;
+}
+
+
+/* === ANIMATIONS === */
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* === HEADER === */
+
+.pa-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 4.5rem;
+  background: var(--bg);
+  border-bottom: 0.5px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 3rem;
+  z-index: 1000;
+}
+
+.pa-logo {
+  font-size: 13px;
+  color: var(--text-primary);
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.pa-nav-links {
+  display: flex;
+  gap: 2.5rem;
+}
+
+.pa-nav-link {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.pa-nav-link:hover,
+.pa-nav-link.active-page {
+  color: var(--text-primary);
+}
+
+.pa-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+}
+
+.pa-header-right {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.pa-lang-btn {
+  background: none;
+  border: 0.5px solid var(--border);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  padding: 0.3rem 0.65rem;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.pa-lang-btn:hover {
+  color: var(--text-primary);
+  border-color: var(--border-focus);
+}
+
+
+/* === LAYOUT === */
+
+.pa-wrapper {
+  display: flex;
+  margin-top: 4.5rem;
+  min-height: calc(100vh - 4.5rem);
+}
+
+
+/* ============================================================
+   PSICOANDINO · UTILITY DOCK (SIDENAV)
+   ============================================================ */
+
+.pa-sidenav {
+  position: fixed;
+  top: 4.5rem; 
+  left: 0;
+  bottom: 0;
+  
+  /* 1. Default-Closed State Layout Matrix */
+  width: 3.75rem; /* Compact footprint for structural icons */
+  padding: 4rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  background: var(--bg);
+  border-right: 0.5px solid var(--border);
+  z-index: 900;
+  overflow: visible;
+  
+  /* Smooth transform transition across the hardware canvas */
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease;
+}
+
+/* 2. Expanded State Activated via the RA Core Trigger */
+.pa-sidenav.expanded {
+  width: 18rem; /* Reverts cleanly back to your original structural width */
+  padding: 4rem 2rem;
+  align-items: flex-start;
+}
+
+/* 3. Link Content Architecture */
+.pa-side-link {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.5rem 1.25rem; /* Keeps items perfectly centered when collapsed */
+  transition: color 0.2s ease;
+}
+
+.pa-side-link:hover,
+.pa-side-link.active {
+  color: var(--text-primary);
+}
+
+/* 4. Inline SVG Vector Scaling rules */
+.pa-side-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--text-muted);
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.pa-side-link:hover .pa-side-icon,
+.pa-side-link.active .pa-side-icon {
+  color: var(--text-primary);
+  transform: scale(1.08); /* Subtle vector expansion pulse */
+}
+
+/* 5. Typography Matrix Reveal System */
+.pa-side-text {
+  margin-left: 1.25rem;
+  text-transform: uppercase;
+  white-space: nowrap;
+  
+  /* Start hidden and compressed inside the dock shadow */
+  opacity: 0;
+  transform: translateX(-10px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* Reveal gracefully once layout expansion triggers */
+.pa-sidenav.expanded .pa-side-text {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+
+/* ============================================================
+   MAIN CANVAS ADAPTATION
+   ============================================================ */
+
+/* Adjust your main layout workspace to sit flush with the default closed dock */
+.pa-main {
+  margin-left: 3.75rem;
+  width: calc(100% - 3.75rem);
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Shifts the entire document frame smoothly when sidebar expands */
+.pa-sidenav.expanded ~ .pa-main {
+  margin-left: 18rem;
+  width: calc(100% - 18rem);
+}
+
+/* === MAIN CONTENT === */
+
+.pa-main {
+  margin-left: 18rem;
+  flex: 1;
+  max-width: 900px;
+  transition: margin-left 0.3s ease;
+}
+
+.pa-main.expanded {
+  margin-left: 3rem;
+}
+
+
+/* === SECTIONS === */
+
+.pa-section {
+  height: calc(100vh - 4.5rem);
+  padding: 4.5rem 3rem;
+  border-bottom: 0.5px solid var(--border);
+  scroll-margin-top: 4.5rem;
+  scroll-snap-align: start;
+  overflow-y: auto;
+}
+
+.pa-section:last-child {
+  border-bottom: none;
+}
+
+.pa-section-label {
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.25em;
+  margin-bottom: 2rem;
+}
+
+
+/* === INDEX · HERO === */
+
+.pa-coord {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.2em;
+  margin-bottom: 2.5rem;
+}
+
+.pa-title {
+  font-size: 38px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin: 0 0 0.4rem;
+  letter-spacing: -0.02em;
+}
+
+.pa-title em {
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+.pa-sub {
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 0.15em;
+  margin-top: 0.5rem;
+}
+
+.pa-truth {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 2;
+  max-width: 550px;
+}
+
+.pa-truth span {
+  color: var(--text-primary);
+}
+
+
+/* === INDEX · PROCESS === */
+
+.pa-element {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.75rem;
+}
+
+.pa-element:last-child {
+  margin-bottom: 0;
+}
+
+.pa-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.pa-el-name {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  width: 140px;
+}
+
+.pa-el-action {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.pa-el-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+
+
+/* === INDEX · CONTACT BASE === */
+
+.pa-contact-q {
+  font-size: 18px;
+  color: var(--text-primary);
+  margin-bottom: 1.75rem;
+  font-weight: 400;
+}
+
+.pa-input {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  padding: 1rem;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-family: var(--font-mono);
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 0.75rem;
+  transition: border-color 0.2s ease;
+  resize: vertical;
+}
+
+.pa-input:focus {
+  outline: none;
+  border-color: var(--border-focus);
+}
+
+.pa-btn {
+  background: transparent;
+  border: 0.5px solid var(--border-focus);
+  padding: 0.75rem 1.75rem;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.pa-btn:hover {
+  border-color: #888888;
+  color: var(--text-primary);
+}
+
+.pa-btn-submit {
+  width: 100%;
+  background: #222222;
+  border: none;
+  color: #555555;
+  padding: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  cursor: not-allowed;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.pa-btn-submit:not(:disabled) {
+  background: #25D366;
+  color: #000000;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pa-alternative-contact {
+  margin-top: 2.5rem;
+  border-top: 0.5px dashed var(--border);
+  padding-top: 2rem;
+}
+
+.pa-alternative-text {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-bottom: 1rem;
+  letter-spacing: 0.05em;
+}
+
+
+/* === INDEX · CONTACT FORM COMPONENT === */
+
+.pa-contact-intro {
+  max-width: 550px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.pa-contact-intro.hidden {
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  position: absolute;
+}
+
+.pa-contact-form-wrapper {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  display: none;
+}
+
+.pa-contact-form-wrapper.visible {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.pa-ms-progress {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.pa-ms-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--text-dim);
+  transition: background-color 0.3s, opacity 0.3s;
+  opacity: 0.4;
+}
+
+.pa-ms-dot.completed {
+  background: var(--text-secondary);
+  opacity: 0.6;
+}
+
+.pa-ms-dot.active {
+  background: var(--text-primary);
+  opacity: 1;
+}
+
+.pa-ms-viewport {
+  overflow: hidden;
+  width: 100%;
+  max-width: 550px;
+  height: 320px;
+  position: relative;
+}
+
+.pa-ms-track {
+  display: flex;
+  width: 400%;
+  height: 100%;
+  transition: transform 0.4s ease;
+}
+
+.pa-ms-step {
+  width: 25%;
+  height: 100%;
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-sizing: border-box;
+  padding-right: 1.5rem;
+}
+
+.pa-ms-title {
+  font-size: 18px;
+  color: var(--text-primary);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.5rem;
+}
+
+.pa-ms-options-row {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+.pa-ms-btn-toggle {
+  flex: 1;
+  background: transparent;
+  border: 0.5px solid var(--border);
+  color: var(--text-muted);
+  padding: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, opacity 0.2s;
+}
+
+.pa-ms-btn-toggle:hover {
+  border-color: var(--border-focus);
+  color: var(--text-secondary);
+}
+
+.pa-ms-btn-toggle.selected {
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+}
+
+.pa-ms-btn-toggle.dimmed {
+  opacity: 0.25;
+}
+
+.pa-ms-counter {
+  font-size: 11px;
+  color: var(--text-dim);
+  text-align: right;
+  margin-top: 0.4rem;
+}
+
+.pa-ms-counter.valid {
+  color: var(--text-muted);
+}
+
+.pa-ms-summary {
+  border: 0.5px solid var(--border);
+  padding: 1rem;
+  background: var(--surface);
+  font-size: 13px;
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  line-height: 1.6;
+}
+
+.pa-ms-summary-line span {
+  color: var(--text-muted);
+}
+
+.pa-ms-note {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 0.25rem;
+}
+
+.pa-ms-nav-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  bottom: 0; left: 0;
+  right: 1.5rem;
+  width: calc(100% - 1.5rem);
+}
+
+.pa-ms-back-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.pa-ms-back-btn:hover {
+  color: var(--text-secondary);
+}
+
+.pa-ms-next-btn {
+  background: transparent;
+  border: 0.5px solid var(--border);
+  color: var(--text-dim);
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  cursor: not-allowed;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.pa-ms-next-btn:not(:disabled) {
+  border-color: var(--border-focus);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.pa-ms-next-btn:not(:disabled):hover {
+  border-color: var(--text-primary);
+}
+
+.pa-permanent-submits {
+  display: none;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  width: 100%;
+  max-width: 550px;
+}
+
+.pa-permanent-btn {
+  width: 100%;
+  background: #222222;
+  border: none;
+  color: #555555;
+  padding: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  cursor: not-allowed;
+  text-align: center;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.pa-permanent-btn.active-whatsapp {
+  background: #25D366;
+  color: #000000;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pa-permanent-btn.active-correo {
+  background: #4A90D9;
+  color: #000000;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+
+/* === PROYECTOS === */
+
+.pa-project-tag {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.15em;
+  margin-bottom: 0.5rem;
+}
+
+.pa-project-title {
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+  margin-bottom: 1.5rem;
+}
+
+.pa-project-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 600px;
+  margin-bottom: 2rem;
+}
+
+.pa-thumbnail {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  height: 280px;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dim);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  margin-bottom: 2rem;
+}
+
+.pa-project-tech {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  margin-bottom: 2rem;
+}
+
+.pa-project-tech span {
+  color: var(--text-dim);
+  margin-right: 0.5rem;
+}
+
+.pa-testimonial {
+  border-left: 1px solid var(--border-focus);
+  padding-left: 1.25rem;
+  max-width: 600px;
+  margin-top: 2rem;
+}
+
+.pa-testimonial-text {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+
+/* === MANIFIESTO === */
+
+.pa-manifesto-title {
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.01em;
+}
+
+.pa-manifesto-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 600px;
+}
+
+.pa-manifesto-text span {
+  color: var(--text-primary);
+}
+
+
+/* === LANGUAGE TOGGLE === */
+
+.pa-lang-toggle {
+  background: none;
+  border: 0.5px solid var(--border);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.pa-lang-toggle:hover {
+  color: var(--text-primary);
+  border-color: var(--border-focus);
+}
+
+
+/* === RESPONSIVE === */
+
+@media (max-width: 768px) {
+  .pa-header {
+    padding: 0 1.5rem;
+  }
+
+  .pa-menu-toggle {
+    display: block;
+  }
+
+  .pa-nav-links {
+    display: none;
+  }
+
+  .pa-lang-btn {
+    font-size: 10px;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .pa-sidenav {
+    transform: translateX(-100%);
+    width: 100% !important;
+    top: 4.5rem;
+    height: calc(100vh - 4.5rem);
+    border-right: none;
+    padding: 3rem 1.5rem;
+  }
+
+  .pa-sidenav.open {
+    transform: translateX(0);
+  }
+
+  .pa-toggle-btn {
+    display: none;
+  }
+
+  .pa-main {
+    margin-left: 0 !important;
+    width: 100%;
+  }
+
+  .pa-section {
+    padding: 3.5rem 1.5rem;
+    height: calc(100vh - 4.5rem);
+  }
+
+  .pa-thumbnail {
+    height: 200px;
+  }
+}
+
+/* === PATCH 001 === */
+/* Posicionamos el botón de idioma al fondo sin alterar el flujo de los enlaces */
+.pa-sidenav .pa-lang-toggle {
+  position: absolute;
+  bottom: 2.5rem;     /* Distancia exacta desde el borde inferior de la barra */
+  left: 2rem;         /* Alínealo visualmente con el inicio de tus textos de navegación */
+  width: fit-content;
+}
+
+/* === PATCH 002 === */
+/* === SCROLL INDICATOR (PSICOANDINO SPEC) === */
+/* REMOVED */
+
+/* --- PATCH 003 --- */
+/* --- DIAGNOSTIC SIGNAL METER --- */
+.pa-signal-container {
+  margin-top: 0.75rem;
+  width: 100%;
+}
+
+.pa-signal-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+  text-transform: uppercase;
+}
+
+.pa-signal-track {
+  width: 100%;
+  height: 2px;
+  background: var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.pa-signal-bar {
+  width: 0%;
+  height: 100%;
+  background: var(--text-muted);
+  transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
+}
+
+/* State changes when the constraint is satisfied */
+.pa-signal-bar.calibrated {
+  background: var(--text-primary);
+  box-shadow: 0 0 4px var(--text-primary); /* Subtle terminal glow */
+}
+
+/* --- PATCH 004 --- */
+@media (max-width: 768px) {
+  /* --- RECONFIGURED MOBILE GLOBAL MENU --- */
+  
+  /* Ensure the desktop sidebar doesn't conflict with mobile viewports */
+  .pa-sidenav {
+    display: none !important; 
+  }
+
+  /* Style the global header links into a mobile drawer overlay */
+  .pa-nav-links {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 3rem;
+    gap: 2rem;
+    
+    /* Absolute Positioning over the canvas */
+    position: fixed;
+    top: 4.5rem; /* Exactly below your header height */
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - 4.5rem);
+    background: var(--bg); /* Pure OLED Black background */
+    border-top: 1px solid var(--border);
+    
+    /* Animation: Hidden off-screen right by default */
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 999;
+  }
+
+  /* When JavaScript injects the .open class */
+  .pa-nav-links.open {
+    transform: translateX(0);
+  }
+
+  /* Upscale text for mobile touch targets */
+  .pa-nav-link {
+    font-size: 1.5rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    width: 100%;
+  }
+}
+
+/* --- PATCH 005 --- */
+/* ============================================================
+   GEMINI-STYLE CONTEXTUAL TOOLTIPS (PURA MATRIZ CSS)
+   ============================================================ */
+
+/* Declaramos un contexto de posicionamiento relativo para los enlaces únicamente cuando el panel esté cerrado */
+.pa-sidenav:not(.expanded) .pa-side-link {
+  position: relative;
+}
+
+/* Construcción del contenedor flotante mediante pseudo-elementos */
+.pa-sidenav:not(.expanded) .pa-side-link::after {
+  content: attr(data-tooltip); /* Extrae dinámicamente el texto del atributo HTML */
+  position: absolute;
+  left: 4.25rem; /* Se posiciona flotando justo a la derecha del dock de 3.75rem */
+  background: #111111; /* Fondo OLED secundario de alta densidad */
+  color: var(--text-primary);
+  border: 0.5px solid var(--border-focus); /* Borde sutil que combina con la estética de tu laboratorio */
+  font-size: 9px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.65rem;
+  white-space: nowrap;
+  pointer-events: none; /* Evita interferencias con el puntero del mouse */
+  
+  /* Estado inicial: Invisible y desplazado levemente hacia la izquierda */
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1010;
+}
+
+/* Disparador de estado: Revelar al posicionar el mouse encima (Hover) */
+.pa-sidenav:not(.expanded) .pa-side-link:hover::after {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Medida de seguridad: Si el panel se expande, aseguramos que el texto en línea se oculte de forma limpia */
+.pa-sidenav:not(.expanded) .pa-side-text {
+  visibility: hidden;
+  transition: visibility 0s 0.2s; /* Sincronizado para que no cause saltos visuales en la transición */
+}
+
+.pa-sidenav.expanded .pa-side-text {
+  visibility: visible;
+}
+
+/*-- PATCH 006 --- */
+/* ============================================================
+   === COMPACT BY DEFAULT & LOGO MATRIX ===
+   Sincronización Absoluta con el Comportamiento Nativo de tu main.js
+   ============================================================ */
+
+@media (min-width: 769px) {
+
+  /* 1. ESTADO BASE (Compacto por defecto estilo Gemini) */
+  .pa-sidenav {
+    width: 3.75rem !important; /* El dock utilitario mínimo */
+    padding: 4rem 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    overflow: visible !important;   /* Crucial para la salida del tooltip */
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease !important;
+  }
+
+  /* Limpieza de remanentes decorativos previos */
+  .pa-side-link::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  /* Enlaces en modo compacto */
+  .pa-side-link {
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    padding: 0.6rem 1.125rem !important;
+    gap: 0 !important;
+    position: relative !important;
+    transition: color 0.2s ease !important;
+    min-height: 2.5rem !important;
+  }
+
+  .pa-side-icon {
+    flex-shrink: 0 !important;
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  /* Ocultación del flujo tipográfico en modo compacto */
+  .pa-side-text {
+    position: absolute !important;
+    text-transform: uppercase;
+    white-space: nowrap;
+    opacity: 0 !important;
+    transform: translateX(-10px) !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+    transition: opacity 0.2s ease, transform 0.2s ease !important;
+  }
+
+  /* Selector de idiomas centrado en el eje de 3.75rem */
+  .pa-sidenav .pa-lang-toggle {
+    position: absolute !important;
+    bottom: 2.5rem !important;
+    left: 0 !important;
+    width: 3.75rem !important;
+    display: flex !important;
+    justify-content: center !important;
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+
+  /* 2. ESTADO EXPANDIDO (Activado únicamente mediante la clase del script) */
+  .pa-sidenav.expanded {
+    width: 18rem !important;
+    padding: 4rem 0rem !important;
+    align-items: flex-start !important;
+  }
+
+  /* Ajuste de enlaces expandidos */
+  .pa-sidenav.expanded .pa-side-link {
+    justify-content: flex-start !important;
+    padding: 0.5rem 1.125rem !important;
+    gap: 1rem !important; /* Espaciado orgánico Icono -> Texto */
+  }
+
+  /* Retorno del flujo tipográfico */
+  .pa-sidenav.expanded .pa-side-text {
+    position: static !important;
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+    visibility: visible !important;
+  }
+
+
+  /* 3. ARQUITECTURA DEL CANVAS PRINCIPAL (Alineación por adyacencia) */
+  /* Por defecto, el contenido deja libre el espacio compacto */
+  .pa-main {
+    margin-left: 3.75rem !important;
+    width: calc(100% - 3.75rem) !important;
+    transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  /* Cuando la barra hermana se expande, el lienzo se desplaza en perfecta armonía */
+  .pa-sidenav.expanded + .pa-main {
+    margin-left: 18rem !important;
+    width: calc(100% - 18rem) !important;
+  }
+
+
+  /* 4. MOTOR DE TOOLTIPS CONTEXTUALES (Operativo solo en modo compacto) */
+  .pa-logo,
+  .pa-sidenav:not(.expanded) .pa-side-link {
+    position: relative !important;
+  }
+
+  .pa-logo::after,
+  .pa-sidenav:not(.expanded) .pa-side-link::after {
+    content: attr(data-tooltip) !important;
+    position: absolute !important;
+    left: 4.25rem !important;
+    top: 50% !important;
+    background: #111111 !important;
+    color: var(--text-primary) !important;
+    border: 0.5px solid var(--border-focus) !important;
+    font-size: 9px !important;
+    font-family: var(--font-mono) !important;
+    letter-spacing: 0.12em !important;
+    text-transform: uppercase !important;
+    padding: 0.4rem 0.65rem !important;
+    white-space: nowrap !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+    transform: translateY(-50%) translateX(-6px) !important;
+    transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    z-index: 1010 !important;
+    text-shadow: none !important;
+  }
+
+  .pa-logo:hover::after,
+  .pa-sidenav:not(.expanded) .pa-side-link:hover::after {
+    opacity: 1 !important;
+    transform: translateY(-50%) translateX(0) !important;
+  }
+}
+
+/* --- PATCH 007 --- */
+@media (min-width: 769px) {
+  .pa-header {
+    padding-left: 0 !important;
+  }
+
+  .pa-logo {
+    width: fit-content !important;
+    height: fit-content !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 0 1.125rem !important;
+    color: var(--text-primary) !important;
+    transition: text-shadow 0.3s ease !important;
+  }
+
+  body:has(.pa-sidenav.expanded) .pa-logo {
+    text-shadow: 0 0 8px rgba(232, 228, 220, 1), 0 0 20px rgba(232, 228, 220, 0.5) !important;
+  }
+}
+
+/* --- PATCH 008 --- */
+.pa-collapse-btn {
+  display: none;
+  background: none;
+  border: 0.5px solid var(--border);
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.4rem;
+  position: absolute;
+  top: 1.5rem;
+  right: 1rem;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.pa-collapse-btn:hover {
+  color: var(--text-primary);
+  border-color: var(--border-focus);
+}
+
+.pa-sidenav.expanded .pa-collapse-btn {
+  display: flex;
+}
+
+/* --- PATCH 009 --- */
+/* === MOBILE DOT NAV === */
+@media (max-width: 768px) {
+  .pa-dot-nav {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 0;
+    background: rgba(255,255,255,0.03);
+    border-right: 0.5px solid var(--border);
+    z-index: 800;
+  }
+  .pa-dot-nav-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--text-dim);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+  }
+  .pa-dot-nav-dot.active {
+    background: var(--text-primary);
+    box-shadow: 0 0 6px var(--text-primary);
+  }
+}

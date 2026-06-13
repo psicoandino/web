@@ -4,339 +4,57 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PSICOANDINO · Laboratorio Digital</title>
-  <style>
-    :root {
-      --bg: #000000;
-      --surface: #121212;
-      --border: #222222;
-      --border-focus: #555555;
-      --text-primary: #e8e4dc;
-      --text-secondary: #b0ac9f;
-      --text-muted: #555555;
-      --text-dim: #333333;
-      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    }
-
-    * { 
-      box-sizing: border-box; 
-      margin: 0; 
-      padding: 0; 
-    }
-
-    body { 
-      background: var(--bg); 
-      color: var(--text-primary); 
-      font-family: var(--font-mono); 
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath d='M 40 0 L 0 0 0 40' fill='none' stroke='%231a1a1a' stroke-width='0.5'/%3E%3C/svg%3E");
-      background-repeat: repeat;
-      z-index: -1000;
-      pointer-events: none;
-    }
-
-    .fade-in {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-
-    .fade-in.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .pa-header { 
-      position: fixed; 
-      top: 0; 
-      left: 0; 
-      right: 0; 
-      height: 4.5rem; 
-      background: var(--bg); 
-      border-bottom: 0.5px solid var(--border); 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
-      padding: 0 3rem; 
-      z-index: 1000; 
-    }
-    
-    .pa-logo { 
-      font-size: 13px; 
-      color: var(--text-primary); 
-      letter-spacing: 0.15em; 
-      text-decoration: none; 
-      font-weight: 500; 
-    }
-    
-    .pa-nav-links { 
-      display: flex; 
-      gap: 2.5rem; 
-    }
-    
-    .pa-nav-link { 
-      font-size: 11px; 
-      color: var(--text-muted); 
-      letter-spacing: 0.1em; 
-      text-decoration: none; 
-      transition: color 0.2s ease; 
-    }
-    
-    .pa-nav-link:hover, .pa-nav-link.active-page { 
-      color: var(--text-primary); 
-    }
-
-    .pa-menu-toggle {
-      display: none;
-      background: none;
-      border: none;
-      color: var(--text-primary);
-      font-family: var(--font-mono);
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      cursor: pointer;
-    }
-
-    .pa-wrapper { 
-      display: flex; 
-      margin-top: 4.5rem; 
-      min-height: calc(100vh - 4.5rem); 
-    }
-
-    .pa-sidenav { 
-      position: fixed; 
-      top: 4.5rem; 
-      left: 0; 
-      width: 18rem; 
-      bottom: 0; 
-      border-right: 0.5px solid var(--border); 
-      padding: 4rem 3rem; 
-      display: flex; 
-      flex-direction: column; 
-      gap: 1.25rem; 
-      background: var(--bg); 
-      z-index: 900; 
-      transition: transform 0.3s ease, width 0.3s ease, padding 0.3s ease;
-    }
-    
-    .pa-side-link { 
-      font-size: 11px; 
-      color: var(--text-muted); 
-      letter-spacing: 0.15em; 
-      text-decoration: none; 
-      transition: color 0.2s ease, padding-left 0.2s ease; 
-      display: flex;
-      align-items: center;
-    }
-    
-    .pa-side-link::before {
-      content: "·";
-      margin-right: 0.5rem;
-      color: transparent;
-    }
-    
-    .pa-side-link:hover { 
-      color: var(--text-secondary); 
-    }
-    
-    .pa-side-link.active { 
-      color: var(--text-primary); 
-      padding-left: 0.25rem;
-    }
-    
-    .pa-side-link.active::before {
-      color: var(--text-primary);
-    }
-
-    .pa-sidenav.collapsed {
-      width: 3rem;
-      padding: 4rem 0;
-      align-items: center;
-    }
-
-    .pa-sidenav.collapsed .pa-side-text {
-      display: none;
-    }
-
-    .pa-sidenav.collapsed .pa-side-link {
-      justify-content: center;
-      padding-left: 0;
-      width: 100%;
-    }
-
-    .pa-sidenav.collapsed .pa-side-link::before {
-      margin-right: 0;
-      color: var(--text-muted);
-      font-size: 14px;
-    }
-
-    .pa-sidenav.collapsed .pa-side-link.active::before {
-      color: var(--text-primary);
-    }
-
-    .pa-toggle-btn {
-      position: absolute;
-      top: 1.5rem;
-      right: -10px;
-      width: 20px;
-      height: 20px;
-      background: var(--bg);
-      border: 0.5px solid var(--border);
-      color: var(--text-muted);
-      font-family: var(--font-mono);
-      font-size: 9px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 1005;
-      transition: border-color 0.2s, color 0.2s;
-    }
-
-    .pa-toggle-btn:hover {
-      border-color: var(--border-focus);
-      color: var(--text-primary);
-    }
-
-    .pa-main { 
-      margin-left: 18rem; 
-      flex: 1; 
-      max-width: 900px; 
-      transition: margin-left 0.3s ease;
-    }
-
-    .pa-main.expanded {
-      margin-left: 3rem;
-    }
-
-    .pa-section { 
-      height: calc(100vh - 4.5rem);
-      padding: 4.5rem 3rem; 
-      border-bottom: 0.5px solid var(--border); 
-      scroll-margin-top: 4.5rem;
-      scroll-snap-align: start;
-      overflow-y: auto;
-    }
-    
-    .pa-section:last-child { 
-      border-bottom: none; 
-    }
-
-    .pa-coord { font-size: 11px; color: var(--text-muted); letter-spacing: 0.2em; margin-bottom: 2.5rem; }
-    .pa-title { font-size: 38px; font-weight: 500; color: var(--text-primary); margin: 0 0 0.4rem; letter-spacing: -0.02em; }
-    .pa-title em { font-style: italic; color: var(--text-muted); }
-    .pa-sub { font-size: 11px; color: var(--text-dim); letter-spacing: 0.15em; margin-top: 0.5rem; }
-    
-    .pa-truth {font-size: 15px; color: var(--text-secondary); line-height: 2; max-width: 550px; }
-    .pa-truth span { color: var(--text-primary); }
-    
-    .pa-section-label { font-size: 10px; color: var(--text-dim); letter-spacing: 0.25em; margin-bottom: 2.5rem; }
-    
-    .pa-element { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.75rem; }
-    .pa-element:last-child { margin-bottom: 0; }
-    .pa-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-    .pa-el-name { font-size: 11px; color: var(--text-muted); letter-spacing: 0.1em; width: 90px; }
-    .pa-el-action { font-size: 14px; color: var(--text-secondary); }
-    .pa-el-desc { font-size: 12px; color: var(--text-muted); margin-left: auto; }
-    
-    .pa-contact-q { font-size: 18px; color: var(--text-primary); margin-bottom: 1.75rem; font-weight: 400; }
-    .pa-input { background: var(--surface); border: 0.5px solid var(--border); padding: 1rem; color: var(--text-secondary); font-size: 13px; font-family: var(--font-mono); width: 100%; box-sizing: border-box; margin-bottom: 0.75rem; transition: border-color 0.2s ease; resize: vertical; }
-    .pa-input:focus { outline: none; border-color: var(--border-focus); }
-    .pa-btn { background: transparent; border: 0.5px solid var(--border-focus); padding: 0.75rem 1.75rem; color: var(--text-secondary); font-size: 12px; font-family: var(--font-mono); letter-spacing: 0.1em; cursor: pointer; transition: border-color 0.2s ease, color 0.2s ease; }
-    .pa-btn:hover { border-color: #888888; color: var(--text-primary); }
-
-    /* Contenedor Secundario de Formulario Tradicional */
-    .pa-alternative-contact {
-      margin-top: 2.5rem;
-      border-top: 0.5px dashed var(--border);
-      padding-top: 2rem;
-    }
-    .pa-alternative-text {
-      font-size: 11px;
-      color: var(--text-dim);
-      margin-bottom: 1rem;
-      letter-spacing: 0.05em;
-    }
-
-    .pa-btn-submit {
-      width: 100%;
-      background: #222222;
-      border: none;
-      color: #555555;
-      padding: 0.85rem;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      cursor: not-allowed;
-      transition: background-color 0.2s, color 0.2s;
-    }
-
-    .pa-btn-submit:not(:disabled) {
-      background: #25D366;
-      color: #000000;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    @media (max-width: 768px) {
-      .pa-header { padding: 0 1.5rem; }
-      .pa-menu-toggle { display: block; }
-      .pa-nav-links { display: none; }
-      
-      .pa-sidenav { 
-        transform: translateX(-100%); 
-        width: 100% !important; 
-        top: 4.5rem; 
-        height: calc(100vh - 4.5rem); 
-        border-right: none;
-        padding: 3rem 1.5rem;
-      }
-      .pa-sidenav.open { 
-        transform: translateX(0); 
-      }
-      
-      .pa-toggle-btn { display: none; }
-      .pa-main { margin-left: 0 !important; width: 100%; }
-      .pa-section { padding: 3.5rem 1.5rem; height: calc(100vh - 4.5rem); }
-    }
-  </style>
+  <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
 
   <header class="pa-header">
-    <a href="index.html" class="pa-logo">RA</a>
+    <a href="index.html" class="pa-logo" data-tooltip="abrir barra lateral">RA</a>
     <button class="pa-menu-toggle" aria-label="Toggle Menu">MENU</button>
     <nav class="pa-nav-links">
-      <a href="index.html" class="pa-nav-link active-page">laboratorio</a>
-      <a href="manifiesto.html" class="pa-nav-link">manifiesto</a>
-      <a href="proyectos.html" class="pa-nav-link">proyectos</a>
+      <a href="index.html" class="pa-nav-link active-page" data-i18n="nav_lab">laboratorio</a>
+      <a href="manifiesto.html" class="pa-nav-link" data-i18n="nav_manifest">manifiesto</a>
+      <a href="proyectos.html" class="pa-nav-link" data-i18n="nav_projects">proyectos</a>
     </nav>
   </header>
 
   <div class="pa-wrapper">
     <aside class="pa-sidenav">
-      <a href="#inicio" class="pa-side-link"><span class="pa-side-text">inicio</span></a>
-      <a href="#proceso" class="pa-side-link"><span class="pa-side-text">proceso</span></a>
-      <a href="#contacto" class="pa-side-link"><span class="pa-side-text">contacto</span></a>
+      <a href="#inicio" class="pa-side-link" data-tooltip="inicio">
+        <svg class="pa-side-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+        <span class="pa-side-text" data-i18n="side_inicio">inicio</span>
+      </a>
+
+      <a href="#proceso" class="pa-side-link" data-tooltip="proceso">
+        <svg class="pa-side-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="4" y1="6" x2="20" y2="6"/>
+          <line x1="4" y1="12" x2="14" y2="12"/>
+          <line x1="4" y1="18" x2="18" y2="18"/>
+        </svg>
+        <span class="pa-side-text" data-i18n="side_proceso">proceso</span>
+      </a>
+
+      <a href="#contacto" class="pa-side-link" data-tooltip="contacto">
+        <svg class="pa-side-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="8 4 16 12 8 20"/>
+        </svg>
+        <span class="pa-side-text" data-i18n="side_contacto">contacto</span>
+      </a>
+
+      <button type="button" class="pa-lang-toggle">EN</button>
     </aside>
 
     <main class="pa-main">
-      
+
       <section id="inicio" class="pa-section" style="padding-top: 6rem; padding-bottom: 5rem;">
-        <p class="pa-coord fade-in">−33.45° S / −70.66° W · LABORATORIO DIGITAL</p>
+        <p class="pa-coord fade-in" data-i18n="inicio_coord">−33.45° S / −70.66° W · LABORATORIO DIGITAL</p>
         <h1 class="pa-title fade-in">PSICO<em>ANDINO</em></h1>
-        <p class="pa-sub fade-in">ARTESANÍA DIGITAL · EST. 2026</p>
+        <p class="pa-sub fade-in" data-i18n="inicio_sub">ARTESANÍA DIGITAL · EST. 2026</p>
         <div style="margin-top: 3.5rem;">
-          <p class="pa-truth fade-in">
+          <p class="pa-truth fade-in" data-i18n-html="inicio_truth">
             <span>Construyo sistemas digitales simples, soberanos y a medida.</span><br>
             Primero el problema. Después la solución.<br>
             Lo que hacemos te pertenece — código, dominio y todo.
@@ -345,313 +63,101 @@
       </section>
 
       <section id="proceso" class="pa-section">
-        <p class="pa-section-label fade-in">// PROCESO</p>
+        <p class="pa-section-label fade-in" data-i18n="proceso_label">// PROCESO</p>
         <div class="pa-element fade-in">
           <div class="pa-dot" style="background: #3a6fa8;"></div>
-          <span class="pa-el-name">AGUA · DIOS</span>
-          <span class="pa-el-action">Escuchar el problema real</span>
-          <span class="pa-el-desc">diagnóstico</span>
+          <span class="pa-el-name" data-i18n="proceso_1_name">AGUA · DIOS</span>
+          <span class="pa-el-action" data-i18n="proceso_1_action">Escuchar el problema real</span>
+          <span class="pa-el-desc" data-i18n="proceso_1_desc">diagnóstico</span>
         </div>
         <div class="pa-element fade-in">
           <div class="pa-dot" style="background: #a89a3a;"></div>
-          <span class="pa-el-name">AIRE · MENTE</span>
-          <span class="pa-el-action">Diseñar la arquitectura</span>
-          <span class="pa-el-desc">propuesta</span>
+          <span class="pa-el-name" data-i18n="proceso_2_name">AIRE · MENTE</span>
+          <span class="pa-el-action" data-i18n="proceso_2_action">Diseñar la arquitectura</span>
+          <span class="pa-el-desc" data-i18n="proceso_2_desc">propuesta</span>
         </div>
         <div class="pa-element fade-in">
           <div class="pa-dot" style="background: #a84a3a;"></div>
-          <span class="pa-el-name">FUEGO · CIENCIA</span>
-          <span class="pa-el-action">Construir y probar</span>
-          <span class="pa-el-desc">desarrollo</span>
+          <span class="pa-el-name" data-i18n="proceso_3_name">FUEGO · CIENCIA</span>
+          <span class="pa-el-action" data-i18n="proceso_3_action">Construir y probar</span>
+          <span class="pa-el-desc" data-i18n="proceso_3_desc">desarrollo</span>
         </div>
         <div class="pa-element fade-in">
           <div class="pa-dot" style="background: #3a8a4a;"></div>
-          <span class="pa-el-name">TIERRA · MATERIA</span>
-          <span class="pa-el-action">Entregar y enseñar</span>
-          <span class="pa-el-desc">soberanía</span>
+          <span class="pa-el-name" data-i18n="proceso_4_name">TIERRA · MATERIA</span>
+          <span class="pa-el-action" data-i18n="proceso_4_action">Entregar y enseñar</span>
+          <span class="pa-el-desc" data-i18n="proceso_4_desc">soberanía</span>
         </div>
       </section>
 
       <section id="contacto" class="pa-section">
-        <style>
-          /* Contenedores de Estado */
-          .pa-contact-intro {
-            max-width: 550px;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            transition: opacity 0.4s ease, transform 0.4s ease;
-          }
-          .pa-contact-intro.hidden {
-            opacity: 0;
-            transform: translateY(-10px);
-            pointer-events: none;
-            position: absolute;
-          }
-          .pa-contact-form-wrapper {
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.4s ease, transform 0.4s ease;
-            display: none;
-          }
-          .pa-contact-form-wrapper.visible {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-          }
+        <p class="pa-section-label fade-in" data-i18n="contacto_label">// CONTACTO</p>
 
-          /* Multi-step Componentes */
-          .pa-ms-progress {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-          }
-          .pa-ms-dot {
-            width: 6px;
-            height: 6px;
-            background: var(--text-dim);
-            transition: background-color 0.3s, opacity 0.3s;
-            opacity: 0.4;
-          }
-          .pa-ms-dot.completed {
-            background: var(--text-secondary);
-            opacity: 0.6;
-          }
-          .pa-ms-dot.active {
-            background: var(--text-primary);
-            opacity: 1;
-          }
-          .pa-ms-viewport {
-            overflow: hidden;
-            width: 100%;
-            max-width: 550px;
-            height: 320px;
-            position: relative;
-          }
-          .pa-ms-track {
-            display: flex;
-            width: 400%; /* Cambiado a 400% para 4 pasos */
-            height: 100%;
-            transition: transform 0.4s ease;
-          }
-          .pa-ms-step {
-            width: 25%; /* Cambiado a 25% para distribución exacta */
-            height: 100%;
-            position: relative;
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            box-sizing: border-box;
-            padding-right: 1.5rem;
-          }
-          .pa-ms-title {
-            font-size: 18px;
-            color: var(--text-primary);
-            font-weight: 400;
-            letter-spacing: -0.01em;
-            margin-bottom: 0.5rem;
-          }
-          .pa-ms-options-row {
-            display: flex;
-            gap: 1rem;
-            width: 100%;
-          }
-          .pa-ms-btn-toggle {
-            flex: 1;
-            background: transparent;
-            border: 0.5px solid var(--border);
-            color: var(--text-muted);
-            padding: 0.85rem;
-            font-family: var(--font-mono);
-            font-size: 11px;
-            letter-spacing: 0.05em;
-            cursor: pointer;
-            transition: border-color 0.2s, color 0.2s, opacity 0.2s;
-          }
-          .pa-ms-btn-toggle:hover {
-            border-color: var(--border-focus);
-            color: var(--text-secondary);
-          }
-          .pa-ms-btn-toggle.selected {
-            border-color: var(--text-primary);
-            color: var(--text-primary);
-          }
-          .pa-ms-btn-toggle.dimmed {
-            opacity: 0.25;
-          }
-          .pa-ms-counter {
-            font-size: 11px;
-            color: var(--text-dim);
-            text-align: right;
-            margin-top: 0.4rem;
-          }
-          .pa-ms-counter.valid {
-            color: var(--text-muted);
-          }
-          .pa-ms-summary {
-            border: 0.5px solid var(--border);
-            padding: 1rem;
-            background: var(--surface);
-            font-size: 13px;
-            color: var(--text-secondary);
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            line-height: 1.6;
-          }
-          .pa-ms-summary-line span {
-            color: var(--text-muted);
-          }
-          .pa-ms-note {
-            font-size: 11px;
-            color: var(--text-dim);
-            margin-top: 0.25rem;
-          }
-          .pa-ms-nav-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 1.5rem;
-            width: calc(100% - 1.5rem);
-          }
-          .pa-ms-back-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            font-family: var(--font-mono);
-            font-size: 11px;
-            cursor: pointer;
-            transition: color 0.2s;
-          }
-          .pa-ms-back-btn:hover {
-            color: var(--text-secondary);
-          }
-          .pa-ms-next-btn {
-            background: transparent;
-            border: 0.5px solid var(--border);
-            color: var(--text-dim);
-            padding: 0.75rem 1.5rem;
-            font-family: var(--font-mono);
-            font-size: 11px;
-            letter-spacing: 0.1em;
-            cursor: not-allowed;
-            transition: border-color 0.2s, color 0.2s;
-          }
-          .pa-ms-next-btn:not(:disabled) {
-            border-color: var(--border-focus);
-            color: var(--text-primary);
-            cursor: pointer;
-          }
-          .pa-ms-next-btn:not(:disabled):hover {
-            border-color: var(--text-primary);
-          }
-          
-          /* Botones de Envío Permanentes */
-          .pa-permanent-submits {
-            display: none; /* Corrección 1: Ocultos por defecto */
-            flex-direction: column;
-            gap: 0.75rem;
-            margin-top: 1.5rem;
-            width: 100%;
-            max-width: 550px;
-          }
-          .pa-permanent-btn {
-            width: 100%;
-            background: #222222;
-            border: none;
-            color: #555555;
-            padding: 0.85rem;
-            font-family: var(--font-mono);
-            font-size: 11px;
-            letter-spacing: 0.1em;
-            cursor: not-allowed;
-            text-align: center;
-            transition: background-color 0.2s, color 0.2s;
-          }
-          .pa-permanent-btn.active-whatsapp {
-            background: #25D366;
-            color: #000000;
-            font-weight: 600;
-            cursor: pointer;
-          }
-          .pa-permanent-btn.active-correo {
-            background: #4A90D9;
-            color: #000000;
-            font-weight: 600;
-            cursor: pointer;
-          }
-        </style>
-
-        <p class="pa-section-label fade-in">// CONTACTO</p>
-        
         <div id="pa-contact-intro" class="pa-contact-intro fade-in">
-          <p class="pa-truth">Antes de escribirte necesito entender tu situación. Son 4 preguntas. Menos de 2 minutos.</p>
-          <p class="pa-ms-note">Respondo en 24-48 horas hábiles</p>
+          <p class="pa-truth" data-i18n="contacto_intro">Antes de escribirte necesito entender tu situación. Son 4 preguntas. Menos de 2 minutos.</p>
+          <p class="pa-ms-note" data-i18n="contacto_note">Respondo en 24-48 horas hábiles</p>
           <div style="margin-top: 1rem;">
-            <button type="button" id="pa-btn-start" class="pa-btn">INICIAR SOLICITUD →</button>
+            <button type="button" id="pa-btn-start" class="pa-btn" data-i18n="contacto_btn_start">INICIAR SOLICITUD →</button>
           </div>
         </div>
 
         <div id="pa-contact-form-wrapper" class="pa-contact-form-wrapper">
-          <div class="pa-ms-progress">
-            <div class="pa-ms-dot active"></div>
-            <div class="pa-ms-dot"></div>
-            <div class="pa-ms-dot"></div>
-            <div class="pa-ms-dot"></div>
-          </div>
-
           <div class="pa-ms-viewport">
             <div class="pa-ms-track" id="pa-ms-track">
-              
+
               <div class="pa-ms-step" data-step="1">
-                <h3 class="pa-ms-title">¿Con quién hablo?</h3>
+                <h3 class="pa-ms-title" data-i18n="ms_q1">¿Con quién hablo?</h3>
                 <div class="pa-ms-options-row">
-                  <button type="button" class="pa-ms-btn-toggle" data-value="PERSONA" data-type="identity">PERSONA</button>
-                  <button type="button" class="pa-ms-btn-toggle" data-value="ORGANIZACIÓN" data-type="identity">ORGANIZACIÓN</button>
+                  <button type="button" class="pa-ms-btn-toggle" data-value="PERSONA" data-type="identity" data-i18n="ms_opt_persona">PERSONA</button>
+                  <button type="button" class="pa-ms-btn-toggle" data-value="ORGANIZACIÓN" data-type="identity" data-i18n="ms_opt_org">ORGANIZACIÓN</button>
                 </div>
-                <input type="text" id="pa-ms-name" class="pa-input" placeholder="Nombre" autocomplete="off" style="margin-bottom: 0;">
+                <input type="text" id="pa-ms-name" class="pa-input" placeholder="Nombre" data-i18n-placeholder="ms_name_ph" autocomplete="off" style="margin-bottom: 0;">
                 <div class="pa-ms-nav-row">
                   <div></div>
-                  <button type="button" class="pa-ms-next-btn" disabled>SIGUIENTE →</button>
+                  <button type="button" class="pa-ms-next-btn" disabled data-i18n="ms_siguiente">SIGUIENTE →</button>
                 </div>
               </div>
 
               <div class="pa-ms-step" data-step="2">
-                <h3 class="pa-ms-title">¿Qué necesitas resolver?</h3>
+                <h3 class="pa-ms-title" data-i18n="ms_q2">¿Qué necesitas resolver?</h3>
                 <div style="width: 100%;">
-                  <textarea id="pa-ms-situation" class="pa-input" rows="4" placeholder="Tu situación..." style="margin-bottom: 0; min-height: 90px;"></textarea>
-                  <div class="pa-ms-counter" id="pa-ms-counter">0/30</div>
+                  <textarea id="pa-ms-situation" class="pa-input" rows="4" placeholder="Tu situación..." data-i18n-placeholder="ms_situation_ph" style="margin-bottom: 0; min-height: 90px;"></textarea>
+                  <div class="pa-signal-container">
+                    <div class="pa-signal-meta">
+                      <span class="pa-signal-status" id="pa-signal-status" data-i18n="signal_inactive">SISTEMA INACTIVO</span>
+                      <span class="pa-signal-count" id="pa-signal-count">0/30</span>
+                    </div>
+                    <div class="pa-signal-track">
+                      <div class="pa-signal-bar" id="pa-signal-bar"></div>
+                    </div>
+                  </div>
                 </div>
                 <div class="pa-ms-nav-row">
-                  <button type="button" class="pa-ms-back-btn">← ATRÁS</button>
-                  <button type="button" class="pa-ms-next-btn" disabled>SIGUIENTE →</button>
+                  <button type="button" class="pa-ms-back-btn" data-i18n="ms_atras">← ATRÁS</button>
+                  <button type="button" class="pa-ms-next-btn" disabled data-i18n="ms_siguiente">SIGUIENTE →</button>
                 </div>
               </div>
 
               <div class="pa-ms-step" data-step="3">
-                <h3 class="pa-ms-title">¿Cuál es tu urgencia?</h3>
+                <h3 class="pa-ms-title" data-i18n="ms_q3">¿Cuál es tu urgencia?</h3>
                 <div class="pa-ms-options-row">
-                  <button type="button" class="pa-ms-btn-toggle" data-value="ALTA" data-type="urgency">ALTA</button>
-                  <button type="button" class="pa-ms-btn-toggle" data-value="MEDIA" data-type="urgency">MEDIA</button>
-                  <button type="button" class="pa-ms-btn-toggle" data-value="BAJA" data-type="urgency">BAJA</button>
+                  <button type="button" class="pa-ms-btn-toggle" data-value="ALTA" data-type="urgency" data-i18n="ms_opt_alta">ALTA</button>
+                  <button type="button" class="pa-ms-btn-toggle" data-value="MEDIA" data-type="urgency" data-i18n="ms_opt_media">MEDIA</button>
+                  <button type="button" class="pa-ms-btn-toggle" data-value="BAJA" data-type="urgency" data-i18n="ms_opt_baja">BAJA</button>
                 </div>
                 <div class="pa-ms-nav-row">
-                  <button type="button" class="pa-ms-back-btn">← ATRÁS</button>
-                  <button type="button" class="pa-ms-next-btn" disabled>SIGUIENTE →</button>
+                  <button type="button" class="pa-ms-back-btn" data-i18n="ms_atras">← ATRÁS</button>
+                  <button type="button" class="pa-ms-next-btn" disabled data-i18n="ms_siguiente">SIGUIENTE →</button>
                 </div>
               </div>
 
               <div class="pa-ms-step" data-step="4">
-                <h3 class="pa-ms-title">Resumen</h3>
+                <h3 class="pa-ms-title" data-i18n="ms_q4">Resumen</h3>
                 <div class="pa-ms-summary" id="pa-ms-summary"></div>
-                <p class="pa-ms-note" style="margin-top: 0.5rem;">Respondo en 24-48 horas hábiles</p>
+                <p class="pa-ms-note" style="margin-top: 0.5rem;" data-i18n="ms_note2">Respondo en 24-48 horas hábiles</p>
                 <div class="pa-ms-nav-row">
-                  <button type="button" class="pa-ms-back-btn">← ATRÁS</button>
-                  <span style="visibility: hidden; padding: 0.75rem 1.5rem; font-size: 11px;">SIGUIENTE →</span>
+                  <button type="button" class="pa-ms-back-btn" data-i18n="ms_atras">← ATRÁS</button>
+                  <span style="visibility: hidden; padding: 0.75rem 1.5rem; font-size: 11px;" data-i18n="ms_siguiente">SIGUIENTE →</span>
                 </div>
               </div>
 
@@ -660,8 +166,8 @@
         </div>
 
         <div class="pa-permanent-submits" id="pa-permanent-submits">
-          <button type="button" id="pa-permanent-whatsapp" class="pa-permanent-btn" disabled>ENVIAR POR WHATSAPP</button>
-          <button type="button" id="pa-permanent-correo" class="pa-permanent-btn" disabled>ENVIAR POR CORREO</button>
+          <button type="button" id="pa-permanent-whatsapp" class="pa-permanent-btn" disabled data-i18n="btn_wa">ENVIAR POR WHATSAPP</button>
+          <button type="button" id="pa-permanent-correo" class="pa-permanent-btn" disabled data-i18n="btn_email">ENVIAR POR CORREO</button>
         </div>
 
         <script>
@@ -669,22 +175,25 @@
             const msState = { identity: '', name: '', situation: '', urgency: '' };
             let msCurrentStep = 1;
 
-            const introZone = document.getElementById('pa-contact-intro');
-            const formWrapper = document.getElementById('pa-contact-form-wrapper');
-            const btnStart = document.getElementById('pa-btn-start');
-            const track = document.getElementById('pa-ms-track');
-            const dots = document.querySelectorAll('.pa-ms-dot');
+            const introZone        = document.getElementById('pa-contact-intro');
+            const formWrapper      = document.getElementById('pa-contact-form-wrapper');
+            const btnStart         = document.getElementById('pa-btn-start');
+            const track            = document.getElementById('pa-ms-track');
+            const dots             = document.querySelectorAll('.pa-ms-dot');
             const permanentSubmits = document.getElementById('pa-permanent-submits');
 
-            // Transición Estado 0 -> Formulario
+            // Nodos de control para el medidor de calibración estocástica
+            const signalBar        = document.getElementById('pa-signal-bar');
+            const signalStatus     = document.getElementById('pa-signal-status');
+            const signalCount      = document.getElementById('pa-signal-count');
+
             btnStart.addEventListener('click', () => {
               introZone.classList.add('hidden');
               setTimeout(() => {
                 introZone.style.display = 'none';
                 formWrapper.style.display = 'block';
-                permanentSubmits.style.display = 'flex'; // Corrección 1: Revelar al iniciar la solicitud
-                // Forzar reflow para asegurar la transición de opacidad
-                formWrapper.offsetHeight; 
+                permanentSubmits.style.display = 'flex';
+                formWrapper.offsetHeight;
                 formWrapper.classList.add('visible');
               }, 400);
             });
@@ -694,72 +203,77 @@
               dots.forEach((dot, index) => {
                 const stepNum = index + 1;
                 dot.classList.remove('active', 'completed');
-                if (stepNum === msCurrentStep) {
-                  dot.classList.add('active');
-                } else if (stepNum < msCurrentStep) {
-                  dot.classList.add('completed');
-                }
+                if (stepNum === msCurrentStep)      dot.classList.add('active');
+                else if (stepNum < msCurrentStep)   dot.classList.add('completed');
               });
-
               if (msCurrentStep === 4) {
                 renderMsSummary();
               } else {
-                const btnWhatsapp = document.getElementById('pa-permanent-whatsapp');
+                const btnWA     = document.getElementById('pa-permanent-whatsapp');
                 const btnCorreo = document.getElementById('pa-permanent-correo');
-                btnWhatsapp.disabled = true;
-                btnWhatsapp.className = 'pa-permanent-btn';
-                btnCorreo.disabled = true;
-                btnCorreo.className = 'pa-permanent-btn';
+                btnWA.disabled = true;     btnWA.className = 'pa-permanent-btn';
+                btnCorreo.disabled = true; btnCorreo.className = 'pa-permanent-btn';
               }
             }
 
             function renderMsSummary() {
-              const summary = document.getElementById('pa-ms-summary');
-              summary.innerHTML = `
-                <div class="pa-ms-summary-line"><span>Identidad:</span> ${msState.identity}</div>
-                <div class="pa-ms-summary-line"><span>Nombre:</span> ${msState.name}</div>
-                <div class="pa-ms-summary-line"><span>Situación:</span> ${msState.situation}</div>
-                <div class="pa-ms-summary-line"><span>Urgencia:</span> ${msState.urgency}</div>
+              document.getElementById('pa-ms-summary').innerHTML = `
+                <div class="pa-ms-summary-line"><span>${i18n.t('summary_identity')}:</span> ${msState.identity}</div>
+                <div class="pa-ms-summary-line"><span>${i18n.t('summary_name')}:</span> ${msState.name}</div>
+                <div class="pa-ms-summary-line"><span>${i18n.t('summary_situation')}:</span> ${msState.situation}</div>
+                <div class="pa-ms-summary-line"><span>${i18n.t('summary_urgency')}:</span> ${msState.urgency}</div>
               `;
-              
-              const btnWhatsapp = document.getElementById('pa-permanent-whatsapp');
+              const btnWA     = document.getElementById('pa-permanent-whatsapp');
               const btnCorreo = document.getElementById('pa-permanent-correo');
-              
-              btnWhatsapp.disabled = false;
-              btnWhatsapp.classList.add('active-whatsapp');
-              
-              btnCorreo.disabled = false;
-              btnCorreo.classList.add('active-correo');
+              btnWA.disabled = false;     btnWA.classList.add('active-whatsapp');
+              btnCorreo.disabled = false; btnCorreo.classList.add('active-correo');
             }
 
             function valStep1() {
               msState.name = document.getElementById('pa-ms-name').value.trim();
-              document.querySelector('.pa-ms-step[data-step="1"] .pa-ms-next-btn').disabled = !(msState.identity && msState.name.length > 0);
+              document.querySelector('.pa-ms-step[data-step="1"] .pa-ms-next-btn').disabled =
+                !(msState.identity && msState.name.length > 0);
             }
-            
+
+            // REFRACTORIZACIÓN: Medidor de Densidad de Señal de Contexto
             function valStep2() {
               const text = document.getElementById('pa-ms-situation').value;
               msState.situation = text;
-              const counter = document.getElementById('pa-ms-counter');
-              counter.textContent = `${text.length}/30`;
-              if (text.length >= 30) {
-                counter.classList.add('valid');
-                document.querySelector('.pa-ms-step[data-step="2"] .pa-ms-next-btn').disabled = false;
-              } else {
-                counter.classList.remove('valid');
-                document.querySelector('.pa-ms-step[data-step="2"] .pa-ms-next-btn').disabled = true;
+              
+              const textLength = text.length;
+              const valid = textLength >= 30;
+              
+              // Proyección matemática del progreso (0% a 100%)
+              const percentage = Math.min((textLength / 30) * 100, 100);
+              
+              // Mutación controlada del DOM si los elementos existen
+              if (signalBar) signalBar.style.width = `${percentage}%`;
+              if (signalCount) signalCount.textContent = `${textLength}/30`;
+              
+              if (signalStatus) {
+                if (textLength === 0) {
+                  signalStatus.textContent = i18n.t('signal_inactive');
+                  if (signalBar) signalBar.classList.remove('calibrated');
+                } else if (textLength < 30) {
+                  signalStatus.textContent = i18n.t('signal_calibrating');
+                  if (signalBar) signalBar.classList.remove('calibrated');
+                } else {
+                  signalStatus.textContent = i18n.t('signal_ready');
+                  if (signalBar) signalBar.classList.add('calibrated');
+                }
               }
+              
+              document.querySelector('.pa-ms-step[data-step="2"] .pa-ms-next-btn').disabled = !valid;
             }
-            
+
             function valStep3() {
               document.querySelector('.pa-ms-step[data-step="3"] .pa-ms-next-btn').disabled = !msState.urgency;
             }
 
-            const identityBtns = document.querySelectorAll('.pa-ms-btn-toggle[data-type="identity"]');
-            identityBtns.forEach(btn => {
+            document.querySelectorAll('.pa-ms-btn-toggle[data-type="identity"]').forEach(btn => {
               btn.addEventListener('click', () => {
                 msState.identity = btn.getAttribute('data-value');
-                identityBtns.forEach(b => {
+                document.querySelectorAll('.pa-ms-btn-toggle[data-type="identity"]').forEach(b => {
                   b.classList.remove('selected', 'dimmed');
                   if (b !== btn) b.classList.add('dimmed');
                 });
@@ -768,14 +282,10 @@
               });
             });
 
-            document.getElementById('pa-ms-name').addEventListener('input', valStep1);
-            document.getElementById('pa-ms-situation').addEventListener('input', valStep2);
-
-            const urgencyBtns = document.querySelectorAll('.pa-ms-btn-toggle[data-type="urgency"]');
-            urgencyBtns.forEach(btn => {
+            document.querySelectorAll('.pa-ms-btn-toggle[data-type="urgency"]').forEach(btn => {
               btn.addEventListener('click', () => {
                 msState.urgency = btn.getAttribute('data-value');
-                urgencyBtns.forEach(b => {
+                document.querySelectorAll('.pa-ms-btn-toggle[data-type="urgency"]').forEach(b => {
                   b.classList.remove('selected', 'dimmed');
                   if (b !== btn) b.classList.add('dimmed');
                 });
@@ -784,109 +294,47 @@
               });
             });
 
+            document.getElementById('pa-ms-name').addEventListener('input', valStep1);
+            document.getElementById('pa-ms-situation').addEventListener('input', valStep2);
+
             document.querySelectorAll('.pa-ms-next-btn').forEach(btn => {
               btn.addEventListener('click', () => {
                 if (msCurrentStep < 4) { msCurrentStep++; updateMsSlider(); }
               });
             });
-            
+
             document.querySelectorAll('.pa-ms-back-btn').forEach(btn => {
               btn.addEventListener('click', () => {
                 if (msCurrentStep > 1) { msCurrentStep--; updateMsSlider(); }
               });
             });
 
-            const buildMessage = () => {
-              return `Hola, detallo mi situación:\n\n` +
-                     `· Identidad: ${msState.identity}\n` +
-                     `· Nombre: ${msState.name}\n` +
-                     `· Situación: ${msState.situation}\n` +
-                     `· Urgencia: ${msState.urgency}`;
-            };
+            const buildMessage = () =>
+              `${i18n.t('msg_intro')}\n\n` +
+              `· ${i18n.t('summary_identity')}: ${msState.identity}\n` +
+              `· ${i18n.t('summary_name')}: ${msState.name}\n` +
+              `· ${i18n.t('summary_situation')}: ${msState.situation}\n` +
+              `· ${i18n.t('summary_urgency')}: ${msState.urgency}`;
 
             document.getElementById('pa-permanent-whatsapp').addEventListener('click', () => {
-              if(!document.getElementById('pa-permanent-whatsapp').disabled) {
+              if (!document.getElementById('pa-permanent-whatsapp').disabled) {
                 window.open(`https://wa.me/56934545677?text=${encodeURIComponent(buildMessage())}`, '_blank');
               }
             });
 
             document.getElementById('pa-permanent-correo').addEventListener('click', () => {
-              if(!document.getElementById('pa-permanent-correo').disabled) {
+              if (!document.getElementById('pa-permanent-correo').disabled) {
                 window.location.href = `mailto:pscndn@gmail.com?subject=Diagnostico%20Laboratorio&body=${encodeURIComponent(buildMessage())}`;
               }
             });
           });
         </script>
-      </section>
 
+      </section>
     </main>
   </div>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const sections = document.querySelectorAll('section[id]');
-      const navLinks = document.querySelectorAll('.pa-sidenav .pa-side-link');
-      const toggleBtn = document.querySelector('.pa-menu-toggle');
-      const sidenav = document.querySelector('.pa-sidenav');
-      const mainContent = document.querySelector('.pa-main');
-
-      const observerOptions = {
-        root: null,
-        rootMargin: '-20% 0px -60% 0px',
-        threshold: 0
-      };
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const id = entry.target.getAttribute('id');
-            navLinks.forEach(link => {
-              const href = link.getAttribute('href');
-              if (href === `#${id}`) {
-                link.classList.add('active');
-              } else if (href.startsWith('#')) {
-                link.classList.remove('active');
-              }
-            });
-
-            entry.target.querySelectorAll('.fade-in').forEach(el => {
-              el.classList.add('visible');
-            });
-          }
-        });
-      }, observerOptions);
-
-      sections.forEach(section => observer.observe(section));
-
-      const toggleSidenavBtn = document.createElement('button');
-      toggleSidenavBtn.className = 'pa-toggle-btn';
-      toggleSidenavBtn.setAttribute('aria-label', 'Toggle Sidebar');
-      toggleSidenavBtn.textContent = '‹';
-      sidenav.appendChild(toggleSidenavBtn);
-
-      toggleSidenavBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const isCollapsed = sidenav.classList.toggle('collapsed');
-        mainContent.classList.toggle('expanded', isCollapsed);
-        toggleSidenavBtn.textContent = isCollapsed ? '›' : '‹';
-      });
-
-      if (toggleBtn && sidenav) {
-        toggleBtn.addEventListener('click', () => {
-          const isOpen = sidenav.classList.toggle('open');
-          toggleBtn.textContent = isOpen ? 'CLOSE' : 'MENU';
-        });
-
-        navLinks.forEach(link => {
-          link.addEventListener('click', () => {
-            if (window.innerWidth <= 768) {
-              sidenav.classList.remove('open');
-              toggleBtn.textContent = 'MENU';
-            }
-          });
-        });
-      }
-    });
-  </script>
+  
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/main.js" defer></script>
 </body>
 </html>
