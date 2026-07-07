@@ -1,340 +1,319 @@
 <!DOCTYPE html>
-<html lang="es" style="scroll-snap-type: y mandatory; scroll-behavior: smooth;">
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PSICOANDINO · Laboratorio Digital</title>
-  <link rel="stylesheet" href="assets/css/styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Psicoandino</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cobre: #248692;
+    --musgo: #6D7C50;
+    --mostaza: #B78627;
+    --sangre: #C73A4A;
+    --hueso: #F5F3EC;
+    --oled: #000000;
+    --amatista: #7D5AA1;
+    --hueso-2: #ECE8DC;
+    --line: rgba(0,0,0,0.10);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    background: var(--hueso);
+    color: var(--oled);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--oled);
+    opacity: 0.55;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 24px 28px 16px;
+    text-align: left;
+  }
+
+  .hero .eyebrow { display: block; margin-bottom: 28px; }
+
+  .hero h1 {
+    font-size: clamp(34px, 5vw, 54px);
+    font-weight: 600;
+    line-height: 1.15;
+    max-width: 14ch;
+  }
+
+  .hero p {
+    font-size: 18px;
+    line-height: 1.6;
+    max-width: 52ch;
+    margin-top: 22px;
+    opacity: 0.82;
+  }
+
+  /* ---------- SIGNATURE MOTIF: Fuente -> cuatro cuadrados ---------- */
+  .motif {
+    margin: 8px auto 0;
+    width: 100%;
+    max-width: 880px;
+    padding: 0 32px;
+  }
+
+  .motif-track {
+    position: relative;
+    height: 96px;
+    display: flex;
+    align-items: center;
+  }
+
+  .motif-circle {
+    position: absolute;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--oled);
+    animation: dissolve 3.4s ease-in-out infinite;
+  }
+
+  .motif-squares {
+    display: flex;
+    gap: 14px;
+    margin-left: 76px;
+  }
+
+  .motif-squares span {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    opacity: 0;
+    animation: rise 3.4s ease-in-out infinite;
+  }
+
+  .motif-squares span:nth-child(1) { background: var(--sangre);  animation-delay: 0.15s; }
+  .motif-squares span:nth-child(2) { background: var(--mostaza); animation-delay: 0.30s; }
+  .motif-squares span:nth-child(3) { background: var(--musgo);   animation-delay: 0.45s; }
+  .motif-squares span:nth-child(4) { background: var(--cobre);   animation-delay: 0.60s; }
+  .motif-squares span:nth-child(5) { background: var(--amatista);   animation-delay: 0.75s; }
+  @keyframes dissolve {
+    0%, 20% { opacity: 1; transform: scale(1); }
+    45%, 100% { opacity: 0; transform: scale(0.6); }
+  }
+  @keyframes rise {
+    0%, 20% { opacity: 0; transform: translateY(6px); }
+    45%, 100% { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .motif-circle, .motif-squares span { animation: none; opacity: 1; }
+  }
+
+  /* ---------- RAMAS ---------- */
+  .ramas {
+    max-width: 880px;
+    margin: 48px auto 0;
+    padding: 0 32px 32px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+
+  .rama {
+    background: var(--hueso);
+    padding: 36px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-height: 220px;
+    transition: background 0.2s ease;
+  }
+
+  .rama:hover { background: var(--hueso-2); }
+
+  .rama-accent {
+    width: 22px;
+    height: 4px;
+  }
+
+  .rama h2 {
+    font-size: 22px;
+    font-weight: 600;
+  }
+
+  .rama .rama-sub {
+    font-size: 14px;
+    opacity: 0.65;
+    margin-top: -8px;
+  }
+
+  .rama ul {
+    list-style: none;
+    margin: 8px 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .rama li {
+    font-size: 15px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .estado {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding: 3px 7px;
+    border-radius: 3px;
+    opacity: 0.85;
+  }
+
+  .estado.marcha  { background: rgba(36,134,146,0.12); color: var(--cobre); }
+  .estado.reposo  { background: rgba(0,0,0,0.06); color: var(--oled); opacity: 0.55; }
+  .estado.pendiente { background: rgba(183,134,39,0.14); color: var(--mostaza); }
+
+  .rama-vacia {
+    font-size: 14px;
+    opacity: 0.5;
+    font-style: italic;
+  }
+
+  @media (max-width: 640px) {
+    .ramas { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 32px 96px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    border-top: 1px solid var(--line);
+    margin-top: 16px;
+  }
+
+  .redes {
+    display: flex;
+    gap: 20px;
+  }
+
+  .redes a {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    opacity: 0.6;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+    transition: opacity 0.15s ease, border-color 0.15s ease;
+  }
+  .redes a:hover { opacity: 1; border-color: var(--oled); }
+
+  .contacto {
+    font-size: 13.5px;
+    opacity: 0.6;
+  }
+  .contacto a:hover { opacity: 1; }
+</style>
 </head>
 <body>
 
-  <header class="pa-header">
-    <a href="index.html" class="pa-logo" data-tooltip="abrir barra lateral">RA</a>
-    <button class="pa-menu-toggle" aria-label="Toggle Menu">MENU</button>
-    <nav class="pa-nav-links">
-      <a href="index.html" class="pa-nav-link active-page" data-i18n="nav_lab">laboratorio</a>
-      <a href="manifiesto.html" class="pa-nav-link" data-i18n="nav_manifest">manifiesto</a>
-      <a href="proyectos.html" class="pa-nav-link" data-i18n="nav_projects">proyectos</a>
-    </nav>
-  </header>
+  <section class="hero">
+    <span class="eyebrow">Investigación para el Conocimiento y el Desarrollo</span>
+    <h1>Comprendemos que la vida es hoy , que también puede ser mañana y que el ayer ya pasó.</h1>
+    <p>Somos un ecosistema de pensamiento, diseñado para cerrar la brecha entre lo que las cosas son y lo que dicen ser. Operamos como una estructura generadora que reconoce lo que fue, es y será en este lugar, traduciendo la complejidad difusa en formas operables que producen bienestar orgánico. A través de marcos conceptuales y herramientas digitales, buscamos la belleza como esencia: la forma mínima que entrega la potencia máxima sin perder valor estructural. No se trata de imponer una doctrina, sino de proveer contexto y herramientas para activar el potencial sumado a la capacidad activa en organizaciones y personas. El ciclo solo se considerará completo cuando la visión descienda de la fuente hasta la manifestación material, convirtiendo el pensamiento en evidencia observable de un sistema funcionando en la realidad.</p>
+  </section>
 
-  <div class="pa-wrapper">
-    <aside class="pa-sidenav">
-      <a href="#inicio" class="pa-side-link" data-tooltip="inicio">
-        <svg class="pa-side-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="3" width="18" height="18" rx="2"/>
-          <circle cx="12" cy="12" r="3"/>
-        </svg>
-        <span class="pa-side-text" data-i18n="side_inicio">inicio</span>
-      </a>
-
-      <a href="#proceso" class="pa-side-link" data-tooltip="proceso">
-        <svg class="pa-side-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <line x1="4" y1="6" x2="20" y2="6"/>
-          <line x1="4" y1="12" x2="14" y2="12"/>
-          <line x1="4" y1="18" x2="18" y2="18"/>
-        </svg>
-        <span class="pa-side-text" data-i18n="side_proceso">proceso</span>
-      </a>
-
-      <a href="#contacto" class="pa-side-link" data-tooltip="contacto">
-        <svg class="pa-side-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="8 4 16 12 8 20"/>
-        </svg>
-        <span class="pa-side-text" data-i18n="side_contacto">contacto</span>
-      </a>
-
-      <button type="button" class="pa-lang-toggle">EN</button>
-    </aside>
-
-    <main class="pa-main">
-
-      <section id="inicio" class="pa-section" style="padding-top: 6rem; padding-bottom: 5rem;">
-        <p class="pa-coord fade-in" data-i18n="inicio_coord">−33.45° S / −70.66° W · LABORATORIO DIGITAL</p>
-        <h1 class="pa-title fade-in">PSICO<em>ANDINO</em></h1>
-        <p class="pa-sub fade-in" data-i18n="inicio_sub">ARTESANÍA DIGITAL · EST. 2026</p>
-        <div style="margin-top: 3.5rem;">
-          <p class="pa-truth fade-in" data-i18n-html="inicio_truth">
-            <span>Construyo sistemas digitales simples, soberanos y a medida.</span><br>
-            Primero el problema. Después la solución.<br>
-            Lo que hacemos te pertenece — código, dominio y todo.
-          </p>
-        </div>
-      </section>
-
-      <section id="proceso" class="pa-section">
-        <p class="pa-section-label fade-in" data-i18n="proceso_label">// PROCESO</p>
-        <div class="pa-element fade-in">
-          <div class="pa-dot" style="background: #3a6fa8;"></div>
-          <span class="pa-el-name" data-i18n="proceso_1_name">AGUA · DIOS</span>
-          <span class="pa-el-action" data-i18n="proceso_1_action">Escuchar el problema real</span>
-          <span class="pa-el-desc" data-i18n="proceso_1_desc">diagnóstico</span>
-        </div>
-        <div class="pa-element fade-in">
-          <div class="pa-dot" style="background: #a89a3a;"></div>
-          <span class="pa-el-name" data-i18n="proceso_2_name">AIRE · MENTE</span>
-          <span class="pa-el-action" data-i18n="proceso_2_action">Diseñar la arquitectura</span>
-          <span class="pa-el-desc" data-i18n="proceso_2_desc">propuesta</span>
-        </div>
-        <div class="pa-element fade-in">
-          <div class="pa-dot" style="background: #a84a3a;"></div>
-          <span class="pa-el-name" data-i18n="proceso_3_name">FUEGO · CIENCIA</span>
-          <span class="pa-el-action" data-i18n="proceso_3_action">Construir y probar</span>
-          <span class="pa-el-desc" data-i18n="proceso_3_desc">desarrollo</span>
-        </div>
-        <div class="pa-element fade-in">
-          <div class="pa-dot" style="background: #3a8a4a;"></div>
-          <span class="pa-el-name" data-i18n="proceso_4_name">TIERRA · MATERIA</span>
-          <span class="pa-el-action" data-i18n="proceso_4_action">Entregar y enseñar</span>
-          <span class="pa-el-desc" data-i18n="proceso_4_desc">soberanía</span>
-        </div>
-      </section>
-
-      <section id="contacto" class="pa-section">
-        <p class="pa-section-label fade-in" data-i18n="contacto_label">// CONTACTO</p>
-
-        <div id="pa-contact-intro" class="pa-contact-intro fade-in">
-          <p class="pa-truth" data-i18n="contacto_intro">Antes de escribirte necesito entender tu situación. Son 4 preguntas. Menos de 2 minutos.</p>
-          <p class="pa-ms-note" data-i18n="contacto_note">Respondo en 24-48 horas hábiles</p>
-          <div style="margin-top: 1rem;">
-            <button type="button" id="pa-btn-start" class="pa-btn" data-i18n="contacto_btn_start">INICIAR SOLICITUD →</button>
-          </div>
-        </div>
-
-        <div id="pa-contact-form-wrapper" class="pa-contact-form-wrapper">
-          <div class="pa-ms-viewport">
-            <div class="pa-ms-track" id="pa-ms-track">
-
-              <div class="pa-ms-step" data-step="1">
-                <h3 class="pa-ms-title" data-i18n="ms_q1">¿Con quién hablo?</h3>
-                <div class="pa-ms-options-row">
-                  <button type="button" class="pa-ms-btn-toggle" data-value="PERSONA" data-type="identity" data-i18n="ms_opt_persona">PERSONA</button>
-                  <button type="button" class="pa-ms-btn-toggle" data-value="ORGANIZACIÓN" data-type="identity" data-i18n="ms_opt_org">ORGANIZACIÓN</button>
-                </div>
-                <input type="text" id="pa-ms-name" class="pa-input" placeholder="Nombre" data-i18n-placeholder="ms_name_ph" autocomplete="off" style="margin-bottom: 0;">
-                <div class="pa-ms-nav-row">
-                  <div></div>
-                  <button type="button" class="pa-ms-next-btn" disabled data-i18n="ms_siguiente">SIGUIENTE →</button>
-                </div>
-              </div>
-
-              <div class="pa-ms-step" data-step="2">
-                <h3 class="pa-ms-title" data-i18n="ms_q2">¿Qué necesitas resolver?</h3>
-                <div style="width: 100%;">
-                  <textarea id="pa-ms-situation" class="pa-input" rows="4" placeholder="Tu situación..." data-i18n-placeholder="ms_situation_ph" style="margin-bottom: 0; min-height: 90px;"></textarea>
-                  <div class="pa-signal-container">
-                    <div class="pa-signal-meta">
-                      <span class="pa-signal-status" id="pa-signal-status" data-i18n="signal_inactive">SISTEMA INACTIVO</span>
-                      <span class="pa-signal-count" id="pa-signal-count">0/30</span>
-                    </div>
-                    <div class="pa-signal-track">
-                      <div class="pa-signal-bar" id="pa-signal-bar"></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="pa-ms-nav-row">
-                  <button type="button" class="pa-ms-back-btn" data-i18n="ms_atras">← ATRÁS</button>
-                  <button type="button" class="pa-ms-next-btn" disabled data-i18n="ms_siguiente">SIGUIENTE →</button>
-                </div>
-              </div>
-
-              <div class="pa-ms-step" data-step="3">
-                <h3 class="pa-ms-title" data-i18n="ms_q3">¿Cuál es tu urgencia?</h3>
-                <div class="pa-ms-options-row">
-                  <button type="button" class="pa-ms-btn-toggle" data-value="ALTA" data-type="urgency" data-i18n="ms_opt_alta">ALTA</button>
-                  <button type="button" class="pa-ms-btn-toggle" data-value="MEDIA" data-type="urgency" data-i18n="ms_opt_media">MEDIA</button>
-                  <button type="button" class="pa-ms-btn-toggle" data-value="BAJA" data-type="urgency" data-i18n="ms_opt_baja">BAJA</button>
-                </div>
-                <div class="pa-ms-nav-row">
-                  <button type="button" class="pa-ms-back-btn" data-i18n="ms_atras">← ATRÁS</button>
-                  <button type="button" class="pa-ms-next-btn" disabled data-i18n="ms_siguiente">SIGUIENTE →</button>
-                </div>
-              </div>
-
-              <div class="pa-ms-step" data-step="4">
-                <h3 class="pa-ms-title" data-i18n="ms_q4">Resumen</h3>
-                <div class="pa-ms-summary" id="pa-ms-summary"></div>
-                <p class="pa-ms-note" style="margin-top: 0.5rem;" data-i18n="ms_note2">Respondo en 24-48 horas hábiles</p>
-                <div class="pa-ms-nav-row">
-                  <button type="button" class="pa-ms-back-btn" data-i18n="ms_atras">← ATRÁS</button>
-                  <span style="visibility: hidden; padding: 0.75rem 1.5rem; font-size: 11px;" data-i18n="ms_siguiente">SIGUIENTE →</span>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-
-        <div class="pa-permanent-submits" id="pa-permanent-submits">
-          <button type="button" id="pa-permanent-whatsapp" class="pa-permanent-btn" disabled data-i18n="btn_wa">ENVIAR POR WHATSAPP</button>
-          <button type="button" id="pa-permanent-correo" class="pa-permanent-btn" disabled data-i18n="btn_email">ENVIAR POR CORREO</button>
-        </div>
-
-        <script>
-          document.addEventListener('DOMContentLoaded', () => {
-            const msState = { identity: '', name: '', situation: '', urgency: '' };
-            let msCurrentStep = 1;
-
-            const introZone        = document.getElementById('pa-contact-intro');
-            const formWrapper      = document.getElementById('pa-contact-form-wrapper');
-            const btnStart         = document.getElementById('pa-btn-start');
-            const track            = document.getElementById('pa-ms-track');
-            const dots             = document.querySelectorAll('.pa-ms-dot');
-            const permanentSubmits = document.getElementById('pa-permanent-submits');
-
-            // Nodos de control para el medidor de calibración estocástica
-            const signalBar        = document.getElementById('pa-signal-bar');
-            const signalStatus     = document.getElementById('pa-signal-status');
-            const signalCount      = document.getElementById('pa-signal-count');
-
-            btnStart.addEventListener('click', () => {
-              introZone.classList.add('hidden');
-              setTimeout(() => {
-                introZone.style.display = 'none';
-                formWrapper.style.display = 'block';
-                permanentSubmits.style.display = 'flex';
-                formWrapper.offsetHeight;
-                formWrapper.classList.add('visible');
-              }, 400);
-            });
-
-            function updateMsSlider() {
-              track.style.transform = `translateX(-${(msCurrentStep - 1) * 25}%)`;
-              dots.forEach((dot, index) => {
-                const stepNum = index + 1;
-                dot.classList.remove('active', 'completed');
-                if (stepNum === msCurrentStep)      dot.classList.add('active');
-                else if (stepNum < msCurrentStep)   dot.classList.add('completed');
-              });
-              if (msCurrentStep === 4) {
-                renderMsSummary();
-              } else {
-                const btnWA     = document.getElementById('pa-permanent-whatsapp');
-                const btnCorreo = document.getElementById('pa-permanent-correo');
-                btnWA.disabled = true;     btnWA.className = 'pa-permanent-btn';
-                btnCorreo.disabled = true; btnCorreo.className = 'pa-permanent-btn';
-              }
-            }
-
-            function renderMsSummary() {
-              document.getElementById('pa-ms-summary').innerHTML = `
-                <div class="pa-ms-summary-line"><span>${i18n.t('summary_identity')}:</span> ${msState.identity}</div>
-                <div class="pa-ms-summary-line"><span>${i18n.t('summary_name')}:</span> ${msState.name}</div>
-                <div class="pa-ms-summary-line"><span>${i18n.t('summary_situation')}:</span> ${msState.situation}</div>
-                <div class="pa-ms-summary-line"><span>${i18n.t('summary_urgency')}:</span> ${msState.urgency}</div>
-              `;
-              const btnWA     = document.getElementById('pa-permanent-whatsapp');
-              const btnCorreo = document.getElementById('pa-permanent-correo');
-              btnWA.disabled = false;     btnWA.classList.add('active-whatsapp');
-              btnCorreo.disabled = false; btnCorreo.classList.add('active-correo');
-            }
-
-            function valStep1() {
-              msState.name = document.getElementById('pa-ms-name').value.trim();
-              document.querySelector('.pa-ms-step[data-step="1"] .pa-ms-next-btn').disabled =
-                !(msState.identity && msState.name.length > 0);
-            }
-
-            // REFRACTORIZACIÓN: Medidor de Densidad de Señal de Contexto
-            function valStep2() {
-              const text = document.getElementById('pa-ms-situation').value;
-              msState.situation = text;
-              
-              const textLength = text.length;
-              const valid = textLength >= 30;
-              
-              // Proyección matemática del progreso (0% a 100%)
-              const percentage = Math.min((textLength / 30) * 100, 100);
-              
-              // Mutación controlada del DOM si los elementos existen
-              if (signalBar) signalBar.style.width = `${percentage}%`;
-              if (signalCount) signalCount.textContent = `${textLength}/30`;
-              
-              if (signalStatus) {
-                if (textLength === 0) {
-                  signalStatus.textContent = i18n.t('signal_inactive');
-                  if (signalBar) signalBar.classList.remove('calibrated');
-                } else if (textLength < 30) {
-                  signalStatus.textContent = i18n.t('signal_calibrating');
-                  if (signalBar) signalBar.classList.remove('calibrated');
-                } else {
-                  signalStatus.textContent = i18n.t('signal_ready');
-                  if (signalBar) signalBar.classList.add('calibrated');
-                }
-              }
-              
-              document.querySelector('.pa-ms-step[data-step="2"] .pa-ms-next-btn').disabled = !valid;
-            }
-
-            function valStep3() {
-              document.querySelector('.pa-ms-step[data-step="3"] .pa-ms-next-btn').disabled = !msState.urgency;
-            }
-
-            document.querySelectorAll('.pa-ms-btn-toggle[data-type="identity"]').forEach(btn => {
-              btn.addEventListener('click', () => {
-                msState.identity = btn.getAttribute('data-value');
-                document.querySelectorAll('.pa-ms-btn-toggle[data-type="identity"]').forEach(b => {
-                  b.classList.remove('selected', 'dimmed');
-                  if (b !== btn) b.classList.add('dimmed');
-                });
-                btn.classList.add('selected');
-                valStep1();
-              });
-            });
-
-            document.querySelectorAll('.pa-ms-btn-toggle[data-type="urgency"]').forEach(btn => {
-              btn.addEventListener('click', () => {
-                msState.urgency = btn.getAttribute('data-value');
-                document.querySelectorAll('.pa-ms-btn-toggle[data-type="urgency"]').forEach(b => {
-                  b.classList.remove('selected', 'dimmed');
-                  if (b !== btn) b.classList.add('dimmed');
-                });
-                btn.classList.add('selected');
-                valStep3();
-              });
-            });
-
-            document.getElementById('pa-ms-name').addEventListener('input', valStep1);
-            document.getElementById('pa-ms-situation').addEventListener('input', valStep2);
-
-            document.querySelectorAll('.pa-ms-next-btn').forEach(btn => {
-              btn.addEventListener('click', () => {
-                if (msCurrentStep < 4) { msCurrentStep++; updateMsSlider(); }
-              });
-            });
-
-            document.querySelectorAll('.pa-ms-back-btn').forEach(btn => {
-              btn.addEventListener('click', () => {
-                if (msCurrentStep > 1) { msCurrentStep--; updateMsSlider(); }
-              });
-            });
-
-            const buildMessage = () =>
-              `${i18n.t('msg_intro')}\n\n` +
-              `· ${i18n.t('summary_identity')}: ${msState.identity}\n` +
-              `· ${i18n.t('summary_name')}: ${msState.name}\n` +
-              `· ${i18n.t('summary_situation')}: ${msState.situation}\n` +
-              `· ${i18n.t('summary_urgency')}: ${msState.urgency}`;
-
-            document.getElementById('pa-permanent-whatsapp').addEventListener('click', () => {
-              if (!document.getElementById('pa-permanent-whatsapp').disabled) {
-                window.open(`https://wa.me/56934545677?text=${encodeURIComponent(buildMessage())}`, '_blank');
-              }
-            });
-
-            document.getElementById('pa-permanent-correo').addEventListener('click', () => {
-              if (!document.getElementById('pa-permanent-correo').disabled) {
-                window.location.href = `mailto:pscndn@gmail.com?subject=Diagnostico%20Laboratorio&body=${encodeURIComponent(buildMessage())}`;
-              }
-            });
-          });
-        </script>
-
-      </section>
-    </main>
+  <div class="motif" aria-hidden="true">
+    <div class="motif-track">
+      <div class="motif-circle"></div>
+      <div class="motif-squares">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
   </div>
-  
-  <script src="assets/js/i18n.js"></script>
-  <script src="assets/js/main.js" defer></script>
+
+  <section class="ramas">
+
+    <div class="rama">
+      <div class="rama-accent" style="background:var(--cobre)"></div>
+      <h2>Desarrollo</h2>
+      <div class="rama-sub">Sistemas que operan.</div>
+      <ul>
+        <li>Custodia — lead scoring inmobiliario <span class="estado marcha">Marcha Blanca</span></li>
+        <li>ASTRANSYS — posiciones astronómicas reales <span class="estado marcha">Marcha Blanca</span></li>
+        <li>Más proyectos <span class="estado reposo">En Reposo</span></li>
+      </ul>
+    </div>
+
+    <div class="rama">
+      <div class="rama-accent" style="background:var(--sangre)"></div>
+      <h2>Editorial</h2>
+      <div class="rama-sub">Palabra que estructura.</div>
+      <ul>
+        <li>El Concilio Literario — novela <span class="estado reposo">En Reposo</span></li>
+        <li>Bitácora — escritos y notas <span class="estado pendiente">En definición</span></li>
+      </ul>
+    </div>
+
+    <div class="rama">
+      <div class="rama-accent" style="background:var(--mostaza)"></div>
+      <h2>Audiovisual</h2>
+      <div class="rama-sub">Todavía sin forma fija.</div>
+      <div class="rama-vacia">Próximamente — esta rama se define cuando exista algo real que mostrar.</div>
+    </div>
+
+    <div class="rama">
+      <div class="rama-accent" style="background:var(--musgo)"></div>
+      <h2>Escuela</h2>
+      <div class="rama-sub">La forma de pensar, transferible.</div>
+      <ul>
+        <li>Metodología Psicoandino <span class="estado pendiente">En construcción</span></li>
+      </ul>
+    </div>
+
+  </section>
+
+  <footer>
+    <div class="redes">
+      <a href="https://www.instagram.com" title="instagram.">Instagram</a>
+      <a href="https://github.com/psicoandino" title="GitHub">GitHub</a>
+      <a href="https://www.linkedin.com/in/psicoandino" title="LinkedIn">LinkedIn</a>
+    </div>
+    <div class="contacto">
+      <a href="mailto:contacto@psicoandino.cl">contacto@psicoandino.cl</a>
+    </div>
+  </footer>
+
 </body>
 </html>
