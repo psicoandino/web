@@ -22,6 +22,8 @@
             --unit: 8px;
             --radius: 8px;
             --button-radius: 999px;
+            --motion-duration: 340ms;
+            --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         * {
@@ -41,7 +43,8 @@
 
         button,
         textarea,
-        select {
+        select,
+        input {
             font: inherit;
         }
 
@@ -53,6 +56,12 @@
             width: min(100% - 48px, 920px);
             margin: 0 auto;
             padding: 28px 0 48px;
+        }
+
+        .shell-reading {
+            width: min(100% - 64px, 680px);
+            margin: 0 auto;
+            padding: 48px 0 80px;
         }
 
         .topbar {
@@ -105,6 +114,18 @@
             flex-wrap: wrap;
         }
 
+        .view-panel {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity var(--motion-duration) var(--motion-ease),
+                transform var(--motion-duration) var(--motion-ease);
+        }
+
+        .view-panel.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         .workspace {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
@@ -114,8 +135,221 @@
 
         .status-rail,
         .main-panel,
-        .archive-panel {
+        .archive-panel,
+        .home-panel,
+        .published-panel {
             grid-column: 1 / -1;
+        }
+
+        .home-panel,
+        .published-panel {
+            display: none;
+        }
+
+        .home-panel.visible,
+        .published-panel.visible {
+            display: block;
+        }
+
+        .home-hero {
+            padding: 48px 0 40px;
+            max-width: 560px;
+        }
+
+        .home-greeting {
+            color: var(--text-faint);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .home-title {
+            margin-top: 12px;
+            font-size: clamp(28px, 4vw, 38px);
+            font-weight: 650;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+        }
+
+        .home-lead {
+            margin-top: 16px;
+            color: var(--text-soft);
+            font-size: 16px;
+            line-height: 1.6;
+            max-width: 480px;
+        }
+
+        .home-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+            margin-top: 36px;
+        }
+
+        .home-section {
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 1px solid var(--quiet-line);
+        }
+
+        .home-section-title {
+            color: var(--text-faint);
+            font-size: 11px;
+            font-weight: 750;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .home-list {
+            display: grid;
+            gap: 8px;
+        }
+
+        .home-row {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 12px;
+            min-height: 48px;
+            padding: 12px 14px;
+            border: 1px solid transparent;
+            border-radius: var(--radius);
+            background: transparent;
+            color: var(--text-soft);
+            cursor: pointer;
+            text-align: left;
+            width: 100%;
+        }
+
+        .home-row:hover {
+            border-color: var(--soft-line);
+            background: var(--surface);
+            color: var(--oled);
+        }
+
+        .home-row-title {
+            font-size: 14px;
+            line-height: 1.4;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .home-row-meta {
+            color: var(--text-faint);
+            font-size: 11px;
+            white-space: nowrap;
+        }
+
+        .published-list {
+            display: grid;
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .published-card {
+            display: block;
+            width: 100%;
+            padding: 28px 0;
+            border: 0;
+            border-bottom: 1px solid var(--quiet-line);
+            background: transparent;
+            color: inherit;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .published-card:hover .published-card-title {
+            color: var(--cobre);
+        }
+
+        .published-card-title {
+            font-size: clamp(22px, 3vw, 28px);
+            font-weight: 650;
+            line-height: 1.25;
+            letter-spacing: -0.015em;
+            transition: color 180ms ease;
+        }
+
+        .published-card-excerpt {
+            margin-top: 10px;
+            color: var(--text-soft);
+            font-size: 15px;
+            line-height: 1.55;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .published-card-meta {
+            margin-top: 14px;
+            color: var(--text-faint);
+            font-size: 12px;
+            letter-spacing: 0.02em;
+        }
+
+        .published-reader {
+            display: none;
+        }
+
+        .published-reader.visible {
+            display: block;
+        }
+
+        .published-list-view.hidden {
+            display: none;
+        }
+
+        .published-article-title {
+            font-size: clamp(32px, 5vw, 44px);
+            font-weight: 650;
+            line-height: 1.12;
+            letter-spacing: -0.025em;
+        }
+
+        .published-article-meta {
+            margin-top: 20px;
+            color: var(--text-faint);
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .published-article-body {
+            margin-top: 40px;
+            font-size: clamp(18px, 2.2vw, 21px);
+            line-height: 1.72;
+            white-space: pre-wrap;
+        }
+
+        .published-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .published-tag {
+            padding: 4px 10px;
+            border: 1px solid var(--quiet-line);
+            border-radius: var(--button-radius);
+            color: var(--text-faint);
+            font-size: 11px;
+            letter-spacing: 0.04em;
+        }
+
+        .published-disclaimer {
+            margin-top: 56px;
+            padding-top: 24px;
+            border-top: 1px solid var(--quiet-line);
+            color: var(--text-faint);
+            font-size: 12px;
+            line-height: 1.55;
+            font-style: italic;
         }
 
         .status-rail {
@@ -245,7 +479,8 @@
 
         .btn:focus-visible,
         textarea:focus-visible,
-        select:focus-visible {
+        select:focus-visible,
+        input:focus-visible {
             outline: 2px solid rgba(36, 134, 146, 0.35);
             outline-offset: 3px;
         }
@@ -274,6 +509,12 @@
         .btn-danger {
             border-color: rgba(199, 58, 74, 0.32);
             color: var(--sangre);
+        }
+
+        .btn-large {
+            min-height: 46px;
+            padding: 12px 22px;
+            font-size: 13px;
         }
 
         .main-panel {
@@ -316,6 +557,42 @@
         .sealed-view,
         .archive-panel {
             background: transparent;
+        }
+
+        .expression-meta {
+            display: grid;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .expression-title-input,
+        .expression-tags-input {
+            width: 100%;
+            border: 0;
+            border-bottom: 1px solid var(--quiet-line);
+            background: transparent;
+            color: var(--oled);
+            outline: none;
+            padding: 8px 0;
+        }
+
+        .expression-title-input {
+            font-size: clamp(22px, 2.8vw, 28px);
+            font-weight: 650;
+            letter-spacing: -0.015em;
+        }
+
+        .expression-title-input::placeholder {
+            color: rgba(0, 0, 0, 0.22);
+        }
+
+        .expression-tags-input {
+            font-size: 13px;
+            color: var(--text-soft);
+        }
+
+        .expression-tags-input::placeholder {
+            color: rgba(0, 0, 0, 0.28);
         }
 
         .writing-area {
@@ -363,12 +640,62 @@
             display: flex;
         }
 
+        .sealed-view.motion-seal {
+            animation: sealReveal 420ms var(--motion-ease) forwards;
+        }
+
+        @keyframes sealReveal {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .sealed-heading {
+            display: none;
+            font-size: clamp(24px, 3vw, 32px);
+            font-weight: 650;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        .sealed-heading.visible {
+            display: block;
+        }
+
         .sealed-text {
-            padding: 28px 0 4px;
+            padding: 8px 0 4px;
             color: var(--oled);
             font-size: clamp(19px, 2.1vw, 24px);
             line-height: 1.62;
             white-space: pre-wrap;
+        }
+
+        .seal-stamp {
+            margin-top: 8px;
+            color: var(--text-faint);
+            font-size: 12px;
+            line-height: 1.65;
+            letter-spacing: 0.02em;
+        }
+
+        .sealed-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .sealed-tag {
+            padding: 3px 9px;
+            border: 1px solid var(--quiet-line);
+            border-radius: var(--button-radius);
+            color: var(--text-faint);
+            font-size: 10px;
+            letter-spacing: 0.04em;
         }
 
         .node-meta {
@@ -441,7 +768,8 @@
         }
 
         .reflection-select,
-        .reflection-input {
+        .reflection-input,
+        .settings-input {
             width: 100%;
             min-height: 40px;
             border: 1px solid var(--soft-line);
@@ -452,7 +780,8 @@
             font-size: 13px;
         }
 
-        .reflection-select {
+        .reflection-select,
+        .settings-input {
             padding: 0 12px;
         }
 
@@ -575,12 +904,81 @@
             font-size: 14px;
         }
 
+        .dialog-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: rgba(0, 0, 0, 0.28);
+        }
+
+        .dialog-backdrop.visible {
+            display: flex;
+        }
+
+        .dialog {
+            width: min(100%, 440px);
+            max-height: min(90vh, 640px);
+            overflow-y: auto;
+            padding: 28px;
+            border: 1px solid var(--soft-line);
+            border-radius: calc(var(--radius) + 4px);
+            background: var(--hueso);
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.12);
+        }
+
+        .dialog-title {
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .dialog-section {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--quiet-line);
+        }
+
+        .dialog-section:first-of-type {
+            margin-top: 20px;
+            padding-top: 0;
+            border-top: 0;
+        }
+
+        .dialog-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .dialog-error {
+            display: none;
+            margin-top: 12px;
+            color: var(--sangre);
+            font-size: 12px;
+            line-height: 1.45;
+        }
+
+        .dialog-error.visible {
+            display: block;
+        }
+
+        .import-input {
+            display: none;
+        }
+
         .hidden {
             display: none !important;
         }
 
         @media (max-width: 760px) {
-            .shell {
+            .shell,
+            .shell-reading {
                 width: min(100% - 32px, 920px);
                 padding-top: 20px;
             }
@@ -636,49 +1034,113 @@
                 grid-template-columns: 1fr;
             }
 
-            .sealed-text {
-                padding-top: 8px;
+            .home-hero {
+                padding-top: 28px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="shell">
+    <div class="shell" id="app-shell">
         <header class="topbar">
-            <div class="brand" role="button" tabindex="0" aria-label="Volver al espacio de escritura">
+            <div class="brand" role="button" tabindex="0" aria-label="Volver al valle">
                 <span class="brand-mark" aria-hidden="true"></span>
                 <span class="brand-name">Project Emergence</span>
             </div>
             <div class="topbar-actions">
-                <button class="btn" type="button" id="btn-archive">Registro</button>
-                <button class="btn btn-accent hidden" type="button" id="btn-new-root">
-                    <span class="primitive-circle" aria-hidden="true"></span>
-                    Nueva Expresión
-                </button>
+                <button class="btn hidden" type="button" id="btn-topbar-secondary"></button>
+                <button class="btn" type="button" id="btn-settings">Ajustes</button>
             </div>
         </header>
 
         <main class="workspace">
-            <section class="status-rail" aria-label="Estado actual del pensamiento">
+            <section class="home-panel view-panel" id="home-panel" aria-label="El valle">
+                <div class="home-hero">
+                    <p class="home-greeting">El valle</p>
+                    <h1 class="home-title">Donde los pensamientos emergen</h1>
+                    <p class="home-lead">Un espacio quieto para expresar, sellar y dejar evolucionar lo que piensas — sin prisa, sin borrar el origen.</p>
+                    <div class="home-actions">
+                        <button class="btn btn-primary btn-large" type="button" id="btn-home-begin">
+                            <span class="primitive-circle" aria-hidden="true"></span>
+                            Comenzar nueva expresión
+                        </button>
+                        <button class="btn btn-accent hidden" type="button" id="btn-home-continue">Continuar expresión actual</button>
+                    </div>
+                </div>
+
+                <div class="home-section" id="home-recent-section">
+                    <h2 class="home-section-title">Genealogías recientes</h2>
+                    <div class="home-list" id="home-recent-list"></div>
+                </div>
+
+                <div class="home-section">
+                    <h2 class="home-section-title">Proyecciones maduras</h2>
+                    <p class="support-text">Pensamientos sellados que elegiste proyectar hacia afuera.</p>
+                    <div class="home-actions" style="margin-top: 20px;">
+                        <button class="btn" type="button" id="btn-home-published">
+                            <span class="primitive-triangle" aria-hidden="true"></span>
+                            Ver publicados
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="published-panel view-panel" id="published-panel" aria-label="Publicados">
+                <div class="shell-reading">
+                    <div class="published-list-view" id="published-list-view">
+                        <p class="home-greeting">Publicados</p>
+                        <h1 class="home-title" style="font-size: clamp(26px, 3.5vw, 34px);">Proyecciones del valle</h1>
+                        <p class="home-lead">Lectura serena de pensamientos maduros. La genealogía sigue siendo la fuente.</p>
+                        <div class="published-list" id="published-list"></div>
+                    </div>
+                    <article class="published-reader" id="published-reader" aria-label="Proyección publicada">
+                        <button class="btn" type="button" id="btn-published-back" style="margin-bottom: 32px;">Volver a publicados</button>
+                        <h1 class="published-article-title" id="published-reader-title"></h1>
+                        <div class="published-article-meta" id="published-reader-meta"></div>
+                        <div class="published-tags" id="published-reader-tags"></div>
+                        <div class="published-article-body" id="published-reader-body"></div>
+                        <p class="published-disclaimer">Esta proyección no es la fuente del pensamiento. La genealogía permanece intacta en el valle.</p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="status-rail hidden" id="status-rail" aria-label="Estado actual del pensamiento">
                 <div class="location">
                     <span class="location-label">Ubicación actual</span>
                     <span class="location-value" id="location-value">Expresión libre</span>
                 </div>
                 <div class="state-chain" id="state-chain">
-                    <span class="state-chip" data-state="expression"><span class="primitive-circle"></span>Expresión</span>
-                    <span class="state-chip" data-state="emergence"><span class="primitive-line"></span>Emergencia</span>
-                    <span class="state-chip" data-state="reflection"><span class="primitive-square"></span>Reflexión</span>
-                    <span class="state-chip" data-state="published"><span class="primitive-triangle"></span>Publicado</span>
+                    <span class="state-chip" data-state="expression"><span class="primitive-circle" aria-hidden="true"></span>Expresión</span>
+                    <span class="state-chip" data-state="emergence"><span class="primitive-line" aria-hidden="true"></span>Emergencia</span>
+                    <span class="state-chip" data-state="reflection"><span class="primitive-square" aria-hidden="true"></span>Reflexión</span>
+                    <span class="state-chip" data-state="published"><span class="primitive-triangle" aria-hidden="true"></span>Publicado</span>
                 </div>
             </section>
 
-            <section class="main-panel" id="main-panel">
+            <section class="main-panel hidden" id="main-panel">
                 <div class="context-note" id="parent-context">
                     <div class="context-kicker">Pensamiento padre</div>
                     <p id="parent-context-text"></p>
                 </div>
 
                 <form class="writing-form" id="writing-form">
+                    <div class="expression-meta">
+                        <input
+                            type="text"
+                            id="expression-title"
+                            class="expression-title-input"
+                            maxlength="120"
+                            placeholder="Título opcional"
+                            aria-label="Título opcional"
+                        >
+                        <input
+                            type="text"
+                            id="expression-tags"
+                            class="expression-tags-input"
+                            placeholder="Etiquetas opcionales, separadas por comas"
+                            aria-label="Etiquetas opcionales"
+                        >
+                    </div>
                     <textarea
                         id="workspace-textarea"
                         class="writing-area"
@@ -698,7 +1160,10 @@
                 </form>
 
                 <article class="sealed-view" id="sealed-view" aria-label="Pensamiento sellado">
+                    <h2 class="sealed-heading" id="sealed-heading"></h2>
                     <div class="sealed-text" id="sealed-text"></div>
+                    <div class="seal-stamp" id="seal-stamp" aria-label="Información de sellado"></div>
+                    <div class="sealed-tags" id="sealed-tags"></div>
 
                     <div class="node-meta" aria-label="Metadatos genealógicos">
                         <div class="meta-item">
@@ -731,7 +1196,7 @@
 
                     <section class="reflection-panel" aria-label="Reflexión">
                         <div class="section-heading">
-                            <h2 class="section-title"><span class="primitive-square"></span>Reflexión</h2>
+                            <h2 class="section-title"><span class="primitive-square" aria-hidden="true"></span>Reflexión</h2>
                         </div>
                         <div class="reflection-grid">
                             <div class="field">
@@ -753,7 +1218,7 @@
 
                     <section class="lineage-panel" aria-label="Genealogía y linaje">
                         <div class="section-heading">
-                            <h2 class="section-title"><span class="primitive-line"></span>Genealogía</h2>
+                            <h2 class="section-title"><span class="primitive-line" aria-hidden="true"></span>Genealogía</h2>
                             <button class="btn" type="button" id="btn-lineage">Inspeccionar Linaje</button>
                         </div>
                         <div class="lineage-body" id="lineage-body">
@@ -786,23 +1251,58 @@
         </main>
     </div>
 
+    <div class="dialog-backdrop" id="settings-dialog" role="dialog" aria-modal="true" aria-labelledby="settings-dialog-title">
+        <div class="dialog">
+            <h2 class="dialog-title" id="settings-dialog-title">Ajustes</h2>
+
+            <div class="dialog-section">
+                <div class="field">
+                    <label for="settings-author">Nombre del autor</label>
+                    <input type="text" id="settings-author" class="settings-input" maxlength="30" placeholder="Tu nombre">
+                </div>
+                <p class="support-text" style="margin-top: 8px;">Solo para metadatos y proyecciones. Máximo 30 caracteres.</p>
+            </div>
+
+            <div class="dialog-section">
+                <div class="section-kicker">Tus datos</div>
+                <p class="support-text" style="margin-top: 8px;">Exporta o importa tu genealogía completa. Todo permanece en este dispositivo.</p>
+                <div class="dialog-actions">
+                    <button class="btn btn-accent" type="button" id="btn-export">Exportar genealogía</button>
+                    <button class="btn" type="button" id="btn-import-trigger">Importar genealogía</button>
+                    <input type="file" id="import-input" class="import-input" accept="application/json,.json">
+                </div>
+                <p class="dialog-error" id="import-error"></p>
+            </div>
+
+            <div class="dialog-actions" style="margin-top: 24px;">
+                <button class="btn btn-primary" type="button" id="btn-settings-close">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         class ProjectEmergenceCore {
             constructor() {
                 this.storageKey = "emergence_kernel_v3";
                 this.legacyStorageKey = "emergence_kernel_v2";
+                this.exportFormat = "emergence_genealogy";
+                this.exportVersion = "0.2";
                 this.state = this.loadState();
                 this.isLineageOpen = false;
+                this.publishedFocusId = null;
+                this.playSealMotion = false;
+                this.motionToken = 0;
                 this.bindEvents();
                 this.render();
             }
 
             defaultState() {
                 return {
+                    settings: { authorName: "" },
                     nodes: {},
                     activeNodeId: null,
-                    activeExpression: { content: "", parentId: null },
-                    currentView: "workspace"
+                    activeExpression: { content: "", parentId: null, title: "", tagsRaw: "" },
+                    currentView: "home"
                 };
             }
 
@@ -812,19 +1312,59 @@
 
                 try {
                     const parsed = JSON.parse(source);
+                    const validViews = ["home", "workspace", "archive", "published"];
+                    let currentView = parsed.currentView || "home";
+                    if (currentView === "archive") currentView = "archive";
+                    else if (currentView === "workspace") currentView = "workspace";
+                    else if (currentView === "published") currentView = "published";
+                    else if (!validViews.includes(currentView)) currentView = "home";
+
+                    const nodes = this.normalizeImportedNodes(parsed.nodes || {});
+
                     return {
                         ...this.defaultState(),
                         ...parsed,
-                        currentView: parsed.currentView === "archive" ? "archive" : "workspace",
+                        settings: {
+                            authorName: this.clampAuthorName(parsed.settings?.authorName || "")
+                        },
+                        currentView,
                         activeExpression: {
                             content: parsed.activeExpression?.content || "",
-                            parentId: parsed.activeExpression?.parentId || null
+                            parentId: parsed.activeExpression?.parentId || null,
+                            title: this.clampTitle(parsed.activeExpression?.title || ""),
+                            tagsRaw: parsed.activeExpression?.tagsRaw || ""
                         },
-                        nodes: parsed.nodes || {}
+                        nodes
                     };
                 } catch (error) {
                     return this.defaultState();
                 }
+            }
+
+            normalizeNodeTags(node) {
+                if (Array.isArray(node.tags)) {
+                    return this.parseTags(node.tags.join(", "));
+                }
+                return this.parseTags(node.tagsRaw || node.tags || "");
+            }
+
+            normalizeImportedNodes(nodes) {
+                const normalized = {};
+                Object.values(nodes).forEach((node) => {
+                    if (!node || !node.id) return;
+                    const tags = this.normalizeNodeTags(node);
+                    const title = this.clampTitle(node.title || "");
+                    normalized[node.id] = {
+                        ...node,
+                        title,
+                        tags,
+                        searchIndex: this.buildSearchIndex(title, tags),
+                        reflections: node.reflections || [],
+                        descendantIds: node.descendantIds || [],
+                        published: Boolean(node.published)
+                    };
+                });
+                return normalized;
             }
 
             persist(shouldRender = true) {
@@ -832,14 +1372,93 @@
                 if (shouldRender) this.render();
             }
 
+            clampAuthorName(value) {
+                return String(value || "").trim().slice(0, 30);
+            }
+
+            clampTitle(value) {
+                return String(value || "").trim().slice(0, 120);
+            }
+
+            parseTags(raw) {
+                const seen = new Set();
+                const tags = [];
+                String(raw || "")
+                    .split(",")
+                    .map((part) => part.trim())
+                    .filter(Boolean)
+                    .forEach((tag) => {
+                        const key = tag.toLowerCase();
+                        if (seen.has(key)) return;
+                        seen.add(key);
+                        tags.push(tag);
+                    });
+                return tags.slice(0, 10);
+            }
+
+            buildSearchIndex(title, tags) {
+                const titleNorm = this.clampTitle(title).toLowerCase();
+                const tagsNorm = (tags || []).map((tag) => tag.toLowerCase());
+                const titleTokens = titleNorm.split(/\s+/).filter(Boolean);
+                const tokens = Array.from(new Set([...tagsNorm, ...titleTokens]));
+                return { titleNorm, tagsNorm, tokens };
+            }
+
+            hasActiveDraft() {
+                const expression = this.state.activeExpression;
+                return Boolean(
+                    expression.content.trim() ||
+                    expression.title.trim() ||
+                    expression.tagsRaw.trim() ||
+                    expression.parentId
+                );
+            }
+
             bindEvents() {
-                document.querySelector(".brand").addEventListener("click", () => this.openWorkspace());
-                document.querySelector(".brand").addEventListener("keydown", (event) => {
-                    if (event.key === "Enter" || event.key === " ") this.openWorkspace();
+                const brand = document.querySelector(".brand");
+                brand.addEventListener("click", () => this.openHome(true));
+                brand.addEventListener("keydown", (event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        this.openHome(true);
+                    }
                 });
 
-                document.getElementById("btn-archive").addEventListener("click", () => this.toggleArchive());
-                document.getElementById("btn-new-root").addEventListener("click", () => this.startFreshExpression());
+                document.getElementById("btn-settings").addEventListener("click", () => this.openSettings());
+                document.getElementById("btn-settings-close").addEventListener("click", () => this.closeSettings());
+                document.getElementById("settings-dialog").addEventListener("click", (event) => {
+                    if (event.target.id === "settings-dialog") this.closeSettings();
+                });
+                document.getElementById("settings-author").addEventListener("input", (event) => {
+                    this.state.settings.authorName = this.clampAuthorName(event.target.value);
+                    this.persist(false);
+                });
+
+                document.getElementById("btn-export").addEventListener("click", () => this.exportGenealogy());
+                document.getElementById("btn-import-trigger").addEventListener("click", () => {
+                    document.getElementById("import-input").click();
+                });
+                document.getElementById("import-input").addEventListener("change", (event) => {
+                    this.importGenealogy(event.target.files[0]);
+                    event.target.value = "";
+                });
+
+                document.getElementById("btn-topbar-secondary").addEventListener("click", () => {
+                    const view = this.state.currentView;
+                    if (view === "archive") this.openWorkspace();
+                    else if (view === "published") this.openHome(true);
+                    else if (view === "workspace") this.toggleArchive();
+                });
+
+                document.getElementById("btn-home-begin").addEventListener("click", () => this.startFreshExpression());
+                document.getElementById("btn-home-continue").addEventListener("click", () => this.openWorkspace());
+                document.getElementById("btn-home-published").addEventListener("click", () => this.openPublished(true));
+
+                document.getElementById("btn-published-back").addEventListener("click", () => {
+                    this.publishedFocusId = null;
+                    this.renderPublished();
+                });
+
                 document.getElementById("btn-archive-expression").addEventListener("click", () => this.startFreshExpression());
                 document.getElementById("btn-discard-draft").addEventListener("click", () => this.discardDraft());
                 document.getElementById("btn-descendant").addEventListener("click", () => this.createDescendantDraft());
@@ -849,8 +1468,22 @@
 
                 document.getElementById("workspace-textarea").addEventListener("input", (event) => {
                     this.state.activeExpression.content = event.target.value;
-                    document.getElementById("btn-seal").disabled = event.target.value.trim().length === 0;
-                    document.getElementById("btn-discard-draft").classList.toggle("hidden", event.target.value.trim().length === 0);
+                    this.updateDraftControls();
+                    this.persist(false);
+                });
+
+                document.getElementById("expression-title").addEventListener("input", (event) => {
+                    this.state.activeExpression.title = this.clampTitle(event.target.value);
+                    if (event.target.value !== this.state.activeExpression.title) {
+                        event.target.value = this.state.activeExpression.title;
+                    }
+                    this.updateDraftControls();
+                    this.persist(false);
+                });
+
+                document.getElementById("expression-tags").addEventListener("input", (event) => {
+                    this.state.activeExpression.tagsRaw = event.target.value;
+                    this.updateDraftControls();
                     this.persist(false);
                 });
 
@@ -860,9 +1493,150 @@
                 });
             }
 
+            updateDraftControls() {
+                const content = this.state.activeExpression.content.trim();
+                const hasDraft = this.hasActiveDraft();
+                document.getElementById("btn-seal").disabled = content.length === 0;
+                document.getElementById("btn-discard-draft").classList.toggle("hidden", !hasDraft);
+            }
+
+            openSettings() {
+                document.getElementById("settings-author").value = this.state.settings.authorName;
+                document.getElementById("import-error").classList.remove("visible");
+                document.getElementById("import-error").textContent = "";
+                document.getElementById("settings-dialog").classList.add("visible");
+            }
+
+            closeSettings() {
+                document.getElementById("settings-dialog").classList.remove("visible");
+            }
+
+            exportGenealogy() {
+                const payload = {
+                    format: this.exportFormat,
+                    version: this.exportVersion,
+                    exportedAt: new Date().toISOString(),
+                    settings: this.state.settings,
+                    nodes: this.state.nodes,
+                    activeNodeId: this.state.activeNodeId,
+                    activeExpression: this.state.activeExpression
+                };
+
+                const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+                const url = URL.createObjectURL(blob);
+                const anchor = document.createElement("a");
+                anchor.href = url;
+                anchor.download = `emergence-genealogy-${new Date().toISOString().slice(0, 10)}.json`;
+                anchor.click();
+                URL.revokeObjectURL(url);
+            }
+
+            validateImport(data) {
+                if (!data || typeof data !== "object") return "Archivo inválido.";
+                if (data.format !== this.exportFormat) return "Formato no reconocido.";
+                if (!data.nodes || typeof data.nodes !== "object") return "Falta la genealogía de nodos.";
+                if (data.settings && typeof data.settings !== "object") return "Ajustes inválidos.";
+
+                for (const node of Object.values(data.nodes)) {
+                    if (!node || typeof node !== "object") return "Nodo inválido en la genealogía.";
+                    if (!node.id || typeof node.id !== "string") return "Un nodo carece de identidad.";
+                    if (typeof node.content !== "string") return "Un nodo carece de contenido.";
+                    if (typeof node.timestamp !== "number") return "Un nodo carece de marca temporal.";
+                }
+
+                return null;
+            }
+
+            importGenealogy(file) {
+                const errorEl = document.getElementById("import-error");
+                errorEl.classList.remove("visible");
+                errorEl.textContent = "";
+
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = () => {
+                    try {
+                        const data = JSON.parse(reader.result);
+                        const validationError = this.validateImport(data);
+                        if (validationError) {
+                            errorEl.textContent = validationError;
+                            errorEl.classList.add("visible");
+                            return;
+                        }
+
+                        const confirmed = window.confirm(
+                            "Importar reemplazará por completo la genealogía actual en este dispositivo. ¿Continuar?"
+                        );
+                        if (!confirmed) return;
+
+                        this.state = {
+                            ...this.defaultState(),
+                            settings: {
+                                authorName: this.clampAuthorName(data.settings?.authorName || "")
+                            },
+                            nodes: this.normalizeImportedNodes(data.nodes),
+                            activeNodeId: data.activeNodeId || null,
+                            activeExpression: {
+                                content: data.activeExpression?.content || "",
+                                parentId: data.activeExpression?.parentId || null,
+                                title: this.clampTitle(data.activeExpression?.title || ""),
+                                tagsRaw: data.activeExpression?.tagsRaw || ""
+                            },
+                            currentView: "home"
+                        };
+
+                        this.isLineageOpen = false;
+                        this.publishedFocusId = null;
+                        this.closeSettings();
+                        this.persist();
+                    } catch (error) {
+                        errorEl.textContent = "No se pudo leer el archivo JSON.";
+                        errorEl.classList.add("visible");
+                    }
+                };
+                reader.readAsText(file);
+            }
+
+            triggerViewMotion(panelId) {
+                const panel = document.getElementById(panelId);
+                if (!panel) return;
+                const token = ++this.motionToken;
+                panel.classList.remove("is-visible");
+                requestAnimationFrame(() => {
+                    if (token !== this.motionToken) return;
+                    panel.classList.add("is-visible");
+                });
+            }
+
+            openHome(withMotion = false) {
+                this.state.currentView = "home";
+                this.publishedFocusId = null;
+                this.isLineageOpen = false;
+                this.persist(false);
+                this.render();
+                if (withMotion) this.triggerViewMotion("home-panel");
+            }
+
             openWorkspace() {
                 this.state.currentView = "workspace";
+                this.publishedFocusId = null;
                 this.persist();
+            }
+
+            openPublished(withMotion = false) {
+                this.state.currentView = "published";
+                this.publishedFocusId = null;
+                this.isLineageOpen = false;
+                this.persist(false);
+                this.render();
+                if (withMotion) this.triggerViewMotion("published-panel");
+            }
+
+            openPublishedReader(nodeId) {
+                if (!this.state.nodes[nodeId]?.published) return;
+                this.publishedFocusId = nodeId;
+                this.renderPublished();
             }
 
             toggleArchive() {
@@ -872,14 +1646,14 @@
 
             startFreshExpression() {
                 this.state.activeNodeId = null;
-                this.state.activeExpression = { content: "", parentId: null };
+                this.state.activeExpression = { content: "", parentId: null, title: "", tagsRaw: "" };
                 this.state.currentView = "workspace";
                 this.isLineageOpen = false;
                 this.persist();
             }
 
             discardDraft() {
-                this.state.activeExpression = { content: "", parentId: null };
+                this.state.activeExpression = { content: "", parentId: null, title: "", tagsRaw: "" };
                 this.persist();
             }
 
@@ -887,7 +1661,7 @@
                 const parentId = this.state.activeNodeId;
                 if (!parentId || !this.state.nodes[parentId]) return;
 
-                this.state.activeExpression = { content: "", parentId };
+                this.state.activeExpression = { content: "", parentId, title: "", tagsRaw: "" };
                 this.state.activeNodeId = null;
                 this.state.currentView = "workspace";
                 this.isLineageOpen = false;
@@ -898,14 +1672,21 @@
                 const content = this.state.activeExpression.content.trim();
                 if (!content) return;
 
+                const title = this.clampTitle(this.state.activeExpression.title);
+                const tags = this.parseTags(this.state.activeExpression.tagsRaw);
                 const id = `node_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
                 const parentId = this.state.activeExpression.parentId;
                 const parent = parentId ? this.state.nodes[parentId] : null;
                 const rootId = parent ? parent.rootId || parent.id : id;
+                const authorName = this.state.settings.authorName;
 
                 this.state.nodes[id] = {
                     id,
                     content,
+                    title,
+                    tags,
+                    searchIndex: this.buildSearchIndex(title, tags),
+                    authorName,
                     parentId,
                     rootId,
                     timestamp: Date.now(),
@@ -919,8 +1700,9 @@
                 }
 
                 this.state.activeNodeId = id;
-                this.state.activeExpression = { content: "", parentId: null };
+                this.state.activeExpression = { content: "", parentId: null, title: "", tagsRaw: "" };
                 this.state.currentView = "workspace";
+                this.playSealMotion = true;
                 this.persist();
             }
 
@@ -959,9 +1741,20 @@
                 if (!this.state.nodes[id]) return;
 
                 this.state.activeNodeId = id;
-                this.state.activeExpression = { content: "", parentId: null };
+                this.state.activeExpression = { content: "", parentId: null, title: "", tagsRaw: "" };
                 this.state.currentView = "workspace";
                 this.persist();
+            }
+
+            selectGenealogy(rootId) {
+                const rootNode = this.state.nodes[rootId];
+                if (!rootNode) return;
+
+                const latest = Object.values(this.state.nodes)
+                    .filter((node) => (node.rootId || node.id) === rootId)
+                    .sort((a, b) => b.timestamp - a.timestamp)[0];
+
+                this.selectNode(latest ? latest.id : rootId);
             }
 
             getActiveNode() {
@@ -970,6 +1763,34 @@
 
             getAllNodes() {
                 return Object.values(this.state.nodes).sort((a, b) => b.timestamp - a.timestamp);
+            }
+
+            getPublishedNodes() {
+                return this.getAllNodes().filter((node) => node.published);
+            }
+
+            getRecentGenealogies(limit = 5) {
+                const groups = {};
+
+                Object.values(this.state.nodes).forEach((node) => {
+                    const rootId = node.rootId || node.id;
+                    if (!groups[rootId]) {
+                        groups[rootId] = {
+                            rootId,
+                            latestTimestamp: node.timestamp,
+                            nodeCount: 0,
+                            labelNode: this.state.nodes[rootId] || node
+                        };
+                    }
+                    groups[rootId].nodeCount += 1;
+                    if (node.timestamp > groups[rootId].latestTimestamp) {
+                        groups[rootId].latestTimestamp = node.timestamp;
+                    }
+                });
+
+                return Object.values(groups)
+                    .sort((a, b) => b.latestTimestamp - a.latestTimestamp)
+                    .slice(0, limit);
             }
 
             getNodeChildren(nodeId) {
@@ -995,26 +1816,176 @@
                 return "emergence";
             }
 
+            getNodeLabel(node) {
+                if (node.title) return node.title;
+                const excerpt = node.content.replace(/\s+/g, " ").trim();
+                return excerpt.length > 72 ? `${excerpt.slice(0, 72)}…` : excerpt;
+            }
+
+            formatSealStamp(node) {
+                const date = new Date(node.timestamp);
+                const author = node.authorName || "Autor desconocido";
+                const dateLine = date.toLocaleDateString([], { year: "numeric", month: "2-digit", day: "2-digit" });
+                const timeLine = date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
+                return `Sellado por ${author}\n${dateLine}\n${timeLine}`;
+            }
+
             render() {
-                const isArchive = this.state.currentView === "archive";
-                const activeNode = this.getActiveNode();
-                const activeState = this.getNodeState(activeNode);
+                const view = this.state.currentView;
+                const isHome = view === "home";
+                const isPublished = view === "published";
+                const isArchive = view === "archive";
+                const isWorkspace = view === "workspace";
 
-                document.getElementById("main-panel").classList.toggle("hidden", isArchive);
+                document.getElementById("home-panel").classList.toggle("visible", isHome);
+                document.getElementById("published-panel").classList.toggle("visible", isPublished);
+                document.getElementById("status-rail").classList.toggle("hidden", !isWorkspace);
+                document.getElementById("main-panel").classList.toggle("hidden", !isWorkspace);
                 document.getElementById("archive-panel").classList.toggle("visible", isArchive);
-                document.getElementById("btn-archive").textContent = isArchive ? "Volver" : "Registro";
-                document.getElementById("btn-new-root").classList.toggle("hidden", !activeNode || isArchive);
 
-                this.renderLocation(activeNode, activeState, isArchive);
-                this.renderStateChain(activeState, isArchive);
-
-                if (isArchive) {
-                    this.renderArchive();
-                } else if (activeNode) {
-                    this.renderSealedView(activeNode);
-                } else {
-                    this.renderExpressionView();
+                if (isHome && !document.getElementById("home-panel").classList.contains("is-visible")) {
+                    this.triggerViewMotion("home-panel");
                 }
+
+                this.renderTopbar(view);
+                this.renderHome();
+
+                if (isPublished) this.renderPublished();
+                if (isArchive) this.renderArchive();
+
+                if (isWorkspace) {
+                    const activeNode = this.getActiveNode();
+                    const activeState = this.getNodeState(activeNode);
+                    this.renderLocation(activeNode, activeState, false);
+                    this.renderStateChain(activeState, false);
+
+                    if (activeNode) this.renderSealedView(activeNode);
+                    else this.renderExpressionView();
+                }
+            }
+
+            renderTopbar(view) {
+                const secondary = document.getElementById("btn-topbar-secondary");
+
+                if (view === "home") {
+                    secondary.classList.add("hidden");
+                    return;
+                }
+
+                secondary.classList.remove("hidden");
+
+                if (view === "archive") {
+                    secondary.textContent = "Volver";
+                } else if (view === "published") {
+                    secondary.textContent = "Volver al valle";
+                } else {
+                    secondary.textContent = "Registro";
+                }
+            }
+
+            renderHome() {
+                const hasDraft = this.hasActiveDraft() && !this.state.activeNodeId;
+                document.getElementById("btn-home-continue").classList.toggle("hidden", !hasDraft);
+
+                const recentSection = document.getElementById("home-recent-section");
+                const recentList = document.getElementById("home-recent-list");
+                const genealogies = this.getRecentGenealogies();
+                recentList.innerHTML = "";
+
+                if (genealogies.length === 0) {
+                    recentSection.classList.add("hidden");
+                    return;
+                }
+
+                recentSection.classList.remove("hidden");
+
+                genealogies.forEach((group) => {
+                    const row = document.createElement("button");
+                    row.type = "button";
+                    row.className = "home-row";
+                    row.addEventListener("click", () => this.selectGenealogy(group.rootId));
+
+                    const primitive = document.createElement("span");
+                    primitive.className = "primitive-circle";
+                    primitive.setAttribute("aria-hidden", "true");
+
+                    const title = document.createElement("span");
+                    title.className = "home-row-title";
+                    title.textContent = this.getNodeLabel(group.labelNode);
+
+                    const meta = document.createElement("span");
+                    meta.className = "home-row-meta";
+                    meta.textContent = `${group.nodeCount} · ${new Date(group.latestTimestamp).toLocaleDateString([], { month: "short", day: "numeric" })}`;
+
+                    row.append(primitive, title, meta);
+                    recentList.appendChild(row);
+                });
+            }
+
+            renderPublished() {
+                const listView = document.getElementById("published-list-view");
+                const reader = document.getElementById("published-reader");
+                const nodes = this.getPublishedNodes();
+
+                if (this.publishedFocusId && this.state.nodes[this.publishedFocusId]?.published) {
+                    const node = this.state.nodes[this.publishedFocusId];
+                    listView.classList.add("hidden");
+                    reader.classList.add("visible");
+
+                    document.getElementById("published-reader-title").textContent =
+                        node.title || this.getNodeLabel(node);
+                    document.getElementById("published-reader-meta").textContent =
+                        this.formatSealStamp(node).replace(/\n/g, " · ");
+                    document.getElementById("published-reader-body").textContent = node.content;
+
+                    const tagsEl = document.getElementById("published-reader-tags");
+                    tagsEl.innerHTML = "";
+                    (node.tags || []).forEach((tag) => {
+                        const chip = document.createElement("span");
+                        chip.className = "published-tag";
+                        chip.textContent = tag;
+                        tagsEl.appendChild(chip);
+                    });
+
+                    return;
+                }
+
+                listView.classList.remove("hidden");
+                reader.classList.remove("visible");
+
+                const list = document.getElementById("published-list");
+                list.innerHTML = "";
+
+                if (nodes.length === 0) {
+                    const empty = document.createElement("p");
+                    empty.className = "empty-note";
+                    empty.textContent = "Aún no hay proyecciones publicadas.";
+                    list.appendChild(empty);
+                    return;
+                }
+
+                nodes.forEach((node) => {
+                    const card = document.createElement("button");
+                    card.type = "button";
+                    card.className = "published-card";
+                    card.addEventListener("click", () => this.openPublishedReader(node.id));
+
+                    const title = document.createElement("h2");
+                    title.className = "published-card-title";
+                    title.textContent = node.title || this.getNodeLabel(node);
+
+                    const excerpt = document.createElement("p");
+                    excerpt.className = "published-card-excerpt";
+                    excerpt.textContent = node.content;
+
+                    const meta = document.createElement("p");
+                    meta.className = "published-card-meta";
+                    const author = node.authorName || "Autor desconocido";
+                    meta.textContent = `${author} · ${new Date(node.timestamp).toLocaleDateString([], { dateStyle: "medium" })}`;
+
+                    card.append(title, excerpt, meta);
+                    list.appendChild(card);
+                });
             }
 
             renderLocation(activeNode, activeState, isArchive) {
@@ -1047,15 +2018,20 @@
             renderExpressionView() {
                 document.getElementById("writing-form").classList.remove("hidden");
                 document.getElementById("sealed-view").classList.remove("visible");
+                document.getElementById("sealed-view").classList.remove("motion-seal");
 
                 const textarea = document.getElementById("workspace-textarea");
-                const content = this.state.activeExpression.content;
-                if (document.activeElement !== textarea) textarea.value = content;
+                const titleInput = document.getElementById("expression-title");
+                const tagsInput = document.getElementById("expression-tags");
+                const expression = this.state.activeExpression;
 
-                document.getElementById("btn-seal").disabled = content.trim().length === 0;
-                document.getElementById("btn-discard-draft").classList.toggle("hidden", content.trim().length === 0);
+                if (document.activeElement !== textarea) textarea.value = expression.content;
+                if (document.activeElement !== titleInput) titleInput.value = expression.title;
+                if (document.activeElement !== tagsInput) tagsInput.value = expression.tagsRaw;
 
-                const parentId = this.state.activeExpression.parentId;
+                this.updateDraftControls();
+
+                const parentId = expression.parentId;
                 const parent = parentId ? this.state.nodes[parentId] : null;
                 const context = document.getElementById("parent-context");
                 if (parent) {
@@ -1069,14 +2045,42 @@
             renderSealedView(node) {
                 document.getElementById("writing-form").classList.add("hidden");
                 document.getElementById("parent-context").classList.remove("visible");
-                document.getElementById("sealed-view").classList.add("visible");
+
+                const sealedView = document.getElementById("sealed-view");
+                sealedView.classList.add("visible");
+
+                if (this.playSealMotion) {
+                    sealedView.classList.remove("motion-seal");
+                    void sealedView.offsetWidth;
+                    sealedView.classList.add("motion-seal");
+                    this.playSealMotion = false;
+                }
+
+                const heading = document.getElementById("sealed-heading");
+                if (node.title) {
+                    heading.textContent = node.title;
+                    heading.classList.add("visible");
+                } else {
+                    heading.textContent = "";
+                    heading.classList.remove("visible");
+                }
 
                 document.getElementById("sealed-text").textContent = node.content;
+                document.getElementById("seal-stamp").textContent = this.formatSealStamp(node);
                 document.getElementById("meta-id").textContent = this.compactId(node.id);
                 document.getElementById("meta-root").textContent = node.rootId === node.id ? "Raíz" : this.compactId(node.rootId);
                 document.getElementById("meta-time").textContent = new Date(node.timestamp).toLocaleString([], {
                     dateStyle: "medium",
                     timeStyle: "short"
+                });
+
+                const tagsEl = document.getElementById("sealed-tags");
+                tagsEl.innerHTML = "";
+                (node.tags || []).forEach((tag) => {
+                    const chip = document.createElement("span");
+                    chip.className = "sealed-tag";
+                    chip.textContent = tag;
+                    tagsEl.appendChild(chip);
                 });
 
                 const publishButton = document.getElementById("btn-publish");
@@ -1171,7 +2175,7 @@
 
                     const title = document.createElement("span");
                     title.className = "node-title";
-                    title.textContent = node.content;
+                    title.textContent = this.getNodeLabel(node);
 
                     const tag = document.createElement("span");
                     tag.className = "node-tag";
