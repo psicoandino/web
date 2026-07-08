@@ -1,0 +1,2304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Custodia</title>
+    <style>
+        :root, [data-theme="oled"] {
+            --bg-pure: #000000;
+            --card-bg: #09090b;
+            --border-subtle: #27272a;
+            --text-pure: #e4e4e7;
+            --text-muted: #a1a1aa;
+            --primary-button: #ceced3;
+            --scale-a: #248692;
+            --scale-b1: #6d7c50;
+            --scale-b2: #b78627;
+            --scale-d: #c73a4a;
+            --touch-target: 56px;
+            --action-bg: #ffffff;
+            --action-fg: #0a0a0a;
+        }
+
+        [data-theme="dark"] {
+            --bg-pure: #17171a;
+            --card-bg: #202024;
+            --border-subtle: #33333a;
+            --text-pure: #e4e4e7;
+            --text-muted: #a1a1aa;
+            --action-bg: #ffffff;
+            --action-fg: #0a0a0a;
+        }
+
+        [data-theme="light"] {
+            --bg-pure: #f4f4f5;
+            --card-bg: #ffffff;
+            --border-subtle: #e4e4e7;
+            --text-pure: #18181b;
+            --text-muted: #52525b;
+            --action-bg: #2a2a2e;
+            --action-fg: #ffffff;
+        }
+
+        [data-theme="sepia"] {
+            --bg-pure: #f4ecd8;
+            --card-bg: #ece1c8;
+            --border-subtle: #d8c9a3;
+            --text-pure: #433422;
+            --text-muted: #7a6a4f;
+            --action-bg: #4a3826;
+            --action-fg: #f4ecd8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-pure);
+            color: var(--text-pure);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            letter-spacing: 0.01em;
+            height: 100dvh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        h1, h2, h3, .premium-title {
+            font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            color: var(--text-pure);
+        }
+
+        .hidden { display: none !important; }
+
+        #admin-app-shell {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+        }        
+
+        /* HEADER */
+        header {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-pure);
+            z-index: 10;
+            flex-shrink: 0;
+        }
+
+        h1 { font-size: 18px; }
+
+        /* OVERLAYS & PANELS */
+        #lock-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-pure);
+            z-index: 1000;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer; /* Indica que toda la pantalla es interactiva */
+        }
+
+        #capture-panel {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-pure);
+            z-index: 1000;
+            padding: 20px 20px 50vh 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: 16px;
+            overflow-y: auto;
+        }
+
+        textarea#pastebox {
+            width: 100%;
+            height: 140px;
+            background: var(--bg-pure);
+            color: var(--text-pure);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 16px;
+            resize: none;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            width: 100%;
+        }
+
+        .field-group label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .manual-fields {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .manual-fields input, .manual-fields select {
+            height: var(--touch-target);
+            background: var(--bg-pure);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 0 12px;
+            color: var(--text-pure);
+            font-size: 16px; /* Evita zoom automático en iOS */
+            outline: none;
+            width: 100%;
+            font-family: inherit;
+        }
+
+        .pin-display {
+            font-size: 44px;
+            letter-spacing: 8px;
+            text-align: center;
+            border: none;
+            background: transparent;
+            color: var(--text-pure);
+            width: 100%;
+            max-width: 280px;
+            height: var(--touch-target);
+            outline: none;
+            margin-bottom: 20px;
+            font-family: inherit;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+            flex-shrink: 0;
+        }
+
+        .btn {
+            height: var(--touch-target);
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            width: 100%;
+            padding: 0 24px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        .btn-primary {background: var(--action-bg); color: var(--action-fg); }
+        .btn-secondary { background: var(--border-subtle); color: var(--text-pure); }
+        .btn-danger { background: #ef4444; border: 3px solid #ef4444; color: #ffffff; }
+
+        /* Nueva clase para botones en pareja */
+        .btn-row {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+        }
+
+        /* Ajuste fino para botones dentro de una fila */
+        .btn-row .btn {
+            flex: 1; /* Esto hace que se dividan el ancho 50/50 */
+            width: auto; /* Anula el width 100% solo aquí */
+        }
+
+        .btn-danger-solid { 
+            background: #ef4444 !important; 
+            color: #ffffff !important; 
+            border: none !important; 
+        }
+        .btn-danger-solid:active { 
+            filter: brightness(0.8); 
+        }
+
+        /* Solo los botones que NO están en una fila ocupan el 100% por defecto */
+        #admin-app-shell .btn, #welcome-overlay .btn {
+            width: 100%;
+        }
+
+        #btn-save-broker-name {
+            flex: none !important;
+            width: 80px !important;
+        }
+
+        /* VIEWS & CARDS */
+        .views-slider {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .stack {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-bottom: 100px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 16px;
+            position: relative;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .card-info h3 { font-size: 18px; margin-bottom: 4px; }
+        .card-info p { font-size: 12px; color: var(--text-muted); }
+        .card-info .card-secondary { font-size: 14px; font-weight: 500; color: var(--text-pure); margin-bottom: 2px; }
+        .card-info .card-tertiary { font-size: 12px; color: var(--text-muted); }
+        
+        .survey-summary {
+            font-size: 12px;
+            background: var(--card-bg);
+            padding: 8px;
+            border-radius: 6px;
+            margin: 8px 0;
+            color: var(--text-muted);
+            border: 1px solid #1c1c1e;
+        }
+
+        .tier-badge {
+            position: absolute;
+            top: 0;
+            right: 14px;
+            width: 28px;
+            height: 40px;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 8px;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%);
+        }
+
+        .archive-btn {
+            width: var(--touch-target);
+            height: var(--touch-target);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--card-bg);
+            border-radius: 6px;
+            border: none;
+            color: var(--text-pure);
+            cursor: pointer;
+        }
+
+        #btn-open-capture-leads, #btn-toggle-new-prop {
+            background: var(--action-bg);
+            color: var(--action-fg);
+        }
+
+        .icon-btn {
+    flex: 1;
+    height: var(--touch-target);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    background: var(--card-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-subtle);
+    color: var(--text-pure);
+    cursor: pointer;
+    }
+    .icon-btn .btn-label {
+        font-size: 9px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        line-height: 1;
+    }
+
+        .icon-btn:active { background: #232327; }
+        .icon-btn svg { width: 20px; height: 20px; }
+        .icon-btn.copied { background: var(--action-bg); border-color: var(--action-bg); color: var(--action-fg); }
+
+        .whatsapp-btn { background: #25D366; border: none; border-radius: 10px; }
+        .whatsapp-btn:active { background: #25D366; }
+
+        .key-input-row { margin-top: 10px; }
+
+        .key-input {
+            flex: 1;
+            height: 40px;
+            background: var(--bg-pure);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-pure);
+            border-radius: 8px;
+            padding: 0 10px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .btn-sm { height: 40px; padding: 0 14px; font-size: 11px; flex: none; width: auto; }
+
+        #admin-app-shell .key-input-row .btn-sm {
+            width: auto;
+        }
+
+        #admin-app-shell .btn-sm, #welcome-overlay .btn-sm { width:auto; flex:none; }
+        
+        .key-error {
+            font-size: 11px;
+            color: #ef4444;
+            margin-top: 6px;
+            min-height: 14px;
+        }
+
+        .mode-switch {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            height: 40px;
+            border-radius: 8px;
+            border: 1px solid var(--border-subtle);
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            cursor: pointer;
+        }
+
+        .mode-btn.active {
+            background: var(--action-bg);
+            border-color: var(--action-bg);
+            color: var(--action-fg);
+        }
+
+        /* FAB */
+        .fab {
+            position: fixed;
+            bottom: 84px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--action-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--action-fg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.55), 0 2px 8px rgba(0,0,0,0.4);
+            z-index: 100;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .fab:active {
+            transform: scale(0.93);
+            box-shadow: 0 5px 16px rgba(0,0,0,0.5);
+        }
+
+        .fab svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        /* NAV */
+        nav {
+            height: 72px;
+            border-top: 1px solid var(--border-subtle);
+            display: flex;
+            background: var(--bg-pure);
+            flex-shrink: 0;
+            padding-bottom: env(safe-area-inset-bottom)+ 8px;
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: var(--text-muted);
+            gap: 4px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-item.active { color: var(--action-bg); background: var(--border-subtle); border-top: 2px solid var(--action-bg); margin-top: -2px; }
+        .nav-item span:first-child { font-size: 18px; }
+
+        /* ARQUITECTURA CLIENT VIEW (OPTIMIZADA PARA TECLADO MÓVIL) */
+        #client-form-view {
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 24px 16px 50vh 16px; /* Amortiguación inferior para evitar ocultar botones */
+        }
+
+        .q-block { margin-bottom: 24px; }
+        .q-title { font-family: Georgia, serif; font-size: 18px; margin-bottom: 16px; text-align: center; color: var(--text-pure); }
+        .q-option {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            background: var(--card-bg);
+            font-size: 14px;
+        }
+        .q-option input { margin-right: 12px; width: 22px; height: 22px; accent-color: var(--action-bg); }
+
+        .empty-state {
+            text-align: center;
+            margin-top: 40px;
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .error-toast {
+            color: #ef4444;
+            font-size: 12px;
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        .input-invalid { border-color: #ef4444 !important; }
+        .field-error-hint { color: #ef4444; font-size: 11px; margin-top: 4px; display: block; }
+        .char-counter { font-size: 10px; color: var(--text-muted); text-align: right; display: block; margin-top: 2px; }
+
+        /* PANTALLA DE ESTADO CRÍTICO */
+        #critical-error-overlay {
+            position: fixed;
+            inset: 0;
+            background: #000000;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            text-align: center;
+        }
+        #critical-error-overlay h2 {
+            font-family: Georgia, serif;
+            font-size: 22px;
+            color: #ef4444;
+            margin-bottom: 12px;
+        }
+        #critical-error-overlay p {
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.6;
+            max-width: 290px;
+        }
+        #setup-step-1, #setup-step-2 { transition: opacity 0.28s ease; }
+        .setup-dot { width:6px; height:6px; border-radius:50%; background:var(--border-subtle); transition: background 0.3s ease; display:inline-block; }
+        .setup-dot.active { background: var(--action-bg); }
+
+        @keyframes shake-attention {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-4px); }
+            40% { transform: translateX(4px); }
+            60% { transform: translateX(-3px); }
+            80% { transform: translateX(3px); }
+        }
+        .shake-cue { animation: shake-attention 0.4s ease; }
+        .btn-soft-disabled { opacity: 0.5; }
+
+        @keyframes lead-highlight-flash {
+            0% { box-shadow: 0 0 0 2px var(--action-bg); }
+            100% { box-shadow: 0 0 0 0 rgba(0,0,0,0); }
+        }
+        .lead-highlight { animation: lead-highlight-flash 1s ease; }
+
+        .prop-leads-toggle {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-subtle);
+            font-size: 12px;
+            color: var(--text-muted);
+            cursor: pointer;
+            user-select: none;
+        }
+        .prop-leads-list {
+            margin-top: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .prop-lead-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-pure);
+            background: var(--bg-pure);
+            border-radius: 8px;
+            padding: 8px 10px;
+        }
+
+        .theme-swatch { width:32px; height:32px; border-radius:50%; border:2px solid var(--border-subtle); cursor:pointer; padding:0; flex-shrink:0; }
+        .theme-swatch.active { border-color: var(--action-bg); }
+
+        .star-btn { background: none; border: none; cursor: pointer; line-height: 1; padding: 2px; color: var(--text-muted); display: flex; align-items: center; justify-content: center; }
+        .star-btn.is-fav { color: var(--text-pure); }
+        .q-slide, #final-slide { transition: opacity 0.25s ease; }
+    </style>
+</head>
+<body>
+    <a id="btn-help" href="manual.html" target="_blank" rel="noopener" title="Ayuda / Manual" aria-label="Ayuda / Manual" style="position:fixed; bottom:84px; left:16px; width:44px; height:44px; border-radius:50%; background:var(--action-bg); border:1px solid var(--border-subtle); color:var(--action-fg); display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:600; text-decoration:none; z-index:10000; font-family:Georgia, serif;">?</a>
+    <div id="help-nudge" class="hidden" style="position:fixed; bottom:136px; left:16px; max-width:200px; background:var(--card-bg); border:1px solid var(--border-subtle); border-radius:12px; padding:10px 12px; font-size:12px; color:var(--text-pure); z-index:10000; box-shadow:0 4px 12px rgba(0,0,0,0.35); cursor:pointer;">¿Primera vez en Custodia? Revisa el manual antes de partir.</div>
+    <div id="detail-modal" class="hidden" style="position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:9999; display:flex; align-items:flex-end; justify-content:center;">
+        <div style="background:var(--card-bg); width:100%; max-width:480px; border-radius:16px 16px 0 0; padding:20px; max-height:80vh; overflow-y:auto; border:1px solid var(--border-subtle); border-bottom:none;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+                <h3 id="detail-modal-title" style="font-size:15px; color:var(--text-pure); font-weight:600;"></h3>
+                <button type="button" id="detail-modal-close" class="icon-btn" title="Cerrar">✕</button>
+            </div>
+            <div id="detail-modal-body"></div>
+        </div>
+    </div>
+
+    <div id="critical-error-overlay" class="hidden">
+        <h2>Este link no funciona</h2>
+        <p>Puede haber sido modificado o ya no pertenece a esta oficina. Pide a tu corredora o corredor que te envíe el link de nuevo.</p>
+    </div>
+
+    <div id="lock-overlay" class="hidden">
+        <h2 id="lock-broker-name" style="font-size:38px; margin-bottom:10px; pointer-events:none;"></h2>        <p style="color:var(--text-muted); font-size:11px; margin-bottom:20px; text-transform:uppercase; letter-spacing:0.05em; pointer-events:none;">Ingresa tu PIN de Seguridad</p>
+        <input type="password" id="pin-input" class="pin-display" maxlength="4" placeholder="••••" inputmode="numeric">
+        <div id="lock-error" class="error-toast" style="pointer-events:none;"></div>
+    </div>
+
+    <div id="welcome-overlay" class="hidden" style="position:fixed; inset:0; background:var(--bg-pure); z-index:9999; display:flex; flex-direction:column; justify-content:flex-start; padding:40px 24px 50vh 24px; overflow-y:auto; -webkit-overflow-scrolling:touch;">
+        <div id="setup-progress" style="display:flex; justify-content:center; gap:6px; margin-bottom:20px;">
+            <span class="setup-dot active" data-dot="1"></span>
+            <span class="setup-dot" data-dot="2"></span>
+        </div>
+        <div id="setup-step-1">
+            <p style="color:var(--text-muted); margin-bottom:4px; font-size:10px; text-align:center; letter-spacing:0.12em; text-transform:uppercase;">Custodia</p>
+            <h2 style="font-size:26px; margin-bottom:6px; text-align:center;">Configura tu oficina</h2>
+            <p style="color:var(--text-muted); margin-bottom:32px; font-size:12px; text-align:center;">Menos de un minuto y ya puedes registrar contactos</p>
+            <div style="display:flex; flex-direction:column; gap:16px; margin-bottom:32px;">
+                <div class="field-group">
+                    <label>Nombre Profesional * (Visible para sus contactos)</label>
+                    <input type="text" id="setup-broker-name" maxlength="30" placeholder="Ej: Elena Silva" style="height:48px; background:var(--card-bg); border:1px solid var(--border-subtle); color:var(--text-pure); padding:0 12px; border-radius:8px; font-size:16px; outline:none; font-family:inherit;">
+                </div>
+
+                <div class="field-group">
+                    <label>WhatsApp Receptor * (8 dígitos móviles restantes)</label>
+                    <p style="font-size:11px; color:var(--text-muted); margin:-4px 0 2px 0;">Aquí llegarán los Sellos cuando tus contactos completen su perfil.</p>
+                    <div style="display:flex; align-items:center; background:var(--card-bg); border:1px solid var(--border-subtle); border-radius:8px; padding-left:14px; height:48px;">
+                        <span style="color:var(--text-muted); font-size:16px; user-select:none; font-family:-apple-system,BlinkMacSystemFont,sans-serif; margin-right:4px;">+56 9</span>
+                        <input type="tel" id="setup-broker-phone" placeholder="1234 5678" maxlength="9" style="height:100%; background:transparent; border:none; color:var(--text-pure); padding:0; font-size:16px; outline:none; flex:1; font-family:inherit;">
+                    </div>
+                </div>
+            </div>
+            <div style="margin-bottom:20px;">
+                <p style="color:var(--text-muted); font-size:11px; text-align:center; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px;">Escoge tu Tema</p>
+                <div style="display:flex; justify-content:center; gap:12px;">
+                    <button type="button" class="theme-swatch" data-theme-choice="oled" style="background:#000000;" title="OLED"></button>
+                    <button type="button" class="theme-swatch" data-theme-choice="dark" style="background:#17171a;" title="Oscuro"></button>
+                    <button type="button" class="theme-swatch active" data-theme-choice="light" style="background:#f4f4f5;" title="Claro"></button>
+                    <button type="button" class="theme-swatch" data-theme-choice="sepia" style="background:#f4ecd8;" title="Sepia"></button>
+                </div>
+            </div>
+            <button id="btn-setup-next" class="btn btn-primary" style="height:48px; flex-shrink:0;">Siguiente</button>
+            <div style="margin-top:28px; padding-top:16px; border-top:1px dashed #27272a; text-align:center;">
+                <button type="button" id="btn-setup-import" style="background:none; border:none; color:var(--text-muted); font-size:11px; text-decoration:underline; cursor:pointer; padding:8px;">¿Ya tienes un respaldo .json? Cargar aquí</button>
+            </div>
+        </div>
+        <div id="setup-step-2" class="hidden">
+            <h2 style="font-size:24px; margin-bottom:6px; text-align:center;">Su PIN de Seguridad</h2>
+            <p style="color:var(--text-muted); margin-bottom:32px; font-size:11px; text-align:center; letter-spacing: 0.08em; text-transform: uppercase;">Último Paso</p>
+
+            <div id="pin-entry-block">
+                <div class="field-group" style="margin-bottom:32px;">
+                    <label>PIN de Seguridad Personal * (4 dígitos)</label>
+                    <p style="font-size:11px; color:var(--text-muted); margin:-4px 0 2px 0;">Queda solo en este dispositivo. Nadie más lo ve ni lo recibe.</p>
+                    <input type="password" id="setup-pin" placeholder="Ej: 1234" maxlength="4" inputmode="numeric" style="height:48px; background:var(--card-bg); border:1px solid var(--border-subtle); color:var(--text-pure); padding:0 12px; border-radius:8px; font-size:16px; outline:none; font-family:inherit;">
+                </div>
+                <div class="btn-row">
+                    <button type="button" class="btn btn-secondary" id="btn-setup-back">Atrás</button>
+                    <button id="btn-save-setup" class="btn btn-primary">Generar Mineral</button>
+                </div>
+            </div>
+
+            <div id="mineral-inline-block" class="hidden" style="opacity:0; transition: opacity 0.4s ease; margin-top:24px;">
+                <p style="color:var(--text-muted); margin-bottom:12px; font-size:12px; text-align:center; line-height:1.5;">Esta es tu clave personal de seguridad. Guárdala ahora — no se vuelve a mostrar. Sin ella, nadie (ni nosotros) puede recuperar tus datos si cambias de teléfono. En Custodia le llamamos tu "Mineral".</p>                <div id="mineral-display" style="background:var(--card-bg); border:1px solid var(--border-subtle); border-radius:8px; padding:16px; margin-bottom:16px; word-break:break-all; font-family:monospace; font-size:15px; text-align:center; letter-spacing:0.03em;"></div>
+                <div style="display:flex; gap:8px; margin-bottom:16px;">
+                    <button type="button" class="btn btn-secondary" id="btn-copy-mineral" style="height:44px; flex:1;">Copiar Mineral</button>
+                    <button type="button" class="btn btn-secondary" id="btn-send-mineral-self" style="height:44px; flex:1; background:#25D366; border-color:#25D366; color:#fff;">Enviarme por WhatsApp</button>
+                </div>
+                <label style="display:flex; align-items:flex-start; gap:10px; margin-bottom:16px; font-size:12px; color:var(--text-muted); cursor:pointer;" id="mineral-checkbox-label">
+                    <input type="checkbox" id="chk-mineral-saved" style="width:20px; height:20px; flex-shrink:0; margin-top:2px;">
+                    <span>Ya guardé mi Mineral en un lugar seguro. Entiendo que no volveré a verlo aquí.</span>
+                </label>
+                <button id="btn-mineral-continue" class="btn btn-primary" style="height:48px;">Continuar</button>
+                <div style="border-top:1px solid var(--border-subtle); margin-top:24px; padding-top:20px;">
+                    <button id="btn-hard-reset-onboarding" class="btn btn-danger-solid" type="button">REINICIAR</button>
+                    <p style="font-size:11px; color:var(--text-muted); text-align:center; margin-top:8px;">Volver a comenzar la configuración</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="import-mineral-overlay" class="hidden" style="position:fixed; inset:0; background:#000; z-index:9999; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:24px;">
+        <h2 style="font-size:20px; margin-bottom:6px; text-align:center;">Desbloquear Respaldo</h2>
+        <p style="color:var(--text-muted); margin-bottom:20px; font-size:12px; text-align:center; max-width:320px; line-height:1.5;">Este respaldo está cifrado. Ingrese el Mineral asociado para descifrarlo. No se lee automáticamente por seguridad.</p>
+        <input type="password" id="import-mineral-input" placeholder="Mineral" autocomplete="off" style="height:48px; width:100%; max-width:320px; background:#09090b; border:1px solid #27272a; color:#fff; padding:0 12px; border-radius:8px; font-size:16px; outline:none; font-family:monospace; margin-bottom:8px;">
+        <div id="import-mineral-error" class="error-toast" style="min-height:16px; margin-bottom:12px;"></div>
+        <div class="btn-row" style="max-width:320px; width:100%;">
+            <button type="button" class="btn btn-secondary" id="btn-cancel-import-mineral">Cancelar</button>
+            <button type="button" class="btn btn-primary" id="btn-confirm-import-mineral">Desbloquear</button>
+        </div>
+    </div>
+
+    <div id="admin-app-shell" class="hidden">
+        <header>
+            <h1 id="app-title">Cargando...</h1>
+            <div style="display:flex; gap:8px;">
+                <input type="file" id="import-file-input" accept="application/json" class="hidden">
+                <button id="btn-open-settings" class="archive-btn" style="width:36px; height:36px; font-size:14px;" title="Ajustes">⚙️</button>
+            </div>
+        </header>
+
+        <div id="settings-panel" class="hidden" style="position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:2000; display:flex; align-items:flex-end;">
+            <div style="background:var(--bg-pure); width:100%; border-radius:16px 16px 0 0; padding:24px 20px 40px 20px; border-top:1px solid var(--border-subtle); max-height:90vh; overflow-y:auto;">
+                <div style="position:sticky; top:0; z-index:20; display:flex; justify-content:flex-end; margin:-4px -4px -36px 0; pointer-events:none;">
+                    <button id="btn-close-settings" type="button" aria-label="Cerrar" style="pointer-events:auto; width:32px; height:32px; border-radius:50%; background:var(--card-bg); border:1px solid var(--border-subtle); color:var(--text-muted); font-size:14px; display:flex; align-items:center; justify-content:center; cursor:pointer;">✕</button>
+                </div>
+                <h3 style="font-size:16px; margin-bottom:16px;">Ajustes</h3>
+
+                <label style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.06em;">Tema</label>
+                <div style="display:flex; gap:8px; margin:8px 0 20px 0;">
+                    <button class="mode-btn" data-theme-choice="oled" type="button">OLED</button>
+                    <button class="mode-btn" data-theme-choice="dark" type="button">Oscuro</button>
+                    <button class="mode-btn" data-theme-choice="light" type="button">Claro</button>
+                    <button class="mode-btn" data-theme-choice="sepia" type="button">Sepia</button>
+                </div>
+                <label style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.06em;">Nombre Profesional</label>
+                <div style="display:flex; gap:8px; margin:8px 0 20px 0;">
+                    <input type="text" id="settings-broker-name" maxlength="30" class="key-input" placeholder="Nombre visible para tus contactos">
+                    <button id="btn-save-broker-name" class="btn btn-primary btn-sm" type="button">Guardar</button>
+                </div>
+
+                <label style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.06em;">Valor UF de Referencia (opcional)</label>
+                <p style="font-size:10px; color:var(--text-muted); margin:4px 0 8px 0;">Si lo ingresas, verás una conversión estimada al escribir precios. Se actualiza solo cuando tú lo editas — nadie más lo hará por ti.</p>
+                <div style="display:flex; gap:8px; margin:0 0 20px 0;">
+                    <input type="text" id="settings-uf-ref" class="key-input" placeholder="Ej: 39000" inputmode="numeric" maxlength="10">
+                    <button id="btn-save-uf-ref" class="btn btn-primary btn-sm" type="button">Guardar</button>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                    <div style="display:flex; gap:10px;">
+                        <button id="btn-export-backup" class="btn btn-secondary" style="flex:1;" type="button">⬇️ Exportar respaldo</button>
+                        <button id="btn-import-backup" class="btn btn-secondary" style="flex:1;" type="button">⬆️ Importar respaldo</button>
+                    </div>
+                    <a href="manual.html" target="_blank" rel="noopener" class="btn btn-secondary" style="text-decoration:none;">❓ Ayuda / Manual</a>
+                    <button id="btn-send-feedback" class="btn btn-secondary" type="button">💬 Enviar comentarios</button>
+                    <button id="btn-lock-system" class="btn btn-secondary" type="button">🔒 Bloquear sesión</button>
+                </div>
+                <div style="border-top:1px solid var(--border-subtle); margin-top:24px; padding-top:20px;">
+                    <button id="btn-hard-reset" class="btn btn-danger-solid" type="button">REINICIAR</button>
+                    <p style="font-size:11px; color:var(--text-muted); text-align:center; margin-top:8px;">Esta acción no se puede deshacer</p>
+                </div>
+            </div>
+        </div>
+
+        <section id="capture-panel" class="hidden">
+            <div class="mode-switch">
+                <button class="mode-btn active" id="btn-mode-paste" type="button">Pegar Sello / S-</button>
+                <button class="mode-btn" id="btn-mode-manual" type="button">Agregar Manual</button>
+            </div>
+
+            <div id="paste-mode">
+                <textarea id="pastebox" placeholder="Pega el sello de tu contacto aquí: S-..."></textarea>
+                <div id="capture-error" class="error-toast"></div>
+            </div>
+            
+            <div id="manual-mode" class="hidden">
+                <div class="manual-fields">
+                    <input type="text" id="m-name" maxlength="30" placeholder="Nombre Completo *">
+                    <div style="display:flex; align-items:center; background:var(--bg-subtle); border:1px solid #27272a; border-radius:8px; padding-left:14px; height:48px;">
+                        <span style="color:var(--text-muted); font-size:16px; user-select:none; margin-right:4px;">+56 9</span>
+                        <input type="tel" id="m-phone" placeholder="1234 5678" maxlength="9" style="height:100%; background:transparent; border:none; color:var(--text-pure); padding:0; font-size:16px; outline:none; flex:1;">
+                    </div>
+                    <select id="m-slug"></select>
+                </div>
+            </div>
+
+            <div class="btn-row">
+                <button class="btn btn-primary" id="btn-action-save">Procesar</button>
+            </div>
+            <button class="btn btn-danger" id="btn-close-capture">Cancelar</button>
+        </section>
+
+        <main class="views-slider">
+            <div id="topbar" style="display:flex; gap:8px; padding:10px 16px; border-bottom:1px solid var(--border-subtle);">
+                <input type="text" id="lead-search" placeholder="Buscar por nombre o teléfono..." class="key-input" style="flex:2;">
+                <select id="lead-sort" class="key-input" style="flex: 1; min-width: 0; width: 0; text-overflow: ellipsis;">
+                    <option value="recent">Recientes</option>
+                    <option value="score">Mayor puntaje</option>
+                    <option value="qualified">Calificados primero</option>
+                </select>
+                <button id="btn-open-capture-leads" class="archive-btn" style="width:36px; height:36px; font-size:14px; " title="Agregar">＋</button>
+            </div>
+            <div id="view-leads" class="stack"></div>
+            
+            <div id="view-inventory" class="stack hidden">
+                <div id="new-prop-form" class="card hidden" style="border-style: dashed;">
+                    <h3 style="font-size:16px; margin-bottom:12px;">Nueva Propiedad</h3>
+                    <div class="manual-fields">
+                        <input type="text" id="p-slug" maxlength="30" placeholder="Nombre de la propiedad (ej: depto-providencia)">
+                        <div style="display:flex; gap:8px;">
+                            <button type="button" class="mode-btn active" id="p-currency-uf" data-currency="UF" style="flex:0 0 60px; height:48px;">UF</button>
+                            <button type="button" class="mode-btn" id="p-currency-clp" data-currency="CLP" style="flex:0 0 60px; height:48px;">CLP</button>
+                            <input type="text" id="p-price" placeholder="0" inputmode="numeric" maxlength="13" style="flex:1;">
+                        </div>
+                        <p id="p-price-hint" style="font-size:11px; color:var(--text-muted); margin:-6px 0 0 2px; min-height:14px;"></p>
+                        <select id="p-tipo"></select>
+                        <select id="p-comuna"></select>
+                        <button class="btn btn-primary" id="btn-save-prop">Guardar Propiedad</button>
+                    </div>
+                </div>
+                <div id="inventory-list" class="stack"></div>
+            </div>
+
+            <div id="view-trash" class="stack hidden"></div>
+        </main>
+
+        <div id="fab" class="fab">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 5v14"></path>
+                <path d="M5 12h14"></path>
+            </svg>
+        </div>
+
+        <nav>
+            <div class="nav-item active" data-view="view-leads"><span>👥</span><span>Contactos</span></div>
+            <div class="nav-item" data-view="view-inventory"><span>🏠</span><span>Propiedades</span></div>
+            <div class="nav-item" data-view="view-trash"><span>🗃️</span><span>Archivados</span></div>
+        </nav>
+    </div>
+
+    <div id="client-form-view" class="hidden">
+        <header style="border-bottom:none; display:flex; flex-direction:column; align-items:center; text-align:center; padding:16px 16px 16px 16px;">
+            <div id="client-header-main" class="premium-title" style="font-size:24px; line-height:1.2; margin-bottom:4px;"></div>
+            <div id="client-header-sub" style="font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:14px; font-weight:400;"></div>
+            <div id="client-prop-title" style="font-size:11px; background: var(--bg); border:1px solid var(--border-subtle); padding:4px 12px; border-radius:4px; color:var(--text-pure); font-weight:600; letter-spacing:0.04em;"></div>
+        </header>
+    
+
+        <form id="q-form" style="padding: 0 8px;">
+            <div style="width:100%; height:2px; background:#111; margin-bottom:32px;">
+                <div id="progress-bar" style="width:0%; height:100%; background:var(--action-bg); transition:0.3s;"></div>
+            </div>
+
+            <!-- Slide 1: Liquidez (Pie) -->
+            <div class="q-slide" data-step="1">
+                <p class="q-title">¿Cómo tiene planificado cubrir el pie de la propiedad?</p>
+                <label class="q-option"><input type="radio" name="q1" value="25" required> Tengo el 20% o más disponible ahora</label>
+                <label class="q-option"><input type="radio" name="q1" value="15"> Tengo el 10% y estoy ahorrando el resto</label>
+                <label class="q-option"><input type="radio" name="q1" value="5"> Estoy evaluando opciones de financiamiento</label>
+                <label class="q-option"><input type="radio" name="q1" value="0"> Prefiero no responder / En definición</label>
+            </div>
+
+            <!-- Slide 2: Solvencia (Crédito) -->
+            <div class="q-slide hidden" data-step="2">
+                <p class="q-title">¿Cuál es su situación con el sistema bancario?</p>
+                <label class="q-option"><input type="radio" name="q2" value="25" required> Tengo crédito aprobado o compro al contado</label>
+                <label class="q-option"><input type="radio" name="q2" value="15"> Estoy en proceso de evaluación bancaria</label>
+                <label class="q-option"><input type="radio" name="q2" value="5"> Aún no he consultado con instituciones</label>
+                <label class="q-option"><input type="radio" name="q2" value="0"> Prefiero no responder / Solo explorando</label>
+            </div>
+
+            <!-- Slide 3: Acción (Conducta de Búsqueda) -->
+            <div class="q-slide hidden" data-step="3">
+                <p class="q-title">¿Ha visitado otras propiedades en los últimos 15 días?</p>
+                <label class="q-option"><input type="radio" name="q3" value="25" required> Sí, he visitado físicamente propiedades</label>
+                <label class="q-option"><input type="radio" name="q3" value="15"> He visto tours virtuales y solicitado fichas</label>
+                <label class="q-option"><input type="radio" name="q3" value="5"> Estoy recién comenzando mi búsqueda</label>
+                <label class="q-option"><input type="radio" name="q3" value="0"> Prefiero no responder / Búsqueda pasiva</label>
+            </div>
+
+            <!-- Slide 4: Urgencia (Plazo de Cierre) -->
+            <div class="q-slide hidden" data-step="4">
+                <p class="q-title">¿Cuál es su ventana de tiempo para concretar?</p>
+                <label class="q-option"><input type="radio" name="q4" value="25" required> Necesito concretar en menos de 60 días</label>
+                <label class="q-option"><input type="radio" name="q4" value="15"> Mi plazo es de 3 a 6 meses</label>
+                <label class="q-option"><input type="radio" name="q4" value="5"> No tengo prisa, busco la oportunidad ideal</label>
+                <label class="q-option"><input type="radio" name="q4" value="0"> Prefiero no responder / Sin plazo fijo</label>
+            </div>
+
+            <div class="q-slide hidden" id="final-slide" style="text-align: center;">
+                <div id="final-pre-sello">
+                    <h3 style="font-size:20px; margin-bottom:6px;">Un Último Paso</h3>
+                    <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px; font-family:-apple-system,sans-serif;">Estos datos van directo a su corredora o corredor — a nadie más. Con esto generamos su Sello de referencia.</p>
+                    <div class="field-group" style="margin-bottom:14px; text-align:left;">
+                        <label>Su Nombre Completo *</label>
+                        <input type="text" id="c-name" maxlength="30" placeholder="Ej: Juan Pérez" style="width:100%; height:48px; background:var(--card-bg); border:1px solid var(--border-subtle); color:var(--text-pure); padding:0 12px; border-radius:8px; font-size:16px; outline:none; font-family:inherit;">
+                    </div>
+                    <div class="field-group" style="margin-bottom:20px; text-align:left;">
+                        <label>Su WhatsApp * (8 dígitos restantes)</label>
+                        <div style="display:flex; align-items:center; background:var(--card-bg); border:1px solid var(--border-subtle); border-radius:8px; padding-left:14px; height:48px;">
+                            <span style="color:var(--text-muted); font-size:16px; user-select:none; font-family:-apple-system,BlinkMacSystemFont,sans-serif; margin-right:4px;">+56 9</span>
+                            <input type="tel" id="c-phone" placeholder="1234 5678" maxlength="9" style="height:100%; background:transparent; border:none; color:var(--text-pure); padding:0; font-size:16px; outline:none; flex:1; font-family:inherit;">
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary" id="btn-generar-sello" disabled>Generar Sello</button>
+                    <p style="font-size:10px; color:var(--text-muted); margin-top:8px;">Complete ambos campos para continuar</p>
+                </div>
+
+                <div id="final-post-sello" class="hidden">
+                    <h3 style="font-size:22px; margin-bottom:8px;">Su Sello está listo</h3>
+                    <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px; font-family:-apple-system,sans-serif;">Este código confirma que sus respuestas llegan intactas. Compártalo directamente con su corredora.</p>
+                    <div id="sello-display" style="background:var(--card-bg); border:1px solid var(--border-subtle); border-radius:8px; padding:16px; margin-bottom:20px; word-break:break-all; font-family:monospace; font-size:15px; letter-spacing:0.03em;"></div>
+                    <button type="button" class="btn btn-secondary" id="btn-copy-sello" style="margin-bottom:12px;">Copiar Sello</button>
+                    <button type="button" class="btn btn-primary" id="btn-send-sello" style="background:#25D366; display:flex; align-items:center; justify-content:center; gap:8px;">
+                        <svg viewBox="0 0 24 24" width="20" height="20"><path fill="#25D366" d="M12 2a10 10 0 0 0-8.5 15.2L2 22l4.9-1.4A10 10 0 1 0 12 2z"/><path fill="#fff" d="M9.4 7.6c-.3-.6-.5-.6-.8-.6h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.3 0 1.4 1 2.7 1.1 2.9.1.2 2 3.1 4.9 4.2 2.4.9 2.9.7 3.4.7.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2-.2.3-.8.9-1 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.5-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.6-1.5-.8-2z"/></svg>
+                        Compartir por WhatsApp
+                    </button>
+                </div>
+            </div>
+
+            <div class="btn-row" id="q-nav-btns" style="margin-top:24px;">
+                <button type="button" class="btn btn-secondary" id="btn-prev-q" style="display:none;">Atrás</button>
+                <button type="button" class="btn btn-primary" id="btn-next-q">Siguiente</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+            // --- RESTAURACIÓN DE SIMETRÍA ATÓMICA ---
+            const toBase36 = (num) => Number(num).toString(36);
+            const fromBase36 = (str) => parseInt(str, 36);
+
+            const toShortAssetId = (slug) => {
+                if (!slug || slug === 'General') return "gen1"; 
+                return slug.replace(/[^a-zA-Z0-9]/g, "").substring(0, 4).toLowerCase();
+            };
+
+            function buildInternalPropertyId(tipoIdx, comunaIdx) {
+                const now = new Date();
+                const pad = n => String(n).padStart(2, '0');
+                const stamp = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
+                return `${state.pin || '0000'}${comunaIdx}${tipoIdx}${stamp}`;
+            }
+
+            function generateShortPropId(slug) {
+                const base = toShortAssetId(slug);
+                const taken = new Set(state.properties.map(p => p.shortId).filter(Boolean));
+                if (!taken.has(base)) return base;
+                for (let i = 1; i <= 35; i++) {
+                    const candidate = base.slice(0, 3) + i.toString(36);
+                    if (!taken.has(candidate)) return candidate;
+                }
+                return Date.now().toString(36).slice(-4);
+            }
+
+            function encodeToken(str) {
+                if (!str) return '';
+                return btoa(unescape(encodeURIComponent(str))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+            }
+
+            function decodeToken(str) {
+                if (!str) return '';
+                let base64 = str.replace(/-/g, '+').replace(/_/g, '/');
+                while (base64.length % 4) base64 += '=';
+                try { return decodeURIComponent(escape(atob(base64))); } catch(e) { return ''; }
+            }
+
+            function calcSig(payload, salt) {
+                let str = payload + salt;
+                let hash = 0;
+                for (let i = 0; i < str.length; i++) {
+                    hash = (hash << 5) - hash + str.charCodeAt(i);
+                    hash |= 0;
+                }
+                return Math.abs(hash).toString(36);
+            }
+
+            function generateMineral() {
+                const arr = new Uint8Array(16);
+                crypto.getRandomValues(arr);
+                return Array.from(arr, b => b.toString(16).padStart(2, '0')).join('');
+            }
+
+            function getSal() {
+                if (!state.mineral) return 'PS-REF';
+                return calcSig(state.brokerPhone || '', state.mineral);
+            }
+
+            // --- CIFRADO DE RESPALDOS (AES-GCM, passphrase = Mineral) ---
+            function bufToB64(buf) {
+                return btoa(String.fromCharCode(...new Uint8Array(buf)));
+            }
+
+            function b64ToBuf(b64) {
+                return Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+            }
+
+            async function deriveBackupKey(mineral, salt) {
+                const keyMaterial = await crypto.subtle.importKey(
+                    'raw', new TextEncoder().encode(mineral), { name: 'PBKDF2' }, false, ['deriveKey']
+                );
+                return crypto.subtle.deriveKey(
+                    { name: 'PBKDF2', salt, iterations: 250000, hash: 'SHA-256' },
+                    keyMaterial,
+                    { name: 'AES-GCM', length: 256 },
+                    false,
+                    ['encrypt', 'decrypt']
+                );
+            }
+
+            async function encryptBackup(payloadObj, mineral) {
+                const salt = crypto.getRandomValues(new Uint8Array(16));
+                const iv = crypto.getRandomValues(new Uint8Array(12));
+                const key = await deriveBackupKey(mineral, salt);
+                const plaintext = new TextEncoder().encode(JSON.stringify(payloadObj));
+                const ciphertext = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, plaintext);
+                return { v: 1, salt: bufToB64(salt), iv: bufToB64(iv), data: bufToB64(ciphertext) };
+            }
+
+            async function decryptBackup(fileObj, mineral) {
+                const salt = b64ToBuf(fileObj.salt);
+                const iv = b64ToBuf(fileObj.iv);
+                const data = b64ToBuf(fileObj.data);
+                const key = await deriveBackupKey(mineral, salt);
+                const plainBuf = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, data);
+                return JSON.parse(new TextDecoder().decode(plainBuf));
+            }
+
+            function buildAccessLink(type, f) {
+                const tSlug = slugify(TIPOS[f.tipoIdx] || '');
+                const cSlug = slugify(COMUNAS[f.comunaIdx] || '');
+                const nSlug = slugify(f.brokerName);
+                const shortPropId = f.shortId || toShortAssetId(f.slug);
+                const sal = getSal();
+                let payload, hidden;
+                if (type === 'c') {
+                    const leadIdB36 = toBase36(f.leadId);
+                    payload = `c|${shortPropId}|${tSlug}|${cSlug}|${f.brokerPhone}|${nSlug}|${leadIdB36}|${f.name}|${f.phone}`;
+                    hidden = `c|${shortPropId}|${f.brokerPhone}|${leadIdB36}|${f.name}|${f.phone}`;
+                } else {
+                    payload = `g|${shortPropId}|${tSlug}|${cSlug}|${f.brokerPhone}|${nSlug}`;
+                    hidden = `g|${shortPropId}|${f.brokerPhone}`;
+                }
+                const sig = calcSig(payload, sal);
+                const token = encodeToken(hidden + "|" + sig);
+                return `${window.location.origin}${window.location.pathname}?n=${nSlug}&t=${tSlug}&c=${cSlug}&s=${sal}&a=${token}`;
+            }
+
+            function parseAccessToken(token, urlParams) {
+                const raw = decodeToken(token);
+                const parts = raw.split('|');
+                const sig = parts.pop();
+                const type = parts[0];
+                const slug = parts[1];
+                const brokerPhone = parts[2];
+                const nSlug = urlParams.get('n') || '';
+                const tSlug = urlParams.get('t') || '';
+                const cSlug = urlParams.get('c') || '';
+                const sal = urlParams.get('s') || 'PS-REF';
+                const tipoIdx = TIPOS.findIndex(v => slugify(v) === tSlug);
+                const comunaIdx = COMUNAS.findIndex(v => slugify(v) === cSlug);
+                let leadId, name, phone, payload;
+                if (type === 'c' && parts.length === 6) {
+                    // Índices alineados: [0:type, 1:slug, 2:phone, 3:leadIdB36, 4:name, 5:phone]
+                    const leadIdB36 = parts[3];
+                    leadId = fromBase36(leadIdB36);
+                    name = parts[4];
+                    phone = parts[5];
+                    payload = `c|${slug}|${tSlug}|${cSlug}|${brokerPhone}|${nSlug}|${leadIdB36}|${name}|${phone}`;
+                } else if (type === 'g' && parts.length === 3) {
+                    payload = `g|${slug}|${tSlug}|${cSlug}|${brokerPhone}|${nSlug}`;
+                } else { return null; }
+                if (sig !== calcSig(payload, sal)) return null;
+                return { type, slug, tipoIdx: tipoIdx >= 0 ? tipoIdx : 0, comunaIdx: comunaIdx >= 0 ? comunaIdx : 0, 
+                        brokerPhone, brokerName: deslugify(nSlug), leadId, name, phone, sal };
+            }
+
+            function normalizePhone(raw) {
+                if (!raw) return '';
+                let clean = String(raw).replace(/[\s\-\(\)]/g, '');
+                if (clean.startsWith('+')) return clean;
+                if (clean.startsWith('56') && clean.length > 9) return '+' + clean;
+                if (clean.length === 8 && !isNaN(clean)) return '+569' + clean;
+                return clean;
+            }
+
+            function markFieldError(triggerEl, borderEl, message) {
+                borderEl.classList.add('input-invalid');
+                let hint = borderEl.nextElementSibling;
+                if (!hint || !hint.classList.contains('field-error-hint')) {
+                    hint = document.createElement('small');
+                    hint.className = 'field-error-hint';
+                    borderEl.insertAdjacentElement('afterend', hint);
+                }
+                hint.innerText = message;
+                triggerEl.focus();
+                const clear = () => { borderEl.classList.remove('input-invalid'); hint.remove(); };
+                triggerEl.addEventListener('input', clear, { once: true });
+            }
+
+            function attachCharCounter(inputEl, maxLen) {
+                inputEl.removeAttribute('maxlength');
+                const counter = document.createElement('span');
+                counter.className = 'char-counter';
+                inputEl.insertAdjacentElement('afterend', counter);
+                const update = () => {
+                    const len = inputEl.value.length;
+                    counter.innerText = `${len}/${maxLen}`;
+                    counter.style.color = len > maxLen ? '#ef4444' : 'var(--text-muted)';
+                    inputEl.classList.toggle('input-invalid', len > maxLen);
+                };
+                inputEl.addEventListener('input', update);
+                update();
+            }
+
+            function attachPhoneMask(input) {
+                if (!input) return;
+                input.addEventListener('input', () => {
+                    const digits = input.value.replace(/\D/g, '').slice(0, 8);
+                    input.value = digits.length > 4 ? digits.slice(0, 4) + ' ' + digits.slice(4) : digits;
+                });
+            }
+
+            function formatThousands(rawDigits) {
+                return String(rawDigits || '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            }
+
+            function formatDate(ts) {
+                if (!ts) return '';
+                const d = new Date(ts);
+                const opts = { day: '2-digit', month: 'short' };
+                if (d.getFullYear() !== new Date().getFullYear()) opts.year = 'numeric';
+                return d.toLocaleDateString('es-CL', opts);
+            }
+
+            function formatPropertyPrice(p) {
+                if (p.priceValue !== undefined) {
+                    return `${p.priceCurrency === 'CLP' ? '$' : 'UF'} ${formatThousands(p.priceValue)}`;
+                }
+                return p.price || '';
+            }
+
+            const ICON_WHATSAPP = `<svg viewBox="0 0 24 24" width="20" height="20" fill="#fff"><path d="M12.04 2.003c-5.523 0-10 4.477-10 10 0 1.765.464 3.48 1.345 4.984L2 22l5.223-1.362a9.955 9.955 0 004.817 1.236h.005c5.522 0 10-4.477 10-10 0-2.665-1.037-5.166-2.926-7.054A9.933 9.933 0 0012.04 2.003zm5.856 14.228c-.242.68-1.415 1.298-1.953 1.343-.5.042-1.123.06-1.812-.114-.417-.106-.953-.31-1.64-.61-2.887-1.246-4.771-4.145-4.916-4.34-.144-.195-1.176-1.562-1.176-2.98 0-1.417.744-2.114 1.007-2.404.264-.29.575-.362.767-.362.192 0 .384.002.552.01.177.008.415-.067.649.494.242.577.822 2.01.894 2.156.072.146.12.316.024.51-.096.194-.144.315-.288.484-.144.169-.303.377-.432.507-.144.145-.294.302-.126.591.168.29.744 1.228 1.598 1.987 1.098.977 2.024 1.28 2.313 1.425.29.146.458.121.626-.073.168-.194.72-.84.912-1.128.192-.29.384-.242.648-.145.264.097 1.68.792 1.968.937.288.145.48.217.552.338.072.121.072.699-.17 1.379z"/></svg>`;
+
+            const ICON_LINK = `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2h6l5 5v13a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path d="M9 12h6M9 16h6"/></svg>`;
+
+            const ICON_KEY = `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="17" r="3"/><path d="M9.5 14.5L21 3"/><path d="M17 7l3 3"/><path d="M14 10l3 3"/></svg>`;
+            
+            const ICON_INFO = `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7.5" r="0.9" fill="currentColor" stroke="none"/></svg>`;
+            const ICON_STAR_ON = `<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+            const ICON_STAR_OFF = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+
+            const TIPOS = ["Departamento", "Casa", "Oficina", "Local Comercial", "Terreno"];
+            const COMUNAS = ["Alhué", "Buin", "Calera de Tango", "Cerrillos", "Cerro Navia", "Colina", "Conchalí", "Curacaví", "El Bosque", "El Monte", "Estación Central", "Huechuraba", "Independencia", "Isla de Maipo", "La Cisterna", "La Florida", "La Granja", "La Pintana", "La Reina", "Lampa", "Las Condes", "Lo Barnechea", "Lo Espejo", "Lo Prado", "Macul", "Maipú", "María Pinto", "Melipilla", "Ñuñoa", "Padre Hurtado", "Paine", "Pedro Aguirre Cerda", "Peñaflor", "Peñalolén", "Pirque", "Providencia", "Pudahuel", "Puente Alto", "Quilicura", "Quinta Normal", "Recoleta", "Renca", "San Bernardo", "San Joaquín", "San José de Maipo", "San Miguel", "San Pedro", "San Ramón", "Santiago Centro", "Talagante", "Tiltil", "Vitacura", "Otra"];
+
+            function slugify(str) {
+                return (str || '').toString()
+                    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                    .toLowerCase().trim()
+                    .replace(/[^a-z0-9]+/g, '_')
+                    .replace(/^_+|_+$/g, '');
+            }
+
+            function deslugify(slug) {
+                return (slug || '').split('_').filter(Boolean)
+                    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+                    .join(' ');
+            }
+
+            let state = JSON.parse(localStorage.getItem('ps-ref_state')) || {
+                brokerName: "Corredora",
+                brokerPhone: "",
+                pin: "",
+                theme: "light",
+                leads: [],
+                properties: []
+            };
+
+            // Inyección de plantillas base de mensajería mutables
+            if (!state.msgTemplateInvite) state.msgTemplateInvite = "Hola {name}, recibí tu interés por {slug}. Para darte prioridad en la agenda de visitas, por favor completa este breve enlace: {link}";
+            if (!state.msgTemplateA) state.msgTemplateA = "Hola {name}, analicé tu perfil para {slug}. Tu calificación es de ALTA PRIORIDAD. Mi agenda está abierta para que coordinemos la visita de cierre de inmediato. ¿Hablamos?";
+            if (!state.msgTemplateB1) state.msgTemplateB1 = "Hola {name}, recibí tu sello de prioridad para {slug}. Veo que estás avanzando con los pasos bancarios. Me gustaría asesorarte personalmente para asegurar este activo. ¿Tienes 5 minutos?";
+            if (!state.msgTemplateB2) state.msgTemplateB2 = "Hola {name}, recibí tu requerimiento por {slug}. Te adjunto la ficha técnica solicitada y quedo atento a cuando definas tus condiciones comerciales para avanzar.";
+
+            document.documentElement.setAttribute('data-theme', state.theme || 'light');
+
+            const save = () => localStorage.setItem('ps-ref_state', JSON.stringify(state));
+
+            const UI = {
+                leads: document.getElementById('view-leads'),
+                inventoryList: document.getElementById('inventory-list'),
+                trash: document.getElementById('view-trash'),
+                capture: document.getElementById('capture-panel'),
+                pastebox: document.getElementById('pastebox'),
+                appTitle: document.getElementById('app-title'),
+                shell: document.getElementById('admin-app-shell'),
+                lockOverlay: document.getElementById('lock-overlay')
+            };
+
+            function renderIdentityHeader() {
+                UI.appTitle.innerText = state.brokerName;
+            }
+
+            function renderLockBrokerName() {
+                const el = document.getElementById('lock-broker-name');
+                if (!el) return;
+                el.innerText = state.brokerName ? `Oficina de ${state.brokerName.split(' ')[0]}` : 'Custodia';
+            }
+
+            function populateTipoComunaSelects() {
+                const t = document.getElementById('p-tipo');
+                const c = document.getElementById('p-comuna');
+                if (t) t.innerHTML = TIPOS.map((v, i) => `<option value="${i}">${v}</option>`).join('');
+                if (c) c.innerHTML = COMUNAS.map((v, i) => `<option value="${i}">${v}</option>`).join('');
+            }
+
+            function populatePropertiesDropdown() {
+                const selectEl = document.getElementById('m-slug');
+                if (!selectEl) return;
+                let optionsHTML = `<option value="General">Sin propiedad / General</option>`;
+                state.properties.filter(p => !p.archived).forEach(p => {
+                    optionsHTML += `<option value="${p.slug}">${p.slug}</option>`;
+                });
+                selectEl.innerHTML = optionsHTML;
+            }
+
+            function processCapture(text) {
+                if (/^S-[A-Za-z0-9_-]{15,}$/.test(text.trim())) {
+                    return decodeKey(text);
+                }
+
+                const name = text.match(/(?:Nombre|Name|Cliente|Solicitante)\s*:\s*([^\n\r]+)/i);
+                const phone = text.match(/(?:Teléfono|WhatsApp|Fono|Celular|Phone)\s*:\s*([+\d\s]+)/i);
+                const slug = text.match(/(?:Propiedad|Ref|Slug|Código)\s*:\s*([^\n\r]+)/i);
+
+                if (name && phone) {
+                    const cleanPhone = normalizePhone(phone[1]);
+                    const newLead = {
+                        id: Date.now(),
+                        name: name[1].trim(),
+                        phone: cleanPhone,
+                        slug: slug ? slug[1].trim() : 'General',
+                        status: 'pending',
+                        tier: '-',
+                        score: 0,
+                        archived: false
+                    };
+                    state.leads.unshift(newLead);
+                    save(); renderLeads(); closeCapture();
+                } else {
+                    document.getElementById('capture-error').innerText = "Faltan datos. Revisa el texto pegado o completa los campos manualmente.";
+                }
+            }
+
+            const QUESTIONS = [
+                { title: "Capacidad de pie", options: { 25: "20% o más disponible ahora", 15: "10% disponible, ahorrando el resto", 5: "Evaluando opciones de financiamiento", 0: "Prefiere no responder / en definición" } },
+                { title: "Situación crediticia", options: { 25: "Crédito aprobado o compra al contado", 15: "En proceso de evaluación bancaria", 5: "Aún no ha consultado con instituciones", 0: "Prefiere no responder / solo explorando" } },
+                { title: "Búsqueda activa", options: { 25: "Ha visitado propiedades físicamente", 15: "Vio tours virtuales, pidió fichas", 5: "Recién comenzando su búsqueda", 0: "Prefiere no responder / búsqueda pasiva" } },
+                { title: "Urgencia / plazo", options: { 25: "Menos de 60 días", 15: "3 a 6 meses", 5: "Sin prisa, busca la oportunidad ideal", 0: "Prefiere no responder / sin plazo fijo" } }
+            ];
+
+            const ANSWER_POINTS = [25, 15, 5, 0];
+
+            function scoreFromAnswersDigits(digits) {
+                return String(digits || '').split('').reduce((sum, d) => sum + (ANSWER_POINTS[parseInt(d, 10)] || 0), 0);
+            }
+
+            function answersFromDigits(digits) {
+                return String(digits || '').split('').map(d => ANSWER_POINTS[parseInt(d, 10)]);
+            }
+
+            function decodeKey(key, options) {
+                const opts = options || {};
+                const errorTarget = opts.errorTarget || document.getElementById('capture-error');
+                const currentSal = getSal();
+                const verify = (payload, sig) => sig === calcSig(payload, currentSal) || sig === calcSig(payload, 'PS-REF');
+                try {
+                    const raw = decodeToken(key.replace('S-', ''));
+                    const parts = raw.split('|');
+                    const kind = parts[0];
+                    if (kind === 'g' && parts.length === 7) {
+                        const [ , shortPropId, phone, tier, answersDigits, safeName, sig] = parts;
+                        if (!verify(`g|${shortPropId}|${phone}|${tier}|${answersDigits}|${safeName}`, sig)) {
+                            errorTarget.innerText = "Este Sello no es válido — puede haber sido modificado. Pide a tu cliente que te lo reenvíe.";
+                            return;
+                        }
+                        const score = scoreFromAnswersDigits(answersDigits);
+                        const answers = answersFromDigits(answersDigits);
+                        const normalizedPhone = normalizePhone(phone);
+                        const matchedProp = state.properties.find(p => p.shortId === shortPropId);
+                        const existing = state.leads.find(l => normalizePhone(l.phone) === normalizedPhone);
+                        if (existing) {
+                            existing.status = 'qualified'; existing.archived = false;
+                            existing.tier = tier; existing.score = score; existing.answers = answers;
+                            if (matchedProp) existing.slug = matchedProp.slug;
+                            if (existing.name === 'Cliente Anónimo' && safeName && safeName !== 'Cliente Anónimo') existing.name = safeName;
+                        } else {
+                            state.leads.unshift({ id: Date.now(), name: safeName || 'Cliente Anónimo', phone: normalizedPhone,
+                                                slug: matchedProp ? matchedProp.slug : shortPropId, status: 'qualified', tier, score, answers, archived: false });
+                        }
+                        save(); renderLeads();
+                        if (opts.onSuccess) opts.onSuccess(); else closeCapture();
+                        return;
+                    }
+                    if (kind === 'c' && parts.length === 5) {
+                        const [ , leadIdB36, tier, answersDigits, sig] = parts;
+                        if (!verify(`c|${leadIdB36}|${tier}|${answersDigits}`, sig)) {
+                            errorTarget.innerText = "Este Sello no es válido.";
+                            return;
+                        }
+                        const score = scoreFromAnswersDigits(answersDigits);
+                        const answers = answersFromDigits(answersDigits);
+                        const leadIdBase10 = fromBase36(leadIdB36);
+                        const existing = state.leads.find(l => String(l.id) === String(leadIdBase10));
+                        if (existing) {
+                            existing.status = 'qualified'; existing.archived = false;
+                            existing.tier = tier; existing.score = score; existing.answers = answers;
+                            save(); renderLeads();
+                            if (opts.onSuccess) opts.onSuccess(); else closeCapture();
+                            return;
+                        }
+                    }
+                    errorTarget.innerText = "No se reconoce este código. Verifica que copiaste el Sello completo.";
+                } catch(e) { errorTarget.innerText = "Este texto no es un Sello válido. Debe empezar con S-."; }
+            }
+
+            function tierColor(tier) {
+                if (!tier) return 'var(--border-subtle)';
+                if (tier.startsWith('A')) return 'radial-gradient(circle at 35% 30%, #2fa3b1, var(--scale-a) 75%)';
+                if (tier.startsWith('B')) return 'radial-gradient(circle at 35% 30%, #839363, var(--scale-b1) 75%)';
+                if (tier.startsWith('C')) return 'radial-gradient(circle at 35% 30%, #d19d37, var(--scale-b2) 75%)';
+                if (tier.startsWith('D')) return 'radial-gradient(circle at 35% 30%, #ce5d6a, var(--scale-d) 75%)';
+                return 'var(--border-subtle)';
+            }
+
+            function tierTextColor(tier) {
+                return '#000';
+            }
+
+            function openDetailModal(lead) {
+                const modal = document.getElementById('detail-modal');
+                const body = document.getElementById('detail-modal-body');
+                document.getElementById('detail-modal-title').innerText = `${lead.name} — Detalle de respuestas`;
+
+                if (!lead.answers) {
+                    body.innerHTML = `<p style="color:var(--text-muted); font-size:13px;">Este lead fue calificado antes de habilitar el detalle de respuestas.</p>`;
+                } else {
+                    body.innerHTML = QUESTIONS.map((q, i) => {
+                        const label = q.options[lead.answers[i]] || 'Respuesta no reconocida';
+                        return `
+                            <div style="padding:10px 0; border-bottom:1px solid var(--border-subtle);">
+                                <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.03em; color:var(--text-muted); margin-bottom:4px;">${q.title}</div>
+                                <div style="font-size:13px; color:var(--text-pure);">${label}</div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+                modal.classList.remove('hidden');
+            }
+
+            function closeDetailModal() {
+                document.getElementById('detail-modal').classList.add('hidden');
+            }
+
+            function renderLeads() {
+                const searchEl = document.getElementById('lead-search');
+                const sortEl = document.getElementById('lead-sort');
+                const query = (searchEl ? searchEl.value : '').trim().toLowerCase();
+                const sortMode = sortEl ? sortEl.value : 'recent';
+
+                let active = state.leads.filter(l => !l.archived);
+
+                if (query) {
+                    active = active.filter(l =>
+                        l.name.toLowerCase().includes(query) || (l.phone || '').includes(query)
+                    );
+                }
+
+                if (sortMode === 'score') {
+                    active = active.slice().sort((a, b) => (parseInt(b.score) || 0) - (parseInt(a.score) || 0));
+                } else if (sortMode === 'qualified') {
+                    active = active.slice().sort((a, b) => (b.status === 'qualified') - (a.status === 'qualified'));
+                }
+
+                active = active.slice().sort((a, b) => (b.isFavorite === true) - (a.isFavorite === true));
+
+                if (active.length === 0) {
+                    UI.leads.innerHTML = `<div class="empty-state">Esperando leads...<br>(Usa el botón ＋ para agregar)</div>`;
+                    return;
+                }
+                const propOptions = (currentSlug) => {
+                    let opts = `<option value="General"${currentSlug === 'General' ? ' selected' : ''}>Sin propiedad / General</option>`;
+                    state.properties.filter(p => !p.archived).forEach(p => {
+                        opts += `<option value="${p.slug}"${p.slug === currentSlug ? ' selected' : ''}>${p.slug}</option>`;
+                    });
+                    return opts;
+                };
+                UI.leads.innerHTML = active.map(l => {
+                    const isQual = l.status === 'qualified';
+                    return `
+                        <div class="card ${l.status}" data-id="${l.id}">
+                            <div class="card-header">
+                                <div class="card-info">
+                                    <h3>${l.name}</h3>
+                                    <p class="card-secondary">${l.phone}</p>
+                                    <p class="card-tertiary">${l.slug} · ${formatDate(l.id)}</p>
+                                    ${isQual ? `<div class="survey-summary">Perfil Calificado: Prioridad ${l.tier} (${l.score} pts)</div>` : ''}
+                                </div>
+                                <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px;">
+                                    <button class="star-btn ${l.isFavorite ? 'is-fav' : ''}" data-action="toggle-fav-lead" title="Favorito">${l.isFavorite ? ICON_STAR_ON : ICON_STAR_OFF}</button>
+                                    <span class="tier-badge" style="background:${tierColor(l.tier)}; color:${tierTextColor(l.tier)};">${l.tier}</span>
+                                </div>
+                            </div>
+                            <div class="btn-row">
+                                <button class="icon-btn whatsapp-btn" data-action="smart-contact" title="Contactar por WhatsApp">${ICON_WHATSAPP}<span class="btn-label">Contactar</span></button>
+                                <button class="icon-btn" data-action="share-link" title="Copiar Link Camuflado">${ICON_LINK}<span class="btn-label">Copiar link</span></button>
+                                ${isQual ? `<button class="icon-btn" data-action="show-detail" title="Ver detalle de respuestas">${ICON_INFO}<span class="btn-label">Detalle</span></button>` : ''}
+                                <button class="icon-btn" data-action="toggle-reassign" title="Cambiar propiedad">🏠<span class="btn-label">Propiedad</span></button>
+                                <button class="icon-btn" data-action="archive-lead" title="Archivar">🗑️<span class="btn-label">Archivar</span></button>
+                            </div>
+                            <div class="reassign-row hidden" style="margin-top:10px;">
+                                <select class="reassign-select key-input" style="width:100%;">
+                                    ${propOptions(l.slug)}
+                                </select>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            const expandedPropLeads = new Set();
+            let currentView = 'view-leads';
+
+            function configureTopbar(view) {
+                const topbar = document.getElementById('topbar');
+                const searchEl = document.getElementById('lead-search');
+                const sortEl = document.getElementById('lead-sort');
+                const btn = document.getElementById('btn-open-capture-leads');
+
+                if (view === 'view-trash') {
+                    topbar.classList.add('hidden');
+                    return;
+                }
+                topbar.classList.remove('hidden');
+                searchEl.value = '';
+
+                if (view === 'view-inventory') {
+                    searchEl.placeholder = 'Buscar por nombre, comuna o tipo...';
+                    sortEl.innerHTML = `
+                        <option value="recent">Recientes</option>
+                        <option value="price">Menor precio</option>
+                    `;
+                    btn.title = 'Nueva Propiedad';
+                } else {
+                    searchEl.placeholder = 'Buscar por nombre o teléfono...';
+                    sortEl.innerHTML = `
+                        <option value="recent">Recientes</option>
+                        <option value="score">Mayor puntaje</option>
+                        <option value="qualified">Calificados primero</option>
+                    `;
+                    btn.title = 'Agregar';
+                }
+                sortEl.selectedIndex = 0;
+            }
+
+            function renderInventory() {
+                const searchEl = document.getElementById('lead-search');
+                const sortEl = document.getElementById('lead-sort');
+                const query = (searchEl ? searchEl.value : '').trim().toLowerCase();
+                const sortMode = sortEl ? sortEl.value : 'recent';
+
+                let activeProps = state.properties.filter(p => !p.archived);
+
+                if (query) {
+                    activeProps = activeProps.filter(p => {
+                        const tipoStr = (TIPOS[p.tipoIdx] || '').toLowerCase();
+                        const comunaStr = (COMUNAS[p.comunaIdx] || '').toLowerCase();
+                        return p.slug.toLowerCase().includes(query) || comunaStr.includes(query) || tipoStr.includes(query);
+                    });
+                }
+
+                if (sortMode === 'price') {
+                    activeProps = activeProps.slice().sort((a, b) => (parseInt(a.priceValue) || 0) - (parseInt(b.priceValue) || 0));
+                } else {
+                    activeProps = activeProps.slice().sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+                }
+
+                activeProps = activeProps.slice().sort((a, b) => (b.isFavorite === true) - (a.isFavorite === true));
+
+                if (activeProps.length === 0) {
+                    UI.inventoryList.innerHTML = `<div class="empty-state">Esperando propiedades...<br>(Usa el botón ＋ para agregar)</div>`;
+                    return;
+                }
+                UI.inventoryList.innerHTML = activeProps.map(p => {
+                    const propLeads = state.leads.filter(l => l.slug === p.slug && !l.archived);
+                    const isExpanded = expandedPropLeads.has(p.slug);
+                    return `
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-info">
+                                <h3 style="font-family:-apple-system,sans-serif; font-size:16px; font-weight:600;">${p.slug}</h3>
+                                <p>${TIPOS[p.tipoIdx] || ''} · ${COMUNAS[p.comunaIdx] || ''} · ${formatPropertyPrice(p)}</p>
+                                <p class="card-tertiary">${p.createdAt ? formatDate(p.createdAt) : ''}</p>
+                            </div>
+                            <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px;">
+                                <button class="star-btn ${p.isFavorite ? 'is-fav' : ''}" data-action="toggle-fav-prop" data-slug="${p.slug}" title="Favorito">${p.isFavorite ? ICON_STAR_ON : ICON_STAR_OFF}</button>
+                                <button class="archive-btn" data-action="archive-prop" data-slug="${p.slug}" title="Archivar" style="width:auto; height:32px; padding:0 10px; font-size:12px; gap:4px;">🗃️ Archivar</button>
+                            </div>
+                        </div>
+                        <div class="prop-card-actions">
+                            <button class="btn btn-secondary" data-action="copy-raw-link" data-slug="${p.slug}">Copiar Link General</button>
+                        </div>
+                        ${propLeads.length ? `
+                            <div class="prop-leads-toggle" data-action="toggle-prop-leads" data-slug="${p.slug}">${isExpanded ? '▾' : '▸'} ${propLeads.length} lead${propLeads.length === 1 ? '' : 's'} asociado${propLeads.length === 1 ? '' : 's'}</div>
+                            <div class="prop-leads-list ${isExpanded ? '' : 'hidden'}">
+                                ${propLeads.map(l => `
+                                    <div class="prop-lead-item">
+                                        <span>${l.name} · ${l.phone}</span>
+                                        <button class="btn btn-secondary btn-sm" data-action="view-lead" data-lead-id="${l.id}">Ver</button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                    `;
+                }).join('');
+            }
+
+            function goToLeadCard(leadId) {
+                const navLeads = document.querySelector('.nav-item[data-view="view-leads"]');
+                if (navLeads) navLeads.click();
+                requestAnimationFrame(() => {
+                    const card = document.querySelector(`#view-leads [data-id="${leadId}"]`);
+                    if (card) {
+                        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        card.classList.add('lead-highlight');
+                        setTimeout(() => card.classList.remove('lead-highlight'), 1000);
+                    }
+                });
+            }
+
+            function renderTrash() {
+                const archivedLeads = state.leads.filter(l => l.archived);
+                const archivedProps = state.properties.filter(p => p.archived);
+                let html = `<h3 style="font-size:14px; margin-bottom:8px; color:var(--text-muted);">Contactos Archivados</h3>`;
+                if (archivedLeads.length === 0) {
+                    html += `<div class="empty-state" style="margin-top:0; margin-bottom:16px;">Papelera vacía.</div>`;
+                } else {
+                    html += archivedLeads.map(l => `
+                        <div class="card" style="opacity:0.6;"><div class="card-header"><div class="card-info"><h3>${l.name}</h3><p>${l.phone} • ${l.slug}</p></div>
+                        <button class="btn btn-secondary" style="height:32px; font-size:11px; max-width:90px;" data-trash-action="restore-lead" data-id="${l.id}">Restaurar</button></div></div>
+                    `).join('');
+                }
+                html += `<h3 style="font-size:14px; margin-top:20px; margin-bottom:8px; color:var(--text-muted);">Propiedades Archivadas</h3>`;
+                if (archivedProps.length === 0) {
+                    html += `<div class="empty-state" style="margin-top:0;">Papelera vacía.</div>`;
+                } else {
+                    html += archivedProps.map(p => `
+                        <div class="card" style="opacity:0.6;"><div class="card-header"><div class="card-info"><h3>${p.slug}</h3><p>${formatPropertyPrice(p)}</p></div>
+                        <button class="btn btn-secondary" style="height:32px; font-size:11px; max-width:90px;" data-trash-action="restore-prop" data-slug="${p.slug}">Restaurar</button></div></div>
+                    `).join('');
+                }
+                UI.trash.innerHTML = html;
+            }
+
+            UI.leads.addEventListener('click', e => {
+                const trigger = e.target.closest('[data-action]');
+                if (!trigger) return;
+                const card = trigger.closest('.card');
+                const id = parseInt(card.dataset.id);
+                const lead = state.leads.find(l => l.id === id);
+
+                if (trigger.dataset.action === 'archive-lead') {
+                    lead.archived = true; save(); renderLeads();
+                } 
+
+                if (trigger.dataset.action === 'show-detail') {
+                    openDetailModal(lead);
+                }
+                
+                if (trigger.dataset.action === 'smart-contact' || trigger.dataset.action === 'share-link') {
+                    const linkedProp = state.properties.find(p => p.slug === lead.slug) || {};
+                    const link = buildAccessLink('c', {
+                        slug: lead.slug,
+                        shortId: linkedProp.shortId,
+                        tipoIdx: linkedProp.tipoIdx || 0,
+                        comunaIdx: linkedProp.comunaIdx || 0,
+                        brokerPhone: state.brokerPhone,
+                        brokerName: state.brokerName,
+                        leadId: lead.id,
+                        name: lead.name,
+                        phone: lead.phone
+                    });
+
+                    if (trigger.dataset.action === 'share-link') {
+                        navigator.clipboard.writeText(link);
+                        trigger.classList.add('copied');
+                        setTimeout(() => trigger.classList.remove('copied'), 2000);
+                    } else {
+                        window.open(`https://wa.me/${lead.phone}`);
+                    }
+                }
+
+                if (trigger.dataset.action === 'toggle-key-input') {
+                    const row = card.querySelector('.key-input-row');
+                    row.classList.toggle('hidden');
+                    if (!row.classList.contains('hidden')) {
+                        row.querySelector('.key-input').focus();
+                    }
+                }
+
+                if (trigger.dataset.action === 'submit-key') {
+                    const row = card.querySelector('.key-input-row');
+                    const input = row.querySelector('.key-input');
+                    const errorEl = row.querySelector('.key-error');
+                    errorEl.innerText = '';
+                    const val = input.value.trim();
+                    if (!val.startsWith('S-')) {
+                        errorEl.innerText = "Pegue un sello que empiece con S-";
+                        return;
+                    }
+                    decodeKey(val, {
+                        errorTarget: errorEl,
+                        onSuccess: () => { input.value = ''; row.classList.add('hidden'); }
+                    });
+                }
+                if (trigger.dataset.action === 'toggle-fav-lead') {
+                    lead.isFavorite = !lead.isFavorite; save(); renderLeads();
+                }
+
+                if (trigger.dataset.action === 'toggle-reassign') {
+                    card.querySelector('.reassign-row').classList.toggle('hidden');
+                }
+            });
+
+            UI.leads.addEventListener('change', e => {
+                if (!e.target.classList.contains('reassign-select')) return;
+                const card = e.target.closest('.card');
+                const id = parseInt(card.dataset.id);
+                const lead = state.leads.find(l => l.id === id);
+                lead.slug = e.target.value;
+                save(); renderLeads();
+            });
+
+            document.getElementById('lead-search').addEventListener('input', () => {
+                if (currentView === 'view-inventory') renderInventory(); else renderLeads();
+            });
+            document.getElementById('lead-sort').addEventListener('change', () => {
+                if (currentView === 'view-inventory') renderInventory(); else renderLeads();
+            });
+
+            document.getElementById('detail-modal-close').addEventListener('click', closeDetailModal);
+            document.getElementById('detail-modal').addEventListener('click', (e) => {
+                if (e.target.id === 'detail-modal') closeDetailModal();
+            });
+
+            UI.leads.addEventListener('input', e => {
+                if (!e.target.classList.contains('key-input')) return;
+                const val = e.target.value.trim();
+                if (val.startsWith('S-') && val.length > 20) {
+                    const row = e.target.closest('.key-input-row');
+                    const errorEl = row.querySelector('.key-error');
+                    errorEl.innerText = '';
+                    decodeKey(val, {
+                        errorTarget: errorEl,
+                        onSuccess: () => { e.target.value = ''; row.classList.add('hidden'); }
+                    });
+                }
+            });
+
+            document.getElementById('view-inventory').addEventListener('click', e => {
+                const trigger = e.target.closest('[data-action], #btn-save-prop');
+                if (!trigger) return;
+
+                if (trigger.id === 'btn-save-prop') {
+                    const s = document.getElementById('p-slug').value.trim();
+                    let priceDigits = document.getElementById('p-price').value.replace(/\D/g, '');
+                    if (parseInt(priceDigits || '0', 10) > 1000000000) priceDigits = '1000000000';
+                    const priceCurrency = document.getElementById('p-currency-clp').classList.contains('active') ? 'CLP' : 'UF';
+                    if (s && priceDigits) {
+                        const tipoIdx = parseInt(document.getElementById('p-tipo').value) || 0;
+                        const comunaIdx = parseInt(document.getElementById('p-comuna').value) || 0;
+                        const shortId = generateShortPropId(s);
+                        const internalId = buildInternalPropertyId(tipoIdx, comunaIdx);
+                        state.properties.push({ slug: s, priceValue: priceDigits, priceCurrency, tipoIdx, comunaIdx, archived: false, shortId, internalId, createdAt: Date.now() });
+                        save(); renderInventory();
+                        document.getElementById('p-slug').value = ''; document.getElementById('p-price').value = '';
+                        document.getElementById('p-price-hint').innerText = '';
+                        document.getElementById('new-prop-form').classList.add('hidden');
+                    }
+                } else if (trigger.dataset.action === 'toggle-fav-prop') {
+                    const prop = state.properties.find(p => p.slug === trigger.dataset.slug);
+                    if (prop) prop.isFavorite = !prop.isFavorite;
+                    save(); renderInventory();    
+                } else if (trigger.dataset.action === 'archive-prop') {
+                    const slug = trigger.dataset.slug;
+                    const prop = state.properties.find(p => p.slug === slug);
+                    if (prop) prop.archived = true;
+                    save(); renderInventory();
+                } else if (trigger.dataset.action === 'copy-raw-link') {
+                   const genProp = state.properties.find(p => p.slug === trigger.dataset.slug) || {};
+                    const link = buildAccessLink('g', {
+                        slug: trigger.dataset.slug,
+                        shortId: genProp.shortId,
+                        tipoIdx: genProp.tipoIdx || 0,
+                        comunaIdx: genProp.comunaIdx || 0,
+                        brokerPhone: state.brokerPhone,
+                        brokerName: state.brokerName
+                    });
+                    
+                    navigator.clipboard.writeText(link);
+                    trigger.innerText = "¡Copiado!";
+                    setTimeout(() => trigger.innerText = "Copiar Link General", 2000);
+                } else if (trigger.dataset.action === 'toggle-prop-leads') {
+                    const slug = trigger.dataset.slug;
+                    if (expandedPropLeads.has(slug)) expandedPropLeads.delete(slug); else expandedPropLeads.add(slug);
+                    renderInventory();
+                } else if (trigger.dataset.action === 'view-lead') {
+                    goToLeadCard(parseInt(trigger.dataset.leadId));
+                }
+            });
+
+            UI.trash.addEventListener('click', e => {
+                const trigger = e.target.closest('[data-trash-action]');
+                if (!trigger) return;
+                if (trigger.dataset.trashAction === 'restore-lead') {
+                    const lead = state.leads.find(l => l.id === parseInt(trigger.dataset.id));
+                    if (lead) lead.archived = false;
+                } else if (trigger.dataset.trashAction === 'restore-prop') {
+                    const prop = state.properties.find(p => p.slug === trigger.dataset.slug);
+                    if (prop) prop.archived = false;
+                }
+                save(); renderTrash();
+            });
+
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+                    const view = item.dataset.view;
+                    document.getElementById('view-leads').classList.add('hidden');
+                    document.getElementById('view-inventory').classList.add('hidden');
+                    document.getElementById('view-trash').classList.add('hidden');
+                    document.getElementById(view).classList.remove('hidden');
+                    currentView = view;
+                    configureTopbar(view);
+                    if (view === 'view-leads') renderLeads();
+                    if (view === 'view-inventory') { renderInventory(); populateTipoComunaSelects(); }
+                    if (view === 'view-trash') renderTrash();
+                });
+            });
+
+            function setCaptureMode(mode) {
+                const isManual = mode === 'manual';
+                document.getElementById('paste-mode').classList.toggle('hidden', isManual);
+                document.getElementById('manual-mode').classList.toggle('hidden', !isManual);
+                document.getElementById('btn-mode-paste').classList.toggle('active', !isManual);
+                document.getElementById('btn-mode-manual').classList.toggle('active', isManual);
+            }
+
+            const openCapture = () => { populatePropertiesDropdown(); setCaptureMode('manual'); UI.capture.classList.remove('hidden'); document.getElementById('m-name').focus(); };
+            const closeCapture = () => { UI.capture.classList.add('hidden'); UI.pastebox.value = ''; document.getElementById('capture-error').innerText = ''; };
+            document.getElementById('fab').addEventListener('click', () => {
+                populatePropertiesDropdown();
+                setCaptureMode('paste');
+                UI.capture.classList.remove('hidden');
+                document.getElementById('pastebox').focus();
+            });
+            const toggleNewPropForm = () => document.getElementById('new-prop-form').classList.toggle('hidden');
+            document.getElementById('btn-open-capture-leads').addEventListener('click', () => {
+                if (currentView === 'view-inventory') toggleNewPropForm(); else openCapture();
+            });
+            document.getElementById('btn-toggle-new-prop')?.addEventListener('click', toggleNewPropForm);
+            document.getElementById('btn-close-capture').addEventListener('click', closeCapture);
+            document.getElementById('btn-mode-paste').addEventListener('click', () => setCaptureMode('paste'));
+            document.getElementById('btn-mode-manual').addEventListener('click', () => setCaptureMode('manual'));
+
+            document.getElementById('btn-action-save').addEventListener('click', () => {
+                if (!document.getElementById('manual-mode').classList.contains('hidden')) {
+                    const n = document.getElementById('m-name').value.trim();
+                    const pRaw = document.getElementById('m-phone').value.replace(/\D/g, '');
+                    const s = document.getElementById('m-slug').value;
+                    if (!n) { const el = document.getElementById('m-name'); markFieldError(el, el, 'Este campo es obligatorio'); return; }
+                    if (pRaw.length !== 8 || isNaN(pRaw)) { const el = document.getElementById('m-phone'); markFieldError(el, el.parentElement, 'Ingresa los 8 dígitos'); return; }
+                    processCapture(`Nombre: ${n}\nTeléfono: +569${pRaw}\nPropiedad: ${s}`);
+                } else {
+                    processCapture(UI.pastebox.value);
+                }
+            });
+
+            document.getElementById('btn-hard-reset').addEventListener('click', () => {
+                const confirmacion = confirm("⚠️ ATENCIÓN: Esta acción BORRARÁ PERMANENTEMENTE TODO (sus leads, propiedades y configuración). ¿Desea proceder?");
+                if (confirmacion) {
+                    localStorage.removeItem('ps-ref_state');
+                    location.reload();
+                }
+            });
+
+            document.getElementById('btn-hard-reset-onboarding').addEventListener('click', () => {
+                const confirmacion = confirm("Esta acción REINICIARÁ toda la configuración. ¿Desea proceder?");
+                if (confirmacion) {
+                    localStorage.removeItem('ps-ref_state');
+                    location.reload();
+                }
+            });
+
+            function checkLockStatus() {
+                if (!state.pin || state.pin === "") {
+                    document.getElementById('welcome-overlay').classList.remove('hidden');
+                    if (!state.helpNudgeSeen) document.getElementById('help-nudge').classList.remove('hidden');
+                } else if (!state.mineral || !state.mineralConfirmed) {
+                    if (!state.mineral) { state.mineral = generateMineral(); save(); }
+                    showMineralReveal();
+                } else {
+                    renderLockBrokerName();
+                    UI.lockOverlay.classList.remove('hidden');
+                    document.getElementById('btn-help')?.classList.add('hidden');
+                    document.getElementById('pin-input').focus();
+                }
+            }
+
+            // REDIRECCIÓN DE FOCO DEL MÓVIL EN TODA LA PANTALLA DE BLOQUEO
+            UI.lockOverlay.addEventListener('click', () => {
+                document.getElementById('pin-input').focus();
+            });
+
+            document.getElementById('pin-input').addEventListener('input', (e) => {
+                if (e.target.value === state.pin) {
+                        UI.lockOverlay.classList.add('hidden');
+                        UI.shell.classList.remove('hidden');
+                        document.getElementById('btn-help')?.classList.add('hidden');
+                        renderIdentityHeader(); renderLeads();
+                } else if (e.target.value.length === 4) {
+                    document.getElementById('lock-error').innerText = "PIN Incorrecto";
+                    setTimeout(() => { e.target.value = ''; document.getElementById('lock-error').innerText = ''; }, 800);
+                }
+            });
+
+            const FEEDBACK_EMAIL = 'pscndn@gmail.com'; // 
+            document.getElementById('btn-send-feedback')?.addEventListener('click', () => {
+                const nombre = state.brokerName || 'Corredora';
+                const subject = `Custodia — Comentario de ${nombre}`;
+                const body = `Hola, soy ${nombre}.\n\nComentario:\n`;
+                window.location.href = `mailto:${FEEDBACK_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            });
+
+            document.getElementById('btn-lock-system').addEventListener('click', () => {
+                document.getElementById('settings-panel').classList.add('hidden');
+                UI.shell.classList.add('hidden');
+                document.getElementById('pin-input').value = '';
+                renderLockBrokerName();
+                UI.lockOverlay.classList.remove('hidden');
+                document.getElementById('pin-input').focus();
+            });
+
+            document.getElementById('btn-open-settings').addEventListener('click', () => {
+                document.getElementById('settings-broker-name').value = state.brokerName || '';
+                document.getElementById('settings-uf-ref').value = state.ufReference || '';
+
+                document.querySelectorAll('[data-theme-choice]').forEach(b => {
+                    b.classList.toggle('active', b.dataset.themeChoice === (state.theme || 'light'));
+                });
+                document.getElementById('settings-panel').classList.remove('hidden');
+            });
+
+            document.getElementById('btn-close-settings').addEventListener('click', () => {
+                document.getElementById('settings-panel').classList.add('hidden');
+            });
+
+            document.querySelectorAll('[data-theme-choice]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    state.theme = btn.dataset.themeChoice;
+                    document.documentElement.setAttribute('data-theme', state.theme);
+                    document.querySelectorAll('[data-theme-choice]').forEach(b => b.classList.toggle('active', b === btn));
+                    save();
+                });
+            });
+
+            document.getElementById('btn-save-broker-name').addEventListener('click', () => {
+                const val = document.getElementById('settings-broker-name').value.trim();
+                if (val) {
+                    state.brokerName = val;
+
+                    save();
+                    renderIdentityHeader();
+                    document.getElementById('settings-panel').classList.add('hidden');
+                }
+            });
+
+            document.getElementById('btn-export-backup').addEventListener('click', async () => {
+                if (!state.mineral) { alert('No se encontró Mineral en este dispositivo. No es posible generar un respaldo cifrado.'); return; }
+                const payload = await encryptBackup(state, state.mineral);
+                const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                const fecha = new Date().toISOString().slice(0,10);
+                a.href = url;
+                a.download = `ps-ref_respaldo_${fecha}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+
+            document.getElementById('btn-setup-import')?.addEventListener('click', () => {
+                document.getElementById('import-file-input').click(); 
+            });
+
+            document.getElementById('help-nudge')?.addEventListener('click', () => {
+                state.helpNudgeSeen = true;
+                save();
+                document.getElementById('help-nudge').classList.add('hidden');
+            });
+
+            let pendingImportPayload = null;
+
+            function openImportMineralPrompt(payload) {
+                pendingImportPayload = payload;
+                document.getElementById('import-mineral-input').value = '';
+                document.getElementById('import-mineral-error').innerText = '';
+                document.getElementById('import-mineral-overlay').classList.remove('hidden');
+                document.getElementById('import-mineral-input').focus();
+            }
+
+            function closeImportMineralPrompt() {
+                pendingImportPayload = null;
+                document.getElementById('import-mineral-overlay').classList.add('hidden');
+            }
+
+            document.getElementById('btn-cancel-import-mineral').addEventListener('click', closeImportMineralPrompt);
+
+            document.getElementById('btn-confirm-import-mineral').addEventListener('click', async () => {
+                const mineral = document.getElementById('import-mineral-input').value.trim();
+                const errorEl = document.getElementById('import-mineral-error');
+                if (!mineral) { errorEl.innerText = "Ingresa tu Mineral."; return; }
+                if (!pendingImportPayload) { closeImportMineralPrompt(); return; }
+                try {
+                    const decrypted = await decryptBackup(pendingImportPayload, mineral);
+                    if (!decrypted.leads || !decrypted.properties) throw new Error('Formato inválido');
+                    if (!confirm('Esto reemplazará todos los datos actuales por los del respaldo. ¿Continuar?')) { closeImportMineralPrompt(); return; }
+                    state = decrypted;
+                    save();
+                    location.reload();
+                } catch (err) {
+                    errorEl.innerText = "Mineral incorrecto o archivo corrupto.";
+                }
+            });
+
+            document.getElementById('import-file-input').addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    try {
+                        const imported = JSON.parse(ev.target.result);
+                        if (imported && imported.v === 1 && imported.data && imported.salt && imported.iv) {
+                            openImportMineralPrompt(imported);
+                        } else {
+                            throw new Error('Formato inválido');
+                        }
+                    } catch (err) {
+                        alert('Archivo de respaldo inválido, corrupto o no cifrado.');
+                    }
+                };
+                reader.readAsText(file);
+                e.target.value = '';
+            });
+
+            function switchSetupStep(fromEl, toEl, dotNum) {
+                fromEl.style.opacity = '0';
+                setTimeout(() => {
+                    fromEl.classList.add('hidden');
+                    toEl.classList.remove('hidden');
+                    toEl.style.opacity = '0';
+                    requestAnimationFrame(() => { toEl.style.opacity = '1'; });
+                    document.querySelectorAll('.setup-dot').forEach(d => d.classList.toggle('active', d.dataset.dot === String(dotNum)));
+                }, 280);
+            }
+
+            document.getElementById('btn-setup-next').addEventListener('click', () => {
+                const brokerNameVal = document.getElementById('setup-broker-name').value.trim();
+                const rawDigits = document.getElementById('setup-broker-phone').value.replace(/\D/g, '');
+
+                if (!brokerNameVal) { const el = document.getElementById('setup-broker-name'); markFieldError(el, el, 'Este campo es obligatorio'); return; }
+                if (!rawDigits || rawDigits.length !== 8 || isNaN(rawDigits)) { const el = document.getElementById('setup-broker-phone'); markFieldError(el, el.parentElement, 'Ingresa los 8 dígitos'); return; }
+
+                switchSetupStep(document.getElementById('setup-step-1'), document.getElementById('setup-step-2'), 2);
+                setTimeout(() => document.getElementById('setup-pin').focus(), 300);
+            });
+
+            document.getElementById('btn-setup-back').addEventListener('click', () => {
+                switchSetupStep(document.getElementById('setup-step-2'), document.getElementById('setup-step-1'), 1);
+            });
+
+            document.getElementById('btn-save-setup').addEventListener('click', () => {
+                const brokerNameVal = document.getElementById('setup-broker-name').value.trim();
+                const rawDigits = document.getElementById('setup-broker-phone').value.replace(/\D/g, '');
+                const targetPin = document.getElementById('setup-pin').value;
+
+                if (targetPin.length !== 4 || isNaN(targetPin)) { const p = document.getElementById('setup-pin'); markFieldError(p, p, 'Debe tener 4 números'); return; }
+
+                state.brokerName = brokerNameVal;
+                state.brokerPhone = `+569${rawDigits}`;
+                state.pin = targetPin;
+                if (!state.mineral) state.mineral = generateMineral();
+
+                save();
+                showMineralReveal();
+            });
+
+            document.getElementById('chk-mineral-saved').addEventListener('change', (e) => {
+                document.getElementById('btn-mineral-continue').classList.toggle('btn-soft-disabled', !e.target.checked);
+            });
+            
+            document.getElementById('btn-send-mineral-self')?.addEventListener('click', () => {
+                const phoneDigits = (state.brokerPhone || '').replace(/\D/g, '');
+                if (!phoneDigits) return;
+                const msg = `Mi Mineral de Custodia (guárdalo en un lugar seguro): ${state.mineral}`;
+                window.open(`https://wa.me/${phoneDigits}?text=${encodeURIComponent(msg)}`, '_blank');
+            });
+
+            document.getElementById('btn-copy-mineral').addEventListener('click', () => {
+                navigator.clipboard.writeText(state.mineral || '');
+                const btn = document.getElementById('btn-copy-mineral');
+                const original = btn.innerText;
+                btn.innerText = '¡Copiado!';
+                setTimeout(() => btn.innerText = original, 2000);
+            });
+
+            document.getElementById('btn-mineral-continue').addEventListener('click', () => {
+                const chk = document.getElementById('chk-mineral-saved');
+                if (!chk.checked) {
+                    const label = document.getElementById('mineral-checkbox-label');
+                    label.classList.remove('shake-cue');
+                    void label.offsetWidth;
+                    label.classList.add('shake-cue');
+                    return;
+                }
+                state.mineralConfirmed = true;
+                save();
+                document.getElementById('welcome-overlay').classList.add('hidden');
+                location.reload();
+            });
+
+            function animateTextReveal(text, el, charset, duration = 700) {
+                const len = text.length;
+                const startTime = performance.now();
+
+                function frame(now) {
+                    const progress = Math.min((now - startTime) / duration, 1);
+                    const revealCount = Math.floor(progress * len);
+                    let out = '';
+                    for (let i = 0; i < len; i++) {
+                        out += i < revealCount ? text[i] : charset[Math.floor(Math.random() * charset.length)];
+                    }
+                    el.innerText = out;
+                    if (progress < 1) requestAnimationFrame(frame);
+                    else el.innerText = text;
+                }
+                requestAnimationFrame(frame);
+            }
+
+            function showMineralReveal() {
+                document.getElementById('btn-help')?.classList.add('hidden');
+                document.getElementById('help-nudge')?.classList.add('hidden');
+                document.getElementById('chk-mineral-saved').checked = false;
+                document.getElementById('welcome-overlay').classList.remove('hidden');
+                document.getElementById('setup-step-1').classList.add('hidden');
+                document.getElementById('setup-step-2').classList.remove('hidden');
+                document.getElementById('pin-entry-block').classList.add('hidden');
+                const mineralBlock = document.getElementById('mineral-inline-block');
+                mineralBlock.classList.remove('hidden');
+                requestAnimationFrame(() => { mineralBlock.style.opacity = '1'; });
+                animateTextReveal(state.mineral, document.getElementById('mineral-display'), '0123456789abcdef');
+            }
+
+            // Activar carga de datos desde el Onboarding
+            document.getElementById('btn-setup-import')?.addEventListener('click', () => {
+                document.getElementById('import-file-input').click(); 
+            });
+
+            // --- DECODIFICACIÓN EN TIEMPO REAL VISTA CLIENTE (ESTABILIZADA) ---
+            const params = new URLSearchParams(window.location.search);
+            const accessToken = params.get('a');
+
+            if (accessToken) {
+                document.getElementById('btn-help')?.classList.add('hidden');
+                document.getElementById('welcome-overlay').classList.add('hidden');
+                UI.lockOverlay.classList.add('hidden');
+                UI.shell.classList.add('hidden');
+
+                let integrityPassed = false;
+                let type, clientSlug, clientTipoIdx, clientComunaIdx, targetBrokerPhone, clientBroker, clientSal, clientLeadId, urlName, urlPhone;
+
+                try {
+                    const parsed = parseAccessToken(accessToken, params);
+                    if (parsed) {
+                        integrityPassed = true;
+                        type = parsed.type;
+                        clientSlug = parsed.slug;
+                        clientTipoIdx = parsed.tipoIdx;
+                        clientComunaIdx = parsed.comunaIdx;
+                        targetBrokerPhone = parsed.brokerPhone;
+                        clientBroker = parsed.brokerName;
+                        clientSal = parsed.sal;
+
+                        if (type === 'c') {
+                            clientLeadId = parsed.leadId;
+                            urlName = parsed.name;
+                            urlPhone = parsed.phone;
+                        }
+                    }
+                } catch (e) {
+                    integrityPassed = false;
+                }
+
+                if (!integrityPassed) {
+                    document.getElementById('client-form-view').classList.add('hidden');
+                    document.getElementById('critical-error-overlay').classList.remove('hidden');
+                    return; 
+                }
+
+                document.getElementById('client-form-view').classList.remove('hidden');
+
+                const mainTitleEl = document.getElementById('client-header-main');
+                const subTitleEl = document.getElementById('client-header-sub');
+
+                const propTitle = (clientSlug && clientSlug !== 'General')
+                    ? `${TIPOS[clientTipoIdx] || 'Propiedad'} en ${COMUNAS[clientComunaIdx] || ''}`.trim()
+                    : 'Consulta General';
+                document.getElementById('client-prop-title').innerText = propTitle.toUpperCase();
+
+                mainTitleEl.innerText = clientBroker || "Corretaje Premium";
+                subTitleEl.style.display = 'none';
+
+                let currentStep = 1;
+                const totalSteps = 4;
+
+                function updateProgress() {
+                    const progress = (currentStep / totalSteps) * 100;
+                    const bar = document.getElementById('progress-bar');
+                    if (bar) bar.style.width = `${progress}%`;
+                }
+
+                function getClientPhone() {
+                    const inputVal = document.getElementById('c-phone').value.trim();
+                    return normalizePhone(inputVal);
+                }
+
+                function fadeSwap(hideEl, showEl, afterShow) {
+                    hideEl.style.opacity = '0';
+                    setTimeout(() => {
+                        hideEl.classList.add('hidden');
+                        showEl.classList.remove('hidden');
+                        showEl.style.opacity = '0';
+                        requestAnimationFrame(() => { showEl.style.opacity = '1'; });
+                        if (afterShow) afterShow();
+                    }, 220);
+                }
+
+                document.addEventListener('click', (e) => {
+                    if (e.target.id === 'btn-next-q' || e.target.id === 'btn-prev-q') {
+                        const isNext = e.target.id === 'btn-next-q';
+
+                        const activeSlide = document.querySelector(`.q-slide[data-step="${currentStep}"]`);
+                        if (isNext && !activeSlide.querySelector('input:checked')) {
+                            alert("Por favor, seleccione una opción."); return;
+                        }
+
+                        const targetStep = isNext ? currentStep + 1 : currentStep - 1;
+                        const nextSlide = document.querySelector(`.q-slide[data-step="${targetStep}"]`);
+
+                        if (nextSlide) {
+                            currentStep = targetStep;
+                            fadeSwap(activeSlide, nextSlide, () => {
+                                updateProgress();
+                                document.getElementById('btn-prev-q').style.display = currentStep > 1 ? 'block' : 'none';
+                            });
+                        } else if (isNext) {
+                            currentStep = targetStep;
+                            document.getElementById('q-nav-btns').classList.add('hidden');
+                            if(document.getElementById('progress-bar')) document.getElementById('progress-bar').parentElement.style.display = 'none';
+                            fadeSwap(activeSlide, document.getElementById('final-slide'), enterFinalStep);
+                        }
+                    }
+                });
+
+                function computeSelloKey() {
+                    const fd = new FormData(document.getElementById('q-form'));
+                    const ANSWER_INDEX = { 25: '0', 15: '1', 5: '2', 0: '3' };
+                    let score = 0;
+                    fd.forEach(v => score += parseInt(v));
+
+                    let tier = 'D';
+                    if (score >= 75) tier = 'A';
+                    else if (score >= 50) tier = 'B';
+                    else if (score >= 25) tier = 'C';
+                    else tier = 'D';
+
+                    const q1 = fd.get('q1'), q2 = fd.get('q2'), q3 = fd.get('q3'), q4 = fd.get('q4');
+                    const answersDigits = [q1, q2, q3, q4].map(v => ANSWER_INDEX[v] ?? '3').join('');
+
+                    let finalPayload;
+                    if (type === 'c' && clientLeadId) {
+                        const leadIdB36 = toBase36(clientLeadId);
+                        const signature = calcSig(`c|${leadIdB36}|${tier}|${answersDigits}`, clientSal);
+                        finalPayload = `c|${leadIdB36}|${tier}|${answersDigits}|${signature}`;
+                    } else {
+                        const cName = document.getElementById('c-name').value.trim() || "Interesado";
+                        const cPhone = getClientPhone();
+                        const shortPropId = toShortAssetId(clientSlug);
+                        const safeName = cName.replace(/\|/g, '').trim() || 'Cliente Anónimo';
+                        const signature = calcSig(`g|${shortPropId}|${cPhone}|${tier}|${answersDigits}|${safeName}`, clientSal);
+                        finalPayload = `g|${shortPropId}|${cPhone}|${tier}|${answersDigits}|${safeName}|${signature}`;
+                    }
+                    return `S-${encodeToken(finalPayload)}`;
+                }
+
+                function revealSello(key) {
+                    document.getElementById('final-pre-sello').classList.add('hidden');
+                    document.getElementById('final-post-sello').classList.remove('hidden');
+                    animateTextReveal(key, document.getElementById('sello-display'), 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_');
+
+                    document.getElementById('btn-copy-sello').onclick = () => {
+                        navigator.clipboard.writeText(key);
+                        const btn = document.getElementById('btn-copy-sello');
+                        const original = btn.innerText;
+                        btn.innerText = '¡Copiado!';
+                        setTimeout(() => btn.innerText = original, 2000);
+                    };
+
+                    document.getElementById('btn-send-sello').onclick = () => {
+                        window.location.href = `https://wa.me/${targetBrokerPhone.replace('+', '')}?text=${encodeURIComponent(key)}`;
+                    };
+                }
+
+                function enterFinalStep() {
+                    const isReturning = (type === 'c' && clientLeadId);
+                    if (isReturning) {
+                        revealSello(computeSelloKey());
+                        return;
+                    }
+
+                    const nameInput = document.getElementById('c-name');
+                    const phoneInput = document.getElementById('c-phone');
+                    const btnGenerar = document.getElementById('btn-generar-sello');
+
+                    const checkReady = () => {
+                        const nameOk = nameInput.value.trim().length > 0;
+                        const phoneOk = phoneInput.value.replace(/\D/g, '').length === 8;
+                        btnGenerar.disabled = !(nameOk && phoneOk);
+                    };
+                    nameInput.addEventListener('input', checkReady);
+                    phoneInput.addEventListener('input', checkReady);
+                    checkReady();
+
+                    btnGenerar.addEventListener('click', () => revealSello(computeSelloKey()), { once: true });
+                }
+            } else {
+                checkLockStatus();
+            }
+
+            UI.pastebox.addEventListener('input', (e) => {
+                if (/^S-[A-Za-z0-9_-]{15,}$/.test(e.target.value.trim())) processCapture(e.target.value);
+            });
+
+            attachPhoneMask(document.getElementById('setup-broker-phone'));
+            attachPhoneMask(document.getElementById('m-phone'));
+            attachPhoneMask(document.getElementById('c-phone'));
+
+            function updatePriceHint() {
+                const hintEl = document.getElementById('p-price-hint');
+                if (!hintEl) return;
+                const digits = parseInt(document.getElementById('p-price').value.replace(/\D/g, ''), 10) || 0;
+                const ref = parseFloat(state.ufReference) || 0;
+                const isCLP = document.getElementById('p-currency-clp').classList.contains('active');
+                if (!ref || !digits) { hintEl.innerText = ''; return; }
+                hintEl.innerText = isCLP
+                    ? `≈ UF ${(digits / ref).toFixed(1)}`
+                    : `≈ $${formatThousands(Math.round(digits * ref))}`;
+            }
+
+            const priceInput = document.getElementById('p-price');
+            if (priceInput) {
+                priceInput.addEventListener('input', (e) => {
+                    let digits = e.target.value.replace(/\D/g, '').slice(0, 10);
+                    if (parseInt(digits || '0', 10) > 1000000000) digits = '1000000000';
+                    e.target.value = formatThousands(digits);
+                    updatePriceHint();
+                });
+            }
+
+            document.getElementById('p-currency-uf')?.addEventListener('click', () => {
+                document.getElementById('p-currency-uf').classList.add('active');
+                document.getElementById('p-currency-clp').classList.remove('active');
+                updatePriceHint();
+            });
+            document.getElementById('p-currency-clp')?.addEventListener('click', () => {
+                document.getElementById('p-currency-clp').classList.add('active');
+                document.getElementById('p-currency-uf').classList.remove('active');
+                updatePriceHint();
+            });
+
+            document.getElementById('btn-save-uf-ref')?.addEventListener('click', () => {
+                const raw = document.getElementById('settings-uf-ref').value.replace(/\D/g, '');
+                state.ufReference = raw || undefined;
+                save();
+            });
+
+            [['setup-broker-name',30], ['settings-broker-name',30], ['m-name',30], ['p-slug',30], ['c-name',30], ['settings-uf-ref',10], ['p-price',13]]
+                .forEach(([id, max]) => { const el = document.getElementById(id); if (el) attachCharCounter(el, max); });
+        })();
+    </script>
+</body>
+</html>

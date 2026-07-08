@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Psicoandino | Espejo de Operaciones</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- ── VISTA ADMINISTRACIÓN ─────────────────────────────────────────── -->
+    <div id="admin-app-shell" class="app-container">
+        <header class="app-header">
+            <!-- Campo de Nombre de Corredora con lógica de guardado -->
+            <div class="broker-field">
+                <span id="broker-display"></span>
+                <input id="broker-input" type="text" class="broker-input hidden" maxlength="40" autocomplete="off">
+                <button id="broker-edit-btn" class="icon-btn" title="Editar nombre">✏</button>
+                <button id="broker-save-btn" class="icon-btn save-pending hidden" title="Guardar">💾</button>
+            </div>
+            <div id="mirror-status" class="badge">Espejo Activo</div>
+        </header>
+
+        <!-- Panel de Captura Pasiva -->
+        <section id="capture-zone" class="passive-capture-zone collapsed">
+            <textarea id="passive-pastebox" placeholder="Pegue aquí texto crudo del correo, chat o LLAVE REF-..."></textarea>
+            <div class="capture-actions">
+                <button id="clear-pastebox" class="clear-btn" type="button">Limpieza Rápida</button>
+            </div>
+            <div id="capture-error" class="capture-error hidden"></div>
+        </section>
+
+        <main class="views-slider">
+            <!-- Vista: Matriz de Mensajería -->
+            <div id="view-matrix" class="view-panel active">
+                <h2>Matriz de Mensajería</h2>
+                <div id="leads-container" class="stack"></div>
+
+                <!-- Fallback Manual -->
+                <button id="manual-lead-toggle" class="manual-toggle-btn">+ Carga Manual</button>
+                <div id="manual-lead-form" class="property-form hidden" style="margin-top:10px;">
+                    <div class="form-group">
+                        <input id="manual-name"  type="text" placeholder="Nombre del lead" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <input id="manual-phone" type="tel"  placeholder="Teléfono WhatsApp (ej: +56912345678)">
+                    </div>
+                    <div class="form-group">
+                        <input id="manual-slug"  type="text" placeholder="Slug de propiedad (opcional)">
+                    </div>
+                    <div class="form-group">
+                        <select id="manual-tier">
+                            <option value="A">A — Cierre Inmediato</option>
+                            <option value="B1" selected>B1 — Calificado</option>
+                            <option value="B2">B2 — En Evaluación</option>
+                        </select>
+                    </div>
+                    <button id="manual-lead-submit" class="submit-btn" type="button">Crear Lead</button>
+                </div>
+            </div>
+
+            <!-- Vista: Inventario de Activos -->
+            <div id="view-inventory" class="view-panel">
+                <h2>Registrar Nuevo Activo</h2>
+                <form id="property-form" class="property-form">
+                    <div class="form-group">
+                        <input type="text" id="prop-slug" placeholder="Slug de la Propiedad (ej: depto-nunoa)" required>
+                        <span class="field-hint">⚠ Este nombre es visible para el cliente en el link</span>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="prop-price" placeholder="Precio (ej: UF 4.200)" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="prop-details" placeholder="Detalles de la propiedad..." required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn" id="asset-submit-btn">Asegurar Activo</button>
+                </form>
+
+                <h2>Activos en Cartera</h2>
+                <div id="properties-container" class="stack"></div>
+            </div>
+        </main>
+
+        <button id="fab-toggle-capture" class="fab-capture" aria-label="Alternar Panel de Captura">＋</button>
+
+        <nav class="nav-tabs">
+            <button id="tab-matrix"    class="tab-btn active">Mensajes</button>
+            <button id="tab-inventory" class="tab-btn">Activos</button>
+        </nav>
+    </div>
+
+    <!-- ── VISTA CLIENTE ────────────────────────────────────────────────── -->
+    <div id="client-form-view" class="client-container hidden">
+        <header class="client-header">
+            <h1 id="client-form-title">Validación de Interés</h1>
+            <p class="client-subtitle" id="client-subtitle">Complete los parámetros solicitados.</p>
+        </header>
+        <form id="qualification-form" class="property-form">
+            <input type="hidden" id="client-target-slug">
+            <input type="hidden" id="client-broker-name">
+            <div class="form-group">
+                <label for="client-name">Nombre Completo</label>
+                <input type="text" id="client-name" placeholder="Ej: Constanza Silva" required autocomplete="name">
+            </div>
+            <div class="form-group">
+                <label for="client-phone">Número de WhatsApp</label>
+                <input type="tel" id="client-phone" placeholder="Ej: +56912345678" required autocomplete="tel">
+            </div>
+            <!-- Preguntas de Score — inyectadas por JS -->
+            <div id="score-questions"></div>
+            <button type="submit" class="submit-btn" style="background-color: var(--scale-b1);">
+                Enviar Validación por WhatsApp
+            </button>
+        </form>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
