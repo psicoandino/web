@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Emergence - Evolutionary Writing System</title>
+    <style>
+        :root {
+            --cobre: #248692;
+            --musgo: #6D7C50;
+            --mostaza: #B78627;
+            --sangre: #C73A4A;
+            --hueso: #F5F3EC;
+            --oled: #000000;
+            --amatista: #7D5AA1;
+
+            --surface: #fffcf4;
+            --soft-line: rgba(0, 0, 0, 0.1);
+            --quiet-line: rgba(0, 0, 0, 0.06);
+            --text-soft: rgba(0, 0, 0, 0.64);
+            --text-faint: rgba(0, 0, 0, 0.38);
+            --unit: 8px;
+            --radius: 8px;
+            --button-radius: 999px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--hueso);
+            color: var(--oled);
+            font-family: "Space Grotesk", "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
+        button,
+        textarea,
+        select {
+            font: inherit;
+        }
+
+        button {
+            border: 0;
+        }
+
+        .shell {
+            width: min(100% - 48px, 920px);
+            margin: 0 auto;
+            padding: 28px 0 48px;
+        }
+
+        .topbar {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            gap: 24px;
+            padding: 0 0 20px;
+            border-bottom: 1px solid var(--soft-line);
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 100%;
+            width: max-content;
+            color: var(--oled);
+            cursor: pointer;
+            min-width: 0;
+            user-select: none;
+        }
+
+        .brand-mark {
+            width: 14px;
+            height: 14px;
+            border: 2px solid var(--oled);
+            border-radius: 50%;
+            background: var(--hueso);
+            box-shadow: inset 0 0 0 4px var(--musgo);
+        }
+
+        .brand-name {
+            flex: 0 1 auto;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            max-width: calc(100vw - 140px);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .workspace {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 32px;
+            padding-top: 28px;
+        }
+
+        .status-rail,
+        .main-panel,
+        .archive-panel {
+            grid-column: 1 / -1;
+        }
+
+        .status-rail {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            gap: 16px;
+            min-height: 44px;
+        }
+
+        .location {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }
+
+        .location-label {
+            color: var(--text-faint);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .location-value {
+            color: var(--oled);
+            font-size: 14px;
+            font-weight: 650;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .state-chain {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+            color: var(--text-faint);
+        }
+
+        .state-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            min-height: 28px;
+            padding: 5px 10px;
+            border: 1px solid transparent;
+            border-radius: var(--button-radius);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .state-chip.active {
+            color: var(--oled);
+            background: var(--surface);
+            border-color: var(--soft-line);
+        }
+
+        .primitive-circle,
+        .primitive-line,
+        .primitive-square,
+        .primitive-triangle {
+            display: inline-block;
+            flex: 0 0 auto;
+        }
+
+        .primitive-circle {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .primitive-line {
+            width: 14px;
+            height: 2px;
+            border-radius: 99px;
+            background: currentColor;
+        }
+
+        .primitive-square {
+            width: 8px;
+            height: 8px;
+            border: 1.5px solid currentColor;
+            border-radius: 2px;
+        }
+
+        .primitive-triangle {
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 9px solid currentColor;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 38px;
+            padding: 10px 16px;
+            border: 1px solid var(--soft-line);
+            border-radius: var(--button-radius);
+            background: transparent;
+            color: var(--oled);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 750;
+            letter-spacing: 0.04em;
+            line-height: 1;
+            text-transform: uppercase;
+            transition: background 160ms ease, border-color 160ms ease, color 160ms ease, opacity 160ms ease;
+            white-space: nowrap;
+        }
+
+        .btn:hover:not(:disabled) {
+            background: var(--surface);
+            border-color: rgba(0, 0, 0, 0.22);
+        }
+
+        .btn:focus-visible,
+        textarea:focus-visible,
+        select:focus-visible {
+            outline: 2px solid rgba(36, 134, 146, 0.35);
+            outline-offset: 3px;
+        }
+
+        .btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.42;
+        }
+
+        .btn-primary {
+            background: var(--oled);
+            border-color: var(--oled);
+            color: var(--hueso);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: rgba(0, 0, 0, 0.84);
+            border-color: rgba(0, 0, 0, 0.84);
+        }
+
+        .btn-accent {
+            border-color: rgba(36, 134, 146, 0.42);
+            color: var(--cobre);
+        }
+
+        .btn-danger {
+            border-color: rgba(199, 58, 74, 0.32);
+            color: var(--sangre);
+        }
+
+        .main-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .context-note {
+            display: none;
+            padding: 18px 20px;
+            border: 1px solid rgba(36, 134, 146, 0.18);
+            border-left: 4px solid var(--cobre);
+            border-radius: var(--radius);
+            background: rgba(36, 134, 146, 0.04);
+            color: var(--text-soft);
+            font-size: 14px;
+            line-height: 1.55;
+        }
+
+        .context-note.visible {
+            display: block;
+        }
+
+        .context-kicker,
+        .section-kicker,
+        .meta-label {
+            color: var(--text-faint);
+            font-size: 11px;
+            font-weight: 750;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .context-note p {
+            margin-top: 8px;
+        }
+
+        .writing-form,
+        .sealed-view,
+        .archive-panel {
+            background: transparent;
+        }
+
+        .writing-area {
+            width: 100%;
+            min-height: clamp(300px, 48vh, 560px);
+            padding: 0;
+            resize: vertical;
+            border: 0;
+            background: transparent;
+            color: var(--oled);
+            outline: none;
+            font-size: clamp(19px, 2.1vw, 24px);
+            line-height: 1.58;
+        }
+
+        .writing-area::placeholder {
+            color: rgba(0, 0, 0, 0.28);
+        }
+
+        .edit-actions,
+        .sealed-actions,
+        .reflection-actions,
+        .archive-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .support-text {
+            max-width: 520px;
+            color: var(--text-faint);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .sealed-view {
+            display: none;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .sealed-view.visible {
+            display: flex;
+        }
+
+        .sealed-text {
+            padding: 28px 0 4px;
+            color: var(--oled);
+            font-size: clamp(19px, 2.1vw, 24px);
+            line-height: 1.62;
+            white-space: pre-wrap;
+        }
+
+        .node-meta {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            padding: 16px 0;
+            border-top: 1px solid var(--quiet-line);
+            border-bottom: 1px solid var(--quiet-line);
+        }
+
+        .meta-item {
+            min-width: 0;
+        }
+
+        .meta-value {
+            margin-top: 5px;
+            color: var(--text-soft);
+            font-size: 13px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .reflection-panel,
+        .lineage-panel,
+        .archive-panel {
+            padding-top: 24px;
+            border-top: 1px solid var(--quiet-line);
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            color: var(--oled);
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .reflection-grid {
+            display: grid;
+            grid-template-columns: minmax(180px, 0.42fr) 1fr auto;
+            align-items: end;
+            gap: 12px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .field label {
+            color: var(--text-faint);
+            font-size: 11px;
+            font-weight: 750;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+        }
+
+        .reflection-select,
+        .reflection-input {
+            width: 100%;
+            min-height: 40px;
+            border: 1px solid var(--soft-line);
+            border-radius: var(--radius);
+            background: var(--surface);
+            color: var(--oled);
+            outline: none;
+            font-size: 13px;
+        }
+
+        .reflection-select {
+            padding: 0 12px;
+        }
+
+        .reflection-input {
+            min-height: 72px;
+            padding: 12px;
+            resize: vertical;
+            line-height: 1.45;
+        }
+
+        .notes-list {
+            display: grid;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .note-card {
+            padding: 14px 16px;
+            border: 1px solid rgba(125, 90, 161, 0.16);
+            border-left: 4px solid var(--amatista);
+            border-radius: var(--radius);
+            background: rgba(125, 90, 161, 0.035);
+        }
+
+        .note-card strong {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--amatista);
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .note-card p {
+            color: var(--text-soft);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .empty-note {
+            color: var(--text-faint);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .lineage-body {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-top: 12px;
+        }
+
+        .lineage-body.visible {
+            display: grid;
+        }
+
+        .lineage-column {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .node-row {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 10px;
+            min-height: 44px;
+            padding: 10px 12px;
+            border: 1px solid transparent;
+            border-radius: var(--radius);
+            background: transparent;
+            color: var(--text-soft);
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .node-row:hover,
+        .node-row.active {
+            border-color: var(--soft-line);
+            background: var(--surface);
+            color: var(--oled);
+        }
+
+        .node-title {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 13px;
+            line-height: 1.35;
+        }
+
+        .node-tag {
+            color: var(--text-faint);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .archive-panel {
+            display: none;
+        }
+
+        .archive-panel.visible {
+            display: block;
+        }
+
+        .archive-list {
+            display: grid;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .archive-empty {
+            padding: 28px 0;
+            color: var(--text-faint);
+            font-size: 14px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 760px) {
+            .shell {
+                width: min(100% - 32px, 920px);
+                padding-top: 20px;
+            }
+
+            .topbar,
+            .status-rail {
+                grid-template-columns: 1fr;
+                align-items: start;
+            }
+
+            .topbar-actions,
+            .state-chain {
+                justify-content: flex-start;
+                width: 100%;
+            }
+
+            .brand-name {
+                font-size: 12px;
+                letter-spacing: 0.06em;
+                max-width: calc(100vw - 78px);
+            }
+
+            .workspace {
+                gap: 24px;
+                padding-top: 22px;
+            }
+
+            .location {
+                display: grid;
+                gap: 6px;
+            }
+
+            .state-chain {
+                flex-wrap: wrap;
+            }
+
+            .edit-actions,
+            .sealed-actions,
+            .reflection-actions,
+            .archive-header {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                white-space: normal;
+            }
+
+            .node-meta,
+            .reflection-grid,
+            .lineage-body {
+                grid-template-columns: 1fr;
+            }
+
+            .sealed-text {
+                padding-top: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <header class="topbar">
+            <div class="brand" role="button" tabindex="0" aria-label="Volver al espacio de escritura">
+                <span class="brand-mark" aria-hidden="true"></span>
+                <span class="brand-name">Project Emergence</span>
+            </div>
+            <div class="topbar-actions">
+                <button class="btn" type="button" id="btn-archive">Registro</button>
+                <button class="btn btn-accent hidden" type="button" id="btn-new-root">
+                    <span class="primitive-circle" aria-hidden="true"></span>
+                    Nueva Expresión
+                </button>
+            </div>
+        </header>
+
+        <main class="workspace">
+            <section class="status-rail" aria-label="Estado actual del pensamiento">
+                <div class="location">
+                    <span class="location-label">Ubicación actual</span>
+                    <span class="location-value" id="location-value">Expresión libre</span>
+                </div>
+                <div class="state-chain" id="state-chain">
+                    <span class="state-chip" data-state="expression"><span class="primitive-circle"></span>Expresión</span>
+                    <span class="state-chip" data-state="emergence"><span class="primitive-line"></span>Emergencia</span>
+                    <span class="state-chip" data-state="reflection"><span class="primitive-square"></span>Reflexión</span>
+                    <span class="state-chip" data-state="published"><span class="primitive-triangle"></span>Publicado</span>
+                </div>
+            </section>
+
+            <section class="main-panel" id="main-panel">
+                <div class="context-note" id="parent-context">
+                    <div class="context-kicker">Pensamiento padre</div>
+                    <p id="parent-context-text"></p>
+                </div>
+
+                <form class="writing-form" id="writing-form">
+                    <textarea
+                        id="workspace-textarea"
+                        class="writing-area"
+                        placeholder="Escribe el pensamiento antes de convertirlo en historia."
+                        aria-label="Expresión editable"
+                    ></textarea>
+                    <div class="edit-actions">
+                        <p class="support-text">Sellar crea un nodo permanente. Después de eso, la evolución continúa creando Descendientes, no editando el origen.</p>
+                        <div class="topbar-actions">
+                            <button class="btn btn-danger hidden" type="button" id="btn-discard-draft">Descartar</button>
+                            <button class="btn btn-primary" type="submit" id="btn-seal" disabled>
+                                <span class="primitive-line" aria-hidden="true"></span>
+                                Sellar Expresión
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <article class="sealed-view" id="sealed-view" aria-label="Pensamiento sellado">
+                    <div class="sealed-text" id="sealed-text"></div>
+
+                    <div class="node-meta" aria-label="Metadatos genealógicos">
+                        <div class="meta-item">
+                            <div class="meta-label">Identidad</div>
+                            <div class="meta-value" id="meta-id"></div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Origen</div>
+                            <div class="meta-value" id="meta-root"></div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Sellado</div>
+                            <div class="meta-value" id="meta-time"></div>
+                        </div>
+                    </div>
+
+                    <div class="sealed-actions">
+                        <p class="support-text" id="sealed-support">Este nodo es inmutable. La siguiente versión debe nacer como Descendiente.</p>
+                        <div class="topbar-actions">
+                            <button class="btn btn-accent" type="button" id="btn-descendant">
+                                <span class="primitive-triangle" aria-hidden="true"></span>
+                                Crear Descendiente
+                            </button>
+                            <button class="btn" type="button" id="btn-publish">
+                                <span class="primitive-line" aria-hidden="true"></span>
+                                Publicar Proyección
+                            </button>
+                        </div>
+                    </div>
+
+                    <section class="reflection-panel" aria-label="Reflexión">
+                        <div class="section-heading">
+                            <h2 class="section-title"><span class="primitive-square"></span>Reflexión</h2>
+                        </div>
+                        <div class="reflection-grid">
+                            <div class="field">
+                                <label for="reflection-prompt">Marco</label>
+                                <select id="reflection-prompt" class="reflection-select">
+                                    <option value="Cambio">Qué cambió respecto del origen</option>
+                                    <option value="Valor">Por qué importa ahora</option>
+                                    <option value="Descubrimiento">Qué descubrí al releerlo</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label for="reflection-input">Observación</label>
+                                <textarea id="reflection-input" class="reflection-input" placeholder="Registra una capa de lectura sin alterar el nodo."></textarea>
+                            </div>
+                            <button class="btn" type="button" id="btn-reflection">Adjuntar Nota</button>
+                        </div>
+                        <div class="notes-list" id="notes-list"></div>
+                    </section>
+
+                    <section class="lineage-panel" aria-label="Genealogía y linaje">
+                        <div class="section-heading">
+                            <h2 class="section-title"><span class="primitive-line"></span>Genealogía</h2>
+                            <button class="btn" type="button" id="btn-lineage">Inspeccionar Linaje</button>
+                        </div>
+                        <div class="lineage-body" id="lineage-body">
+                            <div class="lineage-column">
+                                <div class="section-kicker">Ancestría</div>
+                                <div id="ancestry-list"></div>
+                            </div>
+                            <div class="lineage-column">
+                                <div class="section-kicker">Descendientes directos</div>
+                                <div id="descendant-list"></div>
+                            </div>
+                        </div>
+                    </section>
+                </article>
+            </section>
+
+            <section class="archive-panel" id="archive-panel" aria-label="Registro local">
+                <div class="archive-header">
+                    <div>
+                        <div class="section-kicker">Registro local</div>
+                        <p class="support-text">Cronología de nodos sellados. Es una referencia para volver a una Emergencia, no un documento maestro.</p>
+                    </div>
+                    <button class="btn btn-accent" type="button" id="btn-archive-expression">
+                        <span class="primitive-circle" aria-hidden="true"></span>
+                        Nueva Expresión
+                    </button>
+                </div>
+                <div class="archive-list" id="archive-list"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        class ProjectEmergenceCore {
+            constructor() {
+                this.storageKey = "emergence_kernel_v3";
+                this.legacyStorageKey = "emergence_kernel_v2";
+                this.state = this.loadState();
+                this.isLineageOpen = false;
+                this.bindEvents();
+                this.render();
+            }
+
+            defaultState() {
+                return {
+                    nodes: {},
+                    activeNodeId: null,
+                    activeExpression: { content: "", parentId: null },
+                    currentView: "workspace"
+                };
+            }
+
+            loadState() {
+                const source = localStorage.getItem(this.storageKey) || localStorage.getItem(this.legacyStorageKey);
+                if (!source) return this.defaultState();
+
+                try {
+                    const parsed = JSON.parse(source);
+                    return {
+                        ...this.defaultState(),
+                        ...parsed,
+                        currentView: parsed.currentView === "archive" ? "archive" : "workspace",
+                        activeExpression: {
+                            content: parsed.activeExpression?.content || "",
+                            parentId: parsed.activeExpression?.parentId || null
+                        },
+                        nodes: parsed.nodes || {}
+                    };
+                } catch (error) {
+                    return this.defaultState();
+                }
+            }
+
+            persist(shouldRender = true) {
+                localStorage.setItem(this.storageKey, JSON.stringify(this.state));
+                if (shouldRender) this.render();
+            }
+
+            bindEvents() {
+                document.querySelector(".brand").addEventListener("click", () => this.openWorkspace());
+                document.querySelector(".brand").addEventListener("keydown", (event) => {
+                    if (event.key === "Enter" || event.key === " ") this.openWorkspace();
+                });
+
+                document.getElementById("btn-archive").addEventListener("click", () => this.toggleArchive());
+                document.getElementById("btn-new-root").addEventListener("click", () => this.startFreshExpression());
+                document.getElementById("btn-archive-expression").addEventListener("click", () => this.startFreshExpression());
+                document.getElementById("btn-discard-draft").addEventListener("click", () => this.discardDraft());
+                document.getElementById("btn-descendant").addEventListener("click", () => this.createDescendantDraft());
+                document.getElementById("btn-publish").addEventListener("click", () => this.publishActiveNode());
+                document.getElementById("btn-reflection").addEventListener("click", () => this.saveReflectionNote());
+                document.getElementById("btn-lineage").addEventListener("click", () => this.toggleLineage());
+
+                document.getElementById("workspace-textarea").addEventListener("input", (event) => {
+                    this.state.activeExpression.content = event.target.value;
+                    document.getElementById("btn-seal").disabled = event.target.value.trim().length === 0;
+                    document.getElementById("btn-discard-draft").classList.toggle("hidden", event.target.value.trim().length === 0);
+                    this.persist(false);
+                });
+
+                document.getElementById("writing-form").addEventListener("submit", (event) => {
+                    event.preventDefault();
+                    this.sealCurrentExpression();
+                });
+            }
+
+            openWorkspace() {
+                this.state.currentView = "workspace";
+                this.persist();
+            }
+
+            toggleArchive() {
+                this.state.currentView = this.state.currentView === "archive" ? "workspace" : "archive";
+                this.persist();
+            }
+
+            startFreshExpression() {
+                this.state.activeNodeId = null;
+                this.state.activeExpression = { content: "", parentId: null };
+                this.state.currentView = "workspace";
+                this.isLineageOpen = false;
+                this.persist();
+            }
+
+            discardDraft() {
+                this.state.activeExpression = { content: "", parentId: null };
+                this.persist();
+            }
+
+            createDescendantDraft() {
+                const parentId = this.state.activeNodeId;
+                if (!parentId || !this.state.nodes[parentId]) return;
+
+                this.state.activeExpression = { content: "", parentId };
+                this.state.activeNodeId = null;
+                this.state.currentView = "workspace";
+                this.isLineageOpen = false;
+                this.persist();
+            }
+
+            sealCurrentExpression() {
+                const content = this.state.activeExpression.content.trim();
+                if (!content) return;
+
+                const id = `node_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+                const parentId = this.state.activeExpression.parentId;
+                const parent = parentId ? this.state.nodes[parentId] : null;
+                const rootId = parent ? parent.rootId || parent.id : id;
+
+                this.state.nodes[id] = {
+                    id,
+                    content,
+                    parentId,
+                    rootId,
+                    timestamp: Date.now(),
+                    published: false,
+                    reflections: [],
+                    descendantIds: []
+                };
+
+                if (parent) {
+                    parent.descendantIds = Array.from(new Set([...(parent.descendantIds || []), id]));
+                }
+
+                this.state.activeNodeId = id;
+                this.state.activeExpression = { content: "", parentId: null };
+                this.state.currentView = "workspace";
+                this.persist();
+            }
+
+            publishActiveNode() {
+                const node = this.getActiveNode();
+                if (!node || node.published) return;
+
+                node.published = true;
+                this.persist();
+            }
+
+            saveReflectionNote() {
+                const node = this.getActiveNode();
+                const input = document.getElementById("reflection-input");
+                const select = document.getElementById("reflection-prompt");
+                const text = input.value.trim();
+                if (!node || !text) return;
+
+                node.reflections = node.reflections || [];
+                node.reflections.push({
+                    category: select.value,
+                    text,
+                    timestamp: Date.now()
+                });
+
+                input.value = "";
+                this.persist();
+            }
+
+            toggleLineage() {
+                this.isLineageOpen = !this.isLineageOpen;
+                this.renderLineage();
+            }
+
+            selectNode(id) {
+                if (!this.state.nodes[id]) return;
+
+                this.state.activeNodeId = id;
+                this.state.activeExpression = { content: "", parentId: null };
+                this.state.currentView = "workspace";
+                this.persist();
+            }
+
+            getActiveNode() {
+                return this.state.activeNodeId ? this.state.nodes[this.state.activeNodeId] : null;
+            }
+
+            getAllNodes() {
+                return Object.values(this.state.nodes).sort((a, b) => b.timestamp - a.timestamp);
+            }
+
+            getNodeChildren(nodeId) {
+                return this.getAllNodes()
+                    .filter((node) => node.parentId === nodeId)
+                    .sort((a, b) => a.timestamp - b.timestamp);
+            }
+
+            getAncestryPath(nodeId) {
+                const path = [];
+                let current = this.state.nodes[nodeId];
+                while (current) {
+                    path.unshift(current);
+                    current = current.parentId ? this.state.nodes[current.parentId] : null;
+                }
+                return path;
+            }
+
+            getNodeState(node) {
+                if (!node) return "expression";
+                if (node.published) return "published";
+                if (node.reflections && node.reflections.length > 0) return "reflection";
+                return "emergence";
+            }
+
+            render() {
+                const isArchive = this.state.currentView === "archive";
+                const activeNode = this.getActiveNode();
+                const activeState = this.getNodeState(activeNode);
+
+                document.getElementById("main-panel").classList.toggle("hidden", isArchive);
+                document.getElementById("archive-panel").classList.toggle("visible", isArchive);
+                document.getElementById("btn-archive").textContent = isArchive ? "Volver" : "Registro";
+                document.getElementById("btn-new-root").classList.toggle("hidden", !activeNode || isArchive);
+
+                this.renderLocation(activeNode, activeState, isArchive);
+                this.renderStateChain(activeState, isArchive);
+
+                if (isArchive) {
+                    this.renderArchive();
+                } else if (activeNode) {
+                    this.renderSealedView(activeNode);
+                } else {
+                    this.renderExpressionView();
+                }
+            }
+
+            renderLocation(activeNode, activeState, isArchive) {
+                const label = document.getElementById("location-value");
+                if (isArchive) {
+                    label.textContent = "Registro local";
+                    return;
+                }
+
+                if (!activeNode) {
+                    const parentId = this.state.activeExpression.parentId;
+                    label.textContent = parentId ? "Expresión descendiente" : "Expresión libre";
+                    return;
+                }
+
+                const labels = {
+                    emergence: "Nodo sellado",
+                    reflection: "Nodo sellado con reflexión",
+                    published: "Proyección publicada"
+                };
+                label.textContent = labels[activeState];
+            }
+
+            renderStateChain(activeState, isArchive) {
+                document.querySelectorAll(".state-chip").forEach((chip) => {
+                    chip.classList.toggle("active", !isArchive && chip.dataset.state === activeState);
+                });
+            }
+
+            renderExpressionView() {
+                document.getElementById("writing-form").classList.remove("hidden");
+                document.getElementById("sealed-view").classList.remove("visible");
+
+                const textarea = document.getElementById("workspace-textarea");
+                const content = this.state.activeExpression.content;
+                if (document.activeElement !== textarea) textarea.value = content;
+
+                document.getElementById("btn-seal").disabled = content.trim().length === 0;
+                document.getElementById("btn-discard-draft").classList.toggle("hidden", content.trim().length === 0);
+
+                const parentId = this.state.activeExpression.parentId;
+                const parent = parentId ? this.state.nodes[parentId] : null;
+                const context = document.getElementById("parent-context");
+                if (parent) {
+                    context.classList.add("visible");
+                    document.getElementById("parent-context-text").textContent = parent.content;
+                } else {
+                    context.classList.remove("visible");
+                }
+            }
+
+            renderSealedView(node) {
+                document.getElementById("writing-form").classList.add("hidden");
+                document.getElementById("parent-context").classList.remove("visible");
+                document.getElementById("sealed-view").classList.add("visible");
+
+                document.getElementById("sealed-text").textContent = node.content;
+                document.getElementById("meta-id").textContent = this.compactId(node.id);
+                document.getElementById("meta-root").textContent = node.rootId === node.id ? "Raíz" : this.compactId(node.rootId);
+                document.getElementById("meta-time").textContent = new Date(node.timestamp).toLocaleString([], {
+                    dateStyle: "medium",
+                    timeStyle: "short"
+                });
+
+                const publishButton = document.getElementById("btn-publish");
+                publishButton.disabled = Boolean(node.published);
+                publishButton.textContent = node.published ? "Proyección Publicada" : "Publicar Proyección";
+
+                this.renderNotes(node);
+                this.renderLineage();
+            }
+
+            renderNotes(node) {
+                const notesList = document.getElementById("notes-list");
+                notesList.innerHTML = "";
+
+                if (!node.reflections || node.reflections.length === 0) {
+                    const empty = document.createElement("p");
+                    empty.className = "empty-note";
+                    empty.textContent = "Aún no hay capas de reflexión para este nodo.";
+                    notesList.appendChild(empty);
+                    return;
+                }
+
+                node.reflections
+                    .slice()
+                    .sort((a, b) => b.timestamp - a.timestamp)
+                    .forEach((note) => {
+                        const card = document.createElement("article");
+                        card.className = "note-card";
+
+                        const category = document.createElement("strong");
+                        category.textContent = note.category;
+                        const text = document.createElement("p");
+                        text.textContent = note.text;
+
+                        card.append(category, text);
+                        notesList.appendChild(card);
+                    });
+            }
+
+            renderLineage() {
+                const node = this.getActiveNode();
+                const body = document.getElementById("lineage-body");
+                const button = document.getElementById("btn-lineage");
+                if (!node) return;
+
+                body.classList.toggle("visible", this.isLineageOpen);
+                button.textContent = this.isLineageOpen ? "Ocultar Linaje" : "Inspeccionar Linaje";
+                if (!this.isLineageOpen) return;
+
+                this.renderNodeList("ancestry-list", this.getAncestryPath(node.id), node.id, "Gen");
+                this.renderNodeList("descendant-list", this.getNodeChildren(node.id), node.id, "Desc");
+            }
+
+            renderArchive() {
+                const archiveList = document.getElementById("archive-list");
+                const nodes = this.getAllNodes();
+                archiveList.innerHTML = "";
+
+                if (nodes.length === 0) {
+                    const empty = document.createElement("div");
+                    empty.className = "archive-empty";
+                    empty.textContent = "No hay pensamientos sellados todavía.";
+                    archiveList.appendChild(empty);
+                    return;
+                }
+
+                this.renderNodeList("archive-list", nodes, this.state.activeNodeId, "Nodo", true);
+            }
+
+            renderNodeList(targetId, nodes, activeId, prefix, includeTime = false) {
+                const target = document.getElementById(targetId);
+                target.innerHTML = "";
+
+                if (nodes.length === 0) {
+                    const empty = document.createElement("p");
+                    empty.className = "empty-note";
+                    empty.textContent = "Sin nodos en esta relación.";
+                    target.appendChild(empty);
+                    return;
+                }
+
+                nodes.forEach((node, index) => {
+                    const row = document.createElement("button");
+                    row.type = "button";
+                    row.className = "node-row";
+                    row.classList.toggle("active", node.id === activeId);
+                    row.addEventListener("click", () => this.selectNode(node.id));
+
+                    const primitive = document.createElement("span");
+                    primitive.className = node.parentId ? "primitive-triangle" : "primitive-circle";
+                    primitive.setAttribute("aria-hidden", "true");
+
+                    const title = document.createElement("span");
+                    title.className = "node-title";
+                    title.textContent = node.content;
+
+                    const tag = document.createElement("span");
+                    tag.className = "node-tag";
+                    tag.textContent = includeTime
+                        ? new Date(node.timestamp).toLocaleDateString([], { month: "short", day: "numeric" })
+                        : `${prefix} ${index + 1}`;
+
+                    row.append(primitive, title, tag);
+                    target.appendChild(row);
+                });
+            }
+
+            compactId(id) {
+                return id ? id.replace("thought_node_", "").replace("node_", "").slice(0, 14) : "sin-id";
+            }
+        }
+
+        const app = new ProjectEmergenceCore();
+        window.app = app;
+    </script>
+</body>
+</html>
