@@ -972,28 +972,15 @@
                 </div>
             </div>
 
-            <!-- SEÑALES CARGADAS — VIDEO / LISTA toggle + history -->
+            <!-- SEÑALES CARGADAS -->
             <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; margin-bottom:8px;">
-                <div class="deck-section-title" style="margin:0; border:none; padding:0; color:rgba(0,0,0,0.8);">SEÑALES CARGADAS</div>
-                <div style="display:flex; gap:3px;">
-                    <button id="left-mode-video-btn" class="mode-btn active" type="button">[VIDEO]</button>
-                    <button id="left-mode-lista-btn" class="mode-btn" type="button">[LISTA]</button>
-                </div>
+                <div class="deck-section-title" style="margin:0; border:none; padding:0; color:rgba(0,0,0,0.8); width:100%;">SEÑALES CARGADAS</div>
             </div>
 
             <!-- VIDEO mode: automatic play history -->
             <div id="left-video-section">
                 <div id="history-list" class="history-list"></div>
                 <button id="btn-clear-history" class="load-btn" style="margin-top:6px; font-size:9px; border-color:var(--musgo); color:var(--musgo);">[CLR HISTORIAL]</button>
-            </div>
-
-            <!-- LISTA mode: saved playlist IDs -->
-            <div id="left-lista-section" style="display:none;">
-                <div style="display:flex; gap:6px; margin-bottom:6px;">
-                    <input id="input-save-playlist" class="origin-input" type="text" placeholder="PLAYLIST ID" spellcheck="false" style="flex:1; font-size:10px;">
-                    <button id="btn-save-playlist" class="load-btn" style="width:auto; padding:6px 10px;">[+]</button>
-                </div>
-                <div id="saved-playlists-list" class="saved-playlists-list"></div>
             </div>
         </aside>
 
@@ -1026,10 +1013,6 @@
             <div class="playlist-header" style="display:flex; flex-direction:column; gap:6px; border-bottom:1px solid var(--oled); padding-bottom:8px; margin-bottom:4px; flex-shrink:0;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <span>COLAS DE REPRODUCCIÓN</span>
-                    <div style="display:flex; gap:3px;">
-                        <button id="right-mode-video-btn" class="mode-btn active" type="button">[VIDEO]</button>
-                        <button id="right-mode-lista-btn" class="mode-btn" type="button">[LISTA]</button>
-                    </div>
                 </div>
                 <div class="origin-tabs">
                     <button id="tab-all" class="origin-tab active" type="button">[TODOS]</button>
@@ -1054,11 +1037,6 @@
                 </div>
 
                 <button id="btn-open-cemetery" class="load-btn" style="margin-top:auto; border-color:var(--sangre); color:var(--sangre);">[ABRIR CEMENTERIO]</button>
-            </div>
-
-            <!-- LISTA Mode: tracks grouped by origin -->
-            <div id="playlist-lista-view" class="playlist-view-wrapper" style="display:none; flex-direction:column; flex:1; overflow:hidden;">
-                <div id="lista-grouped-tracks" class="playlist-tracks" style="overflow-y:auto; flex:1;"></div>
             </div>
         </aside>
     </div>
@@ -1146,16 +1124,11 @@
 
         // Vinyl synthesis nodes
         var vinylAudioCtx = null;
-        var vinylNoiseNode = null;
-        var vinylGainNode = null;
 
         // Origin, history & panel-mode tracking
         var historyList = [];
         var videoOrigin = {};          // videoId → 'ext' | 'loc'
         var activeOriginFilter = 'all'; // 'all' | 'ext' | 'loc'
-        var rightPanelMode = localStorage.getItem('psico_radio_right_mode') || 'video';
-        var leftPanelMode  = localStorage.getItem('psico_radio_left_mode')  || 'video';
-        var savedPlaylists = [];       // [{ id }]
 
         // OSD HUD helper
         function showHUD(text) {
@@ -1838,9 +1811,7 @@
                 playIndexEl.innerText = (currentIndex !== -1 ? (currentIndex + 1) : '-') + ' / ' + playlist.length;
             }
 
-            // Apply origin filter & refresh grouped view if active
             applyOriginFilter();
-            if (rightPanelMode === 'lista') renderListaGroupedView();
         }
 
         function trackState() {
@@ -2190,69 +2161,6 @@
             }
         }
 
-        // =================================================================
-        // SAVED PLAYLISTS (LISTA mode, left bar)
-        // =================================================================
-        function renderSavedPlaylistsUI() {
-            var container = document.getElementById('saved-playlists-list');
-            if (!container) return;
-            if (savedPlaylists.length === 0) {
-                container.innerHTML = '<div style="font-size:9px;opacity:0.35;padding:6px;text-align:center;">SIN LISTAS GUARDADAS</div>';
-                return;
-            }
-            container.innerHTML = '';
-            for (var i = 0; i < savedPlaylists.length; i++) {
-                (function(idx) {
-                    var pl   = savedPlaylists[idx];
-                    var item = document.createElement('div');
-                    item.className = 'saved-pl-item';
-
-                    var idEl = document.createElement('span');
-                    idEl.className = 'saved-pl-id';
-                    idEl.innerText = pl.id;
-                    idEl.title = pl.id;
-
-                    var playBtn = document.createElement('button');
-                    playBtn.className = 'control-btn';
-                    playBtn.style.cssText = 'padding:1px 4px;font-size:8px;border:1px solid var(--oled);';
-                    playBtn.innerText = '▶';
-                    playBtn.title = 'REPRODUCIR LISTA';
-                    playBtn.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        OriginManager.externalPlaylist = pl.id;
-                        OriginManager.mode = 'external';
-                        OriginManager.updateModeUI();
-                        localStorage.setItem('psico_radio_external_playlist', pl.id);
-                        localStorage.setItem('psico_radio_origin_mode', 'external');
-                        loadedPlaylistIds = [];
-                        Object.keys(videoOrigin).forEach(function(id) { if (videoOrigin[id] === 'ext') delete videoOrigin[id]; });
-                        addLog('REPRODUCIENDO LISTA GUARDADA: ' + pl.id, 'success');
-                        showHUD('LISTA LOAD');
-                        if (player && typeof player.loadPlaylist === 'function') {
-                            player.loadPlaylist({ listType: 'playlist', list: pl.id, index: 0, startSeconds: 0 });
-                        }
-                    });
-
-                    var removeBtn = document.createElement('button');
-                    removeBtn.className = 'control-btn';
-                    removeBtn.style.cssText = 'padding:1px 4px;font-size:8px;border:1px solid var(--sangre);color:var(--sangre);';
-                    removeBtn.innerText = 'X';
-                    removeBtn.title = 'QUITAR LISTA';
-                    removeBtn.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        savedPlaylists.splice(idx, 1);
-                        localStorage.setItem('psico_radio_saved_playlists', JSON.stringify(savedPlaylists));
-                        renderSavedPlaylistsUI();
-                        addLog('LISTA ELIMINADA: ' + pl.id, 'info');
-                    });
-
-                    item.appendChild(idEl);
-                    item.appendChild(playBtn);
-                    item.appendChild(removeBtn);
-                    container.appendChild(item);
-                })(i);
-            }
-        }
 
         // =================================================================
         // ORIGIN FILTER, PANEL MODE & LISTA GROUPED VIEW
@@ -2278,82 +2186,6 @@
                 }
             });
             applyOriginFilter();
-            if (rightPanelMode === 'lista') renderListaGroupedView();
-        }
-
-        function updateRightModeUI() {
-            var vBtn = document.getElementById('right-mode-video-btn');
-            var lBtn = document.getElementById('right-mode-lista-btn');
-            if (vBtn) { if (rightPanelMode === 'video') vBtn.classList.add('active'); else vBtn.classList.remove('active'); }
-            if (lBtn) { if (rightPanelMode === 'lista') lBtn.classList.add('active'); else lBtn.classList.remove('active'); }
-        }
-
-        function updateLeftModeUI() {
-            var vSec = document.getElementById('left-video-section');
-            var lSec = document.getElementById('left-lista-section');
-            var vBtn = document.getElementById('left-mode-video-btn');
-            var lBtn = document.getElementById('left-mode-lista-btn');
-            if (vBtn) { if (leftPanelMode === 'video') vBtn.classList.add('active'); else vBtn.classList.remove('active'); }
-            if (lBtn) { if (leftPanelMode === 'lista') lBtn.classList.add('active'); else lBtn.classList.remove('active'); }
-            if (vSec) vSec.style.display = leftPanelMode === 'video' ? 'block' : 'none';
-            if (lSec) lSec.style.display = leftPanelMode === 'lista' ? 'block' : 'none';
-        }
-
-        function renderListaGroupedView() {
-            var container = document.getElementById('lista-grouped-tracks');
-            if (!container) return;
-            container.innerHTML = '';
-
-            var extItems = [], locItems = [];
-            for (var i = 0; i < activeQueueIds.length; i++) {
-                var vid    = activeQueueIds[i];
-                var origin = videoOrigin[vid] || 'ext';
-                if (activeOriginFilter !== 'all' && activeOriginFilter !== origin) continue;
-                var entry  = { videoId: vid, title: trackTitles[vid] || ('CANAL ID: ' + vid), index: i };
-                if (origin === 'loc') locItems.push(entry); else extItems.push(entry);
-            }
-
-            function renderGroup(label, items, color) {
-                if (items.length === 0) return;
-                var header = document.createElement('div');
-                header.className = 'origin-group-header';
-                header.style.color = color;
-                header.style.borderColor = color;
-                header.innerText = label + ' — ' + items.length + ' SEÑALES';
-                container.appendChild(header);
-
-                var curIdx = player && typeof player.getPlaylistIndex === 'function' ? player.getPlaylistIndex() : -1;
-                items.forEach(function(entry) {
-                    var item = document.createElement('div');
-                    item.className = 'track-item';
-                    if (curIdx === entry.index) item.classList.add('active');
-                    if (trackHealth[entry.videoId] === 'unavailable') item.classList.add('unavailable');
-
-                    var numEl = document.createElement('span');
-                    numEl.className = 'track-num';
-                    numEl.innerText = String(entry.index + 1).padStart(2, '0');
-
-                    var nameEl = document.createElement('span');
-                    nameEl.className = 'track-name';
-                    nameEl.innerText = entry.title.toUpperCase();
-
-                    item.appendChild(numEl);
-                    item.appendChild(nameEl);
-                    item.addEventListener('click', (function(idx) {
-                        return function() {
-                            if (player && typeof player.playVideoAt === 'function') player.playVideoAt(idx);
-                        };
-                    })(entry.index));
-                    container.appendChild(item);
-                });
-            }
-
-            renderGroup('PLAYLIST EXT', extItems, 'var(--cobre)');
-            renderGroup('ENSAMBLAJE LOC', locItems, 'var(--musgo)');
-
-            if (extItems.length === 0 && locItems.length === 0) {
-                container.innerHTML = '<div class="playlist-empty" style="font-size:10px;opacity:0.5;padding:10px;text-align:center;">SIN SEÑALES EN COLA</div>';
-            }
         }
 
         // Global button blur policy to guarantee Space key is never intercepted twice by focused buttons
@@ -2602,49 +2434,86 @@
         // ----------------------------------------------------
 
         // LocalStorage loading
+        // Persistent vinyl settings
+        var vinylSliders = JSON.parse(localStorage.getItem('psico_radio_vinyl_sliders')) || {
+            hiss: 30, crackle: 25, thump: 40, rumble: 20, wow: 15, flutter: 10, sat: 14, cutoff: 8500
+        };
+
+        function applyLoadedVinylSettings() {
+            var sliderMaster = document.getElementById('slider-vinyl-master');
+            var valMaster    = document.getElementById('val-vinyl-master');
+            if (sliderMaster && valMaster) {
+                sliderMaster.value = Math.round(vinylMasterVolume * 100);
+                valMaster.innerText = Math.round(vinylMasterVolume * 100) + '%';
+            }
+
+            var map = {
+                'slider-hiss': ['hiss', '%'],
+                'slider-crackle': ['crackle', '%'],
+                'slider-thump': ['thump', '%'],
+                'slider-rumble': ['rumble', '%'],
+                'slider-wow': ['wow', '%'],
+                'slider-flutter': ['flutter', '%']
+            };
+            Object.keys(map).forEach(function(id) {
+                var el = document.getElementById(id);
+                var valEl = document.getElementById('val-' + map[id][0]);
+                if (el) el.value = vinylSliders[map[id][0]];
+                if (valEl) valEl.innerText = vinylSliders[map[id][0]] + map[id][1];
+            });
+
+            var elSat = document.getElementById('slider-sat');
+            var valSat = document.getElementById('val-sat');
+            if (elSat) elSat.value = vinylSliders.sat;
+            if (valSat) valSat.innerText = (vinylSliders.sat / 10).toFixed(1) + 'x';
+
+            var elCut = document.getElementById('slider-cutoff');
+            var valCut = document.getElementById('val-cutoff');
+            if (elCut) elCut.value = vinylSliders.cutoff;
+            if (valCut) valCut.innerText = (vinylSliders.cutoff / 1000).toFixed(1) + ' kHz';
+        }
+
         function loadStorageData() {
             try {
                 archiveList   = JSON.parse(localStorage.getItem('psico_radio_archive'))   || [];
                 cemeteryList  = JSON.parse(localStorage.getItem('psico_radio_cemetery'))  || [];
                 historyList   = JSON.parse(localStorage.getItem('psico_radio_history'))   || [];
-                savedPlaylists = JSON.parse(localStorage.getItem('psico_radio_saved_playlists')) || [];
+                
+                // Load master vinyl volume & active state
+                var storedMasterVol = localStorage.getItem('psico_radio_vinyl_master_vol');
+                if (storedMasterVol !== null) vinylMasterVolume = parseFloat(storedMasterVol);
+                vinylActive = localStorage.getItem('psico_radio_vinyl_active') === 'true';
             } catch (e) {
                 addLog('ERROR CARGANDO DATOS DEL ALMACENAMIENTO.', 'error');
-                archiveList = []; cemeteryList = []; historyList = []; savedPlaylists = [];
+                archiveList = []; cemeteryList = []; historyList = [];
             }
             renderArchiveUI();
             renderCemeteryUI();
             renderHistoryUI();
-            renderSavedPlaylistsUI();
-        }
+            applyLoadedVinylSettings();
 
-        // ----------------------------------------------------------------
-        // PANEL MODE & ORIGIN FILTER BINDINGS
-        // ----------------------------------------------------------------
-        var listViewWrapper  = document.getElementById('playlist-list-view');
-        var listaViewWrapper = document.getElementById('playlist-lista-view');
-
-        // Right panel VIDEO / LISTA toggle
-        function setRightMode(mode) {
-            rightPanelMode = mode;
-            localStorage.setItem('psico_radio_right_mode', mode);
-            updateRightModeUI();
-            if (mode === 'video') {
-                if (listViewWrapper)  listViewWrapper.style.display = 'flex';
-                if (listaViewWrapper) listaViewWrapper.style.display = 'none';
-                addLog('COLAS: MODO VIDEO (LISTA INDIVIDUAL)', 'info');
-            } else {
-                if (listViewWrapper)  listViewWrapper.style.display = 'none';
-                if (listaViewWrapper) { listaViewWrapper.style.display = 'flex'; renderListaGroupedView(); }
-                addLog('COLAS: MODO LISTA (AGRUPADO POR ORIGEN)', 'info');
+            // Set power button UI based on loaded state
+            var btnPower = document.getElementById('btn-vinyl-power');
+            if (btnPower) {
+                btnPower.innerText = vinylActive ? '[ON]' : '[OFF]';
+                if (vinylActive) btnPower.classList.add('active');
+                else btnPower.classList.remove('active');
             }
         }
-        var rightModeVideoBtn = document.getElementById('right-mode-video-btn');
-        var rightModeListaBtn = document.getElementById('right-mode-lista-btn');
-        if (rightModeVideoBtn) rightModeVideoBtn.addEventListener('click', function() { flashButton('right-mode-video-btn'); setRightMode('video'); });
-        if (rightModeListaBtn) rightModeListaBtn.addEventListener('click', function() { flashButton('right-mode-lista-btn'); setRightMode('lista'); });
 
-        // Origin filter tabs
+        // Auto-resume audio context on first click if vinyl was active
+        document.addEventListener('click', function() {
+            if (vinylActive && !vinylInitialized) {
+                initVinylNoise();
+            }
+            if (vinylAudioCtx && vinylAudioCtx.state === 'suspended') {
+                vinylAudioCtx.resume();
+            }
+        });
+
+        // ----------------------------------------------------------------
+        // ORIGIN FILTER BINDINGS
+        // ----------------------------------------------------------------
         var tabAll = document.getElementById('tab-all');
         var tabExt = document.getElementById('tab-ext');
         var tabLoc = document.getElementById('tab-loc');
@@ -2657,17 +2526,6 @@
         if (tabExt) tabExt.addEventListener('click', function() { setOriginFilter('ext'); });
         if (tabLoc) tabLoc.addEventListener('click', function() { setOriginFilter('loc'); });
 
-        // Left panel VIDEO / LISTA toggle
-        function setLeftMode(mode) {
-            leftPanelMode = mode;
-            localStorage.setItem('psico_radio_left_mode', mode);
-            updateLeftModeUI();
-        }
-        var leftModeVideoBtn = document.getElementById('left-mode-video-btn');
-        var leftModeListaBtn = document.getElementById('left-mode-lista-btn');
-        if (leftModeVideoBtn) leftModeVideoBtn.addEventListener('click', function() { setLeftMode('video'); });
-        if (leftModeListaBtn) leftModeListaBtn.addEventListener('click', function() { setLeftMode('lista'); });
-
         // Clear history
         var btnClearHistory = document.getElementById('btn-clear-history');
         if (btnClearHistory) {
@@ -2678,24 +2536,6 @@
                 renderHistoryUI();
                 addLog('HISTORIAL DE SEÑALES BORRADO.', 'warn');
                 showHUD('HISTORIAL CLR');
-            });
-        }
-
-        // Save playlist (LISTA mode left bar)
-        var btnSavePlaylist = document.getElementById('btn-save-playlist');
-        if (btnSavePlaylist) {
-            btnSavePlaylist.addEventListener('click', function() {
-                flashButton('btn-save-playlist');
-                var inputEl = document.getElementById('input-save-playlist');
-                if (!inputEl || !inputEl.value.trim()) return;
-                var pid = inputEl.value.trim();
-                var exists = savedPlaylists.some(function(p) { return p.id === pid; });
-                if (exists) { addLog('LISTA YA GUARDADA: ' + pid, 'warn'); return; }
-                savedPlaylists.push({ id: pid });
-                localStorage.setItem('psico_radio_saved_playlists', JSON.stringify(savedPlaylists));
-                renderSavedPlaylistsUI();
-                inputEl.value = '';
-                addLog('LISTA GUARDADA: ' + pid, 'success');
             });
         }
 
@@ -2844,11 +2684,11 @@
 
             cartridgeSaturationNode = vinylAudioCtx.createWaveShaper();
             cartridgeSaturationNode.oversample = '4x';
-            updateSaturationCurve(1.4);
+            updateSaturationCurve(vinylSliders.sat / 10);
 
             systemLowpassNode = vinylAudioCtx.createBiquadFilter();
             systemLowpassNode.type = 'lowpass';
-            systemLowpassNode.frequency.value = 8500;
+            systemLowpassNode.frequency.value = vinylSliders.cutoff;
             systemLowpassNode.Q.value = 0.7;
 
             subsonicHighpassNode = vinylAudioCtx.createBiquadFilter();
@@ -2863,7 +2703,7 @@
             wowLFO = vinylAudioCtx.createOscillator();
             wowLFO.frequency.value = 0.56; // 33⅓ RPM revolution rate
             wowDepthNode = vinylAudioCtx.createGain();
-            wowDepthNode.gain.value = 0.0006; // ~0.6 ms wow depth
+            wowDepthNode.gain.value = (vinylSliders.wow / 100) * 0.003; 
             wowLFO.connect(wowDepthNode);
             wowDepthNode.connect(pitchDelayNode.delayTime);
             wowLFO.start(0);
@@ -2872,7 +2712,7 @@
             flutterLFO.type = 'sawtooth';
             flutterLFO.frequency.value = 15.0; // fast motor jitter
             flutterDepthNode = vinylAudioCtx.createGain();
-            flutterDepthNode.gain.value = 0.00008; // subtle flutter
+            flutterDepthNode.gain.value = (vinylSliders.flutter / 100) * 0.0003;
             flutterLFO.connect(flutterDepthNode);
             flutterDepthNode.connect(pitchDelayNode.delayTime);
             flutterLFO.start(0);
@@ -2897,10 +2737,10 @@
                 return gainNode;
             }
 
-            vinylHissGain    = makeSource(hissBuffer,    0.30);
-            vinylCrackleGain = makeSource(crackleBuffer, 0.25);
-            vinylRumbleGain  = makeSource(rumbleBuffer,  0.20);
-            vinylThumpGain   = makeSource(thumpBuffer,   0.40);
+            vinylHissGain    = makeSource(hissBuffer,    (vinylSliders.hiss / 100) * 0.6);
+            vinylCrackleGain = makeSource(crackleBuffer, (vinylSliders.crackle / 100) * 0.5);
+            vinylRumbleGain  = makeSource(rumbleBuffer,  (vinylSliders.rumble / 100) * 0.4);
+            vinylThumpGain   = makeSource(thumpBuffer,   (vinylSliders.thump / 100) * 0.7);
 
             vinylInitialized = true;
             addLog('MOTOR VINILO HI-FI INICIALIZADO.', 'success');
@@ -2916,6 +2756,7 @@
                 if (vinylAudioCtx && vinylAudioCtx.state === 'suspended') vinylAudioCtx.resume();
 
                 vinylActive = !vinylActive;
+                localStorage.setItem('psico_radio_vinyl_active', vinylActive);
                 if (masterSummingNode) {
                     masterSummingNode.gain.value = vinylActive ? vinylMasterVolume : 0;
                 }
@@ -2934,6 +2775,7 @@
             sliderVinylMaster.addEventListener('input', function(e) {
                 var v = parseFloat(e.target.value) / 100;
                 vinylMasterVolume = v;
+                localStorage.setItem('psico_radio_vinyl_master_vol', v);
                 if (!vinylInitialized) initVinylNoise();
                 if (vinylAudioCtx && vinylAudioCtx.state === 'suspended') vinylAudioCtx.resume();
                 if (masterSummingNode && vinylActive) {
@@ -2944,83 +2786,103 @@
             });
         }
 
-        function bindVinylSlider(id, valId, onInput) {
+        function bindVinylSlider(id, key, multiplier, onInput) {
             var el = document.getElementById(id);
             if (!el) return;
             el.addEventListener('input', function(e) {
+                var val = parseFloat(e.target.value);
+                vinylSliders[key] = val;
+                localStorage.setItem('psico_radio_vinyl_sliders', JSON.stringify(vinylSliders));
+
                 if (!vinylInitialized) initVinylNoise();
                 if (vinylAudioCtx && vinylAudioCtx.state === 'suspended') vinylAudioCtx.resume();
-                onInput(parseFloat(e.target.value));
-                if (valId) {
-                    var valEl = document.getElementById(valId);
-                    if (valEl) valEl.innerText = e.target.value + '%';
+                
+                onInput(val);
+                
+                var valEl = document.getElementById('val-' + key);
+                if (valEl) {
+                    var unit = (key === 'sat') ? 'x' : (key === 'cutoff' ? ' kHz' : '%');
+                    var displayVal = (key === 'sat') ? (val / 10).toFixed(1) : (key === 'cutoff' ? (val / 1000).toFixed(1) : val);
+                    valEl.innerText = displayVal + unit;
                 }
             });
         }
 
-        bindVinylSlider('slider-hiss', 'val-hiss', function(v) {
-            if (vinylHissGain) vinylHissGain.gain.value = v / 100 * 0.6;
+        bindVinylSlider('slider-hiss', 'hiss', 0.6, function(v) {
+            if (vinylHissGain) vinylHissGain.gain.value = (v / 100) * 0.6;
         });
-        bindVinylSlider('slider-crackle', 'val-crackle', function(v) {
-            if (vinylCrackleGain) vinylCrackleGain.gain.value = v / 100 * 0.5;
+        bindVinylSlider('slider-crackle', 'crackle', 0.5, function(v) {
+            if (vinylCrackleGain) vinylCrackleGain.gain.value = (v / 100) * 0.5;
         });
-        bindVinylSlider('slider-thump', 'val-thump', function(v) {
-            if (vinylThumpGain) vinylThumpGain.gain.value = v / 100 * 0.7;
+        bindVinylSlider('slider-thump', 'thump', 0.7, function(v) {
+            if (vinylThumpGain) vinylThumpGain.gain.value = (v / 100) * 0.7;
         });
-        bindVinylSlider('slider-rumble', 'val-rumble', function(v) {
-            if (vinylRumbleGain) vinylRumbleGain.gain.value = v / 100 * 0.4;
+        bindVinylSlider('slider-rumble', 'rumble', 0.4, function(v) {
+            if (vinylRumbleGain) vinylRumbleGain.gain.value = (v / 100) * 0.4;
         });
 
         var sliderWow = document.getElementById('slider-wow');
         if (sliderWow) {
             sliderWow.addEventListener('input', function(e) {
-                var v = parseFloat(e.target.value) / 100;
+                var val = parseFloat(e.target.value);
+                vinylSliders.wow = val;
+                localStorage.setItem('psico_radio_vinyl_sliders', JSON.stringify(vinylSliders));
+
                 if (!vinylInitialized) initVinylNoise();
-                if (wowDepthNode) wowDepthNode.gain.value = v * 0.003; // max ~3 ms depth
+                if (vinylAudioCtx && vinylAudioCtx.state === 'suspended') vinylAudioCtx.resume();
+                if (wowDepthNode) wowDepthNode.gain.value = (val / 100) * 0.003;
+
                 var valEl = document.getElementById('val-wow');
-                if (valEl) valEl.innerText = e.target.value + '%';
+                if (valEl) valEl.innerText = val + '%';
             });
         }
 
         var sliderFlutter = document.getElementById('slider-flutter');
         if (sliderFlutter) {
             sliderFlutter.addEventListener('input', function(e) {
-                var v = parseFloat(e.target.value) / 100;
+                var val = parseFloat(e.target.value);
+                vinylSliders.flutter = val;
+                localStorage.setItem('psico_radio_vinyl_sliders', JSON.stringify(vinylSliders));
+
                 if (!vinylInitialized) initVinylNoise();
-                if (flutterDepthNode) flutterDepthNode.gain.value = v * 0.0003;
+                if (vinylAudioCtx && vinylAudioCtx.state === 'suspended') vinylAudioCtx.resume();
+                if (flutterDepthNode) flutterDepthNode.gain.value = (val / 100) * 0.00008;
+
                 var valEl = document.getElementById('val-flutter');
-                if (valEl) valEl.innerText = e.target.value + '%';
+                if (valEl) valEl.innerText = val + '%';
             });
         }
 
         var sliderSat = document.getElementById('slider-sat');
         if (sliderSat) {
             sliderSat.addEventListener('input', function(e) {
-                var v = parseFloat(e.target.value) / 10;
+                var val = parseFloat(e.target.value);
+                vinylSliders.sat = val;
+                localStorage.setItem('psico_radio_vinyl_sliders', JSON.stringify(vinylSliders));
+
                 if (!vinylInitialized) initVinylNoise();
-                updateSaturationCurve(v);
+                if (vinylAudioCtx && vinylAudioCtx.state === 'suspended') vinylAudioCtx.resume();
+                updateSaturationCurve(val / 10);
+
                 var valEl = document.getElementById('val-sat');
-                if (valEl) valEl.innerText = v.toFixed(1) + 'x';
+                if (valEl) valEl.innerText = (val / 10).toFixed(1) + 'x';
             });
         }
 
         var sliderCutoff = document.getElementById('slider-cutoff');
         if (sliderCutoff) {
             sliderCutoff.addEventListener('input', function(e) {
-                var freq = parseFloat(e.target.value);
-                if (!vinylInitialized) initVinylNoise();
-                if (systemLowpassNode) systemLowpassNode.frequency.value = freq;
-                var valEl = document.getElementById('val-cutoff');
-                if (valEl) valEl.innerText = (freq / 1000).toFixed(1) + ' kHz';
-            });
-        }
+                var val = parseFloat(e.target.value);
+                vinylSliders.cutoff = val;
+                localStorage.setItem('psico_radio_vinyl_sliders', JSON.stringify(vinylSliders));
 
-        // Initialise panel modes based on persisted state
-        updateRightModeUI();
-        updateLeftModeUI();
-        if (rightPanelMode === 'lista') {
-            if (listViewWrapper)  listViewWrapper.style.display = 'none';
-            if (listaViewWrapper) listaViewWrapper.style.display = 'flex';
+                if (!vinylInitialized) initVinylNoise();
+                if (vinylAudioCtx && vinylAudioCtx.state === 'suspended') vinylAudioCtx.resume();
+                if (systemLowpassNode) systemLowpassNode.frequency.value = val;
+
+                var valEl = document.getElementById('val-cutoff');
+                if (valEl) valEl.innerText = (val / 1000).toFixed(1) + ' kHz';
+            });
         }
 
         // Modal Open / Close Bindings for Cemetery
