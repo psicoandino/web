@@ -1264,7 +1264,7 @@
         var OriginManager = {
             mode: 'local',
             externalPlaylist: defaultPlaylist,
-            localAssembly: 'Tlz8qHFDbkI,ccenFp_3kq8',
+            localAssembly: '',
 
             init: function() {
                 this.mode = localStorage.getItem('psico_radio_origin_mode') || 'local';
@@ -1279,7 +1279,7 @@
                     this.externalPlaylist = localStorage.getItem('psico_radio_external_playlist') || defaultPlaylist;
                 }
                 
-                this.localAssembly = localStorage.getItem('psico_radio_local_assembly') || 'Tlz8qHFDbkI,ccenFp_3kq8';
+                this.localAssembly = localStorage.getItem('psico_radio_local_assembly') || '';
 
                 // Save defaults to localStorage if not already set to ensure correct initial load
                 if (localStorage.getItem('psico_radio_origin_mode') === null) {
