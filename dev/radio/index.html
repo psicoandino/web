@@ -1178,12 +1178,12 @@
         }
 
         var OriginManager = {
-            mode: 'external',
+            mode: 'local',
             externalPlaylist: defaultPlaylist,
-            localAssembly: '',
+            localAssembly: 'Tlz8qHFDbkI',
 
             init: function() {
-                this.mode = localStorage.getItem('psico_radio_origin_mode') || 'external';
+                this.mode = localStorage.getItem('psico_radio_origin_mode') || 'local';
                 var urlPlaylistId = urlParams.get('list');
                 
                 if (urlPlaylistId) {
@@ -1195,7 +1195,15 @@
                     this.externalPlaylist = localStorage.getItem('psico_radio_external_playlist') || defaultPlaylist;
                 }
                 
-                this.localAssembly = localStorage.getItem('psico_radio_local_assembly') || '';
+                this.localAssembly = localStorage.getItem('psico_radio_local_assembly') || 'Tlz8qHFDbkI';
+
+                // Save defaults to localStorage if not already set to ensure correct initial load
+                if (localStorage.getItem('psico_radio_origin_mode') === null) {
+                    localStorage.setItem('psico_radio_origin_mode', this.mode);
+                }
+                if (localStorage.getItem('psico_radio_local_assembly') === null) {
+                    localStorage.setItem('psico_radio_local_assembly', this.localAssembly);
+                }
 
                 var inputExt = document.getElementById('input-external');
                 var inputLoc = document.getElementById('input-local');
