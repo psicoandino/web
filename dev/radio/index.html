@@ -848,7 +848,7 @@
                     <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style="display:inline-block; vertical-align:middle;">
                         <rect x="1.5" y="1.5" width="9" height="9" fill="none" stroke="currentColor" stroke-width="1.5"/>
                     </svg>
-                    <span>PLAYLIST EXT</span>
+                    <span>ORIGEN EXT</span>
                 </button>
                 <button id="btn-mode-local" class="origin-btn" type="button" title="ENSAMBLAJE LOCAL">
                     <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style="display:inline-block; vertical-align:middle;">
@@ -1112,6 +1112,10 @@
 
         // Loop mode variables
         var loopMode = localStorage.getItem('psico_radio_loop_mode') || 'off';
+
+        // Vinyl state — declared early so loadStorageData() can read them
+        var vinylActive = false;
+        var vinylMasterVolume = 0.8;
 
         // Tactile OSD overlay variables
         var hudTimeout = null;
@@ -1704,21 +1708,25 @@
                             var vid = activeQueueIds[capturedIdx];
                             if (!vid) return;
                             var title = trackTitles[vid] || ('CANAL ID: ' + vid);
-                            archiveTrack(vid, title, false);
 
-                            // Remove from queue
-                            var curIdx  = player ? player.getPlaylistIndex() : 0;
-                            var curTime = (player && curIdx !== capturedIdx) ? player.getCurrentTime() : 0;
+                            // Add to archive (without triggering queue-removal inside archiveTrack)
+                            var alreadyArchived = archiveList.some(function(a) { return a.videoId === vid; });
+                            if (!alreadyArchived) {
+                                archiveList.push({ videoId: vid, title: title, broken: false });
+                                localStorage.setItem('psico_radio_archive', JSON.stringify(archiveList));
+                                renderArchiveUI();
+                            }
+
+                            // Remove from queue (this button owns queue removal)
                             activeQueueIds.splice(capturedIdx, 1);
                             loadedPlaylistIds = [];
 
-                            var targetIdx = curIdx > capturedIdx
-                                ? curIdx - 1
-                                : (curIdx === capturedIdx ? Math.min(capturedIdx, activeQueueIds.length - 1) : curIdx);
-                            targetIdx = Math.max(0, targetIdx);
-
                             if (activeQueueIds.length > 0) {
-                                updatePlayerQueue(targetIdx, curIdx === capturedIdx ? 0 : curTime);
+                                var curIdx  = player ? player.getPlaylistIndex() : 0;
+                                var targetIdx = curIdx > capturedIdx
+                                    ? curIdx - 1
+                                    : (curIdx === capturedIdx ? Math.min(capturedIdx, activeQueueIds.length - 1) : curIdx);
+                                updatePlayerQueue(Math.max(0, targetIdx), 0);
                             } else {
                                 if (player && typeof player.stopVideo === 'function') player.stopVideo();
                                 var cont = document.getElementById('playlist-tracks');
@@ -2543,7 +2551,7 @@
         // HIGH-FIDELITY VINYL DEGRADATION ENGINE
         // =================================================================
         var vinylInitialized = false;
-        var vinylActive = false;
+        // vinylActive and vinylMasterVolume declared earlier (line ~1115)
 
         // --- Gain nodes (per-source + master) ---
         var vinylHissGain    = null;
@@ -2551,7 +2559,6 @@
         var vinylThumpGain   = null;
         var vinylRumbleGain  = null;
         var masterSummingNode   = null;
-        var vinylMasterVolume = 0.8; // master volume defaults to 80%
 
         // --- Processing chain ---
         var cartridgeSaturationNode = null;
