@@ -742,46 +742,6 @@
                 grid-column: 9 / -1;
             }
         }
-
-        /* Origin filter tabs */
-        .origin-tabs { display: flex; gap: 4px; flex-wrap: wrap; }
-        .origin-tab {
-            background: transparent; border: 1px solid rgba(0,0,0,0.15);
-            color: var(--oled); cursor: pointer; font-family: inherit;
-            font-size: 9px; font-weight: 700; text-transform: uppercase;
-            padding: 2px 6px; opacity: 0.5; transition: all 0.15s ease;
-        }
-        .origin-tab.active { opacity: 1; border-color: var(--oled); background-color: var(--oled); color: var(--hueso); }
-
-        /* VIDEO / LISTA mode buttons */
-        .mode-btn {
-            background: transparent; border: 1px solid rgba(0,0,0,0.15);
-            color: var(--oled); cursor: pointer; font-family: inherit;
-            font-size: 9px; font-weight: 700; text-transform: uppercase;
-            padding: 2px 6px; opacity: 0.5; transition: all 0.15s ease;
-        }
-        .mode-btn.active { opacity: 1; border-color: var(--cobre); color: var(--cobre); }
-
-        /* SEÑALES CARGADAS history list */
-        .history-list { display: flex; flex-direction: column; gap: 2px; overflow-y: auto; max-height: 110px; }
-        .history-item { display: flex; align-items: center; gap: 5px; font-size: 9px; padding: 3px 2px; border-bottom: 1px dashed rgba(0,0,0,0.07); }
-        .h-origin { font-size: 7px; padding: 1px 3px; border: 1px solid currentColor; flex-shrink: 0; font-weight: bold; }
-        .h-origin.ext { color: var(--cobre); }
-        .h-origin.loc { color: var(--musgo); }
-        .h-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-transform: uppercase; color: rgba(0,0,0,0.65); }
-
-        /* Saved playlists (LISTA mode, left bar) */
-        .saved-playlists-list { display: flex; flex-direction: column; gap: 4px; overflow-y: auto; max-height: 130px; }
-        .saved-pl-item { display: flex; align-items: center; gap: 5px; font-size: 9px; padding: 5px 6px; border: 1px solid rgba(0,0,0,0.1); text-transform: uppercase; }
-        .saved-pl-id { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--cobre); font-size: 9px; font-weight: bold; }
-
-        /* Origin group header in LISTA grouped view */
-        .origin-group-header {
-            font-size: 8px; font-weight: 700; letter-spacing: 1px;
-            text-transform: uppercase; padding: 3px 8px;
-            background-color: rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.08);
-            margin: 4px 0 2px; color: rgba(0,0,0,0.45);
-        }
     </style>
 </head>
 <body>
@@ -865,30 +825,6 @@
                     <span>STEREO</span>
                 </div>
             </div>
-
-            <!-- SEÑALES CARGADAS — VIDEO / LISTA toggle + history -->
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; margin-bottom:8px;">
-                <div class="deck-section-title" style="margin:0; border:none; padding:0; color:rgba(0,0,0,0.8);">SEÑALES CARGADAS</div>
-                <div style="display:flex; gap:3px;">
-                    <button id="left-mode-video-btn" class="mode-btn active" type="button">[VIDEO]</button>
-                    <button id="left-mode-lista-btn" class="mode-btn" type="button">[LISTA]</button>
-                </div>
-            </div>
-
-            <!-- VIDEO mode: automatic play history -->
-            <div id="left-video-section">
-                <div id="history-list" class="history-list"></div>
-                <button id="btn-clear-history" class="load-btn" style="margin-top:6px; font-size:9px; border-color:var(--musgo); color:var(--musgo);">[CLR HISTORIAL]</button>
-            </div>
-
-            <!-- LISTA mode: saved playlist IDs -->
-            <div id="left-lista-section" style="display:none;">
-                <div style="display:flex; gap:6px; margin-bottom:6px;">
-                    <input id="input-save-playlist" class="origin-input" type="text" placeholder="PLAYLIST ID" spellcheck="false" style="flex:1; font-size:10px;">
-                    <button id="btn-save-playlist" class="load-btn" style="width:auto; padding:6px 10px;">[+]</button>
-                </div>
-                <div id="saved-playlists-list" class="saved-playlists-list"></div>
-            </div>
         </aside>
 
         <!-- CENTER: Workspace -->
@@ -917,18 +853,11 @@
 
         <!-- RIGHT: Playlist Drawer -->
         <aside class="playlist-drawer">
-            <div class="playlist-header" style="display:flex; flex-direction:column; gap:6px; border-bottom:1px solid var(--oled); padding-bottom:8px; margin-bottom:4px; flex-shrink:0;">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span>COLAS DE REPRODUCCIÓN</span>
-                    <div style="display:flex; gap:3px;">
-                        <button id="right-mode-video-btn" class="mode-btn active" type="button">[VIDEO]</button>
-                        <button id="right-mode-lista-btn" class="mode-btn" type="button">[LISTA]</button>
-                    </div>
-                </div>
-                <div class="origin-tabs">
-                    <button id="tab-all" class="origin-tab active" type="button">[TODOS]</button>
-                    <button id="tab-ext" class="origin-tab" type="button">[EXT]</button>
-                    <button id="tab-loc" class="origin-tab" type="button">[LOC]</button>
+            <div class="playlist-header" style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--oled); padding-bottom:6px; margin-bottom:4px;">
+                <span>COLAS DE REPRODUCCIÓN</span>
+                <div class="view-mode-toggle" style="display:flex; gap:4px;">
+                    <button id="view-mode-list-btn" class="control-btn active" style="padding:2px 6px; border:1px solid var(--oled); font-size:9px;">[LIST]</button>
+                    <button id="view-mode-raw-btn" class="control-btn" style="padding:2px 6px; border:1px solid var(--oled); font-size:9px;">[RAW]</button>
                 </div>
             </div>
 
@@ -950,9 +879,13 @@
                 <button id="btn-open-cemetery" class="load-btn" style="margin-top:auto; border-color:var(--sangre); color:var(--sangre);">[ABRIR CEMENTERIO]</button>
             </div>
 
-            <!-- LISTA Mode: tracks grouped by origin -->
-            <div id="playlist-lista-view" class="playlist-view-wrapper" style="display:none; flex-direction:column; flex:1; overflow:hidden;">
-                <div id="lista-grouped-tracks" class="playlist-tracks" style="overflow-y:auto; flex:1;"></div>
+            <!-- Raw View: text area to view & sync queue directly -->
+            <div id="playlist-raw-view" class="playlist-view-wrapper" style="display:none; flex-direction:column; flex:1; overflow:hidden; gap:12px;">
+                <div class="input-wrapper" style="flex:1; display:flex; flex-direction:column;">
+                    <label style="font-size: 8px; margin-bottom: 4px;">RAW COLA (VIDEO IDS)</label>
+                    <textarea id="playlist-raw-textarea" class="origin-textarea" style="flex:1; height:auto; font-size:10px; font-family:inherit; line-height:1.4;" placeholder="INGRESE VIDEO IDS..." spellcheck="false"></textarea>
+                </div>
+                <button id="btn-sync-raw" class="load-btn">[SINCRONIZAR COLA]</button>
             </div>
         </aside>
     </div>
@@ -1035,16 +968,6 @@
         // ASCII Spectrum variables
         var spectrumTimer = null;
         var spectrumChars = [' ', '▂', '▃', '▄', '▅', '▆', '▇', '█'];
-        var preAnalyzedSpectrum = null;
-        var loadedSpectrumVideoId = null;
-
-        // Origin, history & panel-mode tracking
-        var historyList = [];
-        var videoOrigin = {};          // videoId → 'ext' | 'loc'
-        var activeOriginFilter = 'all'; // 'all' | 'ext' | 'loc'
-        var rightPanelMode = localStorage.getItem('psico_radio_right_mode') || 'video';
-        var leftPanelMode  = localStorage.getItem('psico_radio_left_mode')  || 'video';
-        var savedPlaylists = [];       // [{ id }]
 
         // OSD HUD helper
         function showHUD(text) {
@@ -1272,11 +1195,6 @@
                     
                     addLog('CARGANDO PLAYLIST EXTERNA ID: ' + this.externalPlaylist, 'info');
                     
-                    // Clear stale ext-tagged origins from previous external load
-                    Object.keys(videoOrigin).forEach(function(id) {
-                        if (videoOrigin[id] === 'ext') delete videoOrigin[id];
-                    });
-
                     if (player && typeof player.loadPlaylist === 'function') {
                         player.loadPlaylist({
                             listType: 'playlist',
@@ -1322,30 +1240,10 @@
                         return;
                     }
 
-                    // Duplicate guard: filter out IDs already in history
-                    var freshIds = videoIds.filter(function(id) {
-                        for (var h = 0; h < historyList.length; h++) {
-                            if (historyList[h].videoId === id) {
-                                addLog('DUPLICADO OMITIDO: ID ' + id + ' YA EN HISTORIAL.', 'warn');
-                                return false;
-                            }
-                        }
-                        return true;
-                    });
-
-                    if (freshIds.length === 0) {
-                        addLog('TODOS LOS IDs YA ESTÁN EN EL HISTORIAL. SIN SEÑALES NUEVAS.', 'warn');
-                        showHUD('SIN CAMBIOS');
-                        return;
-                    }
-
-                    // Tag all fresh local IDs
-                    freshIds.forEach(function(id) { videoOrigin[id] = 'loc'; });
-
-                    addLog('CARGANDO ENSAMBLAJE LOCAL CON ' + freshIds.length + ' SEÑALES NUEVAS.', 'info');
+                    addLog('CARGANDO ENSAMBLAJE LOCAL CON ' + videoIds.length + ' VIDEOS.', 'info');
 
                     if (player && typeof player.loadPlaylist === 'function') {
-                        player.loadPlaylist(freshIds, 0, 0);
+                        player.loadPlaylist(videoIds, 0, 0);
                     }
                 }
             }
@@ -1408,7 +1306,6 @@
             var videoIds = OriginManager.getVideoIds();
             if (OriginManager.mode === 'local' && videoIds.length > 0) {
                 playerVars.playlist = videoIds.join(',');
-                videoIds.forEach(function(id) { videoOrigin[id] = 'loc'; });
             } else {
                 playerVars.listType = 'playlist';
                 playerVars.list = OriginManager.externalPlaylist;
@@ -1508,14 +1405,6 @@
             if (idsChanged) {
                 loadedPlaylistIds = playlist.slice();
                 activeQueueIds = playlist.slice(); // Sync javascript representation
-
-                // Tag all incoming IDs with the current origin
-                playlist.forEach(function(id) {
-                    if (!videoOrigin[id]) {
-                        videoOrigin[id] = (OriginManager.mode === 'local') ? 'loc' : 'ext';
-                    }
-                });
-
                 container.innerHTML = '';
                 addLog('SINCRO PLAYLIST: CARGADOS ' + playlist.length + ' ELEMENTOS.', 'info');
                 
@@ -1548,36 +1437,14 @@
                     arcBtn.style.border = '1px solid var(--oled)';
                     arcBtn.innerText = '[ARC]';
                     arcBtn.title = 'ARCHIVAR SEÑAL';
-                    // IIFE captures index at render time; also splices track from active queue on archive
-                    (function(capturedIdx) {
-                        arcBtn.addEventListener('click', function(e) {
-                            e.stopPropagation();
-                            var vid = activeQueueIds[capturedIdx];
-                            if (!vid) return;
-                            var title = trackTitles[vid] || ('CANAL ID: ' + vid);
-                            archiveTrack(vid, title, false);
-
-                            // Remove from queue
-                            var curIdx  = player ? player.getPlaylistIndex() : 0;
-                            var curTime = (player && curIdx !== capturedIdx) ? player.getCurrentTime() : 0;
-                            activeQueueIds.splice(capturedIdx, 1);
-                            loadedPlaylistIds = [];
-
-                            var targetIdx = curIdx > capturedIdx
-                                ? curIdx - 1
-                                : (curIdx === capturedIdx ? Math.min(capturedIdx, activeQueueIds.length - 1) : curIdx);
-                            targetIdx = Math.max(0, targetIdx);
-
-                            if (activeQueueIds.length > 0) {
-                                updatePlayerQueue(targetIdx, curIdx === capturedIdx ? 0 : curTime);
-                            } else {
-                                if (player && typeof player.stopVideo === 'function') player.stopVideo();
-                                var cont = document.getElementById('playlist-tracks');
-                                if (cont) cont.innerHTML = '<div class="playlist-empty" style="font-size:10px;opacity:0.5;padding:10px;text-align:center;">COLA VACÍA</div>';
-                            }
-                            addLog('SEÑAL ARCHIVADA Y RETIRADA DE COLA: ' + title.toUpperCase(), 'success');
-                        });
-                    })(i);
+                    arcBtn.addEventListener('click', function(e) {
+                        e.stopPropagation(); // prevent playing
+                        var idx = parseInt(this.parentNode.getAttribute('data-index'), 10);
+                        if (activeQueueIds[idx]) {
+                            var vid = activeQueueIds[idx];
+                            archiveTrack(vid, trackTitles[vid], false);
+                        }
+                    });
                     
                     item.appendChild(numEl);
                     item.appendChild(nameEl);
@@ -1661,10 +1528,6 @@
             if (playIndexEl) {
                 playIndexEl.innerText = (currentIndex !== -1 ? (currentIndex + 1) : '-') + ' / ' + playlist.length;
             }
-
-            // Apply origin filter & refresh grouped view if active
-            applyOriginFilter();
-            if (rightPanelMode === 'lista') renderListaGroupedView();
         }
 
         function trackState() {
@@ -1729,15 +1592,6 @@
                 var videoId = videoData ? videoData.video_id : null;
                 if (videoId && trackHealth[videoId] !== 'unavailable') {
                     trackHealth[videoId] = 'healthy';
-                }
-                // Log to history & ensure origin tag
-                if (videoId) {
-                    var originTag = videoOrigin[videoId] || (OriginManager.mode === 'local' ? 'loc' : 'ext');
-                    videoOrigin[videoId] = originTag;
-                    addToHistory(videoId, videoData ? videoData.title : '', originTag);
-                    
-                    // Fetch pre-analyzed frequencies for real sync
-                    loadPreAnalyzedSpectrum(videoId);
                 }
 
                 addLog('SINTONIZANDO TRANSMISION: ' + (videoData.title ? videoData.title.toUpperCase() : videoId), 'success');
@@ -1955,229 +1809,6 @@
             if (mins < 10) mins = "0" + mins;
             if (secs < 10) secs = "0" + secs;
             return mins + ":" + secs;
-        }
-
-        // =================================================================
-        // HISTORY (SEÑALES CARGADAS)
-        // =================================================================
-        function addToHistory(videoId, title, origin) {
-            if (!videoId) return;
-            for (var i = 0; i < historyList.length; i++) {
-                if (historyList[i].videoId === videoId) return;
-            }
-            historyList.push({ videoId: videoId, title: title || ('CANAL ID: ' + videoId), origin: origin || 'ext' });
-            localStorage.setItem('psico_radio_history', JSON.stringify(historyList));
-            renderHistoryUI();
-        }
-
-        function loadPreAnalyzedSpectrum(videoId) {
-            if (loadedSpectrumVideoId === videoId) return;
-            preAnalyzedSpectrum = null;
-            loadedSpectrumVideoId = videoId;
-            
-            fetch('signals/' + videoId + '.json')
-                .then(function(res) {
-                    if (!res.ok) throw new Error('No pre-analyzed data');
-                    return res.json();
-                })
-                .then(function(data) {
-                    preAnalyzedSpectrum = data;
-                    addLog('ESPECTRO REAL SINCRONIZADO PARA: ' + videoId, 'success');
-                })
-                .catch(function(err) {
-                    preAnalyzedSpectrum = null;
-                });
-        }
-
-        function renderHistoryUI() {
-            var container = document.getElementById('history-list');
-            if (!container) return;
-            if (historyList.length === 0) {
-                container.innerHTML = '<div style="font-size:9px;opacity:0.35;padding:6px;text-align:center;">HISTORIAL VACÍO</div>';
-                return;
-            }
-            container.innerHTML = '';
-            for (var i = historyList.length - 1; i >= 0; i--) {
-                var entry = historyList[i];
-                var item  = document.createElement('div');
-                item.className = 'history-item';
-                var badge = document.createElement('span');
-                badge.className = 'h-origin ' + (entry.origin || 'ext');
-                badge.innerText = (entry.origin || 'ext').toUpperCase();
-                var nameEl = document.createElement('span');
-                nameEl.className = 'h-name';
-                nameEl.title = entry.title;
-                nameEl.innerText = entry.title || entry.videoId;
-                item.appendChild(badge);
-                item.appendChild(nameEl);
-                container.appendChild(item);
-            }
-        }
-
-        // =================================================================
-        // SAVED PLAYLISTS (LISTA mode, left bar)
-        // =================================================================
-        function renderSavedPlaylistsUI() {
-            var container = document.getElementById('saved-playlists-list');
-            if (!container) return;
-            if (savedPlaylists.length === 0) {
-                container.innerHTML = '<div style="font-size:9px;opacity:0.35;padding:6px;text-align:center;">SIN LISTAS GUARDADAS</div>';
-                return;
-            }
-            container.innerHTML = '';
-            for (var i = 0; i < savedPlaylists.length; i++) {
-                (function(idx) {
-                    var pl   = savedPlaylists[idx];
-                    var item = document.createElement('div');
-                    item.className = 'saved-pl-item';
-
-                    var idEl = document.createElement('span');
-                    idEl.className = 'saved-pl-id';
-                    idEl.innerText = pl.id;
-                    idEl.title = pl.id;
-
-                    var playBtn = document.createElement('button');
-                    playBtn.className = 'control-btn';
-                    playBtn.style.cssText = 'padding:1px 4px;font-size:8px;border:1px solid var(--oled);';
-                    playBtn.innerText = '▶';
-                    playBtn.title = 'REPRODUCIR LISTA';
-                    playBtn.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        OriginManager.externalPlaylist = pl.id;
-                        OriginManager.mode = 'external';
-                        OriginManager.updateModeUI();
-                        localStorage.setItem('psico_radio_external_playlist', pl.id);
-                        localStorage.setItem('psico_radio_origin_mode', 'external');
-                        loadedPlaylistIds = [];
-                        Object.keys(videoOrigin).forEach(function(id) { if (videoOrigin[id] === 'ext') delete videoOrigin[id]; });
-                        addLog('REPRODUCIENDO LISTA GUARDADA: ' + pl.id, 'success');
-                        showHUD('LISTA LOAD');
-                        if (player && typeof player.loadPlaylist === 'function') {
-                            player.loadPlaylist({ listType: 'playlist', list: pl.id, index: 0, startSeconds: 0 });
-                        }
-                    });
-
-                    var removeBtn = document.createElement('button');
-                    removeBtn.className = 'control-btn';
-                    removeBtn.style.cssText = 'padding:1px 4px;font-size:8px;border:1px solid var(--sangre);color:var(--sangre);';
-                    removeBtn.innerText = 'X';
-                    removeBtn.title = 'QUITAR LISTA';
-                    removeBtn.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        savedPlaylists.splice(idx, 1);
-                        localStorage.setItem('psico_radio_saved_playlists', JSON.stringify(savedPlaylists));
-                        renderSavedPlaylistsUI();
-                        addLog('LISTA ELIMINADA: ' + pl.id, 'info');
-                    });
-
-                    item.appendChild(idEl);
-                    item.appendChild(playBtn);
-                    item.appendChild(removeBtn);
-                    container.appendChild(item);
-                })(i);
-            }
-        }
-
-        // =================================================================
-        // ORIGIN FILTER, PANEL MODE & LISTA GROUPED VIEW
-        // =================================================================
-        function applyOriginFilter() {
-            var container = document.getElementById('playlist-tracks');
-            if (!container) return;
-            var items = container.querySelectorAll('.track-item');
-            items.forEach(function(el) {
-                var vid    = el.getAttribute('data-videoid');
-                var origin = vid ? (videoOrigin[vid] || 'ext') : 'ext';
-                el.style.display = (activeOriginFilter === 'all' || activeOriginFilter === origin) ? '' : 'none';
-            });
-        }
-
-        function updateOriginTabUI() {
-            var map = { 'all': 'tab-all', 'ext': 'tab-ext', 'loc': 'tab-loc' };
-            Object.keys(map).forEach(function(key) {
-                var el = document.getElementById(map[key]);
-                if (el) {
-                    if (key === activeOriginFilter) el.classList.add('active');
-                    else el.classList.remove('active');
-                }
-            });
-            applyOriginFilter();
-            if (rightPanelMode === 'lista') renderListaGroupedView();
-        }
-
-        function updateRightModeUI() {
-            var vBtn = document.getElementById('right-mode-video-btn');
-            var lBtn = document.getElementById('right-mode-lista-btn');
-            if (vBtn) { if (rightPanelMode === 'video') vBtn.classList.add('active'); else vBtn.classList.remove('active'); }
-            if (lBtn) { if (rightPanelMode === 'lista') lBtn.classList.add('active'); else lBtn.classList.remove('active'); }
-        }
-
-        function updateLeftModeUI() {
-            var vSec = document.getElementById('left-video-section');
-            var lSec = document.getElementById('left-lista-section');
-            var vBtn = document.getElementById('left-mode-video-btn');
-            var lBtn = document.getElementById('left-mode-lista-btn');
-            if (vBtn) { if (leftPanelMode === 'video') vBtn.classList.add('active'); else vBtn.classList.remove('active'); }
-            if (lBtn) { if (leftPanelMode === 'lista') lBtn.classList.add('active'); else lBtn.classList.remove('active'); }
-            if (vSec) vSec.style.display = leftPanelMode === 'video' ? 'block' : 'none';
-            if (lSec) lSec.style.display = leftPanelMode === 'lista' ? 'block' : 'none';
-        }
-
-        function renderListaGroupedView() {
-            var container = document.getElementById('lista-grouped-tracks');
-            if (!container) return;
-            container.innerHTML = '';
-
-            var extItems = [], locItems = [];
-            for (var i = 0; i < activeQueueIds.length; i++) {
-                var vid    = activeQueueIds[i];
-                var origin = videoOrigin[vid] || 'ext';
-                if (activeOriginFilter !== 'all' && activeOriginFilter !== origin) continue;
-                var entry  = { videoId: vid, title: trackTitles[vid] || ('CANAL ID: ' + vid), index: i };
-                if (origin === 'loc') locItems.push(entry); else extItems.push(entry);
-            }
-
-            function renderGroup(label, items, color) {
-                if (items.length === 0) return;
-                var header = document.createElement('div');
-                header.className = 'origin-group-header';
-                header.style.color = color;
-                header.style.borderColor = color;
-                header.innerText = label + ' — ' + items.length + ' SEÑALES';
-                container.appendChild(header);
-
-                var curIdx = player && typeof player.getPlaylistIndex === 'function' ? player.getPlaylistIndex() : -1;
-                items.forEach(function(entry) {
-                    var item = document.createElement('div');
-                    item.className = 'track-item';
-                    if (curIdx === entry.index) item.classList.add('active');
-                    if (trackHealth[entry.videoId] === 'unavailable') item.classList.add('unavailable');
-
-                    var numEl = document.createElement('span');
-                    numEl.className = 'track-num';
-                    numEl.innerText = String(entry.index + 1).padStart(2, '0');
-
-                    var nameEl = document.createElement('span');
-                    nameEl.className = 'track-name';
-                    nameEl.innerText = entry.title.toUpperCase();
-
-                    item.appendChild(numEl);
-                    item.appendChild(nameEl);
-                    item.addEventListener('click', (function(idx) {
-                        return function() {
-                            if (player && typeof player.playVideoAt === 'function') player.playVideoAt(idx);
-                        };
-                    })(entry.index));
-                    container.appendChild(item);
-                });
-            }
-
-            renderGroup('PLAYLIST EXT', extItems, 'var(--cobre)');
-            renderGroup('ENSAMBLAJE LOC', locItems, 'var(--musgo)');
-
-            if (extItems.length === 0 && locItems.length === 0) {
-                container.innerHTML = '<div class="playlist-empty" style="font-size:10px;opacity:0.5;padding:10px;text-align:center;">SIN SEÑALES EN COLA</div>';
-            }
         }
 
         // Global button blur policy to guarantee Space key is never intercepted twice by focused buttons
@@ -2428,107 +2059,71 @@
         // LocalStorage loading
         function loadStorageData() {
             try {
-                archiveList   = JSON.parse(localStorage.getItem('psico_radio_archive'))   || [];
-                cemeteryList  = JSON.parse(localStorage.getItem('psico_radio_cemetery'))  || [];
-                historyList   = JSON.parse(localStorage.getItem('psico_radio_history'))   || [];
-                savedPlaylists = JSON.parse(localStorage.getItem('psico_radio_saved_playlists')) || [];
+                archiveList = JSON.parse(localStorage.getItem('psico_radio_archive')) || [];
+                cemeteryList = JSON.parse(localStorage.getItem('psico_radio_cemetery')) || [];
             } catch (e) {
                 addLog('ERROR CARGANDO DATOS DEL ALMACENAMIENTO.', 'error');
-                archiveList = []; cemeteryList = []; historyList = []; savedPlaylists = [];
+                archiveList = [];
+                cemeteryList = [];
             }
             renderArchiveUI();
             renderCemeteryUI();
-            renderHistoryUI();
-            renderSavedPlaylistsUI();
         }
 
-        // ----------------------------------------------------------------
-        // PANEL MODE & ORIGIN FILTER BINDINGS
-        // ----------------------------------------------------------------
-        var listViewWrapper  = document.getElementById('playlist-list-view');
-        var listaViewWrapper = document.getElementById('playlist-lista-view');
+        // Active Queue View switcher bindings (LIST vs RAW)
+        var btnViewList = document.getElementById('view-mode-list-btn');
+        var btnViewRaw = document.getElementById('view-mode-raw-btn');
+        var listViewWrapper = document.getElementById('playlist-list-view');
+        var rawViewWrapper = document.getElementById('playlist-raw-view');
+        var rawTextarea = document.getElementById('playlist-raw-textarea');
+        var btnSyncRaw = document.getElementById('btn-sync-raw');
 
-        // Right panel VIDEO / LISTA toggle
-        function setRightMode(mode) {
-            rightPanelMode = mode;
-            localStorage.setItem('psico_radio_right_mode', mode);
-            updateRightModeUI();
-            if (mode === 'video') {
-                if (listViewWrapper)  listViewWrapper.style.display = 'flex';
-                if (listaViewWrapper) listaViewWrapper.style.display = 'none';
-                addLog('COLAS: MODO VIDEO (LISTA INDIVIDUAL)', 'info');
-            } else {
-                if (listViewWrapper)  listViewWrapper.style.display = 'none';
-                if (listaViewWrapper) { listaViewWrapper.style.display = 'flex'; renderListaGroupedView(); }
-                addLog('COLAS: MODO LISTA (AGRUPADO POR ORIGEN)', 'info');
-            }
-        }
-        var rightModeVideoBtn = document.getElementById('right-mode-video-btn');
-        var rightModeListaBtn = document.getElementById('right-mode-lista-btn');
-        if (rightModeVideoBtn) rightModeVideoBtn.addEventListener('click', function() { flashButton('right-mode-video-btn'); setRightMode('video'); });
-        if (rightModeListaBtn) rightModeListaBtn.addEventListener('click', function() { flashButton('right-mode-lista-btn'); setRightMode('lista'); });
-
-        // Origin filter tabs
-        var tabAll = document.getElementById('tab-all');
-        var tabExt = document.getElementById('tab-ext');
-        var tabLoc = document.getElementById('tab-loc');
-        function setOriginFilter(filter) {
-            activeOriginFilter = filter;
-            updateOriginTabUI();
-            addLog('FILTRO DE ORIGEN: ' + filter.toUpperCase(), 'info');
-        }
-        if (tabAll) tabAll.addEventListener('click', function() { setOriginFilter('all'); });
-        if (tabExt) tabExt.addEventListener('click', function() { setOriginFilter('ext'); });
-        if (tabLoc) tabLoc.addEventListener('click', function() { setOriginFilter('loc'); });
-
-        // Left panel VIDEO / LISTA toggle
-        function setLeftMode(mode) {
-            leftPanelMode = mode;
-            localStorage.setItem('psico_radio_left_mode', mode);
-            updateLeftModeUI();
-        }
-        var leftModeVideoBtn = document.getElementById('left-mode-video-btn');
-        var leftModeListaBtn = document.getElementById('left-mode-lista-btn');
-        if (leftModeVideoBtn) leftModeVideoBtn.addEventListener('click', function() { setLeftMode('video'); });
-        if (leftModeListaBtn) leftModeListaBtn.addEventListener('click', function() { setLeftMode('lista'); });
-
-        // Clear history
-        var btnClearHistory = document.getElementById('btn-clear-history');
-        if (btnClearHistory) {
-            btnClearHistory.addEventListener('click', function() {
-                flashButton('btn-clear-history');
-                historyList = [];
-                localStorage.removeItem('psico_radio_history');
-                renderHistoryUI();
-                addLog('HISTORIAL DE SEÑALES BORRADO.', 'warn');
-                showHUD('HISTORIAL CLR');
+        if (btnViewList) {
+            btnViewList.addEventListener('click', function() {
+                btnViewList.classList.add('active');
+                if (btnViewRaw) btnViewRaw.classList.remove('active');
+                if (listViewWrapper) listViewWrapper.style.display = 'flex';
+                if (rawViewWrapper) rawViewWrapper.style.display = 'none';
             });
         }
 
-        // Save playlist (LISTA mode left bar)
-        var btnSavePlaylist = document.getElementById('btn-save-playlist');
-        if (btnSavePlaylist) {
-            btnSavePlaylist.addEventListener('click', function() {
-                flashButton('btn-save-playlist');
-                var inputEl = document.getElementById('input-save-playlist');
-                if (!inputEl || !inputEl.value.trim()) return;
-                var pid = inputEl.value.trim();
-                var exists = savedPlaylists.some(function(p) { return p.id === pid; });
-                if (exists) { addLog('LISTA YA GUARDADA: ' + pid, 'warn'); return; }
-                savedPlaylists.push({ id: pid });
-                localStorage.setItem('psico_radio_saved_playlists', JSON.stringify(savedPlaylists));
-                renderSavedPlaylistsUI();
-                inputEl.value = '';
-                addLog('LISTA GUARDADA: ' + pid, 'success');
+        if (btnViewRaw) {
+            btnViewRaw.addEventListener('click', function() {
+                btnViewRaw.classList.add('active');
+                if (btnViewList) btnViewList.classList.remove('active');
+                if (listViewWrapper) listViewWrapper.style.display = 'none';
+                if (rawViewWrapper) rawViewWrapper.style.display = 'flex';
+                
+                // Populate raw textarea with current active IDs
+                if (rawTextarea) {
+                    rawTextarea.value = activeQueueIds.join('\n');
+                }
             });
         }
 
-        // Initialise panel modes based on persisted state
-        updateRightModeUI();
-        updateLeftModeUI();
-        if (rightPanelMode === 'lista') {
-            if (listViewWrapper)  listViewWrapper.style.display = 'none';
-            if (listaViewWrapper) listaViewWrapper.style.display = 'flex';
+        if (btnSyncRaw) {
+            btnSyncRaw.addEventListener('click', function() {
+                flashButton('btn-sync-raw');
+                if (!rawTextarea) return;
+                var rawIds = parseLocalInput(rawTextarea.value);
+                if (rawIds.length === 0) {
+                    addLog('LA COLA RAW INGRESADA NO TIENE VIDEO IDS VÁLIDOS.', 'warn');
+                    return;
+                }
+                
+                activeQueueIds = rawIds;
+                loadedPlaylistIds = []; // force tracklist redraw
+                
+                addLog('SINCRONIZANDO COLA ACTIVA DESDE RAW: ' + activeQueueIds.length + ' VIDEOS.', 'success');
+                
+                if (player && typeof player.loadPlaylist === 'function') {
+                    // Start playing at index 0
+                    player.loadPlaylist(activeQueueIds, 0, 0);
+                }
+                
+                // Toggle back to list view
+                if (btnViewList) btnViewList.click();
+            });
         }
 
         // Modal Open / Close Bindings for Cemetery
@@ -2846,30 +2441,6 @@
             
             if (state === YT.PlayerState.PLAYING) {
                 display.style.color = '';
-                
-                // Read from pre-analyzed frequency data if available
-                if (preAnalyzedSpectrum && typeof player.getCurrentTime === 'function') {
-                    var curTime = player.getCurrentTime();
-                    var frameIdx = Math.floor(curTime * 10); // 10 frames per second
-                    if (frameIdx >= 0 && frameIdx < preAnalyzedSpectrum.length) {
-                        var frame = preAnalyzedSpectrum[frameIdx];
-                        var segments = ['', '', '', ''];
-                        for (var i = 0; i < 32; i++) {
-                            var height = frame[i] || 0;
-                            var charIdx = Math.max(0, Math.min(spectrumChars.length - 1, height));
-                            var segmentIdx = Math.floor(i / 8);
-                            segments[segmentIdx] += spectrumChars[charIdx];
-                        }
-                        display.innerHTML = 
-                            '<span style="color:var(--sangre)">' + segments[0] + '</span>' +
-                            '<span style="color:var(--mostaza)">' + segments[1] + '</span>' +
-                            '<span style="color:var(--musgo)">' + segments[2] + '</span>' +
-                            '<span style="color:var(--cobre)">' + segments[3] + '</span>';
-                        return;
-                    }
-                }
-                
-                // Fallback simulation
                 var segments = ['', '', '', ''];
                 var length = 32;
                 var time = Date.now() * 0.005; // captured once — not 32x per frame
