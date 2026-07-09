@@ -782,6 +782,30 @@
             background-color: rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.08);
             margin: 4px 0 2px; color: rgba(0,0,0,0.45);
         }
+
+        /* Vinyl controller */
+        .vinyl-controller {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-family: inherit;
+            font-size: 9px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--oled);
+            padding-bottom: 14px;
+            margin-bottom: 16px;
+        }
+        .vinyl-controller label {
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: rgba(0, 0, 0, 0.5);
+        }
+        .vinyl-controller input {
+            accent-color: var(--cobre);
+            width: 100%;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -846,7 +870,13 @@
                 <button id="btn-load" class="load-btn" type="button">[CARGAR ORIGEN]</button>
             </div>
 
-            <div class="deck-section-title" style="margin-top: 24px;">TELEMETRÍA DE DECK</div>
+            <!-- Vinyl crackle interface -->
+            <div class="vinyl-controller" style="margin-top: 24px;">
+                <label for="vinyl-volume">RUIDO ANÁLOGO (VINILO)</label>
+                <input type="range" id="vinyl-volume" min="0" max="0.15" step="0.005" value="0">
+            </div>
+
+            <div class="deck-section-title">TELEMETRÍA DE DECK</div>
             <div class="deck-stats">
                 <div class="stat-row">
                     <span>SEÑALES DAÑADAS</span>
@@ -1038,6 +1068,11 @@
         var preAnalyzedSpectrum = null;
         var loadedSpectrumVideoId = null;
 
+        // Vinyl synthesis nodes
+        var vinylAudioCtx = null;
+        var vinylNoiseNode = null;
+        var vinylGainNode = null;
+
         // Origin, history & panel-mode tracking
         var historyList = [];
         var videoOrigin = {};          // videoId → 'ext' | 'loc'
@@ -1180,7 +1215,7 @@
         var OriginManager = {
             mode: 'local',
             externalPlaylist: defaultPlaylist,
-            localAssembly: 'Tlz8qHFDbkI',
+            localAssembly: 'Tlz8qHFDbkI,ccenFp_3kq8',
 
             init: function() {
                 this.mode = localStorage.getItem('psico_radio_origin_mode') || 'local';
@@ -1195,7 +1230,7 @@
                     this.externalPlaylist = localStorage.getItem('psico_radio_external_playlist') || defaultPlaylist;
                 }
                 
-                this.localAssembly = localStorage.getItem('psico_radio_local_assembly') || 'Tlz8qHFDbkI';
+                this.localAssembly = localStorage.getItem('psico_radio_local_assembly') || localAssembly;
 
                 // Save defaults to localStorage if not already set to ensure correct initial load
                 if (localStorage.getItem('psico_radio_origin_mode') === null) {
@@ -1330,11 +1365,28 @@
                         return;
                     }
 
-                    // Duplicate guard: filter out IDs already in history
-                    var freshIds = videoIds.filter(function(id) {
+                    // Keep existing queue and only append new unique IDs
+                    var curIndex = player && typeof player.getPlaylistIndex === 'function' ? player.getPlaylistIndex() : 0;
+                    var curTime = player && typeof player.getCurrentTime === 'function' ? player.getCurrentTime() : 0;
+                    var state = player && typeof player.getPlayerState === 'function' ? player.getPlayerState() : -1;
+                    var isPlaying = (state === YT.PlayerState.PLAYING || state === YT.PlayerState.BUFFERING);
+
+                    // Filter out IDs that are already present in the active queue
+                    var uniqueIds = videoIds.filter(function(id) {
+                        return !activeQueueIds.includes(id);
+                    });
+
+                    if (uniqueIds.length === 0) {
+                        addLog('TODOS LOS IDs YA ESTÁN EN LA COLA ACTIVA.', 'warn');
+                        showHUD('SIN CAMBIOS');
+                        return;
+                    }
+
+                    // Duplicate guard against history
+                    var freshIds = uniqueIds.filter(function(id) {
                         for (var h = 0; h < historyList.length; h++) {
                             if (historyList[h].videoId === id) {
-                                addLog('DUPLICADO OMITIDO: ID ' + id + ' YA EN HISTORIAL.', 'warn');
+                                addLog('DUPLICADO OMITIDO (HISTORIAL): ID ' + id, 'warn');
                                 return false;
                             }
                         }
@@ -1342,18 +1394,31 @@
                     });
 
                     if (freshIds.length === 0) {
-                        addLog('TODOS LOS IDs YA ESTÁN EN EL HISTORIAL. SIN SEÑALES NUEVAS.', 'warn');
+                        addLog('TODOS LOS IDs NUEVOS YA ESTÁN EN EL HISTORIAL.', 'warn');
                         showHUD('SIN CAMBIOS');
                         return;
                     }
 
+                    // Merge lists
+                    var mergedQueue = activeQueueIds.concat(freshIds);
+
                     // Tag all fresh local IDs
                     freshIds.forEach(function(id) { videoOrigin[id] = 'loc'; });
 
-                    addLog('CARGANDO ENSAMBLAJE LOCAL CON ' + freshIds.length + ' SEÑALES NUEVAS.', 'info');
+                    addLog('AÑADIENDO ' + freshIds.length + ' SEÑALES NUEVAS A LA COLA DE REPRODUCCIÓN.', 'success');
+
+                    // Set representation and force reload
+                    activeQueueIds = mergedQueue;
+                    loadedPlaylistIds = [];
 
                     if (player && typeof player.loadPlaylist === 'function') {
-                        player.loadPlaylist(freshIds, 0, 0);
+                        if (isPlaying) {
+                            // Seamless reload at current playing song & timestamp
+                            player.loadPlaylist(mergedQueue, curIndex, curTime);
+                        } else {
+                            // Start playing from the first new song
+                            player.loadPlaylist(mergedQueue, mergedQueue.length - freshIds.length, 0);
+                        }
                     }
                 }
             }
@@ -2528,6 +2593,75 @@
                 renderSavedPlaylistsUI();
                 inputEl.value = '';
                 addLog('LISTA GUARDADA: ' + pid, 'success');
+            });
+        }
+
+        // =================================================================
+        // VINYL NOISE GENERATION (HISS & CRACKLES)
+        // =================================================================
+        function initVinylNoise() {
+            try {
+                window.AudioContext = window.AudioContext || window.webkitAudioContext;
+                vinylAudioCtx = new AudioContext();
+            } catch(e) {
+                addLog('WEB AUDIO API NO SOPORTADA POR NAVEGADOR.', 'error');
+                return;
+            }
+
+            var bufferSize = vinylAudioCtx.sampleRate * 2.5; // 2.5 second loop buffer
+            var buffer = vinylAudioCtx.createBuffer(1, bufferSize, vinylAudioCtx.sampleRate);
+            var data = buffer.getChannelData(0);
+
+            // Synthesize low-frequency warm hiss combined with dust crackle pops
+            for (var i = 0; i < bufferSize; i++) {
+                var hiss = (Math.random() * 2 - 1) * 0.15;
+                var crackle = 0;
+                
+                // Random transients/dust particles
+                if (Math.random() < 0.00008) {
+                    crackle = (Math.random() * 2 - 1) * 0.65;
+                }
+                data[i] = hiss + crackle;
+            }
+
+            vinylNoiseNode = vinylAudioCtx.createBufferSource();
+            vinylNoiseNode.buffer = buffer;
+            vinylNoiseNode.loop = true;
+
+            // Biquad lowpass filter to remove digital hiss stridency, providing warmth
+            var filter = vinylAudioCtx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.value = 4500; // Cut at 4.5kHz
+
+            vinylGainNode = vinylAudioCtx.createGain();
+            vinylGainNode.gain.value = 0; // Silent start
+
+            vinylNoiseNode.connect(filter);
+            filter.connect(vinylGainNode);
+            vinylGainNode.connect(vinylAudioCtx.destination);
+            vinylNoiseNode.start(0);
+            
+            addLog('MÓDULO VINILO ACTIVADO.', 'success');
+        }
+
+        // Vinyl volume controller bindings
+        var vinylVolInput = document.getElementById('vinyl-volume');
+        if (vinylVolInput) {
+            vinylVolInput.addEventListener('input', function(e) {
+                var val = parseFloat(e.target.value);
+                
+                if (!vinylAudioCtx) {
+                    initVinylNoise();
+                }
+                
+                if (vinylAudioCtx && vinylAudioCtx.state === 'suspended') {
+                    vinylAudioCtx.resume();
+                }
+                
+                if (vinylGainNode) {
+                    // Linear volume mapping
+                    vinylGainNode.gain.value = val;
+                }
             });
         }
 
