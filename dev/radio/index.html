@@ -101,39 +101,6 @@
             color: rgba(0, 0, 0, 0.8);
         }
         
-        .origin-toggle {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin-bottom: 16px;
-        }
-        
-        .origin-btn {
-            width: 100%;
-            background: none;
-            border: 1px solid rgba(0, 0, 0, 0.15);
-            color: var(--oled);
-            cursor: pointer;
-            padding: 8px 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-family: inherit;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            opacity: 0.6;
-            transition: all 0.2s ease;
-            text-align: left;
-        }
-        .origin-btn:hover,
-        .origin-btn.active {
-            opacity: 1;
-            border-color: var(--oled);
-            color: var(--cobre);
-            background-color: rgba(0, 0, 0, 0.02);
-        }
-        
         .deck-inputs {
             display: flex;
             flex-direction: column;
@@ -153,7 +120,6 @@
             text-transform: uppercase;
         }
         
-        .origin-input,
         .origin-textarea {
             width: 100%;
             font-family: inherit;
@@ -164,7 +130,6 @@
             padding: 6px 8px;
             resize: none;
         }
-        .origin-input:focus,
         .origin-textarea:focus {
             outline: none;
             border-color: var(--cobre);
@@ -174,13 +139,7 @@
             resize: vertical;
             line-height: 1.4;
         }
-        .input-wrapper.hidden-wrapper {
-            display: none;
-        }
-        .hidden {
-            display: none;
-        }
-        
+
         .load-btn {
             background: transparent;
             border: 1px solid var(--oled);
@@ -743,17 +702,7 @@
             }
         }
 
-        /* Origin filter tabs */
-        .origin-tabs { display: flex; gap: 4px; flex-wrap: wrap; }
-        .origin-tab {
-            background: transparent; border: 1px solid rgba(0,0,0,0.15);
-            color: var(--oled); cursor: pointer; font-family: inherit;
-            font-size: 9px; font-weight: 700; text-transform: uppercase;
-            padding: 2px 6px; opacity: 0.5; transition: all 0.15s ease;
-        }
-        .origin-tab.active { opacity: 1; border-color: var(--oled); background-color: var(--oled); color: var(--hueso); }
-
-        /* VIDEO / LISTA mode buttons */
+        /* Vinyl power toggle button */
         .mode-btn {
             background: transparent; border: 1px solid rgba(0,0,0,0.15);
             color: var(--oled); cursor: pointer; font-family: inherit;
@@ -765,23 +714,7 @@
         /* SEÑALES CARGADAS history list */
         .history-list { display: flex; flex-direction: column; gap: 2px; overflow-y: auto; max-height: 110px; }
         .history-item { display: flex; align-items: center; gap: 5px; font-size: 9px; padding: 3px 2px; border-bottom: 1px dashed rgba(0,0,0,0.07); }
-        .h-origin { font-size: 7px; padding: 1px 3px; border: 1px solid currentColor; flex-shrink: 0; font-weight: bold; }
-        .h-origin.ext { color: var(--cobre); }
-        .h-origin.loc { color: var(--musgo); }
         .h-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-transform: uppercase; color: rgba(0,0,0,0.65); }
-
-        /* Saved playlists (LISTA mode, left bar) */
-        .saved-playlists-list { display: flex; flex-direction: column; gap: 4px; overflow-y: auto; max-height: 130px; }
-        .saved-pl-item { display: flex; align-items: center; gap: 5px; font-size: 9px; padding: 5px 6px; border: 1px solid rgba(0,0,0,0.1); text-transform: uppercase; }
-        .saved-pl-id { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--cobre); font-size: 9px; font-weight: bold; }
-
-        /* Origin group header in LISTA grouped view */
-        .origin-group-header {
-            font-size: 8px; font-weight: 700; letter-spacing: 1px;
-            text-transform: uppercase; padding: 3px 8px;
-            background-color: rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.08);
-            margin: 4px 0 2px; color: rgba(0,0,0,0.45);
-        }
 
         /* Vinyl controller */
         .vinyl-controller {
@@ -842,32 +775,13 @@
     <div class="app-layout" id="app-layout">
         <!-- LEFT: Control Deck -->
         <aside class="control-deck">
-            <div class="deck-section-title">CONTROL DE ORIGEN</div>
-            <div class="origin-toggle">
-                <button id="btn-mode-external" class="origin-btn active" type="button" title="ORIGEN EXTERNO">
-                    <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style="display:inline-block; vertical-align:middle;">
-                        <rect x="1.5" y="1.5" width="9" height="9" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                    </svg>
-                    <span>ORIGEN EXT</span>
-                </button>
-                <button id="btn-mode-local" class="origin-btn" type="button" title="ENSAMBLAJE LOCAL">
-                    <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style="display:inline-block; vertical-align:middle;">
-                        <polygon points="6,2 2,10 10,10" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                    </svg>
-                    <span>ENSAMBLAJE LOC</span>
-                </button>
-            </div>
-            
+            <div class="deck-section-title">BIBLIOTECA DE SEÑALES</div>
             <div class="deck-inputs">
-                <div class="input-wrapper" id="wrapper-external">
-                    <label for="input-external">PLAYLIST ID / LINK</label>
-                    <input id="input-external" class="origin-input" type="text" placeholder="PLAYLIST ID" spellcheck="false">
-                </div>
-                <div class="input-wrapper hidden-wrapper" id="wrapper-local">
+                <div class="input-wrapper" id="wrapper-local">
                     <label for="input-local">VIDEO IDS O URLS (LINEA/COMA)</label>
-                    <textarea id="input-local" class="origin-textarea hidden" placeholder="VIDEO IDS O URLS" spellcheck="false"></textarea>
+                    <textarea id="input-local" class="origin-textarea" placeholder="VIDEO IDS O URLS" spellcheck="false"></textarea>
                 </div>
-                <button id="btn-load" class="load-btn" type="button">[CARGAR ORIGEN]</button>
+                <button id="btn-load" class="load-btn" type="button">[CARGAR SEÑALES]</button>
             </div>
 
             <!-- Full vinyl degradation engine UI -->
@@ -1012,12 +926,7 @@
         <aside class="playlist-drawer">
             <div class="playlist-header" style="display:flex; flex-direction:column; gap:6px; border-bottom:1px solid var(--oled); padding-bottom:8px; margin-bottom:4px; flex-shrink:0;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span>COLAS DE REPRODUCCIÓN</span>
-                </div>
-                <div class="origin-tabs">
-                    <button id="tab-all" class="origin-tab active" type="button">[TODOS]</button>
-                    <button id="tab-ext" class="origin-tab" type="button">[EXT]</button>
-                    <button id="tab-loc" class="origin-tab" type="button">[LOC]</button>
+                    <span>COLA ACTIVA</span>
                 </div>
             </div>
 
@@ -1086,7 +995,6 @@
 
     <script>
         var player;
-        var defaultPlaylist = '';
 
         // Error-skip tracking
         var consecutiveErrors = 0;
@@ -1095,10 +1003,6 @@
         // Seek locking variables
         var isSeekingLock = false;
         var seekLockTimeout = null;
-
-        // Enrutamiento dinámico por URL
-        var urlParams = new URLSearchParams(window.location.search);
-        var playlistId = urlParams.get('list') || defaultPlaylist;
 
         // Visual playlist synchronization variables
         var loadedPlaylistIds = [];
@@ -1129,10 +1033,8 @@
         // Vinyl synthesis nodes
         var vinylAudioCtx = null;
 
-        // Origin, history & panel-mode tracking
+        // History tracking
         var historyList = [];
-        var videoOrigin = {};          // videoId → 'ext' | 'loc'
-        var activeOriginFilter = 'all'; // 'all' | 'ext' | 'loc'
 
         // OSD HUD helper
         function showHUD(text) {
@@ -1266,73 +1168,17 @@
         }
 
         var OriginManager = {
-            mode: 'local',
-            externalPlaylist: defaultPlaylist,
             localAssembly: '',
 
             init: function() {
-                this.mode = localStorage.getItem('psico_radio_origin_mode') || 'local';
-                var urlPlaylistId = urlParams.get('list');
-                
-                if (urlPlaylistId) {
-                    this.externalPlaylist = urlPlaylistId;
-                    localStorage.setItem('psico_radio_external_playlist', urlPlaylistId);
-                    this.mode = 'external';
-                    localStorage.setItem('psico_radio_origin_mode', 'external');
-                } else {
-                    this.externalPlaylist = localStorage.getItem('psico_radio_external_playlist') || defaultPlaylist;
-                }
-                
                 this.localAssembly = localStorage.getItem('psico_radio_local_assembly') || '';
 
-                // Save defaults to localStorage if not already set to ensure correct initial load
-                if (localStorage.getItem('psico_radio_origin_mode') === null) {
-                    localStorage.setItem('psico_radio_origin_mode', this.mode);
-                }
                 if (localStorage.getItem('psico_radio_local_assembly') === null) {
                     localStorage.setItem('psico_radio_local_assembly', this.localAssembly);
                 }
 
-                var inputExt = document.getElementById('input-external');
                 var inputLoc = document.getElementById('input-local');
-                if (inputExt) inputExt.value = this.externalPlaylist;
                 if (inputLoc) inputLoc.value = this.localAssembly;
-
-                this.updateModeUI();
-            },
-
-            setMode: function(newMode) {
-                this.mode = newMode;
-                localStorage.setItem('psico_radio_origin_mode', this.mode);
-                this.updateModeUI();
-                addLog('SISTEMA CONMUTADO A ORIGEN: ' + newMode.toUpperCase(), 'info');
-            },
-
-            updateModeUI: function() {
-                var btnExt = document.getElementById('btn-mode-external');
-                var btnLoc = document.getElementById('btn-mode-local');
-                var inputExt = document.getElementById('input-external');
-                var inputLoc = document.getElementById('input-local');
-                var wrapExt = document.getElementById('wrapper-external');
-                var wrapLoc = document.getElementById('wrapper-local');
-
-                if (btnExt && btnLoc && inputExt && inputLoc) {
-                    if (this.mode === 'external') {
-                        btnExt.classList.add('active');
-                        btnLoc.classList.remove('active');
-                        inputExt.classList.remove('hidden');
-                        inputLoc.classList.add('hidden');
-                        if (wrapExt) wrapExt.classList.remove('hidden-wrapper');
-                        if (wrapLoc) wrapLoc.classList.add('hidden-wrapper');
-                    } else {
-                        btnExt.classList.remove('active');
-                        btnLoc.classList.add('active');
-                        inputExt.classList.add('hidden');
-                        inputLoc.classList.remove('hidden');
-                        if (wrapExt) wrapExt.classList.add('hidden-wrapper');
-                        if (wrapLoc) wrapLoc.classList.remove('hidden-wrapper');
-                    }
-                }
             },
 
             getVideoIds: function() {
@@ -1340,9 +1186,7 @@
             },
 
             load: function() {
-                var inputExtEl = document.getElementById('input-external');
                 var inputLocEl = document.getElementById('input-local');
-                var inputExtVal = inputExtEl ? inputExtEl.value.trim() : '';
                 var inputLocVal = inputLocEl ? inputLocEl.value.trim() : '';
 
                 localStorage.setItem('psico_radio_index', 0);
@@ -1350,7 +1194,7 @@
                 savedIndex = 0;
                 savedTime = 0;
 
-                // Reset error flags on explicit origin load
+                // Reset error flags on explicit load
                 consecutiveErrors = 0;
                 var consecErrEl = document.getElementById('stat-consec-err');
                 if (consecErrEl) consecErrEl.innerText = '0';
@@ -1358,120 +1202,92 @@
                 // Reset rendered tracklist IDs to force rebuild
                 loadedPlaylistIds = [];
 
-                if (this.mode === 'external') {
-                    if (!inputExtVal) {
-                        inputExtVal = defaultPlaylist;
-                        if (inputExtEl) inputExtEl.value = defaultPlaylist;
-                    }
-                    this.externalPlaylist = inputExtVal;
-                    localStorage.setItem('psico_radio_external_playlist', this.externalPlaylist);
-                    
-                    addLog('CARGANDO PLAYLIST EXTERNA ID: ' + this.externalPlaylist, 'info');
-                    
-                    // Clear stale ext-tagged origins from previous external load
-                    Object.keys(videoOrigin).forEach(function(id) {
-                        if (videoOrigin[id] === 'ext') delete videoOrigin[id];
-                    });
+                this.localAssembly = inputLocVal;
+                if (!this.localAssembly) {
+                    localStorage.removeItem('psico_radio_local_assembly');
+                    if (inputLocEl) inputLocEl.value = '';
+                    var trackTitleEl = document.getElementById('track-title');
+                    if (trackTitleEl) trackTitleEl.innerText = "ENSAMBLAJE LOCAL VACÍO";
+                    addLog('INTENTO DE CARGA CON ENSAMBLAJE LOCAL VACÍO.', 'warn');
 
-                    if (player && typeof player.loadPlaylist === 'function') {
-                        player.loadPlaylist({
-                            listType: 'playlist',
-                            list: this.externalPlaylist,
-                            index: 0,
-                            startSeconds: 0
-                        });
+                    var tracksContainer = document.getElementById('playlist-tracks');
+                    if (tracksContainer) tracksContainer.innerHTML = '<div class="playlist-empty" style="font-size:10px; opacity:0.5; padding:10px; text-align:center;">ENSAMBLAJE VACÍO</div>';
+
+                    if (player && typeof player.stopVideo === 'function') {
+                        player.stopVideo();
                     }
-                } else {
-                    this.localAssembly = inputLocVal;
-                    if (!this.localAssembly) {
-                        localStorage.removeItem('psico_radio_local_assembly');
-                        if (inputLocEl) inputLocEl.value = '';
-                        var trackTitleEl = document.getElementById('track-title');
-                        if (trackTitleEl) trackTitleEl.innerText = "ENSAMBLAJE LOCAL VACÍO";
-                        addLog('INTENTO DE CARGA CON ENSAMBLAJE LOCAL VACÍO.', 'warn');
-                        
-                        var tracksContainer = document.getElementById('playlist-tracks');
-                        if (tracksContainer) tracksContainer.innerHTML = '<div class="playlist-empty" style="font-size:10px; opacity:0.5; padding:10px; text-align:center;">ENSAMBLAJE VACÍO</div>';
-                        
-                        if (player && typeof player.stopVideo === 'function') {
-                            player.stopVideo();
+                    return;
+                }
+
+                localStorage.setItem('psico_radio_local_assembly', this.localAssembly);
+                var videoIds = this.getVideoIds();
+
+                if (videoIds.length === 0) {
+                    localStorage.removeItem('psico_radio_local_assembly');
+                    if (inputLocEl) inputLocEl.value = '';
+                    var trackTitleEl = document.getElementById('track-title');
+                    if (trackTitleEl) trackTitleEl.innerText = "ENSAMBLAJE LOCAL VACÍO";
+                    addLog('ENSAMBLAJE LOCAL NO CONTIENE VIDEO IDS VÁLIDOS.', 'warn');
+
+                    var tracksContainer = document.getElementById('playlist-tracks');
+                    if (tracksContainer) tracksContainer.innerHTML = '<div class="playlist-empty" style="font-size:10px; opacity:0.5; padding:10px; text-align:center;">NINGÚN ID VÁLIDO</div>';
+
+                    if (player && typeof player.stopVideo === 'function') {
+                        player.stopVideo();
+                    }
+                    return;
+                }
+
+                // Keep existing queue and only append new unique IDs
+                var curIndex = player && typeof player.getPlaylistIndex === 'function' ? player.getPlaylistIndex() : 0;
+                var curTime = player && typeof player.getCurrentTime === 'function' ? player.getCurrentTime() : 0;
+                var state = player && typeof player.getPlayerState === 'function' ? player.getPlayerState() : -1;
+                var isPlaying = (state === YT.PlayerState.PLAYING || state === YT.PlayerState.BUFFERING);
+
+                // Filter out IDs that are already present in the active queue
+                var uniqueIds = videoIds.filter(function(id) {
+                    return !activeQueueIds.includes(id);
+                });
+
+                if (uniqueIds.length === 0) {
+                    addLog('TODOS LOS IDs YA ESTÁN EN LA COLA ACTIVA.', 'warn');
+                    showHUD('SIN CAMBIOS');
+                    return;
+                }
+
+                // Duplicate guard against history
+                var freshIds = uniqueIds.filter(function(id) {
+                    for (var h = 0; h < historyList.length; h++) {
+                        if (historyList[h].videoId === id) {
+                            addLog('DUPLICADO OMITIDO (HISTORIAL): ID ' + id, 'warn');
+                            return false;
                         }
-                        return;
                     }
-                    
-                    localStorage.setItem('psico_radio_local_assembly', this.localAssembly);
-                    var videoIds = this.getVideoIds();
-                    
-                    if (videoIds.length === 0) {
-                        localStorage.removeItem('psico_radio_local_assembly');
-                        if (inputLocEl) inputLocEl.value = '';
-                        var trackTitleEl = document.getElementById('track-title');
-                        if (trackTitleEl) trackTitleEl.innerText = "ENSAMBLAJE LOCAL VACÍO";
-                        addLog('ENSAMBLAJE LOCAL NO CONTIENE VIDEO IDS VÁLIDOS.', 'warn');
-                        
-                        var tracksContainer = document.getElementById('playlist-tracks');
-                        if (tracksContainer) tracksContainer.innerHTML = '<div class="playlist-empty" style="font-size:10px; opacity:0.5; padding:10px; text-align:center;">NINGÚN ID VÁLIDO</div>';
+                    return true;
+                });
 
-                        if (player && typeof player.stopVideo === 'function') {
-                            player.stopVideo();
-                        }
-                        return;
-                    }
+                if (freshIds.length === 0) {
+                    addLog('TODOS LOS IDs NUEVOS YA ESTÁN EN EL HISTORIAL.', 'warn');
+                    showHUD('SIN CAMBIOS');
+                    return;
+                }
 
-                    // Keep existing queue and only append new unique IDs
-                    var curIndex = player && typeof player.getPlaylistIndex === 'function' ? player.getPlaylistIndex() : 0;
-                    var curTime = player && typeof player.getCurrentTime === 'function' ? player.getCurrentTime() : 0;
-                    var state = player && typeof player.getPlayerState === 'function' ? player.getPlayerState() : -1;
-                    var isPlaying = (state === YT.PlayerState.PLAYING || state === YT.PlayerState.BUFFERING);
+                // Merge lists
+                var mergedQueue = activeQueueIds.concat(freshIds);
 
-                    // Filter out IDs that are already present in the active queue
-                    var uniqueIds = videoIds.filter(function(id) {
-                        return !activeQueueIds.includes(id);
-                    });
+                addLog('AÑADIENDO ' + freshIds.length + ' SEÑALES NUEVAS A LA COLA DE REPRODUCCIÓN.', 'success');
 
-                    if (uniqueIds.length === 0) {
-                        addLog('TODOS LOS IDs YA ESTÁN EN LA COLA ACTIVA.', 'warn');
-                        showHUD('SIN CAMBIOS');
-                        return;
-                    }
+                // Set representation and force reload
+                activeQueueIds = mergedQueue;
+                loadedPlaylistIds = [];
 
-                    // Duplicate guard against history
-                    var freshIds = uniqueIds.filter(function(id) {
-                        for (var h = 0; h < historyList.length; h++) {
-                            if (historyList[h].videoId === id) {
-                                addLog('DUPLICADO OMITIDO (HISTORIAL): ID ' + id, 'warn');
-                                return false;
-                            }
-                        }
-                        return true;
-                    });
-
-                    if (freshIds.length === 0) {
-                        addLog('TODOS LOS IDs NUEVOS YA ESTÁN EN EL HISTORIAL.', 'warn');
-                        showHUD('SIN CAMBIOS');
-                        return;
-                    }
-
-                    // Merge lists
-                    var mergedQueue = activeQueueIds.concat(freshIds);
-
-                    // Tag all fresh local IDs
-                    freshIds.forEach(function(id) { videoOrigin[id] = 'loc'; });
-
-                    addLog('AÑADIENDO ' + freshIds.length + ' SEÑALES NUEVAS A LA COLA DE REPRODUCCIÓN.', 'success');
-
-                    // Set representation and force reload
-                    activeQueueIds = mergedQueue;
-                    loadedPlaylistIds = [];
-
-                    if (player && typeof player.loadPlaylist === 'function') {
-                        if (isPlaying) {
-                            // Seamless reload at current playing song & timestamp
-                            player.loadPlaylist(mergedQueue, curIndex, curTime);
-                        } else {
-                            // Start playing from the first new song
-                            player.loadPlaylist(mergedQueue, mergedQueue.length - freshIds.length, 0);
-                        }
+                if (player && typeof player.loadPlaylist === 'function') {
+                    if (isPlaying) {
+                        // Seamless reload at current playing song & timestamp
+                        player.loadPlaylist(mergedQueue, curIndex, curTime);
+                    } else {
+                        // Start playing from the first new song
+                        player.loadPlaylist(mergedQueue, mergedQueue.length - freshIds.length, 0);
                     }
                 }
             }
@@ -1510,6 +1326,9 @@
             }
         }
 
+        // Guard flag so saved playback position is only restored once per session
+        var positionRestored = false;
+
         // Carga síncrona/asíncrona de la API de YouTube
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
@@ -1532,12 +1351,8 @@
             };
 
             var videoIds = OriginManager.getVideoIds();
-            if (OriginManager.mode === 'local' && videoIds.length > 0) {
+            if (videoIds.length > 0) {
                 playerVars.playlist = videoIds.join(',');
-                videoIds.forEach(function(id) { videoOrigin[id] = 'loc'; });
-            } else {
-                playerVars.listType = 'playlist';
-                playerVars.list = OriginManager.externalPlaylist;
             }
 
             player = new YT.Player('player-hidden', {
@@ -1574,6 +1389,16 @@
 
             if (isShuffle && player && typeof player.setShuffle === 'function') {
                 player.setShuffle(true);
+            }
+
+            // Restore saved playback position exactly once (playerVars.startSeconds is not honored by the API)
+            if (!positionRestored) {
+                var hasSavedIndex = localStorage.getItem('psico_radio_index') !== null;
+                var hasSavedTime = localStorage.getItem('psico_radio_time') !== null;
+                if (hasSavedIndex && hasSavedTime && player && typeof player.seekTo === 'function') {
+                    player.seekTo(savedTime, true);
+                }
+                positionRestored = true;
             }
 
             setInterval(trackState, 1000);
@@ -1662,13 +1487,6 @@
                     renderCemeteryUI();
                 }
 
-                // Tag all incoming IDs with the current origin
-                playlist.forEach(function(id) {
-                    if (!videoOrigin[id]) {
-                        videoOrigin[id] = (OriginManager.mode === 'local') ? 'loc' : 'ext';
-                    }
-                });
-
                 container.innerHTML = '';
                 addLog('SINCRO PLAYLIST: CARGADOS ' + playlist.length + ' ELEMENTOS.', 'info');
                 
@@ -1754,12 +1572,6 @@
                     
                     container.appendChild(item);
                 }
-                
-                // Update RAW view text if textarea is open
-                var textarea = document.getElementById('playlist-raw-textarea');
-                if (textarea && document.getElementById('playlist-raw-view').style.display !== 'none') {
-                    textarea.value = activeQueueIds.join(' ');
-                }
             }
             
             var currentIndex = player.getPlaylistIndex();
@@ -1818,8 +1630,6 @@
             if (playIndexEl) {
                 playIndexEl.innerText = (currentIndex !== -1 ? (currentIndex + 1) : '-') + ' / ' + playlist.length;
             }
-
-            applyOriginFilter();
         }
 
         function trackState() {
@@ -1885,12 +1695,10 @@
                 if (videoId && trackHealth[videoId] !== 'unavailable') {
                     trackHealth[videoId] = 'healthy';
                 }
-                // Log to history & ensure origin tag
+                // Log to history
                 if (videoId) {
-                    var originTag = videoOrigin[videoId] || (OriginManager.mode === 'local' ? 'loc' : 'ext');
-                    videoOrigin[videoId] = originTag;
-                    addToHistory(videoId, videoData ? videoData.title : '', originTag);
-                    
+                    addToHistory(videoId, videoData ? videoData.title : '');
+
                     // Fetch pre-analyzed frequencies for real sync
                     loadPreAnalyzedSpectrum(videoId);
                 }
@@ -2007,12 +1815,8 @@
                 if (titleEl) titleEl.innerText = "SEÑAL NO DISPONIBLE // BUSCANDO SIGUIENTE";
                 addLog('CANAL BLOQUEADO/DESHABILITADO. INICIANDO AUTO-SKIP INSTANTÁNEO...', 'warn');
                 showHUD('AUTO SKIP');
-
-                setTimeout(function() {
-                    if (player && typeof player.nextVideo === 'function') {
-                        player.nextVideo();
-                    }
-                }, 1000);
+                // Queue advance already handled by archiveTrack()'s updatePlayerQueue() call above —
+                // no additional nextVideo() call needed here.
                 return;
             }
 
@@ -2115,12 +1919,12 @@
         // =================================================================
         // HISTORY (SEÑALES CARGADAS)
         // =================================================================
-        function addToHistory(videoId, title, origin) {
+        function addToHistory(videoId, title) {
             if (!videoId) return;
             for (var i = 0; i < historyList.length; i++) {
                 if (historyList[i].videoId === videoId) return;
             }
-            historyList.push({ videoId: videoId, title: title || ('CANAL ID: ' + videoId), origin: origin || 'ext' });
+            historyList.push({ videoId: videoId, title: title || ('CANAL ID: ' + videoId) });
             localStorage.setItem('psico_radio_history', JSON.stringify(historyList));
             renderHistoryUI();
         }
@@ -2156,45 +1960,15 @@
                 var entry = historyList[i];
                 var item  = document.createElement('div');
                 item.className = 'history-item';
-                var badge = document.createElement('span');
-                badge.className = 'h-origin ' + (entry.origin || 'ext');
-                badge.innerText = (entry.origin || 'ext').toUpperCase();
                 var nameEl = document.createElement('span');
                 nameEl.className = 'h-name';
                 nameEl.title = entry.title;
                 nameEl.innerText = entry.title || entry.videoId;
-                item.appendChild(badge);
                 item.appendChild(nameEl);
                 container.appendChild(item);
             }
         }
 
-
-        // =================================================================
-        // ORIGIN FILTER, PANEL MODE & LISTA GROUPED VIEW
-        // =================================================================
-        function applyOriginFilter() {
-            var container = document.getElementById('playlist-tracks');
-            if (!container) return;
-            var items = container.querySelectorAll('.track-item');
-            items.forEach(function(el) {
-                var vid    = el.getAttribute('data-videoid');
-                var origin = vid ? (videoOrigin[vid] || 'ext') : 'ext';
-                el.style.display = (activeOriginFilter === 'all' || activeOriginFilter === origin) ? '' : 'none';
-            });
-        }
-
-        function updateOriginTabUI() {
-            var map = { 'all': 'tab-all', 'ext': 'tab-ext', 'loc': 'tab-loc' };
-            Object.keys(map).forEach(function(key) {
-                var el = document.getElementById(map[key]);
-                if (el) {
-                    if (key === activeOriginFilter) el.classList.add('active');
-                    else el.classList.remove('active');
-                }
-            });
-            applyOriginFilter();
-        }
 
         // Global button blur policy to guarantee Space key is never intercepted twice by focused buttons
         document.addEventListener('click', function(e) {
@@ -2206,20 +1980,6 @@
         });
 
         // Enlace interactivo de la interfaz
-        var btnExtEl = document.getElementById('btn-mode-external');
-        if (btnExtEl) {
-            btnExtEl.addEventListener('click', function() {
-                OriginManager.setMode('external');
-            });
-        }
-
-        var btnLocEl = document.getElementById('btn-mode-local');
-        if (btnLocEl) {
-            btnLocEl.addEventListener('click', function() {
-                OriginManager.setMode('local');
-            });
-        }
-
         var btnLoadEl = document.getElementById('btn-load');
         if (btnLoadEl) {
             btnLoadEl.addEventListener('click', function() {
@@ -2518,21 +2278,6 @@
                 vinylAudioCtx.resume();
             }
         });
-
-        // ----------------------------------------------------------------
-        // ORIGIN FILTER BINDINGS
-        // ----------------------------------------------------------------
-        var tabAll = document.getElementById('tab-all');
-        var tabExt = document.getElementById('tab-ext');
-        var tabLoc = document.getElementById('tab-loc');
-        function setOriginFilter(filter) {
-            activeOriginFilter = filter;
-            updateOriginTabUI();
-            addLog('FILTRO DE ORIGEN: ' + filter.toUpperCase(), 'info');
-        }
-        if (tabAll) tabAll.addEventListener('click', function() { setOriginFilter('all'); });
-        if (tabExt) tabExt.addEventListener('click', function() { setOriginFilter('ext'); });
-        if (tabLoc) tabLoc.addEventListener('click', function() { setOriginFilter('loc'); });
 
         // Clear history
         var btnClearHistory = document.getElementById('btn-clear-history');
