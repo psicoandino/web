@@ -870,10 +870,86 @@
                 <button id="btn-load" class="load-btn" type="button">[CARGAR ORIGEN]</button>
             </div>
 
-            <!-- Vinyl crackle interface -->
+            <!-- Full vinyl degradation engine UI -->
             <div class="vinyl-controller" style="margin-top: 24px;">
-                <label for="vinyl-volume">RUIDO ANÁLOGO (VINILO)</label>
-                <input type="range" id="vinyl-volume" min="0" max="0.15" step="0.005" value="0">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <label style="font-size:8px; font-weight:700; letter-spacing:0.5px; color:rgba(0,0,0,0.5);">SINTETIZADOR DE VINILO</label>
+                    <button id="btn-vinyl-power" type="button" class="mode-btn" style="font-size:8px; padding:2px 7px;">[OFF]</button>
+                </div>
+
+                <!-- Global Volume Slider -->
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px; border-bottom:1px dashed rgba(0,0,0,0.1); padding-bottom:8px;">
+                    <span style="font-size:8px; opacity:0.6; flex-shrink:0; width:55px;">VOL GENERAL</span>
+                    <input type="range" id="slider-vinyl-master" min="0" max="100" value="80" style="flex:1; accent-color:var(--cobre);">
+                    <span id="val-vinyl-master" style="font-size:8px; color:var(--cobre); width:25px; text-align:right;">80%</span>
+                </div>
+
+                <!-- Noise Floor Row -->
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px 14px; margin-bottom:10px;">
+                    <div>
+                        <div style="display:flex; justify-content:space-between; font-size:8px; margin-bottom:3px;">
+                            <span style="opacity:0.6;">HISS SUPERFICIE</span>
+                            <span id="val-hiss" style="color:var(--cobre); font-size:8px;">30%</span>
+                        </div>
+                        <input type="range" id="slider-hiss" min="0" max="100" value="30" style="width:100%; accent-color:var(--cobre);">
+                    </div>
+                    <div>
+                        <div style="display:flex; justify-content:space-between; font-size:8px; margin-bottom:3px;">
+                            <span style="opacity:0.6;">CRUJIDO POISSON</span>
+                            <span id="val-crackle" style="color:var(--cobre); font-size:8px;">25%</span>
+                        </div>
+                        <input type="range" id="slider-crackle" min="0" max="100" value="25" style="width:100%; accent-color:var(--cobre);">
+                    </div>
+                    <div>
+                        <div style="display:flex; justify-content:space-between; font-size:8px; margin-bottom:3px;">
+                            <span style="opacity:0.6;">GOLPE (33⅓ RPM)</span>
+                            <span id="val-thump" style="color:var(--mostaza); font-size:8px;">40%</span>
+                        </div>
+                        <input type="range" id="slider-thump" min="0" max="100" value="40" style="width:100%; accent-color:var(--mostaza);">
+                    </div>
+                    <div>
+                        <div style="display:flex; justify-content:space-between; font-size:8px; margin-bottom:3px;">
+                            <span style="opacity:0.6;">RUMBLE MOTOR</span>
+                            <span id="val-rumble" style="color:var(--mostaza); font-size:8px;">20%</span>
+                        </div>
+                        <input type="range" id="slider-rumble" min="0" max="100" value="20" style="width:100%; accent-color:var(--mostaza);">
+                    </div>
+                </div>
+
+                <!-- Separator -->
+                <div style="border-top:1px dashed rgba(0,0,0,0.1); margin:8px 0;"></div>
+
+                <!-- Instability / Mechanics Row -->
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px 14px;">
+                    <div>
+                        <div style="display:flex; justify-content:space-between; font-size:8px; margin-bottom:3px;">
+                            <span style="opacity:0.6;">WOW (VIBRATO)</span>
+                            <span id="val-wow" style="color:var(--musgo); font-size:8px;">15%</span>
+                        </div>
+                        <input type="range" id="slider-wow" min="0" max="100" value="15" style="width:100%; accent-color:var(--musgo);">
+                    </div>
+                    <div>
+                        <div style="display:flex; justify-content:space-between; font-size:8px; margin-bottom:3px;">
+                            <span style="opacity:0.6;">FLUTTER (JITTER)</span>
+                            <span id="val-flutter" style="color:var(--musgo); font-size:8px;">10%</span>
+                        </div>
+                        <input type="range" id="slider-flutter" min="0" max="100" value="10" style="width:100%; accent-color:var(--musgo);">
+                    </div>
+                    <div>
+                        <div style="display:flex; justify-content:space-between; font-size:8px; margin-bottom:3px;">
+                            <span style="opacity:0.6;">SATURACIÓN</span>
+                            <span id="val-sat" style="color:var(--sangre); font-size:8px;">1.4x</span>
+                        </div>
+                        <input type="range" id="slider-sat" min="10" max="50" value="14" style="width:100%; accent-color:var(--sangre);">
+                    </div>
+                    <div>
+                        <div style="display:flex; justify-content:space-between; font-size:8px; margin-bottom:3px;">
+                            <span style="opacity:0.6;">ANCHO BANDA</span>
+                            <span id="val-cutoff" style="color:var(--sangre); font-size:8px;">8.5 kHz</span>
+                        </div>
+                        <input type="range" id="slider-cutoff" min="1000" max="18000" value="8500" step="100" style="width:100%; accent-color:var(--sangre);">
+                    </div>
+                </div>
             </div>
 
             <div class="deck-section-title">TELEMETRÍA DE DECK</div>
@@ -1581,6 +1657,33 @@
             if (idsChanged) {
                 loadedPlaylistIds = playlist.slice();
                 activeQueueIds = playlist.slice(); // Sync javascript representation
+
+                // Sweep to enforce mutual exclusivity (if active in queue, cannot be in archive or cemetery)
+                var changedArch = false;
+                var changedCem = false;
+                for (var i = 0; i < activeQueueIds.length; i++) {
+                    var vid = activeQueueIds[i];
+                    for (var j = archiveList.length - 1; j >= 0; j--) {
+                        if (archiveList[j].videoId === vid) {
+                            archiveList.splice(j, 1);
+                            changedArch = true;
+                        }
+                    }
+                    for (var k = cemeteryList.length - 1; k >= 0; k--) {
+                        if (cemeteryList[k].videoId === vid) {
+                            cemeteryList.splice(k, 1);
+                            changedCem = true;
+                        }
+                    }
+                }
+                if (changedArch) {
+                    localStorage.setItem('psico_radio_archive', JSON.stringify(archiveList));
+                    renderArchiveUI();
+                }
+                if (changedCem) {
+                    localStorage.setItem('psico_radio_cemetery', JSON.stringify(cemeteryList));
+                    renderCemeteryUI();
+                }
 
                 // Tag all incoming IDs with the current origin
                 playlist.forEach(function(id) {
@@ -2597,71 +2700,318 @@
         }
 
         // =================================================================
-        // VINYL NOISE GENERATION (HISS & CRACKLES)
+        // HIGH-FIDELITY VINYL DEGRADATION ENGINE
         // =================================================================
+        var vinylInitialized = false;
+        var vinylActive = false;
+
+        // --- Gain nodes (per-source + master) ---
+        var vinylHissGain    = null;
+        var vinylCrackleGain = null;
+        var vinylThumpGain   = null;
+        var vinylRumbleGain  = null;
+        var masterSummingNode   = null;
+        var vinylMasterVolume = 0.8; // master volume defaults to 80%
+
+        // --- Processing chain ---
+        var cartridgeSaturationNode = null;
+        var systemLowpassNode       = null;
+        var subsonicHighpassNode    = null;
+
+        // --- Wow / Flutter modulation ---
+        var wowLFO        = null;
+        var wowDepthNode  = null;
+        var flutterLFO    = null;
+        var flutterDepthNode = null;
+        var pitchDelayNode   = null;
+
+        function updateSaturationCurve(amount) {
+            if (!cartridgeSaturationNode) return;
+            var n = 2048;
+            var curve = new Float32Array(n);
+            for (var i = 0; i < n; i++) {
+                var x = (i * 2) / n - 1;
+                curve[i] = (x !== 0) ? Math.sign(x) * Math.pow(Math.abs(x), 1 / amount) : 0;
+            }
+            cartridgeSaturationNode.curve = curve;
+        }
+
         function initVinylNoise() {
+            if (vinylInitialized) return;
             try {
                 window.AudioContext = window.AudioContext || window.webkitAudioContext;
                 vinylAudioCtx = new AudioContext();
             } catch(e) {
-                addLog('WEB AUDIO API NO SOPORTADA POR NAVEGADOR.', 'error');
+                addLog('WEB AUDIO API NO SOPORTADA.', 'error');
                 return;
             }
 
-            var bufferSize = vinylAudioCtx.sampleRate * 2.5; // 2.5 second loop buffer
-            var buffer = vinylAudioCtx.createBuffer(1, bufferSize, vinylAudioCtx.sampleRate);
-            var data = buffer.getChannelData(0);
+            var sr = vinylAudioCtx.sampleRate;
 
-            // Synthesize low-frequency warm hiss combined with dust crackle pops
-            for (var i = 0; i < bufferSize; i++) {
-                var hiss = (Math.random() * 2 - 1) * 0.15;
-                var crackle = 0;
-                
-                // Random transients/dust particles
-                if (Math.random() < 0.00008) {
-                    crackle = (Math.random() * 2 - 1) * 0.65;
+            // ---------------------------------------------------------------
+            // 1. PINK NOISE BUFFER (Paul Kellet 6-pole approximation, 4.0 s)
+            // ---------------------------------------------------------------
+            var hissBuffer = vinylAudioCtx.createBuffer(2, sr * 4, sr);
+            for (var ch = 0; ch < 2; ch++) {
+                var d = hissBuffer.getChannelData(ch);
+                var b = [0, 0, 0, 0, 0, 0, 0];
+                for (var i = 0; i < d.length; i++) {
+                    var w = Math.random() * 2 - 1;
+                    b[0] = 0.99886 * b[0] + w * 0.0555179;
+                    b[1] = 0.99332 * b[1] + w * 0.0750759;
+                    b[2] = 0.96900 * b[2] + w * 0.1538520;
+                    b[3] = 0.86650 * b[3] + w * 0.3104856;
+                    b[4] = 0.55000 * b[4] + w * 0.5329522;
+                    b[5] = -0.7616  * b[5] - w * 0.0168980;
+                    b[6] = 0.115926 * w;
+                    d[i] = (b[0]+b[1]+b[2]+b[3]+b[4]+b[5]+b[6] + 0.5362 * w) * 0.11;
                 }
-                data[i] = hiss + crackle;
             }
 
-            vinylNoiseNode = vinylAudioCtx.createBufferSource();
-            vinylNoiseNode.buffer = buffer;
-            vinylNoiseNode.loop = true;
+            // ---------------------------------------------------------------
+            // 2. POISSON CRACKLE BUFFER (exponential inter-arrival times, 4.0 s)
+            // ---------------------------------------------------------------
+            var crackleBuffer = vinylAudioCtx.createBuffer(1, sr * 4, sr);
+            var cData = crackleBuffer.getChannelData(0);
+            var lambda = 18; // ~18 clicks/sec
+            var i = 0;
+            while (i < cData.length) {
+                // Exponential inter-arrival: τ = -ln(U)/λ
+                var interval = Math.floor(-Math.log(Math.random() + 1e-9) / lambda * sr);
+                i += Math.max(1, interval);
+                if (i < cData.length) {
+                    // Exponentially-decaying cosine click
+                    var amp   = (Math.random() * 0.7 + 0.3) * (Math.random() > 0.5 ? 1 : -1);
+                    var alpha = 2000 + Math.random() * 4000;  // decay rate
+                    var fc    = 1500 + Math.random() * 3000;  // resonant freq 1.5–4.5 kHz
+                    var decay = Math.min(Math.floor(sr * 0.004), cData.length - i);
+                    for (var k = 0; k < decay; k++) {
+                        var t = k / sr;
+                        cData[i + k] += amp * Math.exp(-alpha * t) * Math.cos(2 * Math.PI * fc * t);
+                    }
+                }
+            }
 
-            // Biquad lowpass filter to remove digital hiss stridency, providing warmth
-            var filter = vinylAudioCtx.createBiquadFilter();
-            filter.type = 'lowpass';
-            filter.frequency.value = 4500; // Cut at 4.5kHz
+            // ---------------------------------------------------------------
+            // 3. TURNTABLE RUMBLE BUFFER (Brownian noise, LPF ≤ 45 Hz, 4.0 s)
+            // ---------------------------------------------------------------
+            var rumbleBuffer = vinylAudioCtx.createBuffer(1, sr * 4, sr);
+            var rData = rumbleBuffer.getChannelData(0);
+            var rumbleRunning = 0;
+            for (var i = 0; i < rData.length; i++) {
+                // Brownian: integrate white noise (1/f² spectrum)
+                rumbleRunning += (Math.random() * 2 - 1) * 0.005;
+                rumbleRunning *= 0.998; // prevent DC drift
+                rData[i] = rumbleRunning;
+            }
+            // Offline single-pole low-pass at ~45 Hz to shape spectrum
+            var alpha45 = 2 * Math.PI * 45 / sr;
+            var rumblePrev = 0;
+            for (var i = 0; i < rData.length; i++) {
+                rumblePrev += alpha45 * (rData[i] - rumblePrev);
+                rData[i] = rumblePrev;
+            }
 
-            vinylGainNode = vinylAudioCtx.createGain();
-            vinylGainNode.gain.value = 0; // Silent start
+            // ---------------------------------------------------------------
+            // 4. PERIODIC SCRATCH THUMP (33⅓ RPM → Td = 1.8 s, loop = 3.6 s)
+            // ---------------------------------------------------------------
+            var Td = 1.8;                                    // period at 33⅓ RPM
+            var thumpLen = Math.round(sr * Td * 2);          // exactly 2 revolutions
+            var thumpBuffer = vinylAudioCtx.createBuffer(1, thumpLen, sr);
+            var tData = thumpBuffer.getChannelData(0);
+            // Place one thump per Td seconds: initial click + arm resonance decay
+            for (var rep = 0; rep < 2; rep++) {
+                var onset = Math.round(rep * Td * sr);
+                var Aclick = 0.55;
+                var farm   = 9;    // tone-arm resonance ~9 Hz
+                var tau    = 0.08; // 80 ms decay
+                var tLen   = Math.min(Math.round(sr * 0.15), thumpLen - onset);
+                for (var k = 0; k < tLen; k++) {
+                    var t = k / sr;
+                    tData[onset + k] = Aclick * Math.exp(-t / tau) * Math.sin(2 * Math.PI * farm * t);
+                }
+                // Initial click impulse
+                if (onset < thumpLen) tData[onset] += 0.8 * (Math.random() > 0.5 ? 1 : -1);
+            }
 
-            vinylNoiseNode.connect(filter);
-            filter.connect(vinylGainNode);
-            vinylGainNode.connect(vinylAudioCtx.destination);
-            vinylNoiseNode.start(0);
-            
-            addLog('MÓDULO VINILO ACTIVADO.', 'success');
+            // ---------------------------------------------------------------
+            // AUDIO GRAPH CONSTRUCTION
+            // ---------------------------------------------------------------
+
+            // Master summing → Saturation → System LPF → Subsonic HPF → destination
+            masterSummingNode = vinylAudioCtx.createGain();
+            masterSummingNode.gain.value = vinylActive ? vinylMasterVolume : 0;
+
+            cartridgeSaturationNode = vinylAudioCtx.createWaveShaper();
+            cartridgeSaturationNode.oversample = '4x';
+            updateSaturationCurve(1.4);
+
+            systemLowpassNode = vinylAudioCtx.createBiquadFilter();
+            systemLowpassNode.type = 'lowpass';
+            systemLowpassNode.frequency.value = 8500;
+            systemLowpassNode.Q.value = 0.7;
+
+            subsonicHighpassNode = vinylAudioCtx.createBiquadFilter();
+            subsonicHighpassNode.type = 'highpass';
+            subsonicHighpassNode.frequency.value = 22; // cut below ~22 Hz
+            subsonicHighpassNode.Q.value = 0.5;
+
+            // Wow / Flutter → DelayNode on the summed noise floor
+            pitchDelayNode = vinylAudioCtx.createDelay(0.1);
+            pitchDelayNode.delayTime.value = 0.02; // 20 ms baseline
+
+            wowLFO = vinylAudioCtx.createOscillator();
+            wowLFO.frequency.value = 0.56; // 33⅓ RPM revolution rate
+            wowDepthNode = vinylAudioCtx.createGain();
+            wowDepthNode.gain.value = 0.0006; // ~0.6 ms wow depth
+            wowLFO.connect(wowDepthNode);
+            wowDepthNode.connect(pitchDelayNode.delayTime);
+            wowLFO.start(0);
+
+            flutterLFO = vinylAudioCtx.createOscillator();
+            flutterLFO.type = 'sawtooth';
+            flutterLFO.frequency.value = 15.0; // fast motor jitter
+            flutterDepthNode = vinylAudioCtx.createGain();
+            flutterDepthNode.gain.value = 0.00008; // subtle flutter
+            flutterLFO.connect(flutterDepthNode);
+            flutterDepthNode.connect(pitchDelayNode.delayTime);
+            flutterLFO.start(0);
+
+            // Wire: masterSumming → delay → saturation → lpf → hpf → destination
+            masterSummingNode.connect(pitchDelayNode);
+            pitchDelayNode.connect(cartridgeSaturationNode);
+            cartridgeSaturationNode.connect(systemLowpassNode);
+            systemLowpassNode.connect(subsonicHighpassNode);
+            subsonicHighpassNode.connect(vinylAudioCtx.destination);
+
+            // Per-source gain nodes → masterSummingNode
+            function makeSource(buffer, gainVal) {
+                var gainNode = vinylAudioCtx.createGain();
+                gainNode.gain.value = gainVal;
+                var src = vinylAudioCtx.createBufferSource();
+                src.buffer = buffer;
+                src.loop = true;
+                src.connect(gainNode);
+                gainNode.connect(masterSummingNode);
+                src.start(0);
+                return gainNode;
+            }
+
+            vinylHissGain    = makeSource(hissBuffer,    0.30);
+            vinylCrackleGain = makeSource(crackleBuffer, 0.25);
+            vinylRumbleGain  = makeSource(rumbleBuffer,  0.20);
+            vinylThumpGain   = makeSource(thumpBuffer,   0.40);
+
+            vinylInitialized = true;
+            addLog('MOTOR VINILO HI-FI INICIALIZADO.', 'success');
         }
 
-        // Vinyl volume controller bindings
-        var vinylVolInput = document.getElementById('vinyl-volume');
-        if (vinylVolInput) {
-            vinylVolInput.addEventListener('input', function(e) {
-                var val = parseFloat(e.target.value);
-                
-                if (!vinylAudioCtx) {
-                    initVinylNoise();
+        // ---------------------------------------------------------------
+        // POWER BUTTON
+        // ---------------------------------------------------------------
+        var btnVinylPower = document.getElementById('btn-vinyl-power');
+        if (btnVinylPower) {
+            btnVinylPower.addEventListener('click', function() {
+                if (!vinylInitialized) initVinylNoise();
+                if (vinylAudioCtx && vinylAudioCtx.state === 'suspended') vinylAudioCtx.resume();
+
+                vinylActive = !vinylActive;
+                if (masterSummingNode) {
+                    masterSummingNode.gain.value = vinylActive ? vinylMasterVolume : 0;
                 }
-                
-                if (vinylAudioCtx && vinylAudioCtx.state === 'suspended') {
-                    vinylAudioCtx.resume();
+                btnVinylPower.innerText = vinylActive ? '[ON]' : '[OFF]';
+                if (vinylActive) btnVinylPower.classList.add('active');
+                else btnVinylPower.classList.remove('active');
+                addLog('MÓDULO VINILO: ' + (vinylActive ? 'ACTIVO' : 'INACTIVO'), vinylActive ? 'success' : 'warn');
+            });
+        }
+
+        // ---------------------------------------------------------------
+        // SLIDER BINDINGS
+        // ---------------------------------------------------------------
+        var sliderVinylMaster = document.getElementById('slider-vinyl-master');
+        if (sliderVinylMaster) {
+            sliderVinylMaster.addEventListener('input', function(e) {
+                var v = parseFloat(e.target.value) / 100;
+                vinylMasterVolume = v;
+                if (!vinylInitialized) initVinylNoise();
+                if (vinylAudioCtx && vinylAudioCtx.state === 'suspended') vinylAudioCtx.resume();
+                if (masterSummingNode && vinylActive) {
+                    masterSummingNode.gain.value = v;
                 }
-                
-                if (vinylGainNode) {
-                    // Linear volume mapping
-                    vinylGainNode.gain.value = val;
+                var valEl = document.getElementById('val-vinyl-master');
+                if (valEl) valEl.innerText = e.target.value + '%';
+            });
+        }
+
+        function bindVinylSlider(id, valId, onInput) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            el.addEventListener('input', function(e) {
+                if (!vinylInitialized) initVinylNoise();
+                if (vinylAudioCtx && vinylAudioCtx.state === 'suspended') vinylAudioCtx.resume();
+                onInput(parseFloat(e.target.value));
+                if (valId) {
+                    var valEl = document.getElementById(valId);
+                    if (valEl) valEl.innerText = e.target.value + '%';
                 }
+            });
+        }
+
+        bindVinylSlider('slider-hiss', 'val-hiss', function(v) {
+            if (vinylHissGain) vinylHissGain.gain.value = v / 100 * 0.6;
+        });
+        bindVinylSlider('slider-crackle', 'val-crackle', function(v) {
+            if (vinylCrackleGain) vinylCrackleGain.gain.value = v / 100 * 0.5;
+        });
+        bindVinylSlider('slider-thump', 'val-thump', function(v) {
+            if (vinylThumpGain) vinylThumpGain.gain.value = v / 100 * 0.7;
+        });
+        bindVinylSlider('slider-rumble', 'val-rumble', function(v) {
+            if (vinylRumbleGain) vinylRumbleGain.gain.value = v / 100 * 0.4;
+        });
+
+        var sliderWow = document.getElementById('slider-wow');
+        if (sliderWow) {
+            sliderWow.addEventListener('input', function(e) {
+                var v = parseFloat(e.target.value) / 100;
+                if (!vinylInitialized) initVinylNoise();
+                if (wowDepthNode) wowDepthNode.gain.value = v * 0.003; // max ~3 ms depth
+                var valEl = document.getElementById('val-wow');
+                if (valEl) valEl.innerText = e.target.value + '%';
+            });
+        }
+
+        var sliderFlutter = document.getElementById('slider-flutter');
+        if (sliderFlutter) {
+            sliderFlutter.addEventListener('input', function(e) {
+                var v = parseFloat(e.target.value) / 100;
+                if (!vinylInitialized) initVinylNoise();
+                if (flutterDepthNode) flutterDepthNode.gain.value = v * 0.0003;
+                var valEl = document.getElementById('val-flutter');
+                if (valEl) valEl.innerText = e.target.value + '%';
+            });
+        }
+
+        var sliderSat = document.getElementById('slider-sat');
+        if (sliderSat) {
+            sliderSat.addEventListener('input', function(e) {
+                var v = parseFloat(e.target.value) / 10;
+                if (!vinylInitialized) initVinylNoise();
+                updateSaturationCurve(v);
+                var valEl = document.getElementById('val-sat');
+                if (valEl) valEl.innerText = v.toFixed(1) + 'x';
+            });
+        }
+
+        var sliderCutoff = document.getElementById('slider-cutoff');
+        if (sliderCutoff) {
+            sliderCutoff.addEventListener('input', function(e) {
+                var freq = parseFloat(e.target.value);
+                if (!vinylInitialized) initVinylNoise();
+                if (systemLowpassNode) systemLowpassNode.frequency.value = freq;
+                var valEl = document.getElementById('val-cutoff');
+                if (valEl) valEl.innerText = (freq / 1000).toFixed(1) + ' kHz';
             });
         }
 
@@ -2714,6 +3064,37 @@
         function archiveTrack(videoId, title, isBroken) {
             title = title || ('CANAL ID: ' + videoId);
             
+            // Remove from active queue if present to maintain mutual exclusion
+            var qIdx = activeQueueIds.indexOf(videoId);
+            if (qIdx !== -1) {
+                activeQueueIds.splice(qIdx, 1);
+                loadedPlaylistIds = []; // force redraw
+                var curIdx = player ? player.getPlaylistIndex() : 0;
+                var curTime = player ? player.getCurrentTime() : 0;
+                var targetIdx = curIdx > qIdx ? curIdx - 1 : (curIdx === qIdx ? Math.min(qIdx, activeQueueIds.length - 1) : curIdx);
+                targetIdx = Math.max(0, targetIdx);
+                if (activeQueueIds.length > 0) {
+                    updatePlayerQueue(targetIdx, curTime);
+                } else {
+                    if (player && typeof player.stopVideo === 'function') player.stopVideo();
+                    var cont = document.getElementById('playlist-tracks');
+                    if (cont) cont.innerHTML = '<div class="playlist-empty" style="font-size:10px;opacity:0.5;padding:10px;text-align:center;">COLA VACÍA</div>';
+                }
+            }
+
+            // Remove from cemetery list if present
+            var inCemetery = false;
+            for (var k = cemeteryList.length - 1; k >= 0; k--) {
+                if (cemeteryList[k].videoId === videoId) {
+                    cemeteryList.splice(k, 1);
+                    inCemetery = true;
+                }
+            }
+            if (inCemetery) {
+                localStorage.setItem('psico_radio_cemetery', JSON.stringify(cemeteryList));
+                renderCemeteryUI();
+            }
+            
             // Avoid duplicate ids in archive list
             var exists = false;
             for (var i = 0; i < archiveList.length; i++) {
@@ -2744,6 +3125,23 @@
         }
 
         function playFromArchive(videoId, title) {
+            // Remove from archive list to enforce mutual exclusion
+            for (var i = archiveList.length - 1; i >= 0; i--) {
+                if (archiveList[i].videoId === videoId) {
+                    archiveList.splice(i, 1);
+                    localStorage.setItem('psico_radio_archive', JSON.stringify(archiveList));
+                    renderArchiveUI();
+                }
+            }
+            // Remove from cemetery list
+            for (var i = cemeteryList.length - 1; i >= 0; i--) {
+                if (cemeteryList[i].videoId === videoId) {
+                    cemeteryList.splice(i, 1);
+                    localStorage.setItem('psico_radio_cemetery', JSON.stringify(cemeteryList));
+                    renderCemeteryUI();
+                }
+            }
+
             var curIndex = player ? player.getPlaylistIndex() : -1;
             
             // Insert videoId immediately next to playing item
@@ -2757,6 +3155,23 @@
         }
 
         function appendToActiveQueue(videoId, title) {
+            // Remove from archive list to enforce mutual exclusion
+            for (var i = archiveList.length - 1; i >= 0; i--) {
+                if (archiveList[i].videoId === videoId) {
+                    archiveList.splice(i, 1);
+                    localStorage.setItem('psico_radio_archive', JSON.stringify(archiveList));
+                    renderArchiveUI();
+                }
+            }
+            // Remove from cemetery list
+            for (var i = cemeteryList.length - 1; i >= 0; i--) {
+                if (cemeteryList[i].videoId === videoId) {
+                    cemeteryList.splice(i, 1);
+                    localStorage.setItem('psico_radio_cemetery', JSON.stringify(cemeteryList));
+                    renderCemeteryUI();
+                }
+            }
+
             if (!activeQueueIds.includes(videoId)) {
                 activeQueueIds.push(videoId);
                 trackTitles[videoId] = title;
@@ -2776,6 +3191,22 @@
             var track = archiveList[index];
             if (!track) return;
             
+            // Remove from active queue if present to maintain mutual exclusion
+            var qIdx = activeQueueIds.indexOf(track.videoId);
+            if (qIdx !== -1) {
+                activeQueueIds.splice(qIdx, 1);
+                loadedPlaylistIds = []; // force redraw
+                var curIdx = player ? player.getPlaylistIndex() : 0;
+                var curTime = player ? player.getCurrentTime() : 0;
+                var targetIdx = curIdx > qIdx ? curIdx - 1 : (curIdx === qIdx ? Math.min(qIdx, activeQueueIds.length - 1) : curIdx);
+                targetIdx = Math.max(0, targetIdx);
+                if (activeQueueIds.length > 0) {
+                    updatePlayerQueue(targetIdx, curTime);
+                } else {
+                    if (player && typeof player.stopVideo === 'function') player.stopVideo();
+                }
+            }
+
             // Remove from archive array
             archiveList.splice(index, 1);
             localStorage.setItem('psico_radio_archive', JSON.stringify(archiveList));
