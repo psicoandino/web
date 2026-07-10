@@ -1,0 +1,156 @@
+{
+  "format": "RM-STATION-1",
+  "station": {
+    "name": "Psicoandino Experimental Radio",
+    "epoch": "2026-07-10T16:30:57.754429+00:00",
+    "created": "2026-07-10T16:30:57.754429+00:00"
+  },
+  "totalDuration": 290.0,
+  "signals": [
+    {
+      "file": "signal_001.rsig",
+      "id": "lGUNGiuaMI4",
+      "duration": 10.0
+    },
+    {
+      "file": "signal_002.rsig",
+      "id": "yZ8mJgcsbw8",
+      "duration": 10.0
+    },
+    {
+      "file": "signal_003.rsig",
+      "id": "3IRBm9DjBdQ",
+      "duration": 10.0
+    },
+    {
+      "file": "signal_004.rsig",
+      "id": "5a_YthPacB0",
+      "duration": 10.0
+    },
+    {
+      "file": "signal_005.rsig",
+      "id": "X7P8zX3xl_A",
+      "duration": 10.0
+    },
+    {
+      "file": "signal_006.rsig",
+      "id": "FH2v50zAbqo",
+      "duration": 10.0
+    },
+    {
+      "file": "signal_007.rsig",
+      "id": "1nejjuPEJkE",
+      "duration": 10.0
+    },
+    {
+      "file": "signal_008.rsig",
+      "id": "0e_kHYrEhqg",
+      "duration": 10.0
+    },
+    {
+      "file": "signal_009.rsig",
+      "id": "h_I9xto06A0",
+      "duration": 10.0
+    },
+    {
+      "file": "signal_010.rsig",
+      "id": "IhnOpwOMHgk",
+      "duration": 10.0
+    },
+    {
+      "file": "signal_011.rsig",
+      "id": "aHFAXW840uM",
+      "duration": 10.0
+    },
+    {
+      "file": "signal_012.rsig",
+      "id": "-9l5t3MWss8",
+      "duration": 10.0
+    },
+    {
+      "file": "signal_013.rsig",
+      "id": "YZc5H_s_bbU",
+      "duration": 10.0
+    },
+    {
+      "file": "signal_014.rsig",
+      "id": "57_fffHS8rU",
+      "duration": 10.0
+    },
+    {
+      "file": "signal_015.rsig",
+      "id": "P1cUFiRtyEI",
+      "duration": 10.0
+    },
+    {
+      "file": "signal_016.rsig",
+      "id": "RtUM0prmV3E",
+      "duration": 10.0
+    },
+    {
+      "file": "signal_017.rsig",
+      "id": "atmrKrqZv84",
+      "duration": 10.0
+    },
+    {
+      "file": "signal_018.rsig",
+      "id": "_-nwbCX1cs4",
+      "duration": 10.0
+    },
+    {
+      "file": "signal_019.rsig",
+      "id": "5X-Mrc2l1d0",
+      "duration": 10.0
+    },
+    {
+      "file": "signal_020.rsig",
+      "id": "lH4i4Eq448w",
+      "duration": 10.0
+    },
+    {
+      "file": "signal_021.rsig",
+      "id": "ccenFp_3kq8",
+      "duration": 10.0
+    },
+    {
+      "file": "signal_022.rsig",
+      "id": "Tlz8qHFDbkI",
+      "duration": 10.0
+    },
+    {
+      "file": "signal_023.rsig",
+      "id": "2sHZ4ny_SxU",
+      "duration": 10.0
+    },
+    {
+      "file": "signal_024.rsig",
+      "id": "ap87QgZKTNw",
+      "duration": 10.0
+    },
+    {
+      "file": "signal_025.rsig",
+      "id": "s_-QRNVbNM8",
+      "duration": 10.0
+    },
+    {
+      "file": "signal_026.rsig",
+      "id": "4Zq-kkrKJF0",
+      "duration": 10.0
+    },
+    {
+      "file": "signal_027.rsig",
+      "id": "MEO6gYCFbr0",
+      "duration": 10.0
+    },
+    {
+      "file": "signal_028.rsig",
+      "id": "VkKxmnrRVHo",
+      "duration": 10.0
+    },
+    {
+      "file": "signal_029.rsig",
+      "id": "STugQ0X1NoI",
+      "duration": 10.0
+    }
+  ]
+}
