@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Emergence - Evolutionary Writing System</title>
+    <link rel="stylesheet" href="psico-header.css">
     <style>
         :root {
             --cobre: #248692;
@@ -17,6 +18,7 @@
             --surface: #fffcf4;
             --soft-line: rgba(0, 0, 0, 0.1);
             --quiet-line: rgba(0, 0, 0, 0.06);
+            --line: rgba(0, 0, 0, 0.1);
             --text-soft: rgba(0, 0, 0, 0.64);
             --text-faint: rgba(0, 0, 0, 0.38);
             --unit: 8px;
@@ -64,46 +66,27 @@
             padding: 48px 0 80px;
         }
 
-        .topbar {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            align-items: center;
-            gap: 24px;
-            padding: 0 0 20px;
-            border-bottom: 1px solid var(--soft-line);
-        }
-
-        .brand {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            max-width: 100%;
-            width: max-content;
-            color: var(--oled);
+        .ph-nav button {
+            all: unset;
             cursor: pointer;
-            min-width: 0;
-            user-select: none;
         }
 
-        .brand-mark {
-            width: 14px;
-            height: 14px;
-            border: 2px solid var(--oled);
-            border-radius: 50%;
-            background: var(--hueso);
-            box-shadow: inset 0 0 0 4px var(--musgo);
+        .ph-nav a[aria-current="page"] {
+            opacity: 1;
+            text-decoration: underline;
         }
 
-        .brand-name {
-            flex: 0 1 auto;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            max-width: calc(100vw - 140px);
-            overflow: hidden;
-            text-overflow: ellipsis;
-            text-transform: uppercase;
-            white-space: nowrap;
+        @media (max-width: 760px) {
+            .psico-header {
+                flex-wrap: wrap;
+                row-gap: 10px;
+                padding: 10px 16px;
+            }
+
+            .ph-nav {
+                flex-wrap: wrap;
+                gap: 14px;
+            }
         }
 
         .topbar-actions {
@@ -389,7 +372,6 @@
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            gap: 8px;
             color: var(--text-faint);
         }
 
@@ -509,6 +491,11 @@
         .btn-danger {
             border-color: rgba(199, 58, 74, 0.32);
             color: var(--sangre);
+        }
+
+        .btn-mostaza {
+            border-color: rgba(183, 134, 39, 0.42);
+            color: var(--mostaza);
         }
 
         .btn-large {
@@ -655,6 +642,23 @@
             }
         }
 
+        .sealed-view.reflection-active .sealed-actions,
+        .sealed-view.reflection-active .lineage-panel .section-heading button,
+        .sealed-view.reflection-active #btn-reflection-form-toggle,
+        .sealed-view.reflection-active .reflection-grid {
+            display: none;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .sealed-view.motion-seal {
+                animation: none;
+            }
+
+            .view-panel {
+                transition: none;
+            }
+        }
+
         .sealed-heading {
             display: none;
             font-size: clamp(24px, 3vw, 32px);
@@ -747,10 +751,15 @@
         }
 
         .reflection-grid {
-            display: grid;
+            display: none;
             grid-template-columns: minmax(180px, 0.42fr) 1fr auto;
             align-items: end;
             gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .reflection-grid.visible {
+            display: grid;
         }
 
         .field {
@@ -829,7 +838,7 @@
 
         .lineage-body {
             display: none;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(3, 1fr);
             gap: 18px;
             margin-top: 12px;
         }
@@ -865,6 +874,22 @@
             border-color: var(--soft-line);
             background: var(--surface);
             color: var(--oled);
+        }
+
+        .node-row .primitive-circle {
+            color: var(--musgo);
+        }
+
+        .node-row .primitive-triangle {
+            color: var(--mostaza);
+        }
+
+        .lineage-panel .section-title .primitive-line {
+            color: var(--cobre);
+        }
+
+        #meta-root {
+            color: var(--musgo);
         }
 
         .node-title {
@@ -983,7 +1008,6 @@
                 padding-top: 20px;
             }
 
-            .topbar,
             .status-rail {
                 grid-template-columns: 1fr;
                 align-items: start;
@@ -993,12 +1017,6 @@
             .state-chain {
                 justify-content: flex-start;
                 width: 100%;
-            }
-
-            .brand-name {
-                font-size: 12px;
-                letter-spacing: 0.06em;
-                max-width: calc(100vw - 78px);
             }
 
             .workspace {
@@ -1011,16 +1029,14 @@
                 gap: 6px;
             }
 
-            .state-chain {
-                flex-wrap: wrap;
-            }
-
             .edit-actions,
             .sealed-actions,
             .reflection-actions,
-            .archive-header {
+            .archive-header,
+            .section-heading {
                 align-items: stretch;
                 flex-direction: column;
+                gap: 12px;
             }
 
             .btn {
@@ -1042,16 +1058,21 @@
 </head>
 <body>
     <div class="shell" id="app-shell">
-        <header class="topbar">
-            <div class="brand" role="button" tabindex="0" aria-label="Volver al valle">
-                <span class="brand-mark" aria-hidden="true"></span>
-                <span class="brand-name">Project Emergence</span>
-            </div>
-            <div class="topbar-actions">
-                <button class="btn hidden" type="button" id="btn-topbar-secondary"></button>
-                <button class="btn" type="button" id="btn-settings">Ajustes</button>
-            </div>
-        </header>
+        <div class="psico-header" style="--accent:var(--cobre)">
+            <a class="ph-brand" href="#" id="ph-brand-home" title="Volver al valle">
+                <div class="ph-motif" tabindex="0" title="Emergencia"><div class="ph-dot-sun"></div><div class="ph-dot-shadow"></div></div>
+                <div class="ph-textblock">
+                    <span class="ph-word"><span class="ph-brandname">PSICOANDINO</span><span class="ph-sep">|</span><span class="ph-system">Emergence</span></span>
+                    <div class="ph-squares"><span></span><span></span><span></span><span></span></div>
+                </div>
+            </a>
+            <nav class="ph-nav" id="ph-nav">
+                <a href="#" data-nav="home">Valle</a>
+                <a href="#" data-nav="archive">Registro</a>
+                <a href="#" data-nav="published">Publicados</a>
+                <button type="button" id="btn-settings">Ajustes</button>
+            </nav>
+        </div>
 
         <main class="workspace">
             <section class="home-panel view-panel" id="home-panel" aria-label="El valle">
@@ -1071,6 +1092,9 @@
                 <div class="home-section" id="home-recent-section">
                     <h2 class="home-section-title">Genealogías recientes</h2>
                     <div class="home-list" id="home-recent-list"></div>
+                    <div class="home-actions" style="margin-top: 16px;">
+                        <button class="btn" type="button" id="btn-home-archive-link">Ver todo en el Registro</button>
+                    </div>
                 </div>
 
                 <div class="home-section">
@@ -1110,14 +1134,11 @@
                     <span class="location-value" id="location-value">Expresión libre</span>
                 </div>
                 <div class="state-chain" id="state-chain">
-                    <span class="state-chip" data-state="expression"><span class="primitive-circle" aria-hidden="true"></span>Expresión</span>
-                    <span class="state-chip" data-state="emergence"><span class="primitive-line" aria-hidden="true"></span>Emergencia</span>
-                    <span class="state-chip" data-state="reflection"><span class="primitive-square" aria-hidden="true"></span>Reflexión</span>
-                    <span class="state-chip" data-state="published"><span class="primitive-triangle" aria-hidden="true"></span>Publicado</span>
+                    <span class="state-chip active" id="current-state-chip"></span>
                 </div>
             </section>
 
-            <section class="main-panel hidden" id="main-panel">
+            <section class="main-panel view-panel hidden" id="main-panel">
                 <div class="context-note" id="parent-context">
                     <div class="context-kicker">Pensamiento padre</div>
                     <p id="parent-context-text"></p>
@@ -1130,8 +1151,8 @@
                             id="expression-title"
                             class="expression-title-input"
                             maxlength="120"
-                            placeholder="Título opcional"
-                            aria-label="Título opcional"
+                            placeholder="Nombre opcional"
+                            aria-label="Nombre opcional"
                         >
                         <input
                             type="text"
@@ -1183,7 +1204,7 @@
                     <div class="sealed-actions">
                         <p class="support-text" id="sealed-support">Este nodo es inmutable. La siguiente versión debe nacer como Descendiente.</p>
                         <div class="topbar-actions">
-                            <button class="btn btn-accent" type="button" id="btn-descendant">
+                            <button class="btn btn-mostaza" type="button" id="btn-descendant">
                                 <span class="primitive-triangle" aria-hidden="true"></span>
                                 Crear Descendiente
                             </button>
@@ -1197,8 +1218,12 @@
                     <section class="reflection-panel" aria-label="Reflexión">
                         <div class="section-heading">
                             <h2 class="section-title"><span class="primitive-square" aria-hidden="true"></span>Reflexión</h2>
+                            <div class="topbar-actions">
+                                <button class="btn" type="button" id="btn-reflection-form-toggle">+ Nueva observación</button>
+                                <button class="btn" type="button" id="btn-reflection-mode">Entrar en Reflexión</button>
+                            </div>
                         </div>
-                        <div class="reflection-grid">
+                        <div class="reflection-grid" id="reflection-grid">
                             <div class="field">
                                 <label for="reflection-prompt">Marco</label>
                                 <select id="reflection-prompt" class="reflection-select">
@@ -1225,6 +1250,10 @@
                             <div class="lineage-column">
                                 <div class="section-kicker">Ancestría</div>
                                 <div id="ancestry-list"></div>
+                            </div>
+                            <div class="lineage-column">
+                                <div class="section-kicker">Hermanos</div>
+                                <div id="sibling-list"></div>
                             </div>
                             <div class="lineage-column">
                                 <div class="section-kicker">Descendientes directos</div>
@@ -1289,6 +1318,8 @@
                 this.exportVersion = "0.2";
                 this.state = this.loadState();
                 this.isLineageOpen = false;
+                this.isReflectionMode = false;
+                this.isReflectionFormOpen = false;
                 this.publishedFocusId = null;
                 this.playSealMotion = false;
                 this.motionToken = 0;
@@ -1415,14 +1446,22 @@
             }
 
             bindEvents() {
-                const brand = document.querySelector(".brand");
-                brand.addEventListener("click", () => this.openHome(true));
-                brand.addEventListener("keydown", (event) => {
-                    if (event.key === "Enter" || event.key === " ") {
-                        event.preventDefault();
-                        this.openHome(true);
-                    }
+                document.getElementById("ph-brand-home").addEventListener("click", (event) => {
+                    event.preventDefault();
+                    this.openHome(true);
                 });
+
+                document.querySelectorAll("#ph-nav [data-nav]").forEach((link) => {
+                    link.addEventListener("click", (event) => {
+                        event.preventDefault();
+                        const target = link.dataset.nav;
+                        if (target === "home") this.openHome(true);
+                        else if (target === "archive") this.openArchive();
+                        else if (target === "published") this.openPublished(true);
+                    });
+                });
+
+                document.getElementById("btn-home-archive-link").addEventListener("click", () => this.openArchive());
 
                 document.getElementById("btn-settings").addEventListener("click", () => this.openSettings());
                 document.getElementById("btn-settings-close").addEventListener("click", () => this.closeSettings());
@@ -1443,13 +1482,6 @@
                     event.target.value = "";
                 });
 
-                document.getElementById("btn-topbar-secondary").addEventListener("click", () => {
-                    const view = this.state.currentView;
-                    if (view === "archive") this.openWorkspace();
-                    else if (view === "published") this.openHome(true);
-                    else if (view === "workspace") this.toggleArchive();
-                });
-
                 document.getElementById("btn-home-begin").addEventListener("click", () => this.startFreshExpression());
                 document.getElementById("btn-home-continue").addEventListener("click", () => this.openWorkspace());
                 document.getElementById("btn-home-published").addEventListener("click", () => this.openPublished(true));
@@ -1465,6 +1497,8 @@
                 document.getElementById("btn-publish").addEventListener("click", () => this.publishActiveNode());
                 document.getElementById("btn-reflection").addEventListener("click", () => this.saveReflectionNote());
                 document.getElementById("btn-lineage").addEventListener("click", () => this.toggleLineage());
+                document.getElementById("btn-reflection-mode").addEventListener("click", () => this.toggleReflectionMode());
+                document.getElementById("btn-reflection-form-toggle").addEventListener("click", () => this.toggleReflectionForm());
 
                 document.getElementById("workspace-textarea").addEventListener("input", (event) => {
                     this.state.activeExpression.content = event.target.value;
@@ -1587,6 +1621,8 @@
                         };
 
                         this.isLineageOpen = false;
+                        this.isReflectionMode = false;
+                        this.isReflectionFormOpen = false;
                         this.publishedFocusId = null;
                         this.closeSettings();
                         this.persist();
@@ -1613,6 +1649,8 @@
                 this.state.currentView = "home";
                 this.publishedFocusId = null;
                 this.isLineageOpen = false;
+                this.isReflectionMode = false;
+                this.isReflectionFormOpen = false;
                 this.persist(false);
                 this.render();
                 if (withMotion) this.triggerViewMotion("home-panel");
@@ -1622,6 +1660,7 @@
                 this.state.currentView = "workspace";
                 this.publishedFocusId = null;
                 this.persist();
+                this.triggerViewMotion("main-panel");
             }
 
             openPublished(withMotion = false) {
@@ -1639,8 +1678,8 @@
                 this.renderPublished();
             }
 
-            toggleArchive() {
-                this.state.currentView = this.state.currentView === "archive" ? "workspace" : "archive";
+            openArchive() {
+                this.state.currentView = "archive";
                 this.persist();
             }
 
@@ -1649,7 +1688,10 @@
                 this.state.activeExpression = { content: "", parentId: null, title: "", tagsRaw: "" };
                 this.state.currentView = "workspace";
                 this.isLineageOpen = false;
+                this.isReflectionMode = false;
+                this.isReflectionFormOpen = false;
                 this.persist();
+                this.triggerViewMotion("main-panel");
             }
 
             discardDraft() {
@@ -1659,13 +1701,22 @@
 
             createDescendantDraft() {
                 const parentId = this.state.activeNodeId;
-                if (!parentId || !this.state.nodes[parentId]) return;
+                const parent = parentId ? this.state.nodes[parentId] : null;
+                if (!parent) return;
 
-                this.state.activeExpression = { content: "", parentId, title: "", tagsRaw: "" };
+                this.state.activeExpression = {
+                    content: parent.content,
+                    parentId,
+                    title: parent.title,
+                    tagsRaw: (parent.tags || []).join(", ")
+                };
                 this.state.activeNodeId = null;
                 this.state.currentView = "workspace";
                 this.isLineageOpen = false;
+                this.isReflectionMode = false;
+                this.isReflectionFormOpen = false;
                 this.persist();
+                this.triggerViewMotion("main-panel");
             }
 
             sealCurrentExpression() {
@@ -1737,13 +1788,29 @@
                 this.renderLineage();
             }
 
+            toggleReflectionMode() {
+                this.isReflectionMode = !this.isReflectionMode;
+                this.renderSealedView(this.getActiveNode());
+            }
+
+            toggleReflectionForm() {
+                this.isReflectionFormOpen = !this.isReflectionFormOpen;
+                document.getElementById("reflection-grid").classList.toggle("visible", this.isReflectionFormOpen);
+                document.getElementById("btn-reflection-form-toggle").textContent = this.isReflectionFormOpen
+                    ? "Cerrar observación"
+                    : "+ Nueva observación";
+            }
+
             selectNode(id) {
                 if (!this.state.nodes[id]) return;
 
                 this.state.activeNodeId = id;
                 this.state.activeExpression = { content: "", parentId: null, title: "", tagsRaw: "" };
                 this.state.currentView = "workspace";
+                this.isReflectionMode = false;
+                this.isReflectionFormOpen = false;
                 this.persist();
+                this.triggerViewMotion("main-panel");
             }
 
             selectGenealogy(rootId) {
@@ -1799,6 +1866,13 @@
                     .sort((a, b) => a.timestamp - b.timestamp);
             }
 
+            getSiblings(node) {
+                if (!node.parentId) return [];
+                return this.getAllNodes()
+                    .filter((other) => other.parentId === node.parentId && other.id !== node.id)
+                    .sort((a, b) => a.timestamp - b.timestamp);
+            }
+
             getAncestryPath(nodeId) {
                 const path = [];
                 let current = this.state.nodes[nodeId];
@@ -1847,7 +1921,11 @@
                     this.triggerViewMotion("home-panel");
                 }
 
-                this.renderTopbar(view);
+                if (isWorkspace && !document.getElementById("main-panel").classList.contains("is-visible")) {
+                    this.triggerViewMotion("main-panel");
+                }
+
+                this.renderNav(view);
                 this.renderHome();
 
                 if (isPublished) this.renderPublished();
@@ -1864,23 +1942,11 @@
                 }
             }
 
-            renderTopbar(view) {
-                const secondary = document.getElementById("btn-topbar-secondary");
-
-                if (view === "home") {
-                    secondary.classList.add("hidden");
-                    return;
-                }
-
-                secondary.classList.remove("hidden");
-
-                if (view === "archive") {
-                    secondary.textContent = "Volver";
-                } else if (view === "published") {
-                    secondary.textContent = "Volver al valle";
-                } else {
-                    secondary.textContent = "Registro";
-                }
+            renderNav(view) {
+                document.querySelectorAll("#ph-nav [data-nav]").forEach((link) => {
+                    if (link.dataset.nav === view) link.setAttribute("aria-current", "page");
+                    else link.removeAttribute("aria-current");
+                });
             }
 
             renderHome() {
@@ -2010,9 +2076,30 @@
             }
 
             renderStateChain(activeState, isArchive) {
-                document.querySelectorAll(".state-chip").forEach((chip) => {
-                    chip.classList.toggle("active", !isArchive && chip.dataset.state === activeState);
-                });
+                const chip = document.getElementById("current-state-chip");
+                if (isArchive) {
+                    chip.innerHTML = "";
+                    return;
+                }
+
+                const primitives = {
+                    expression: "primitive-circle",
+                    emergence: "primitive-line",
+                    reflection: "primitive-square",
+                    published: "primitive-triangle"
+                };
+                const labels = {
+                    expression: "Expresión",
+                    emergence: "Emergencia",
+                    reflection: "Reflexión",
+                    published: "Publicado"
+                };
+
+                chip.innerHTML = "";
+                const primitive = document.createElement("span");
+                primitive.className = primitives[activeState];
+                primitive.setAttribute("aria-hidden", "true");
+                chip.append(primitive, document.createTextNode(labels[activeState]));
             }
 
             renderExpressionView() {
@@ -2048,6 +2135,14 @@
 
                 const sealedView = document.getElementById("sealed-view");
                 sealedView.classList.add("visible");
+                sealedView.classList.toggle("reflection-active", this.isReflectionMode);
+                document.getElementById("btn-reflection-mode").textContent = this.isReflectionMode
+                    ? "Salir de Reflexión"
+                    : "Entrar en Reflexión";
+                document.getElementById("reflection-grid").classList.toggle("visible", this.isReflectionFormOpen);
+                document.getElementById("btn-reflection-form-toggle").textContent = this.isReflectionFormOpen
+                    ? "Cerrar observación"
+                    : "+ Nueva observación";
 
                 if (this.playSealMotion) {
                     sealedView.classList.remove("motion-seal");
@@ -2131,6 +2226,7 @@
                 if (!this.isLineageOpen) return;
 
                 this.renderNodeList("ancestry-list", this.getAncestryPath(node.id), node.id, "Gen");
+                this.renderNodeList("sibling-list", this.getSiblings(node), node.id, "Sib");
                 this.renderNodeList("descendant-list", this.getNodeChildren(node.id), node.id, "Desc");
             }
 
@@ -2196,5 +2292,6 @@
         const app = new ProjectEmergenceCore();
         window.app = app;
     </script>
+    <script src="psico-header.js"></script>
 </body>
 </html>
