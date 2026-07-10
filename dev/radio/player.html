@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+
+<title>Radiomisor Receiver v0.4</title>
+
+<style>
+
+body{
+    background:#111;
+    color:white;
+    font-family:system-ui;
+    text-align:center;
+    padding:50px;
+}
+
+button{
+    font-size:18px;
+    padding:15px 35px;
+    cursor:pointer;
+}
+
+#status{
+    margin-top:25px;
+    line-height:1.6;
+    white-space:pre-wrap;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>📻 Radiomisor</h1>
+
+<h2 id="station">
+Loading...
+</h2>
+
+<button id="tuneButton">
+📡 Sintonizar
+</button>
+
+<p id="status">
+Loading station...
+</p>
+
+<script src="radio-engine.js"></script>
+
+<script>
+
+const statusElement =
+    document.getElementById("status");
+
+const stationElement =
+    document.getElementById("station");
+
+const tuneButton =
+    document.getElementById("tuneButton");
+
+const engine =
+    new RadioEngine(message => {
+
+        statusElement.textContent =
+            message;
+
+    });
+
+async function initialize() {
+
+    try {
+
+        const station =
+            await engine.loadStation();
+
+        stationElement.textContent =
+            station.station.name;
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        statusElement.textContent =
+            error.message;
+
+    }
+
+}
+
+tuneButton.addEventListener(
+    "click",
+    async () => {
+
+        try {
+
+            await engine.tune();
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            statusElement.textContent =
+                error.message;
+
+        }
+
+    }
+);
+
+initialize();
+
+</script>
+
+</body>
+
+</html>
