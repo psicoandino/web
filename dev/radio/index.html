@@ -1340,6 +1340,9 @@
             if (videoIds.length > 0) {
                 playerVars.playlist = videoIds.join(',');
             }
+            // JS-side state is authoritative from the start — bootstrap it here instead of
+            // letting syncTracklistUI() infer it later from player.getPlaylist().
+            activeQueueIds = videoIds.slice();
 
             player = new YT.Player('player-hidden', {
                 height: '0',
@@ -1422,6 +1425,10 @@
         // Tracklist drawer synchronizer
         function syncTracklistUI() {
             if (!player || typeof player.getPlaylist !== 'function') return;
+            // activeQueueIds (JS) is authoritative once set. If it's already empty, we emptied it
+            // on purpose (ARC/archiveTrack/discardToCemetery); player.getPlaylist() clears
+            // asynchronously and would otherwise resurrect the just-removed id via a stale read.
+            if (activeQueueIds.length === 0) return;
             var playlist = player.getPlaylist();
             if (!playlist || playlist.length === 0) {
                 return;
@@ -1532,7 +1539,10 @@
                                     : (curIdx === capturedIdx ? Math.min(capturedIdx, activeQueueIds.length - 1) : curIdx);
                                 updatePlayerQueue(Math.max(0, targetIdx), 0);
                             } else {
-                                if (player && typeof player.stopVideo === 'function') player.stopVideo();
+                                // cuePlaylist([]) empties the player's internal playlist too — stopVideo() alone
+                                // leaves it intact, so syncTracklistUI() later reads it back via getPlaylist()
+                                // and resurrects the just-archived id into activeQueueIds.
+                                if (player && typeof player.cuePlaylist === 'function') player.cuePlaylist([]);
                                 var cont = document.getElementById('playlist-tracks');
                                 if (cont) cont.innerHTML = '<div class="playlist-empty" style="font-size:10px;opacity:0.5;padding:10px;text-align:center;">COLA VACÍA</div>';
                             }
@@ -2676,7 +2686,8 @@
                 if (activeQueueIds.length > 0) {
                     updatePlayerQueue(targetIdx, curTime);
                 } else {
-                    if (player && typeof player.stopVideo === 'function') player.stopVideo();
+                    // See ARC button listener above for why cuePlaylist([]) replaces stopVideo() here.
+                    if (player && typeof player.cuePlaylist === 'function') player.cuePlaylist([]);
                     var cont = document.getElementById('playlist-tracks');
                     if (cont) cont.innerHTML = '<div class="playlist-empty" style="font-size:10px;opacity:0.5;padding:10px;text-align:center;">COLA VACÍA</div>';
                 }
@@ -2803,7 +2814,8 @@
                 if (activeQueueIds.length > 0) {
                     updatePlayerQueue(targetIdx, curTime);
                 } else {
-                    if (player && typeof player.stopVideo === 'function') player.stopVideo();
+                    // See ARC button listener above for why cuePlaylist([]) replaces stopVideo() here.
+                    if (player && typeof player.cuePlaylist === 'function') player.cuePlaylist([]);
                 }
             }
 
