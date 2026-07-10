@@ -12,9 +12,11 @@
             --sangre: #C73A4A;
             --musgo: #6D7C50;
             --mostaza: #B78627;
+            --amatista: #7D5AA1;
+            --line: rgba(0,0,0,0.10);
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        
+
         body {
             background-color: var(--hueso);
             color: var(--oled);
@@ -22,7 +24,7 @@
             height: 100vh;
             overflow: hidden;
             display: grid;
-            grid-template-rows: auto 1fr auto auto;
+            grid-template-rows: auto auto 1fr auto auto;
         }
         
         header {
@@ -740,8 +742,22 @@
             cursor: pointer;
         }
     </style>
+    <link rel="stylesheet" href="/assets/shell/psico-header.css">
 </head>
 <body>
+
+    <div class="psico-header" style="--accent:var(--amatista)">
+        <a class="ph-brand" href="/" title="Volver a psicoandino.cl">
+            <div class="ph-motif" tabindex="0" title="Amatista"><div class="ph-dot-sun"></div><div class="ph-dot-shadow"></div></div>
+            <div class="ph-textblock">
+                <span class="ph-word"><span class="ph-brandname">PSICOANDINO</span><span class="ph-sep">|</span><span class="ph-system">Radio</span></span>
+                <div class="ph-squares"><span></span><span></span><span></span><span></span></div>
+            </div>
+        </a>
+        <nav class="ph-nav">
+            <a href="#">Tactile Deck</a>
+        </nav>
+    </div>
 
     <!-- HUD Toast Overlay -->
     <div id="hud-overlay"></div>
@@ -3093,5 +3109,6 @@
             spectrumTimer = setInterval(updateSpectrum, 100);
         }
     </script>
+    <script src="/assets/shell/psico-header.js"></script>
 </body>
 </html>
