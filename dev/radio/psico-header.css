@@ -1,0 +1,105 @@
+/* PSICOANDINO — header compartido
+   Requiere que la página ya defina --sangre --mostaza --musgo --cobre
+   --amatista --oled --hueso --line (todo proyecto psicoandino ya los
+   declara en su :root, ver knowledge/docs/VISUAL_SYSTEM.md).
+   Cada proyecto fija --accent en el propio <header>. */
+
+.psico-header{
+  --accent: var(--cobre);
+  position:sticky;
+  top:0;
+  z-index:50;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  min-height:72px;
+  padding:12px 24px;
+  border-bottom:1px solid var(--line);
+  background:var(--hueso);
+  font-family:'Inter',-apple-system,sans-serif;
+}
+
+.ph-brand{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  text-decoration:none;
+  color:inherit;
+}
+.ph-brand:focus-visible{ outline:2px solid var(--accent); outline-offset:5px; }
+
+/* ---- the dot: amatista sun, permanently eclipsed by an oled shadow that recedes on hover ---- */
+.ph-motif{
+  position:relative;
+  width:16px;
+  height:16px;
+  flex:0 0 auto;
+  margin-top:2px;
+  border-radius:50%;
+  overflow:hidden;
+}
+.ph-dot-sun{
+  position:absolute;
+  inset:0;
+  background:var(--amatista);
+}
+.ph-dot-shadow{
+  position:absolute;
+  inset:0;
+  background:var(--oled);
+  transform:translateX(0%);
+  transition: transform .65s cubic-bezier(.65,0,.35,1);
+}
+@media (prefers-reduced-motion: reduce){
+  .ph-dot-shadow{ transition:none; }
+}
+
+.ph-textblock{ display:flex; flex-direction:column; gap:5px; }
+
+.ph-word{
+  font-family:'IBM Plex Mono',ui-monospace,monospace;
+  font-size:13px;
+  letter-spacing:.04em;
+  white-space:nowrap;
+  color:var(--oled);
+}
+.ph-brandname{ font-weight:700; letter-spacing:.02em; }
+.ph-sep{ opacity:.28; margin:0 7px; font-weight:400; }
+.ph-system{ font-weight:400; font-style:italic; opacity:.68; }
+
+/* ---- squares: permanent, fixed order (sangre·mostaza·musgo·cobre) — amatista
+   never appears here, it lives only in the dot, same as in logo.001.jpeg ---- */
+.ph-squares{ display:flex; gap:4px; height:6px; }
+.ph-squares span{
+  width:6px;
+  height:6px;
+  opacity:0;
+  transform:translateY(3px);
+  animation: ph-rise 5.6s ease-in-out infinite;
+}
+.ph-squares span:nth-child(1){ background:var(--sangre);  animation-delay:.08s; }
+.ph-squares span:nth-child(2){ background:var(--mostaza); animation-delay:.20s; }
+.ph-squares span:nth-child(3){ background:var(--musgo);   animation-delay:.32s; }
+.ph-squares span:nth-child(4){ background:var(--cobre);   animation-delay:.44s; }
+@keyframes ph-rise{
+  0%,42%{ opacity:0; transform:translateY(3px); }
+  62%,100%{ opacity:1; transform:translateY(0); }
+}
+@media (prefers-reduced-motion: reduce){
+  .ph-squares span{ animation:none; opacity:.85; transform:none; }
+}
+
+.ph-nav{
+  display:flex;
+  align-items:center;
+  gap:22px;
+  font-family:'IBM Plex Mono',ui-monospace,monospace;
+  font-size:11px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  opacity:.5;
+  padding-top:2px;
+}
+.ph-nav a{ color:inherit; text-decoration:none; }
+.ph-nav a:hover{ opacity:.5; text-decoration:underline; }
+.ph-nav a:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
