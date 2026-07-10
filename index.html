@@ -3,15 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Psicoandino</title>
-  
+<title>Psicoandino — Sistemas digitales, escritura y método</title>
+<meta name="description" content="Investigación para el conocimiento y el desarrollo. Sistemas digitales, escritura y método, construidos desde Los Andes.">
+
+<meta property="og:title" content="Psicoandino">
+<meta property="og:description" content="La belleza de conseguir el máximo potencial con la mínima cantidad de recursos.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_CL">
+<meta property="og:url" content="https://psicoandino.cl">
+<meta property="og:image" content="https://psicoandino.cl/assets/logos/android-chrome-512x512.png">
+<meta name="twitter:card" content="summary">
+
 <link rel="icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/logos/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/assets/logos/favicon-16x16.png">
 <link rel="apple-touch-icon" href="/assets/logos/apple-touch-icon.png">
-  
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/shell/psico-header.css">
 <style>
   :root {
     --cobre: #248692;
@@ -27,6 +37,9 @@
 
   * { box-sizing: border-box; }
 
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
   html, body {
     margin: 0;
     background: var(--hueso);
@@ -34,6 +47,9 @@
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
   }
+
+  /* el espacio negativo intencional, revelado al seleccionar */
+  ::selection { background: var(--amatista); color: var(--hueso); }
 
   .eyebrow {
     font-family: 'IBM Plex Mono', monospace;
@@ -52,15 +68,38 @@
 
   a { color: inherit; text-decoration: none; }
 
+  /* ---------- ROOT HEADER: brand only, no system name, no squares ---------- */
+  /* En la fuente no hace falta "| Sistema" — estás en Psicoandino mismo. */
+  .psico-header .ph-textblock { gap: 0; }
+
   /* ---------- HERO ---------- */
   .hero {
     max-width: 880px;
     margin: 0 auto;
-    padding: 24px 28px 16px;
+    padding: 40px 28px 16px;
     text-align: left;
   }
 
   .hero .eyebrow { display: block; margin-bottom: 28px; }
+
+  /* coreografía de entrada: la página amanece una sola vez */
+  .alba {
+    opacity: 0;
+    transform: translateY(8px);
+    animation: amanecer 0.6s ease-out forwards;
+  }
+  .alba-1 { animation-delay: 0.05s; }
+  .alba-2 { animation-delay: 0.15s; }
+  .alba-3 { animation-delay: 0.28s; }
+  .alba-4 { animation-delay: 0.38s; }
+  .alba-5 { animation-delay: 0.48s; }
+  .alba-6 { animation-delay: 0.60s; }
+  @keyframes amanecer {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .alba { animation: none; opacity: 1; transform: none; }
+  }
 
   .hero h1 {
     font-size: clamp(34px, 5vw, 54px);
@@ -77,7 +116,23 @@
     opacity: 0.82;
   }
 
-  /* ---------- SIGNATURE MOTIF: Fuente -> cuatro cuadrados ---------- */
+  .hero .puente {
+    font-size: 15px;
+    line-height: 1.55;
+    max-width: 48ch;
+    margin-top: 10px;
+    opacity: 0.6;
+  }
+
+  .hero .firma {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.03em;
+    opacity: 0.45;
+    margin-top: 22px;
+  }
+
+  /* ---------- SIGNATURE MOTIF: el sol amatista, eclipsado en loop, revela las 4 montañas ---------- */
   .motif {
     margin: 8px auto 0;
     width: 100%;
@@ -92,14 +147,21 @@
     align-items: center;
   }
 
-  .motif-circle {
+  .motif-sun {
     position: absolute;
     left: 0;
     width: 40px;
     height: 40px;
     border-radius: 50%;
+    overflow: hidden;
+    background: var(--amatista);
+  }
+
+  .motif-sun .motif-shadow {
+    position: absolute;
+    inset: 0;
     background: var(--oled);
-    animation: dissolve 3.4s ease-in-out infinite;
+    animation: eclipse 3.4s ease-in-out infinite;
   }
 
   .motif-squares {
@@ -120,10 +182,11 @@
   .motif-squares span:nth-child(2) { background: var(--mostaza); animation-delay: 0.30s; }
   .motif-squares span:nth-child(3) { background: var(--musgo);   animation-delay: 0.45s; }
   .motif-squares span:nth-child(4) { background: var(--cobre);   animation-delay: 0.60s; }
-  .motif-squares span:nth-child(5) { background: var(--amatista);   animation-delay: 0.75s; }
-  @keyframes dissolve {
-    0%, 20% { opacity: 1; transform: scale(1); }
-    45%, 100% { opacity: 0; transform: scale(0.6); }
+  /* amatista no aparece acá — es el sol, no una montaña (ver logo/logo.001.jpeg) */
+
+  @keyframes eclipse {
+    0%, 20% { transform: translateX(0%); }
+    45%, 100% { transform: translateX(105%); }
   }
   @keyframes rise {
     0%, 20% { opacity: 0; transform: translateY(6px); }
@@ -131,7 +194,9 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .motif-circle, .motif-squares span { animation: none; opacity: 1; }
+    .motif-shadow, .motif-squares span { animation: none; }
+    .motif-shadow { transform: translateX(105%); }
+    .motif-squares span { opacity: 1; }
   }
 
   /* ---------- RAMAS ---------- */
@@ -153,14 +218,32 @@
     flex-direction: column;
     gap: 14px;
     min-height: 220px;
-    transition: background 0.2s ease;
   }
+  /* las celdas no son links: no reaccionan al hover — sólo las filas reaccionan */
 
-  .rama:hover { background: var(--hueso-2); }
-
+  /* barra llena = sistemas operando · barra hueca = rama en formación */
   .rama-accent {
     width: 22px;
     height: 4px;
+  }
+  .rama-accent.en-formacion {
+    background: transparent !important;
+    border: 1px solid;
+    height: 4px;
+  }
+
+  /* reveal al scroll, sutil */
+  .rama.oculta {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  .rama.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rama.oculta { opacity: 1; transform: none; }
   }
 
   .rama h2 {
@@ -185,10 +268,44 @@
 
   .rama li {
     font-size: 15px;
+  }
+
+  /* fila completa cliqueable — el link deja de ser sólo la palabra */
+  .rama li a.fila {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
     gap: 12px;
+    padding: 4px 6px;
+    margin: -4px -6px;
+    border-radius: 4px;
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+  .rama li a.fila:hover,
+  .rama li a.fila:focus-visible {
+    background: rgba(0,0,0,0.045);
+    transform: translateX(3px);
+  }
+  .rama li a.fila .rotulo {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+  .rama li a.fila .flecha {
+    font-family: 'IBM Plex Mono', monospace;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+  .rama li a.fila:hover .flecha,
+  .rama li a.fila:focus-visible .flecha { opacity: 0.5; }
+
+  /* filas sin link: quietas al hover — lo que no reacciona, no es cliqueable */
+  .rama li.fila-quieta {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 4px 6px;
   }
 
   .estado {
@@ -197,6 +314,7 @@
     letter-spacing: 0.04em;
     text-transform: uppercase;
     white-space: nowrap;
+    flex-shrink: 0;
     padding: 3px 7px;
     border-radius: 3px;
     opacity: 0.85;
@@ -214,20 +332,63 @@
 
   @media (max-width: 640px) {
     .ramas { grid-template-columns: 1fr; }
+    .rama { min-height: 0; }
+    .rama li a.fila { padding: 8px 6px; margin: -8px -6px; }
+    .motif-squares { gap: 10px; }
+    .motif-squares span { width: 32px; height: 32px; }
+    .motif-sun { width: 32px; height: 32px; }
+    .motif-squares { margin-left: 62px; }
   }
 
-  /* ---------- FOOTER ---------- */
+  /* ---------- FOOTER: banda oled, el contrapunto de vacío que el resto de la página no usa ---------- */
   footer {
+    margin-top: 64px;
+    background: var(--oled);
+    color: var(--hueso);
+  }
+
+  .footer-inner {
     max-width: 880px;
     margin: 0 auto;
-    padding: 40px 32px 96px;
+    padding: 48px 32px 56px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 20px;
-    border-top: 1px solid var(--line);
-    margin-top: 16px;
+    gap: 24px;
+  }
+
+  .footer-sello {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: inherit;
+  }
+  .footer-sello:focus-visible { outline: 2px solid var(--amatista); outline-offset: 4px; }
+
+  .footer-sun {
+    position: relative;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--amatista);
+    flex: 0 0 auto;
+  }
+  .footer-sun .footer-shadow {
+    position: absolute;
+    inset: 0;
+    background: var(--hueso);
+    transition: transform 0.6s cubic-bezier(.65,0,.35,1);
+  }
+  .footer-sello:hover .footer-shadow { transform: translateX(105%); }
+  @media (prefers-reduced-motion: reduce) { .footer-shadow { transition: none; } }
+
+  .footer-marca {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    letter-spacing: 0.04em;
+    opacity: 0.7;
   }
 
   .redes {
@@ -238,33 +399,44 @@
   .redes a {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 12.5px;
-    opacity: 0.6;
+    opacity: 0.55;
     border-bottom: 1px solid transparent;
     padding-bottom: 2px;
     transition: opacity 0.15s ease, border-color 0.15s ease;
   }
-  .redes a:hover { opacity: 1; border-color: var(--oled); }
+  .redes a:hover { opacity: 1; border-color: var(--hueso); }
 
   .contacto {
     font-size: 13.5px;
-    opacity: 0.6;
+    opacity: 0.55;
   }
   .contacto a:hover { opacity: 1; }
 </style>
 </head>
 <body>
 
+  <div class="psico-header">
+    <a class="ph-brand" href="." title="Psicoandino">
+      <div class="ph-motif" tabindex="0" title="Amatista"><div class="ph-dot-sun"></div><div class="ph-dot-shadow"></div></div>
+      <div class="ph-textblock">
+        <span class="ph-word"><span class="ph-brandname">PSICOANDINO</span></span>
+      </div>
+    </a>
+  </div>
+
   <section class="hero">
-    <span class="eyebrow">Investigación para el Conocimiento y el Desarrollo</span>
-    <h1>Psicoandino</h1>
-    <p>La belleza de conseguir el máximo potencial con la mínima cantidad de recursos.</p>
+    <span class="eyebrow alba alba-1">Investigación para el Conocimiento y el Desarrollo</span>
+    <h1 class="alba alba-2">Psicoandino</h1>
+    <p class="alba alba-3">La belleza de conseguir el máximo potencial con la mínima cantidad de recursos.</p>
+    <p class="puente alba alba-4">Sistemas digitales, escritura y método — construidos desde Los Andes.</p>
+    <p class="firma alba alba-5">Ricardo Moreno · Santiago de Chile</p>
   </section>
 
-  <div class="motif" aria-hidden="true">
+  <div class="motif alba alba-6" aria-hidden="true">
     <div class="motif-track">
-      <div class="motif-circle"></div>
+      <div class="motif-sun"><div class="motif-shadow"></div></div>
       <div class="motif-squares">
-        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span>
       </div>
     </div>
   </div>
@@ -276,51 +448,78 @@
       <h2>Desarrollo</h2>
       <div class="rama-sub">Sistemas que operan.</div>
       <ul>
-        <li><a href="dev/custodia/">Custodia</a> — lead scoring inmobiliario <span class="estado marcha">Marcha Blanca</span></li>
-        <li><a href="dev/astransys/">Astransys</a> — posiciones astronómicas reales <span class="estado marcha">Marcha Blanca</span></li>
-        <li><a href="dev/emergence/">Emergence</a> — escritura genealógica <span class="estado marcha">Marcha Blanca</span></li>
-        <li><a href="dev/radio/">Radio</a> — sintonía accesible <span class="estado marcha">Marcha Blanca</span></li>
+        <li><a class="fila" href="dev/custodia/"><span class="rotulo"><span class="flecha">→</span> Custodia — lead scoring inmobiliario</span> <span class="estado marcha">Marcha Blanca</span></a></li>
+        <li><a class="fila" href="dev/astransys/"><span class="rotulo"><span class="flecha">→</span> Astransys — posiciones astronómicas reales</span> <span class="estado marcha">Marcha Blanca</span></a></li>
+        <li><a class="fila" href="dev/emergence/"><span class="rotulo"><span class="flecha">→</span> Emergence — escritura genealógica</span> <span class="estado marcha">Marcha Blanca</span></a></li>
+        <li><a class="fila" href="dev/radio/"><span class="rotulo"><span class="flecha">→</span> Radio — sintonía accesible</span> <span class="estado marcha">Marcha Blanca</span></a></li>
       </ul>
     </div>
 
     <div class="rama">
-      <div class="rama-accent" style="background:var(--sangre)"></div>
+      <div class="rama-accent en-formacion" style="border-color:var(--sangre)"></div>
       <h2>Editorial</h2>
       <div class="rama-sub">Palabra que estructura.</div>
       <ul>
-        <li>El Concilio Literario — novela <span class="estado reposo">En Reposo</span></li>
-        <li>Bitácora — escritos y notas <span class="estado pendiente">En definición</span></li>
+        <li class="fila-quieta">El Concilio Literario — novela <span class="estado reposo">En Reposo</span></li>
+        <li class="fila-quieta">Bitácora — escritos y notas <span class="estado pendiente">En definición</span></li>
       </ul>
     </div>
 
     <div class="rama">
-      <div class="rama-accent" style="background:var(--mostaza)"></div>
+      <div class="rama-accent en-formacion" style="border-color:var(--mostaza)"></div>
       <h2>Audiovisual</h2>
       <div class="rama-sub">Todavía sin forma fija.</div>
       <div class="rama-vacia">Próximamente — esta rama se define cuando exista algo real que mostrar.</div>
     </div>
 
     <div class="rama">
-      <div class="rama-accent" style="background:var(--musgo)"></div>
+      <div class="rama-accent en-formacion" style="border-color:var(--musgo)"></div>
       <h2>Escuela</h2>
       <div class="rama-sub">La forma de pensar, transferible.</div>
       <ul>
-        <li>Metodología Psicoandino <span class="estado pendiente">En construcción</span></li>
+        <li class="fila-quieta">Metodología Psicoandino <span class="estado pendiente">En construcción</span></li>
       </ul>
     </div>
 
   </section>
 
   <footer>
-    <div class="redes">
-      <a href="https://www.instagram.com" title="instagram.">Instagram</a>
-      <a href="https://github.com/psicoandino" title="GitHub">GitHub</a>
-      <a href="https://www.linkedin.com/in/psicoandino" title="LinkedIn">LinkedIn</a>
-    </div>
-    <div class="contacto">
-      <a href="mailto:contacto@psicoandino.cl">contacto@psicoandino.cl</a>
+    <div class="footer-inner">
+      <a class="footer-sello" href="#" title="Volver a la fuente" aria-label="Volver arriba">
+        <div class="footer-sun"><div class="footer-shadow"></div></div>
+        <span class="footer-marca">PSICOANDINO</span>
+      </a>
+      <div class="redes">
+        <!-- TODO: reemplazar por el handle real de Instagram -->
+        <a href="https://www.instagram.com" title="Instagram">Instagram</a>
+        <a href="https://github.com/psicoandino" title="GitHub">GitHub</a>
+        <a href="https://www.linkedin.com/in/psicoandino" title="LinkedIn">LinkedIn</a>
+      </div>
+      <div class="contacto">
+        <a href="mailto:contacto@psicoandino.cl">contacto@psicoandino.cl</a>
+      </div>
     </div>
   </footer>
 
+  <script src="assets/shell/psico-header.js"></script>
+  <script>
+  (function(){
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var ramas = document.querySelectorAll('.rama');
+    if (reduced || !('IntersectionObserver' in window)) return;
+
+    ramas.forEach(function(r){ r.classList.add('oculta'); });
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){
+          e.target.classList.remove('oculta');
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    ramas.forEach(function(r){ io.observe(r); });
+  })();
+  </script>
 </body>
 </html>
