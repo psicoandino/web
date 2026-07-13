@@ -46,7 +46,7 @@
         }
         
         .mobile-toggles {
-            display: none;
+            display: flex;
             grid-column: 6 / 10;
             justify-content: center;
             gap: 8px;
@@ -74,12 +74,45 @@
             border-radius: 0%;
         }
 
-        /* 3-Column Layout Container */
+        /* 3-Column Layout Container — deck/playlist son paneles superpuestos
+           ocultos por defecto (Milestone 7: modo libre y deck de síntesis
+           pasan a secundarios), togglables con [DECK]/[LIST] en cualquier
+           tamaño de viewport. */
         .app-layout {
             display: grid;
-            grid-template-columns: 280px 1fr 340px;
+            grid-template-columns: 1fr;
             height: 100%;
             overflow: hidden;
+            position: relative;
+        }
+
+        .control-deck,
+        .playlist-drawer {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 290px;
+            z-index: 20;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .control-deck {
+            left: 0;
+            transform: translateX(-100%);
+        }
+
+        .playlist-drawer {
+            right: 0;
+            transform: translateX(100%);
+        }
+
+        .app-layout.show-deck .control-deck {
+            transform: translateX(0);
+        }
+
+        .app-layout.show-playlist .playlist-drawer {
+            transform: translateX(0);
         }
 
         /* Left Side: Control Deck */
@@ -198,7 +231,73 @@
             max-width: 800px;
             margin: 0 auto;
         }
-        
+
+        /* Entrada — Milestone 7: la acción primaria es sintonizar, sin
+           competencia visual. Se oculta el resto hasta elegir modo. */
+        .hero-tune {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 22px;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .btn-sintonizar {
+            background-color: var(--oled);
+            color: var(--hueso);
+            border: 2px solid var(--oled);
+            font-family: inherit;
+            font-size: clamp(18px, 5vw, 24px);
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 22px 48px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn-sintonizar:hover {
+            background-color: var(--cobre);
+            border-color: var(--cobre);
+        }
+        .btn-sintonizar:active {
+            transform: scale(0.97);
+        }
+        .hero-tagline {
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            opacity: 0.5;
+        }
+        .hero-libre-link {
+            background: none;
+            border: none;
+            color: var(--oled);
+            font-family: inherit;
+            font-size: 10px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            opacity: 0.45;
+            cursor: pointer;
+            padding: 6px;
+            text-decoration: underline;
+        }
+        .hero-libre-link:hover {
+            opacity: 0.8;
+            color: var(--cobre);
+        }
+
+        .workspace { display: none; }
+        body.mode-chosen .workspace { display: flex; }
+        body.mode-chosen .hero-tune { display: none; }
+        body:not(.mode-chosen) .timeline-container,
+        body:not(.mode-chosen) .controls-row {
+            display: none;
+        }
+
         .telemetry-meta {
             display: flex;
             justify-content: space-between;
@@ -639,59 +738,29 @@
 
         /* Responsive Mobile Layout rules */
         @media (max-width: 1023px) {
-            body {
-                grid-template-rows: auto 1fr auto auto;
+            header {
+                grid-template-columns: 1fr auto auto;
+                column-gap: 8px;
             }
             .header-title {
-                grid-column: 1 / 7;
+                grid-column: 1;
+                font-size: 10px;
             }
             .mobile-toggles {
+                grid-column: 2;
                 display: flex;
             }
             .header-status {
-                grid-column: 10 / -1;
+                grid-column: 3;
             }
-            
-            .app-layout {
-                grid-template-columns: 1fr;
-                position: relative;
+            #system-status-text {
+                display: none;
             }
-            
-            .control-deck,
-            .playlist-drawer {
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                width: 290px;
-                z-index: 20;
-                box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            }
-            
-            .control-deck {
-                left: 0;
-                border-right: 1px solid var(--oled);
-                transform: translateX(-100%);
-            }
-            
-            .playlist-drawer {
-                right: 0;
-                border-left: 1px solid var(--oled);
-                transform: translateX(100%);
-            }
-            
-            .app-layout.show-deck .control-deck {
-                transform: translateX(0);
-            }
-            
-            .app-layout.show-playlist .playlist-drawer {
-                transform: translateX(0);
-            }
-            
+
             main {
                 padding: 20px;
             }
-            
+
             .controls-row {
                 padding: 16px 20px 20px 20px;
             }
@@ -701,6 +770,37 @@
             }
             .volume-section {
                 grid-column: 9 / -1;
+            }
+        }
+
+        /* Viewport muy angosto (telefonos): la fila de controles inferior
+           (transporte + volumen) no cabe en una sola linea de 12 columnas. */
+        @media (max-width: 480px) {
+            .controls-row {
+                grid-template-columns: 1fr;
+                row-gap: 10px;
+                padding: 12px 14px 16px 14px;
+            }
+            .button-group {
+                grid-column: 1;
+                justify-content: space-between;
+                gap: 4px;
+            }
+            .volume-section {
+                grid-column: 1;
+                justify-content: space-between;
+            }
+            .volume-led-bar {
+                gap: 2px;
+            }
+            .volume-led-step {
+                width: 6px;
+            }
+            .timeline-container {
+                padding: 0 14px;
+            }
+            #telemetry-vol {
+                width: auto;
             }
         }
 
@@ -916,6 +1016,11 @@
 
         <!-- CENTER: Workspace -->
         <main>
+            <div class="hero-tune" id="hero-tune">
+                <button id="btn-sintonizar" class="btn-sintonizar" type="button">▶ SINTONIZAR</button>
+                <div class="hero-tagline">EMISORA PSICOANDINA — TRANSMISIÓN CONTINUA</div>
+                <button id="btn-hero-libre" class="hero-libre-link" type="button">o entrar en modo libre</button>
+            </div>
             <div class="workspace">
                 <div style="display:flex; gap:8px; justify-content:center; margin-bottom:4px;">
                     <button id="btn-mode-emisora" class="mode-btn" type="button">[EMISORA PSICOANDINA]</button>
@@ -1353,6 +1458,7 @@
         async function activateEmisoraEngine() {
             if (!broadcastEngine) {
                 broadcastEngine = new RadioEngine(function(msg) { addLog(msg, 'info'); });
+                broadcastEngine.setVolume(currentVolume / 100);
             }
             if (broadcastEngine.station) return;
 
@@ -1410,7 +1516,7 @@
             addLog(mode === 'emisora' ? 'CAMBIANDO A EMISORA PSICOANDINA.' : 'CAMBIANDO A MODO LIBRE.', 'info');
 
             if (mode === 'emisora') {
-                activateEmisoraEngine();
+                return activateEmisoraEngine();
             }
         }
 
@@ -2092,6 +2198,9 @@
                 }
                 player.setVolume(currentVolume);
             }
+            if (broadcastEngine && typeof broadcastEngine.setVolume === 'function') {
+                broadcastEngine.setVolume(currentVolume / 100);
+            }
             updateVolumeUI(currentVolume);
             showHUD('VOL: ' + currentVolume + '%');
         }
@@ -2222,6 +2331,30 @@
             });
         }
 
+        // Hero de entrada (Milestone 7): una sola acción primaria.
+        var btnSintonizarEl = document.getElementById('btn-sintonizar');
+        if (btnSintonizarEl) {
+            btnSintonizarEl.addEventListener('click', function() {
+                flashButton('btn-sintonizar');
+                document.body.classList.add('mode-chosen');
+                Promise.resolve(switchMode('emisora')).then(function() {
+                    if (broadcastEngine && broadcastEngine.station) {
+                        broadcastEngine.tune().catch(function(err) {
+                            addLog('ERROR AL SINTONIZAR: ' + err.message, 'error');
+                        });
+                    }
+                });
+            });
+        }
+
+        var btnHeroLibreEl = document.getElementById('btn-hero-libre');
+        if (btnHeroLibreEl) {
+            btnHeroLibreEl.addEventListener('click', function() {
+                document.body.classList.add('mode-chosen');
+                switchMode('libre');
+            });
+        }
+
         var btnPlayEl = document.getElementById('btn-play');
         if (btnPlayEl) {
             btnPlayEl.addEventListener('click', function() {
@@ -2334,6 +2467,21 @@
                 appLayout.classList.remove('show-deck');
             });
         }
+
+        // Cerrar paneles secundarios (deck/playlist) al hacer click fuera de ellos.
+        document.addEventListener('click', function(e) {
+            if (!appLayout) return;
+            if (appLayout.classList.contains('show-deck') &&
+                !e.target.closest('.control-deck') &&
+                !e.target.closest('#toggle-deck-btn')) {
+                appLayout.classList.remove('show-deck');
+            }
+            if (appLayout.classList.contains('show-playlist') &&
+                !e.target.closest('.playlist-drawer') &&
+                !e.target.closest('#toggle-playlist-btn')) {
+                appLayout.classList.remove('show-playlist');
+            }
+        });
 
         var timelineEl = document.getElementById('timeline');
         if (timelineEl) {
