@@ -35,6 +35,10 @@ class RadioEngine {
 
         this.audioContext = null;
 
+        this.gainNode = null;
+
+        this.volume = 1;
+
         this.currentSource = null;
 
         this.onStatus = statusCallback;
@@ -55,6 +59,22 @@ class RadioEngine {
         console.log(message);
 
         this.onStatus(message);
+
+    }
+
+
+    setVolume(value) {
+
+        this.volume =
+            Math.min(1, Math.max(0, value));
+
+
+        if (this.gainNode) {
+
+            this.gainNode.gain.value =
+                this.volume;
+
+        }
 
     }
 
@@ -106,6 +126,23 @@ class RadioEngine {
                     window.AudioContext ||
                     window.webkitAudioContext
                 )();
+
+        }
+
+
+        if (!this.gainNode) {
+
+            this.gainNode =
+                this.audioContext.createGain();
+
+
+            this.gainNode.gain.value =
+                this.volume;
+
+
+            this.gainNode.connect(
+                this.audioContext.destination
+            );
 
         }
 
@@ -179,7 +216,7 @@ class RadioEngine {
             );
 
 
-        this.play(
+        await this.play(
             signal,
             result.second
         );
@@ -207,10 +244,10 @@ class RadioEngine {
         this.prefetchPromise =
             this.loadSignal(signal.file)
 
-            .then(data => {
+            .then(async data => {
 
                 this.nextBuffer =
-                    this.decodeSignal(data);
+                    await this.decodeSignal(data);
 
 
                 this.nextFile =
@@ -283,7 +320,7 @@ class RadioEngine {
 
 
         source.connect(
-            this.audioContext.destination
+            this.gainNode
         );
 
 
@@ -328,13 +365,13 @@ ${second.toFixed(2)} s`
     }
 
 
-    play(signal, second = 0) {
+    async play(signal, second = 0) {
 
         this.stopSource();
 
 
         const buffer =
-            this.decodeSignal(signal);
+            await this.decodeSignal(signal);
 
 
         const source =
@@ -347,7 +384,7 @@ ${second.toFixed(2)} s`
 
 
         source.connect(
-            this.audioContext.destination
+            this.gainNode
         );
 
 
@@ -596,7 +633,61 @@ ${signal.duration.toFixed(2)} s`
     }
 
 
-    decodeSignal(signal) {
+    async decodeSignal(signal) {
+
+        // Despacho por format+codec.type (ADR-012, D3 congelado): ramas
+        // que se suman, nunca reemplazan. RSIG-1 (mono/estéreo) intacta.
+        const dispatchKey =
+            signal.format + ":" + signal.codec.type;
+
+
+        switch (dispatchKey) {
+
+            case "RSIG-1:PCM_INT16_BASE64":
+                return this.decodePCMBase64(signal);
+
+            case "RSIG-2:AAC-LC":
+                return await this.decodeRSIG2(signal);
+
+            default:
+                throw new Error(
+                    "Unsupported signal format/codec: " + dispatchKey
+                );
+
+        }
+
+    }
+
+
+    async decodeRSIG2(signal) {
+
+        const response =
+            await fetch(
+                "signals/" + signal.audioFile
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Cannot load audio: " + signal.audioFile
+            );
+
+        }
+
+
+        const arrayBuffer =
+            await response.arrayBuffer();
+
+
+        return await this.audioContext.decodeAudioData(
+            arrayBuffer
+        );
+
+    }
+
+
+    decodePCMBase64(signal) {
 
         const binary =
             atob(signal.payload);
@@ -644,22 +735,71 @@ ${signal.duration.toFixed(2)} s`
         }
 
 
+        const channels =
+            signal.codec.channels;
+
+
+        const frames =
+            samples.length / channels;
+
+
         const buffer =
             this.audioContext.createBuffer(
 
-                signal.codec.channels,
+                channels,
 
-                samples.length,
+                frames,
 
                 signal.codec.sampleRate
 
             );
 
 
-        buffer.copyToChannel(
-            samples,
-            0
-        );
+        if (channels === 1) {
+
+            buffer.copyToChannel(
+                samples,
+                0
+            );
+
+        }
+
+        else {
+
+            for (
+                let c = 0;
+                c < channels;
+                c++
+            ) {
+
+                const channelData =
+                    new Float32Array(
+                        frames
+                    );
+
+
+                for (
+                    let i = 0;
+                    i < frames;
+                    i++
+                ) {
+
+                    channelData[i] =
+                        samples[
+                            i * channels + c
+                        ];
+
+                }
+
+
+                buffer.copyToChannel(
+                    channelData,
+                    c
+                );
+
+            }
+
+        }
 
 
         return buffer;
