@@ -1,0 +1,99 @@
+{
+  "acquired_at": "2026-07-13T16:10:46.324381+00:00",
+  "available_formats": [
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb3"
+    },
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb2"
+    },
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb1"
+    },
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb0"
+    },
+    {
+      "abr": null,
+      "acodec": "mp4a.40.2",
+      "asr": 22050,
+      "ext": "mp4",
+      "format_id": "18"
+    }
+  ],
+  "components": [
+    {
+      "filename": "ap87QgZKTNw.mp4",
+      "format_id": "18",
+      "sha256": "5c81c45e45586ae366c3b451181f421efeaa284502d1aa4fb3545419ba95935e"
+    }
+  ],
+  "extractor": "yt_dlp",
+  "extractor_options": {
+    "extractor_args": {
+      "youtube": {
+        "player_client": [
+          "android"
+        ]
+      }
+    },
+    "format": "bestaudio/best",
+    "noplaylist": true,
+    "quiet": true,
+    "writethumbnail": true
+  },
+  "extractor_version": "2026.07.04",
+  "format_id": "18",
+  "provenance": {
+    "resolved_url": "https://www.youtube.com/watch?v=ap87QgZKTNw",
+    "source": "youtube",
+    "source_id": "ap87QgZKTNw",
+    "source_url": "https://www.youtube.com/watch?v=ap87QgZKTNw"
+  },
+  "raw_metadata": {
+    "categories": [
+      "Music"
+    ],
+    "channel": "PAUL McCARTNEY",
+    "channel_id": "UCvGnJy9RnXX0kGSnDPKCZzQ",
+    "description": "Music video by Wings performing Silly Love Songs, remastered in HD.\n\nDirected by Gordon Bennet\n\nSilly Love Songs features in 'The 7\u201d Singles Box', a collection of 80 career-spanning 7\u201d singles personally curated by Paul McCartney. The box set includes 163 tracks totalling over 10 hours of music, a 148-page book with a foreword by Paul, and is also released digitally.\n\n'The 7\u201d Singles Box' out 2 December 2022: https://PMC.lnk.to/7inSinglesBox\n\nFollow Paul McCartney \nFacebook: http://facebook.com/paulmccartney\nInstagram: http://instagram.com/paulmccartney\nTwitter: http://twitter.com/paulmccartney\nTikTok: https://www.tiktok.com/@paulmccartney\nWebsite: https://paulmccartney.com/\n\n(C) MPL Communication Ltd\n\n#PaulMcCartney #Wings #SillyLoveSongs #7InchSinglesBox #MusicVideo",
+    "duration": 356,
+    "ext": "mp4",
+    "id": "ap87QgZKTNw",
+    "release_year": null,
+    "tags": [
+      "Wings",
+      "Paul McCartney",
+      "Linda McCartney",
+      "Denny Laine",
+      "Jimmy McCulloch",
+      "Joe English",
+      "The Beatles",
+      "Venus and Mars",
+      "At The Speed Of Sound"
+    ],
+    "thumbnail": "https://i.ytimg.com/vi/ap87QgZKTNw/maxresdefault.jpg",
+    "title": "Wings - Silly Love Songs (Official Music Video)",
+    "upload_date": "20141113",
+    "uploader": "PAUL McCARTNEY",
+    "uploader_id": "@PaulMcCartney",
+    "webpage_url": "https://www.youtube.com/watch?v=ap87QgZKTNw"
+  },
+  "thumbnail": "ap87QgZKTNw.webp"
+}

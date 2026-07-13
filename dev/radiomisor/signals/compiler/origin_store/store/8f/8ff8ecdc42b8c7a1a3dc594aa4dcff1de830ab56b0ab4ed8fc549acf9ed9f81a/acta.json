@@ -1,0 +1,103 @@
+{
+  "acquired_at": "2026-07-13T16:11:58.017501+00:00",
+  "available_formats": [
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb3"
+    },
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb2"
+    },
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb1"
+    },
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb0"
+    },
+    {
+      "abr": null,
+      "acodec": "mp4a.40.2",
+      "asr": 22050,
+      "ext": "mp4",
+      "format_id": "18"
+    }
+  ],
+  "components": [
+    {
+      "filename": "J9gKyRmic20.mp4",
+      "format_id": "18",
+      "sha256": "8ff8ecdc42b8c7a1a3dc594aa4dcff1de830ab56b0ab4ed8fc549acf9ed9f81a"
+    }
+  ],
+  "extractor": "yt_dlp",
+  "extractor_options": {
+    "extractor_args": {
+      "youtube": {
+        "player_client": [
+          "android"
+        ]
+      }
+    },
+    "format": "bestaudio/best",
+    "noplaylist": true,
+    "quiet": true,
+    "writethumbnail": true
+  },
+  "extractor_version": "2026.07.04",
+  "format_id": "18",
+  "provenance": {
+    "resolved_url": "https://www.youtube.com/watch?v=J9gKyRmic20",
+    "source": "youtube",
+    "source_id": "J9gKyRmic20",
+    "source_url": "https://www.youtube.com/watch?v=J9gKyRmic20"
+  },
+  "raw_metadata": {
+    "categories": [
+      "Music"
+    ],
+    "channel": "Crowded House",
+    "channel_id": "UCk8jFRtyLmF9Cmd3T7FKc7g",
+    "description": "REMASTERED IN HD!\nMusic video by Crowded House performing Don't Dream It's Over.\n#CrowdedHouse #DontDreamItsOver #Remastered",
+    "duration": 239,
+    "ext": "mp4",
+    "id": "J9gKyRmic20",
+    "release_year": null,
+    "tags": [
+      "CROWDED HOUSE",
+      "CROWDED HOUSE DON\u2019T DREAM IT\u2019S OVER",
+      "DON\u2019T DREAM IT\u2019S OVER",
+      "DON\u2019T DREAM IT\u2019S OVER CROWDED HOUSE",
+      "DON\u2019T DREAM IT\u2019S OVER official music video",
+      "DON\u2019T DREAM IT\u2019S OVER remastered video",
+      "CROWDED HOUSE remastered",
+      "CROWDED HOUSE remastered videos",
+      "#remastered",
+      "hd music videos",
+      "remastered music videos",
+      "80\u2019S",
+      "80\u2019S HITS"
+    ],
+    "thumbnail": "https://i.ytimg.com/vi/J9gKyRmic20/maxresdefault.jpg",
+    "title": "Crowded House - Don't Dream It's Over (Official Music Video)",
+    "upload_date": "20100423",
+    "uploader": "Crowded House",
+    "uploader_id": "@CrowdedHouseVEVO",
+    "webpage_url": "https://www.youtube.com/watch?v=J9gKyRmic20"
+  },
+  "thumbnail": "J9gKyRmic20.webp"
+}

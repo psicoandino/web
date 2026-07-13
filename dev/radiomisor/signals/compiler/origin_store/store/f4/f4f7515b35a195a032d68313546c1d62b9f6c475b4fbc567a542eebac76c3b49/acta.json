@@ -1,0 +1,108 @@
+{
+  "acquired_at": "2026-07-13T16:10:26.517443+00:00",
+  "available_formats": [
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb3"
+    },
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb2"
+    },
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb1"
+    },
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb0"
+    },
+    {
+      "abr": null,
+      "acodec": "mp4a.40.2",
+      "asr": 44100,
+      "ext": "mp4",
+      "format_id": "18"
+    }
+  ],
+  "components": [
+    {
+      "filename": "Tlz8qHFDbkI.mp4",
+      "format_id": "18",
+      "sha256": "f4f7515b35a195a032d68313546c1d62b9f6c475b4fbc567a542eebac76c3b49"
+    }
+  ],
+  "extractor": "yt_dlp",
+  "extractor_options": {
+    "extractor_args": {
+      "youtube": {
+        "player_client": [
+          "android"
+        ]
+      }
+    },
+    "format": "bestaudio/best",
+    "noplaylist": true,
+    "quiet": true,
+    "writethumbnail": true
+  },
+  "extractor_version": "2026.07.04",
+  "format_id": "18",
+  "provenance": {
+    "resolved_url": "https://www.youtube.com/watch?v=Tlz8qHFDbkI",
+    "source": "youtube",
+    "source_id": "Tlz8qHFDbkI",
+    "source_url": "https://www.youtube.com/watch?v=Tlz8qHFDbkI"
+  },
+  "raw_metadata": {
+    "categories": [
+      "Music"
+    ],
+    "channel": "Daryl Hall & John Oates",
+    "channel_id": "UCv9oYIsWoYnu02XnseHOTVQ",
+    "description": "\"Everytime You Go Away\u201d by Daryl Hall & John Oates\nListen to Daryl Hall & John Oates: https://halloates.lnk.to/listenYD \nWatch more videos by Daryl Hall & John Oates: https://hallandoates.lnk.to/listenYC/youtube \n\nSubscribe to the official Daryl Hall & John Oates YouTube channel: https://halloates.lnk.to/subscribeYD \n\nFollow Daryl Hall & John Oates\nFacebook: https://halloates.lnk.to/followFI \nInstagram: https://halloates.lnk.to/followII \nTwitter: https://halloates.lnk.to/followTI \nWebsite: https://halloates.lnk.to/followWI \nSpotify: https://halloates.lnk.to/followSI\n\nLyrics:\nAnd everytime you go away\nYou take a piece of me with you\nAnd everytime you go away\nYou take a piece of me with you, you\n\n#DarylHall #JohnOates #HallandOates #EverytimeYouGoAway #PopRock",
+    "duration": 324,
+    "ext": "mp4",
+    "id": "Tlz8qHFDbkI",
+    "release_year": null,
+    "tags": [
+      "everytime you go away",
+      "hall and oates everytime you go away",
+      "everytime you go away hall and oates",
+      "hall and oates",
+      "everytime you go away daryl hall",
+      "every time you go away",
+      "daryl hall and john oates everytime you go away",
+      "hall oates everytime you go away",
+      "every time you go",
+      "hall oates",
+      "daryl hall and john oates sara smile",
+      "you make my dreams come true",
+      "rich girl",
+      "sara smile",
+      "kenny loggins",
+      "don henley",
+      "steve winwood",
+      "hall oates private eyes"
+    ],
+    "thumbnail": "https://i.ytimg.com/vi/Tlz8qHFDbkI/maxresdefault.jpg",
+    "title": "Daryl Hall & John Oates - Everytime You Go Away (Audio)",
+    "upload_date": "20201106",
+    "uploader": "Daryl Hall & John Oates",
+    "uploader_id": "@hallandoatesVEVO",
+    "webpage_url": "https://www.youtube.com/watch?v=Tlz8qHFDbkI"
+  },
+  "thumbnail": "Tlz8qHFDbkI.webp"
+}

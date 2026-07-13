@@ -1,0 +1,112 @@
+{
+  "acquired_at": "2026-07-13T16:12:07.603945+00:00",
+  "available_formats": [
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb3"
+    },
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb2"
+    },
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb1"
+    },
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb0"
+    },
+    {
+      "abr": null,
+      "acodec": "mp4a.40.2",
+      "asr": 44100,
+      "ext": "mp4",
+      "format_id": "18"
+    }
+  ],
+  "components": [
+    {
+      "filename": "iIpfWORQWhU.mp4",
+      "format_id": "18",
+      "sha256": "5c1b4faed0af1831f3d0733e5993d876cc025678447dca0accc9fdec935e29a9"
+    }
+  ],
+  "extractor": "yt_dlp",
+  "extractor_options": {
+    "extractor_args": {
+      "youtube": {
+        "player_client": [
+          "android"
+        ]
+      }
+    },
+    "format": "bestaudio/best",
+    "noplaylist": true,
+    "quiet": true,
+    "writethumbnail": true
+  },
+  "extractor_version": "2026.07.04",
+  "format_id": "18",
+  "provenance": {
+    "resolved_url": "https://www.youtube.com/watch?v=iIpfWORQWhU",
+    "source": "youtube",
+    "source_id": "iIpfWORQWhU",
+    "source_url": "https://www.youtube.com/watch?v=iIpfWORQWhU"
+  },
+  "raw_metadata": {
+    "categories": [
+      "Music"
+    ],
+    "channel": "A Flock of Seagulls",
+    "channel_id": "UCCMPIzQOxtAbE91of0-PUSQ",
+    "description": "A Flock Of Seagulls official music video for 'I Ran'. Click to listen to A Flock Of Seagulls on Spotify: http://smarturl.it/FlockSpotify?IQid=iran.d\nAs featured on the album A Flock Of Seagulls, download at iTunes: http://smarturl.it/FlockIran?IQid=iran.d\nGoogle Play: http://smarturl.it/FlockGP?IQid=iran.d\nAmazon: http://smarturl.it/FlockA?IQid=iran.d\n\nStream more music from A Flock of Seagulls here: http://smarturl.it/Flockmultistream?IQid=Iran.d\n\nMore from A Flock Of Seagulls\nWho's That Girl: https://www.youtube.com/watch?v=NqlEt-gd8uA\nNightmares: https://www.youtube.com/watch?v=L1N0iOP8J7Q\nTransfer Affection: https://www.youtube.com/watch?v=uc_bw9Qq53o\n\nMore great 80s videos here http://smarturl.it/80sForever?IQid=iran.d \n\nSubscribe to A Flock Of Seagulls on YouTube: http://smarturl.it/Flocksubscribe?IQid=iran.d\n\n#AFlockOfSeagulls #IRan #sexeducation #netflix #AFlockOfSeagullsofficial #AFlockOfSeagullsAlbum #AFlockOfSeagullsofficialvideo #IRanofficialaudio #AFlockOfSeagullsSongs #AFlockOfSeagullsIRan #sexeducationNetflix \n\n---------\nLyrics\nA cloud appears above your head\nA beam of light comes shining down on you,\nShining down on you.\nThe cloud is moving nearer still.\nAurora borealis comes in view\nAurora comes in view.\n\nAnd I ran, I ran so far away.\nI just ran, I ran all night and day.\nI couldn't get away.\n\nMusic video by A Flock Of Seagulls performing I Ran. (c) 1982 Zomba Productions Limited",
+    "duration": 238,
+    "ext": "mp4",
+    "id": "iIpfWORQWhU",
+    "release_year": null,
+    "tags": [
+      "FLOCK OF SEAGULLS RAN",
+      "FLOCK OF SEAGULLS RAN OFFICIAL VIDEO",
+      "FLOCK OF SEAGULLS RAN (SO FAR AWAY)",
+      "SPACE AGE LOVE SONG",
+      "THE MORE YOU LIVE THE MORE YOU LOVE",
+      "TELECOMMUNICATION",
+      "FLOCK OF SEAGULLS RAN LYRICS",
+      "Sex education",
+      "Sex education Netflix",
+      "Asa Butterfield",
+      "Gillian Anderson",
+      "Netflix series",
+      "Flock Of Seagulls official music video",
+      "Flock Of Seagulls Album",
+      "Ran Official Video",
+      "summer playlist",
+      "summer songs",
+      "summer music",
+      "summer mix",
+      "chill",
+      "summer",
+      "Flock Of Seagulls"
+    ],
+    "thumbnail": "https://i.ytimg.com/vi/iIpfWORQWhU/maxresdefault.jpg",
+    "title": "A Flock Of Seagulls - I Ran (So Far Away) (Video)",
+    "upload_date": "20130411",
+    "uploader": "A Flock of Seagulls",
+    "uploader_id": "@AFlockOfSeagullsVEVO",
+    "webpage_url": "https://www.youtube.com/watch?v=iIpfWORQWhU"
+  },
+  "thumbnail": "iIpfWORQWhU.webp"
+}

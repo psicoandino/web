@@ -1,0 +1,107 @@
+{
+  "acquired_at": "2026-07-13T16:11:12.180237+00:00",
+  "available_formats": [
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb3"
+    },
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb2"
+    },
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb1"
+    },
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb0"
+    },
+    {
+      "abr": null,
+      "acodec": "mp4a.40.2",
+      "asr": 44100,
+      "ext": "mp4",
+      "format_id": "18"
+    }
+  ],
+  "components": [
+    {
+      "filename": "MEO6gYCFbr0.mp4",
+      "format_id": "18",
+      "sha256": "bc1c671326b3be0e16b45dd6b6d62f289f20ffbb801d46eb35316e8738686ef8"
+    }
+  ],
+  "extractor": "yt_dlp",
+  "extractor_options": {
+    "extractor_args": {
+      "youtube": {
+        "player_client": [
+          "android"
+        ]
+      }
+    },
+    "format": "bestaudio/best",
+    "noplaylist": true,
+    "quiet": true,
+    "writethumbnail": true
+  },
+  "extractor_version": "2026.07.04",
+  "format_id": "18",
+  "provenance": {
+    "resolved_url": "https://www.youtube.com/watch?v=MEO6gYCFbr0",
+    "source": "youtube",
+    "source_id": "MEO6gYCFbr0",
+    "source_url": "https://www.youtube.com/watch?v=MEO6gYCFbr0"
+  },
+  "raw_metadata": {
+    "categories": [
+      "Music"
+    ],
+    "channel": "RHINO",
+    "channel_id": "UCWEtnEiVwUy7mwFeshyAWLA",
+    "description": "You're listening to the official audio for Christopher Cross - \"Sailing\" from his debut album 'Christopher Cross'. \"Sailing\" reached No. 1 on the Billboard Hot 100 in 1980 and won the Grammy Awards for Record of the Year, Song of the Year, and Best Arrangement Accompanying Vocalist(s).\n\nSubscribe to the Rhino Channel! https://Rhino.lnk.to/YouTubeSubID \n\nCheck Out Our Favorite Playlists:\nClassic Rock https://Rhino.lnk.to/YTClassicRockID\n80s Hits https://Rhino.lnk.to/YT80sHitsID\n80s Hard Rock https://Rhino.lnk.to/YT80sHardRockID\n80s Alternative https://Rhino.lnk.to/YT80sAlternativeID\n90s Hits https://Rhino.lnk.to/YT90sHitsID\n\nStay connected with RHINO on...\nFacebook https://www.facebook.com/RHINO/\nInstagram https://www.instagram.com/rhino_records\nTwitter https://twitter.com/Rhino_Records\nhttps://www.rhino.com/\n\nRHINO is the official YouTube channel of the greatest music catalog in the world. Founded in 1978, Rhino is the world's leading pop culture label specializing in classic rock, soul, and 80's and 90's alternative. The vast Rhino catalog of more than 5,000 albums, videos, and hit songs features material by Warner Music Group artists such as Van Halen, Madonna, Duran Duran, Aretha Franklin, Ray Charles, The Doors, Chicago, Black Sabbath, John Coltrane, Yes, Alice Cooper, Linda Ronstadt, The Ramones, The Monkees, Carly Simon, and Curtis Mayfield, among many others. Check back for classic music videos, live performances, hand-curated playlists, the Rhino Podcast, and more!",
+    "duration": 256,
+    "ext": "mp4",
+    "id": "MEO6gYCFbr0",
+    "release_year": null,
+    "tags": [
+      "Christopher Cross",
+      "Christopher Cross Music Videos",
+      "Christopher Cross Videos",
+      "Christopher Cross Songs",
+      "Christopher Cross 80s",
+      "Christopher Cross playlist",
+      "Christopher Cross 70s",
+      "80s Music",
+      "80's playlist",
+      "70s music",
+      "70s playlist",
+      "Sailing",
+      "sailing video",
+      "christopher cross sailing",
+      "sailing christopher cross",
+      "soft rock",
+      "yacht rock"
+    ],
+    "thumbnail": "https://i.ytimg.com/vi/MEO6gYCFbr0/maxresdefault.jpg",
+    "title": "Christopher Cross - Sailing (Official Audio)",
+    "upload_date": "20190426",
+    "uploader": "RHINO",
+    "uploader_id": "@rhino",
+    "webpage_url": "https://www.youtube.com/watch?v=MEO6gYCFbr0"
+  },
+  "thumbnail": "MEO6gYCFbr0.webp"
+}

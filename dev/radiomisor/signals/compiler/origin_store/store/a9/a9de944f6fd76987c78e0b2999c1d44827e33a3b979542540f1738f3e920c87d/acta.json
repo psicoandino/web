@@ -1,0 +1,98 @@
+{
+  "acquired_at": "2026-07-13T16:11:38.157114+00:00",
+  "available_formats": [
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb3"
+    },
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb2"
+    },
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb1"
+    },
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb0"
+    },
+    {
+      "abr": null,
+      "acodec": "mp4a.40.2",
+      "asr": 22050,
+      "ext": "mp4",
+      "format_id": "18"
+    }
+  ],
+  "components": [
+    {
+      "filename": "eYO1-gGWJyo.mp4",
+      "format_id": "18",
+      "sha256": "a9de944f6fd76987c78e0b2999c1d44827e33a3b979542540f1738f3e920c87d"
+    }
+  ],
+  "extractor": "yt_dlp",
+  "extractor_options": {
+    "extractor_args": {
+      "youtube": {
+        "player_client": [
+          "android"
+        ]
+      }
+    },
+    "format": "bestaudio/best",
+    "noplaylist": true,
+    "quiet": true,
+    "writethumbnail": true
+  },
+  "extractor_version": "2026.07.04",
+  "format_id": "18",
+  "provenance": {
+    "resolved_url": "https://www.youtube.com/watch?v=eYO1-gGWJyo",
+    "source": "youtube",
+    "source_id": "eYO1-gGWJyo",
+    "source_url": "https://www.youtube.com/watch?v=eYO1-gGWJyo"
+  },
+  "raw_metadata": {
+    "categories": [
+      "Music"
+    ],
+    "channel": "Travis",
+    "channel_id": "UCfOY7DHgcXBp2drfyFJQvaw",
+    "description": "Travis' infamous video for \u201cSing\u201d, the first single from their third album \"The Invisible Band\" features the band in a food fight! Now in HD. \n\nDirected by Jonathan Dayton and Valerie Faris.\n\nThe brand new album 'L.A. Times' is out 12.07.24. Available to pre-order / pre-save now \ud83c\udf03 Listen to the tracks Gaslight and Raze The Bar out now! \nPre-order/Pre-save L.A. Times: https://Travis.lnk.to/LATimesID \n\nOfficial Website: https://travisonline.com\nSubscribe to the official Travis YouTube channel: https://bit.ly/TravisYTsub\nOfficial Store: https://travis.tmstor.es/ \nTravis on Instagram: https://www.instagram.com/travistheband \nTravis on Facebook: https://www.facebook.com/travistheband \nTravis on X (Twitter): https://twitter.com/TravisBand \nTravis on TikTok:https://www.tiktok.com/@travisband \nSubscribe to the mailing list: https://bit.ly/TravisSubscribe\n\nLyrics:\n\nBaby, you've been going so crazy \nLately, nothing seems to be going right \nSolo, why do you have to get so low \nYou're so\nYou've been waiting in the sun too long\n\nBut if you sing, sing, sing, sing, sing, sing \nFor the love you bring won't mean a thing \nUnless you sing, sing, sing, sing\n\nColder, crying on your shoulder \nHold her, and tell her everythings gonna be fine \nSurely, you've been going to early \nHurry, 'cause no one's gonna be stopped\n\nNo, now, now, now, now if you sing, sing, sing, sing, sing, sing \nFor the love you bring won't mean a thing \nUnless you sing, sing, sing, sing\n\nBaby, there's something going on today \nBut I say nothing, nothing, nothing \nNothing, nothing, nothing, nothing, nothing, nothing, nothing\n\nSo, now, now, now, now, now if you sing, sing, sing, sing, sing, sing \nFor the love you bring won't mean a thing \nUnless you sing, sing, sing, sing\nAh baby sing, sing, sing, sing, sing, sing\nFor the love you bring won't mean a thing \nUnless you sing, sing, sing, sing\n\nTravis are a Scottish rock band formed in Glasgow in 1990, composed of Fran Healy (lead vocals, rhythm guitar), Dougie Payne (bass guitar, backing vocals), Andy Dunlop (lead guitar, banjo, backing vocals) and Neil Primrose (drums, percussion). The band's name comes from the character Travis Henderson (played by Harry Dean Stanton) from the film Paris, Texas (1984).\n\n#Travis #Alternative #IndieMusic",
+    "duration": 228,
+    "ext": "mp4",
+    "id": "eYO1-gGWJyo",
+    "release_year": null,
+    "tags": [
+      "Travis",
+      "Sing",
+      "The Invisible Band",
+      "Official Music Video",
+      "Brit Pop",
+      "Alternative Rock",
+      "Indie Music",
+      "HD"
+    ],
+    "thumbnail": "https://i.ytimg.com/vi/eYO1-gGWJyo/maxresdefault.jpg",
+    "title": "Travis - Sing (Official HD Music Video)",
+    "upload_date": "20060811",
+    "uploader": "Travis",
+    "uploader_id": "@travistheband",
+    "webpage_url": "https://www.youtube.com/watch?v=eYO1-gGWJyo"
+  },
+  "thumbnail": "eYO1-gGWJyo.webp"
+}

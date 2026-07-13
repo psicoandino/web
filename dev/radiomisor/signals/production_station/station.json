@@ -1,0 +1,316 @@
+{
+  "format": "RM-STATION-1",
+  "signals": [
+    {
+      "album": "Rocanrol Bumerang",
+      "artist": "Miguel R\u00edos",
+      "duration": 224.95492063492063,
+      "file": "signal_001.rsig",
+      "id": "lGUNGiuaMI4",
+      "title": "Santa Lucia (Remastered 2005)",
+      "year": 1980
+    },
+    {
+      "album": "Agua Nueva",
+      "artist": "Cristian",
+      "duration": 240.5122902494331,
+      "file": "signal_002.rsig",
+      "id": "yZ8mJgcsbw8",
+      "title": "No Podras",
+      "year": 1997
+    },
+    {
+      "album": "Aries",
+      "artist": "Luis Miguel",
+      "duration": 289.62249433106575,
+      "file": "signal_003.rsig",
+      "id": "3IRBm9DjBdQ",
+      "title": "Suave",
+      "year": 1993
+    },
+    {
+      "album": "Locura",
+      "artist": "Virus",
+      "duration": 273.29886621315194,
+      "file": "signal_004.rsig",
+      "id": "5a_YthPacB0",
+      "title": "Pronta Entrega",
+      "year": 1985
+    },
+    {
+      "album": "Locura",
+      "artist": "Virus",
+      "duration": 328.7248979591837,
+      "file": "signal_005.rsig",
+      "id": "X7P8zX3xl_A",
+      "title": "Sin Disfraz",
+      "year": 1985
+    },
+    {
+      "album": "Vol I",
+      "artist": "Git",
+      "duration": 266.8901587301587,
+      "file": "signal_006.rsig",
+      "id": "FH2v50zAbqo",
+      "title": "La Calle Es Su Lugar",
+      "year": 1986
+    },
+    {
+      "album": "Obsesion",
+      "artist": "Miguel Mateos",
+      "duration": 246.61913832199548,
+      "file": "signal_007.rsig",
+      "id": "1nejjuPEJkE",
+      "title": "Obsesi\u00f3n",
+      "year": 1990
+    },
+    {
+      "album": "Upa!",
+      "artist": "Upa!",
+      "duration": 201.27056689342405,
+      "file": "signal_008.rsig",
+      "id": "0e_kHYrEhqg",
+      "title": "Cuando Vuelvas",
+      "year": 1986
+    },
+    {
+      "album": "Naufragios",
+      "artist": "Mikel Erentxun",
+      "duration": 233.7320634920635,
+      "file": "signal_009.rsig",
+      "id": "h_I9xto06A0",
+      "title": "A un minuto de ti",
+      "year": 1992
+    },
+    {
+      "album": "Grandes Exitos",
+      "artist": "La Uni\u00f3n",
+      "duration": 233.24444444444444,
+      "file": "signal_010.rsig",
+      "id": "IhnOpwOMHgk",
+      "title": "Lobo-hombre en Par\u00eds",
+      "year": 1984
+    },
+    {
+      "album": null,
+      "artist": "Gianluca Grignani",
+      "duration": 306.317641723356,
+      "file": "signal_011.rsig",
+      "id": "aHFAXW840uM",
+      "title": "Gianluca Grignani - Mi Historia Entre Tus Dedos",
+      "year": "2022"
+    },
+    {
+      "album": null,
+      "artist": "Juanes",
+      "duration": 242.09124716553288,
+      "file": "signal_012.rsig",
+      "id": "-9l5t3MWss8",
+      "title": "Juanes - Es Por Ti",
+      "year": "2009"
+    },
+    {
+      "album": null,
+      "artist": "Juanes",
+      "duration": 238.1902947845805,
+      "file": "signal_013.rsig",
+      "id": "YZc5H_s_bbU",
+      "title": "Juanes - Fotografia (Remastered 2022) [Visualizer]",
+      "year": "2022"
+    },
+    {
+      "album": "Caraluna",
+      "artist": "Bacilos",
+      "duration": 266.17034013605445,
+      "file": "signal_014.rsig",
+      "id": "57_fffHS8rU",
+      "title": "Caraluna",
+      "year": 2002
+    },
+    {
+      "album": "Grandes Exitos",
+      "artist": "Bacilos",
+      "duration": 312.37804988662134,
+      "file": "signal_015.rsig",
+      "id": "P1cUFiRtyEI",
+      "title": "Tabaco y Chanel",
+      "year": 2000
+    },
+    {
+      "album": "Revoluci\u00f3n De Amor",
+      "artist": "Man\u00e1",
+      "duration": 327.61034013605445,
+      "file": "signal_016.rsig",
+      "id": "RtUM0prmV3E",
+      "title": "Eres Mi Religi\u00f3n",
+      "year": 2002
+    },
+    {
+      "album": "Bailar y Llorar",
+      "artist": "Teleradio Donoso, Alex Anwandter",
+      "duration": 237.8187755102041,
+      "file": "signal_017.rsig",
+      "id": "atmrKrqZv84",
+      "title": "Amar en el Campo",
+      "year": 2011
+    },
+    {
+      "album": "Pedropiedra",
+      "artist": "Pedropiedra, Pedro Subercaseaux",
+      "duration": 231.7815873015873,
+      "file": "signal_018.rsig",
+      "id": "_-nwbCX1cs4",
+      "title": "Inteligencia Dormida",
+      "year": 2009
+    },
+    {
+      "album": null,
+      "artist": "Michael Jackson",
+      "duration": 201.4098866213152,
+      "file": "signal_019.rsig",
+      "id": "5X-Mrc2l1d0",
+      "title": "Michael Jackson - Rock With You (Official Video - Upscaled)",
+      "year": "2009"
+    },
+    {
+      "album": "Christopher Cross",
+      "artist": "Christopher Cross",
+      "duration": 270.1409523809524,
+      "file": "signal_020.rsig",
+      "id": "lH4i4Eq448w",
+      "title": "Ride Like the Wind (2019 Remaster)",
+      "year": 1979
+    },
+    {
+      "album": null,
+      "artist": "Daryl Hall & John Oates",
+      "duration": 254.00308390022676,
+      "file": "signal_021.rsig",
+      "id": "ccenFp_3kq8",
+      "title": "Daryl Hall & John Oates - I Can't Go For That (No Can Do) (Official Video)",
+      "year": "2009"
+    },
+    {
+      "album": null,
+      "artist": "Daryl Hall & John Oates",
+      "duration": 324.42920634920637,
+      "file": "signal_022.rsig",
+      "id": "Tlz8qHFDbkI",
+      "title": "Daryl Hall & John Oates - Everytime You Go Away (Audio)",
+      "year": "2020"
+    },
+    {
+      "album": "The Division Bell",
+      "artist": "Pink Floyd",
+      "duration": 379.2515192743764,
+      "file": "signal_023.rsig",
+      "id": "2sHZ4ny_SxU",
+      "title": "Coming Back to Life",
+      "year": 2016
+    },
+    {
+      "album": null,
+      "artist": "PAUL McCARTNEY",
+      "duration": 355.96190476190475,
+      "file": "signal_024.rsig",
+      "id": "ap87QgZKTNw",
+      "title": "Wings - Silly Love Songs (Official Music Video)",
+      "year": "2014"
+    },
+    {
+      "album": "The Secret Of Association",
+      "artist": "Paul Young",
+      "duration": 257.92725623582766,
+      "file": "signal_025.rsig",
+      "id": "s_-QRNVbNM8",
+      "title": "Every Time You Go Away (Single Version)",
+      "year": 1985
+    },
+    {
+      "album": "Picture Book",
+      "artist": "Simply Red",
+      "duration": 340.2419954648526,
+      "file": "signal_026.rsig",
+      "id": "4Zq-kkrKJF0",
+      "title": "Holding Back the Years (Extended Single Mix) (2008 Remaster)",
+      "year": 2008
+    },
+    {
+      "album": null,
+      "artist": "RHINO",
+      "duration": 255.48916099773243,
+      "file": "signal_027.rsig",
+      "id": "MEO6gYCFbr0",
+      "title": "Christopher Cross - Sailing (Official Audio)",
+      "year": "2019"
+    },
+    {
+      "album": null,
+      "artist": "Carole King",
+      "duration": 235.45034013605442,
+      "file": "signal_028.rsig",
+      "id": "VkKxmnrRVHo",
+      "title": "Carole King - It's Too Late (Official Audio)",
+      "year": "2015"
+    },
+    {
+      "album": null,
+      "artist": "10ccVEVO",
+      "duration": 225.32643990929705,
+      "file": "signal_029.rsig",
+      "id": "STugQ0X1NoI",
+      "title": "10cc - I'm Not In Love",
+      "year": "2016"
+    },
+    {
+      "album": null,
+      "artist": "Travis",
+      "duration": 228.2057142857143,
+      "file": "signal_030.rsig",
+      "id": "eYO1-gGWJyo",
+      "title": "Travis - Sing (Official HD Music Video)",
+      "year": "2006"
+    },
+    {
+      "album": null,
+      "artist": "Keane",
+      "duration": 211.53378684807257,
+      "file": "signal_031.rsig",
+      "id": "RSNmgE6L8AU",
+      "title": "Keane - Everybody's Changing (Official Music Video)",
+      "year": "2009"
+    },
+    {
+      "album": null,
+      "artist": "Keane",
+      "duration": 211.53378684807257,
+      "file": "signal_032.rsig",
+      "id": "RSNmgE6L8AU",
+      "title": "Keane - Everybody's Changing (Official Music Video)",
+      "year": "2009"
+    },
+    {
+      "album": null,
+      "artist": "Crowded House",
+      "duration": 238.84045351473924,
+      "file": "signal_033.rsig",
+      "id": "J9gKyRmic20",
+      "title": "Crowded House - Don't Dream It's Over (Official Music Video)",
+      "year": "2010"
+    },
+    {
+      "album": null,
+      "artist": "A Flock of Seagulls",
+      "duration": 237.5633560090703,
+      "file": "signal_034.rsig",
+      "id": "iIpfWORQWhU",
+      "title": "A Flock Of Seagulls - I Ran (So Far Away) (Video)",
+      "year": "2013"
+    }
+  ],
+  "station": {
+    "epoch": "2026-07-10T21:25:22.576491+00:00",
+    "name": "Psicoandino Experimental Radio"
+  },
+  "totalDuration": 8928.536961451247
+}

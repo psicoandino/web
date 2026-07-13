@@ -1,0 +1,86 @@
+{
+  "acquired_at": "2026-07-13T16:08:47.786534+00:00",
+  "available_formats": [
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb2"
+    },
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb1"
+    },
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb0"
+    },
+    {
+      "abr": null,
+      "acodec": "mp4a.40.2",
+      "asr": 22050,
+      "ext": "mp4",
+      "format_id": "18"
+    }
+  ],
+  "components": [
+    {
+      "filename": "aHFAXW840uM.mp4",
+      "format_id": "18",
+      "sha256": "7fe7550a609f5b74c78aea3fa32ca3dac941a5639c9e0ec7983c3f7d6e346d9f"
+    }
+  ],
+  "extractor": "yt_dlp",
+  "extractor_options": {
+    "extractor_args": {
+      "youtube": {
+        "player_client": [
+          "android"
+        ]
+      }
+    },
+    "format": "bestaudio/best",
+    "noplaylist": true,
+    "quiet": true,
+    "writethumbnail": true
+  },
+  "extractor_version": "2026.07.04",
+  "format_id": "18",
+  "provenance": {
+    "resolved_url": "https://www.youtube.com/watch?v=aHFAXW840uM",
+    "source": "youtube",
+    "source_id": "aHFAXW840uM",
+    "source_url": "https://www.youtube.com/watch?v=aHFAXW840uM"
+  },
+  "raw_metadata": {
+    "categories": [
+      "Music"
+    ],
+    "channel": "Gianluca Grignani",
+    "channel_id": "UCEVzHGwZTzM70Mahs1O4Egg",
+    "description": "Ascolta Gianluca Grignani qui: https://gianlucagrignani.bio.to/gianlucagrignani\n\n \n\nSegui Gianluca Grignani:\n\nIG: https://www.instagram.com/gianlucagrignaniofficial/\n\nFB: https://www.facebook.com/grignanigianluca\n\nX: https://x.com/grignanipage\n\nTik Tok: https://www.tiktok.com/@gianlucagrignani\n\nOfficial Web Site: https://www.gianlucagrignani.it/",
+    "duration": 306,
+    "ext": "mp4",
+    "id": "aHFAXW840uM",
+    "release_year": null,
+    "tags": [
+      "Gianluca Grignani",
+      "Universal Music Italia srL.",
+      "Pop"
+    ],
+    "thumbnail": "https://i.ytimg.com/vi/aHFAXW840uM/maxresdefault.jpg",
+    "title": "Gianluca Grignani - Mi Historia Entre Tus Dedos",
+    "upload_date": "20220208",
+    "uploader": "Gianluca Grignani",
+    "uploader_id": "@GianlucaGrignaniVEVO",
+    "webpage_url": "https://www.youtube.com/watch?v=aHFAXW840uM"
+  },
+  "thumbnail": "aHFAXW840uM.webp"
+}

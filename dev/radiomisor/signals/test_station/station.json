@@ -1,0 +1,16 @@
+{
+    "format": "RM-STATION-1",
+    "station": {
+        "name": "Milestone 2 Test Station",
+        "epoch": "2026-07-11T00:00:00.000000+00:00",
+        "created": "2026-07-11T00:00:00.000000+00:00"
+    },
+    "totalDuration": 224.95492063492063,
+    "signals": [
+        {
+            "file": "test.rsig",
+            "id": "lGUNGiuaMI4",
+            "duration": 224.95492063492063
+        }
+    ]
+}

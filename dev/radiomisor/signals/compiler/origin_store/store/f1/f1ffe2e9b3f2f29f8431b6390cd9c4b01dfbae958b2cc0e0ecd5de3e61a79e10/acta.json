@@ -1,0 +1,112 @@
+{
+  "acquired_at": "2026-07-13T16:10:16.772349+00:00",
+  "available_formats": [
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb3"
+    },
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb2"
+    },
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb1"
+    },
+    {
+      "abr": 0,
+      "acodec": "none",
+      "asr": null,
+      "ext": "mhtml",
+      "format_id": "sb0"
+    },
+    {
+      "abr": null,
+      "acodec": "mp4a.40.2",
+      "asr": 44100,
+      "ext": "mp4",
+      "format_id": "18"
+    }
+  ],
+  "components": [
+    {
+      "filename": "ccenFp_3kq8.mp4",
+      "format_id": "18",
+      "sha256": "f1ffe2e9b3f2f29f8431b6390cd9c4b01dfbae958b2cc0e0ecd5de3e61a79e10"
+    }
+  ],
+  "extractor": "yt_dlp",
+  "extractor_options": {
+    "extractor_args": {
+      "youtube": {
+        "player_client": [
+          "android"
+        ]
+      }
+    },
+    "format": "bestaudio/best",
+    "noplaylist": true,
+    "quiet": true,
+    "writethumbnail": true
+  },
+  "extractor_version": "2026.07.04",
+  "format_id": "18",
+  "provenance": {
+    "resolved_url": "https://www.youtube.com/watch?v=ccenFp_3kq8",
+    "source": "youtube",
+    "source_id": "ccenFp_3kq8",
+    "source_url": "https://www.youtube.com/watch?v=ccenFp_3kq8"
+  },
+  "raw_metadata": {
+    "categories": [
+      "Music"
+    ],
+    "channel": "Daryl Hall & John Oates",
+    "channel_id": "UCv9oYIsWoYnu02XnseHOTVQ",
+    "description": "Official music video for  \"I Can't Go for That (No Can Do)\" by Daryl Hall & John Oates\r\nListen to Hall & Oates: https://halloates.lnk.to/listenYD\r\n\r\nSubscribe to the official Hall & Oates YouTube channel: https://halloates.lnk.to/subscribeYD\r\n\r\nWatch more Hall & Oates videos: https://hallandoates.lnk.to/listenYC/youtube\r\n\r\nFollow Hall & Oates:\r\nFacebook: https://halloates.lnk.to/followFI\r\nInstagram: https://halloates.lnk.to/followII\r\nTwitter: https://halloates.lnk.to/followTI\r\nWebsite: https://halloates.lnk.to/followWI\r\nSpotify: https://halloates.lnk.to/followSI\r\nYouTube: https://halloates.lnk.to/subscribeYD\r\n\r\nChorus:\r\nEasy, ready, willing, overtime\r\nWhere does it stop\r\nWhere do you dare me\r\nTo draw the line\r\nYou've got the body\r\nNow you want my soul\r\nDon't even think about it\r\nSay no go\r\n \r\nI, I 'll do anything\r\nThat you want me to do\r\nAnd I'll do almost anything\r\nThat you want me to, ooh\r\n \r\nBut I can't go for that, no (no) no can do\r\nNo, I can't go for that, no (no) no can do\r\nI can't go for that, no (no) no can do\r\n\r\n#DarylHall #JohnOates #HallAndOates #ICantGoforThat #OfficialVideo #PrivateEyes",
+    "duration": 254,
+    "ext": "mp4",
+    "id": "ccenFp_3kq8",
+    "release_year": null,
+    "tags": [
+      "hall and oates",
+      "cant go for that",
+      "daryl hall and john oates",
+      "hall and oates can't go for that",
+      "can't go for that",
+      "hall oates",
+      "cant go for that hall and oates",
+      "no can do",
+      "daryl hall",
+      "hall and oats i can go for that",
+      "you make my dreams come true",
+      "rich girl",
+      "sara smile",
+      "kenny loggins",
+      "don henley",
+      "steve winwood",
+      "hall oates private eyes",
+      "official hall and oates",
+      "official video",
+      "pop rock",
+      "classic rock",
+      "Daryl Hall John Oates"
+    ],
+    "thumbnail": "https://i.ytimg.com/vi/ccenFp_3kq8/maxresdefault.jpg",
+    "title": "Daryl Hall & John Oates - I Can't Go For That (No Can Do) (Official Video)",
+    "upload_date": "20091025",
+    "uploader": "Daryl Hall & John Oates",
+    "uploader_id": "@hallandoatesVEVO",
+    "webpage_url": "https://www.youtube.com/watch?v=ccenFp_3kq8"
+  },
+  "thumbnail": "ccenFp_3kq8.webp"
+}

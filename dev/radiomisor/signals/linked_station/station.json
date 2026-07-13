@@ -1,0 +1,25 @@
+{
+  "format": "RM-STATION-1",
+  "signals": [
+    {
+      "duration": 224.95492063492063,
+      "file": "signal_001.rsig",
+      "id": "lGUNGiuaMI4"
+    },
+    {
+      "duration": 240.5122902494331,
+      "file": "signal_002.rsig",
+      "id": "yZ8mJgcsbw8"
+    },
+    {
+      "duration": 289.62249433106575,
+      "file": "signal_003.rsig",
+      "id": "3IRBm9DjBdQ"
+    }
+  ],
+  "station": {
+    "epoch": "2026-07-11T00:00:00+00:00",
+    "name": "Psicoandino Experimental Radio"
+  },
+  "totalDuration": 755.0897052154195
+}
