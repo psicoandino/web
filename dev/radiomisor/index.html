@@ -1019,19 +1019,19 @@
             <div class="hero-tune" id="hero-tune">
                 <button id="btn-sintonizar" class="btn-sintonizar" type="button">▶ SINTONIZAR</button>
                 <div class="hero-tagline">EMISORA PSICOANDINA — TRANSMISIÓN CONTINUA</div>
-                <button id="btn-hero-libre" class="hero-libre-link" type="button">o entrar en modo libre</button>
+                <button id="btn-hero-libre" class="hero-libre-link" type="button">CREAR EMISIÓN</button>
             </div>
             <div class="workspace">
                 <div style="display:flex; gap:8px; justify-content:center; margin-bottom:4px;">
                     <button id="btn-mode-emisora" class="mode-btn" type="button">[EMISORA PSICOANDINA]</button>
-                    <button id="btn-mode-libre" class="mode-btn active" type="button">[MODO LIBRE]</button>
+                    <button id="btn-mode-libre" class="mode-btn" type="button">[MODO LIBRE]</button>
                 </div>
                 <div class="telemetry-meta">
-                    <span id="telemetry-mode">MODO DE TRABAJO PROFUNDO</span>
+                    <span id="telemetry-mode">SIN EMISIÓN ACTIVA</span>
                     <span id="telemetry-time-display"><span id="time-current">00:00</span> / <span id="time-total">00:00</span></span>
                 </div>
                 <div id="track-display-container">
-                    <div id="track-title" class="track-display">SISTEMA INICIALIZANDO...</div>
+                    <div id="track-title" class="track-display">SIN EMISIÓN ACTIVA</div>
                 </div>
 
                 <!-- Live Monospace Spectrum analyzer -->
@@ -1118,7 +1118,8 @@
 
     <div id="player-hidden"></div>
 
-    <script src="radio-engine.js"></script>
+    <script src="psicoandina-program.js"></script>
+    <script src="youtube-broadcast-engine.js"></script>
     <script>
         var player;
 
@@ -1160,7 +1161,9 @@
         var vinylAudioCtx = null;
 
         // Broadcast mode (Emisora Psicoandina) state
-        var uiMode = localStorage.getItem('psico_radio_ui_mode') || 'libre';
+        // El lanzamiento siempre comienza neutral. Las preferencias antiguas
+        // permanecen almacenadas, pero no activan una modalidad ni una cola.
+        var uiMode = null;
         var broadcastEngine = null;
         var lastAnnouncedBroadcastId = null;
 
@@ -1302,14 +1305,9 @@
             localAssembly: '',
 
             init: function() {
-                this.localAssembly = localStorage.getItem('psico_radio_local_assembly') || '';
-
-                if (localStorage.getItem('psico_radio_local_assembly') === null) {
-                    localStorage.setItem('psico_radio_local_assembly', this.localAssembly);
-                }
-
+                this.localAssembly = '';
                 var inputLoc = document.getElementById('input-local');
-                if (inputLoc) inputLoc.value = this.localAssembly;
+                if (inputLoc) inputLoc.value = '';
             },
 
             getVideoIds: function() {
@@ -1457,13 +1455,16 @@
 
         async function activateEmisoraEngine() {
             if (!broadcastEngine) {
-                broadcastEngine = new RadioEngine(function(msg) { addLog(msg, 'info'); });
+                broadcastEngine = new YouTubeBroadcastEngine(
+                    function() { return player; },
+                    function(msg) { addLog(msg, 'info'); }
+                );
                 broadcastEngine.setVolume(currentVolume / 100);
             }
             if (broadcastEngine.station) return;
 
             try {
-                await broadcastEngine.loadStation('station.json');
+                broadcastEngine.loadProgram(PSICOANDINA_PROGRAM);
                 renderBroadcastPlaylist();
                 addLog('EMISORA PSICOANDINA LISTA PARA SINTONIZAR.', 'success');
             } catch (err) {
@@ -1496,7 +1497,10 @@
         }
 
         function switchMode(mode) {
-            if (mode === uiMode) return;
+            if (mode === uiMode) {
+                updateModeUI();
+                return mode === 'emisora' ? activateEmisoraEngine() : undefined;
+            }
             var previousMode = uiMode;
             uiMode = mode;
             localStorage.setItem('psico_radio_ui_mode', uiMode);
@@ -1610,26 +1614,9 @@
             }
         }
 
+        // Una emisión libre nueva no hereda índice ni tiempo de otra sesión.
         var savedIndex = 0;
-        var storedIndex = localStorage.getItem('psico_radio_index');
-        if (storedIndex !== null) {
-            var parsedIndex = parseInt(storedIndex, 10);
-            if (!isNaN(parsedIndex) && parsedIndex >= 0) {
-                savedIndex = parsedIndex;
-            }
-        }
-
         var savedTime = 0;
-        var storedTime = localStorage.getItem('psico_radio_time');
-        if (storedTime !== null) {
-            var parsedTime = parseFloat(storedTime);
-            if (!isNaN(parsedTime) && parsedTime >= 0) {
-                savedTime = parsedTime;
-            }
-        }
-
-        // Guard flag so saved playback position is only restored once per session
-        var positionRestored = false;
 
         // Carga síncrona/asíncrona de la API de YouTube
         var tag = document.createElement('script');
@@ -1678,7 +1665,8 @@
             // Start the ASCII Spectrum loop
             initSpectrum();
             
-            // Load Archive and Cemetery from localStorage
+            // Inicializa controles; IDs históricos quedan dormidos. Una nueva
+            // emisión comienza sin cola, archivo, cementerio ni historial activos.
             loadStorageData();
 
             updateVolumeUI(currentVolume);
@@ -1696,23 +1684,10 @@
                 player.setShuffle(true);
             }
 
-            // Restore saved playback position exactly once (playerVars.startSeconds is not honored by the API)
-            if (!positionRestored) {
-                var hasSavedIndex = localStorage.getItem('psico_radio_index') !== null;
-                var hasSavedTime = localStorage.getItem('psico_radio_time') !== null;
-                if (hasSavedIndex && hasSavedTime && player && typeof player.seekTo === 'function') {
-                    player.seekTo(savedTime, true);
-                }
-                positionRestored = true;
-            }
-
             setInterval(trackState, 1000);
 
-            // Apply persisted UI mode (Emisora Psicoandina / Modo Libre)
+            // Estado inicial neutral: ninguna modalidad se activa por sí sola.
             updateModeUI();
-            if (uiMode === 'emisora') {
-                activateEmisoraEngine();
-            }
         }
 
         // State & Color Sync helper
@@ -2004,6 +1979,10 @@
         }
 
         function onPlayerStateChange(event) {
+            if (uiMode === 'emisora' && event.data === YT.PlayerState.ENDED) {
+                if (broadcastEngine && broadcastEngine.isRunning) broadcastEngine.resync();
+                return;
+            }
             var modeText = isShuffle ? "MODO DESCUBRIMIENTO" : "MODO DE TRABAJO PROFUNDO";
             
             // Sync dot and timeline pulse colors dynamically
@@ -2349,9 +2328,14 @@
 
         var btnHeroLibreEl = document.getElementById('btn-hero-libre');
         if (btnHeroLibreEl) {
-            btnHeroLibreEl.addEventListener('click', function() {
+            btnHeroLibreEl.addEventListener('click', function(event) {
+                event.stopPropagation();
                 document.body.classList.add('mode-chosen');
                 switchMode('libre');
+                var layout = document.getElementById('app-layout');
+                if (layout) layout.classList.add('show-deck');
+                var inputLocal = document.getElementById('input-local');
+                if (inputLocal) inputLocal.focus();
             });
         }
 
@@ -2653,9 +2637,9 @@
 
         function loadStorageData() {
             try {
-                archiveList   = JSON.parse(localStorage.getItem('psico_radio_archive'))   || [];
-                cemeteryList  = JSON.parse(localStorage.getItem('psico_radio_cemetery'))  || [];
-                historyList   = JSON.parse(localStorage.getItem('psico_radio_history'))   || [];
+                archiveList = [];
+                cemeteryList = [];
+                historyList = [];
                 
                 // Load master vinyl volume & active state
                 var storedMasterVol = localStorage.getItem('psico_radio_vinyl_master_vol');
