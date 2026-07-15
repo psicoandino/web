@@ -1,7 +1,4 @@
-/* Generado desde psicoandina-program.json por tools/manage_psicoandina.py.
- * No editar manualmente.
- */
-const PSICOANDINA_PROGRAM = Object.freeze({
+{
   "format": "RM-YOUTUBE-PROGRAM-1",
   "station": {
     "name": "Emisora Psicoandina",
@@ -212,13 +209,6 @@ const PSICOANDINA_PROGRAM = Object.freeze({
       "title": "A Flock Of Seagulls - I Ran (So Far Away) (Video)",
       "artist": "A Flock of Seagulls"
     }
-  ],
-  "totalDuration": 8928.536961451247
-});
+  ]
+}
 
-if (typeof globalThis !== "undefined") {
-    globalThis.PSICOANDINA_PROGRAM = PSICOANDINA_PROGRAM;
-}
-if (typeof module !== "undefined" && module.exports) {
-    module.exports = PSICOANDINA_PROGRAM;
-}

@@ -64,18 +64,20 @@ class YouTubeBroadcastEngine {
 
     findSignal(offset) {
         let cursor = 0;
-        for (const signal of this.station.signals) {
+        for (let index = 0; index < this.station.signals.length; index += 1) {
+            const signal = this.station.signals[index];
             if (offset < cursor + signal.duration) {
-                return { signal, second: offset - cursor };
+                return { signal, index, second: offset - cursor };
             }
             cursor += signal.duration;
         }
         return null;
     }
 
-    nextSignal(currentFile) {
-        const index = this.station.signals.findIndex(signal => signal.file === currentFile);
-        if (index === -1) return null;
+    nextSignal(index) {
+        if (!Number.isInteger(index) || index < 0 || index >= this.station.signals.length) {
+            return null;
+        }
         return this.station.signals[(index + 1) % this.station.signals.length];
     }
 

@@ -73,6 +73,12 @@
             background-color: var(--cobre);
             border-radius: 0%;
         }
+        body.mode-emisora header {
+            border-bottom: 3px solid var(--cobre);
+        }
+        body.mode-libre header {
+            border-bottom: 3px solid var(--musgo);
+        }
 
         /* 3-Column Layout Container — deck/playlist son paneles superpuestos
            ocultos por defecto (Milestone 7: modo libre y deck de síntesis
@@ -1424,35 +1430,6 @@
             return 'CANAL ID: ' + sig.id;
         }
 
-        function renderBroadcastPlaylist() {
-            var container = document.getElementById('playlist-tracks');
-            if (!container || !broadcastEngine || !broadcastEngine.station) return;
-
-            container.innerHTML = '';
-            broadcastEngine.station.signals.forEach(function(sig, i) {
-                var item = document.createElement('div');
-                item.className = 'track-item';
-                item.setAttribute('data-signal-id', sig.id);
-
-                var numEl = document.createElement('span');
-                numEl.className = 'track-num';
-                numEl.innerText = String(i + 1).padStart(2, '0');
-
-                var nameEl = document.createElement('span');
-                nameEl.className = 'track-name';
-                nameEl.innerText = formatTrackName(sig);
-
-                var badgeEl = document.createElement('span');
-                badgeEl.className = 'track-status-badge';
-                badgeEl.innerText = 'AL AIRE';
-
-                item.appendChild(numEl);
-                item.appendChild(nameEl);
-                item.appendChild(badgeEl);
-                container.appendChild(item);
-            });
-        }
-
         async function activateEmisoraEngine() {
             if (!broadcastEngine) {
                 broadcastEngine = new YouTubeBroadcastEngine(
@@ -1465,11 +1442,54 @@
 
             try {
                 broadcastEngine.loadProgram(PSICOANDINA_PROGRAM);
-                renderBroadcastPlaylist();
                 addLog('EMISORA PSICOANDINA LISTA PARA SINTONIZAR.', 'success');
             } catch (err) {
                 addLog('ERROR CARGANDO EMISORA: ' + err.message, 'error');
             }
+        }
+
+        function updateEmisoraPowerUI() {
+            if (uiMode !== 'emisora') return;
+            var powerButton = document.getElementById('btn-play');
+            var isOn = !!(broadcastEngine && broadcastEngine.isRunning);
+            if (powerButton) {
+                powerButton.innerText = isOn ? '[APAGAR EMISORA]' : '[ENCENDER EMISORA]';
+                powerButton.classList.toggle('active', isOn);
+            }
+        }
+
+        async function startEmisora() {
+            if (!broadcastEngine || !broadcastEngine.station) {
+                throw new Error('Emisora aún no cargada.');
+            }
+            await broadcastEngine.tune();
+            updateEmisoraPowerUI();
+        }
+
+        function stopEmisora() {
+            if (broadcastEngine) broadcastEngine.stop();
+            updateEmisoraPowerUI();
+
+            var progress = document.getElementById('progress-fill');
+            var pulse = document.getElementById('pulse-indicator');
+            var current = document.getElementById('time-current');
+            var telemetry = document.getElementById('telemetry-mode');
+            if (progress) progress.style.width = '0%';
+            if (pulse) pulse.style.left = '0%';
+            if (current) current.innerText = '00:00';
+            if (telemetry) telemetry.innerText = 'EMISORA PSICOANDINA // APAGADA';
+        }
+
+        async function toggleEmisoraPower() {
+            if (broadcastEngine && broadcastEngine.isRunning) {
+                stopEmisora();
+                addLog('EMISORA PSICOANDINA APAGADA.', 'info');
+                showHUD('EMISORA OFF');
+                return;
+            }
+            await startEmisora();
+            addLog('EMISORA PSICOANDINA ENCENDIDA.', 'success');
+            showHUD('EMISORA ON');
         }
 
         function updateModeUI() {
@@ -1479,6 +1499,17 @@
             if (btnLibre) btnLibre.classList.toggle('active', uiMode === 'libre');
 
             var isEmisora = uiMode === 'emisora';
+            var isLibre = uiMode === 'libre';
+
+            document.body.classList.toggle('mode-emisora', isEmisora);
+            document.body.classList.toggle('mode-libre', isLibre);
+
+            var systemStatus = document.getElementById('system-status-text');
+            if (systemStatus) {
+                systemStatus.innerText = isEmisora
+                    ? 'EMISORA PSICOANDINA'
+                    : (isLibre ? 'CREADOR // FORMATO LIBRE' : 'SELECCIONA UNA OPCIÓN');
+            }
 
             // Biblioteca personal: no aplica en modo emisora
             var wrapperLocal = document.getElementById('wrapper-local');
@@ -1491,6 +1522,24 @@
                 var el = document.getElementById(id);
                 if (el) el.style.display = isEmisora ? 'none' : '';
             });
+
+            var stopButton = document.getElementById('btn-stop');
+            if (stopButton) stopButton.style.display = isEmisora ? 'none' : '';
+
+            var listButton = document.getElementById('toggle-playlist-btn');
+            if (listButton) listButton.style.display = isEmisora ? 'none' : '';
+            var layout = document.getElementById('app-layout');
+            if (isEmisora && layout) layout.classList.remove('show-playlist');
+
+            if (isEmisora) {
+                updateEmisoraPowerUI();
+            } else {
+                var playButton = document.getElementById('btn-play');
+                if (playButton) {
+                    playButton.classList.remove('active');
+                    playButton.innerText = '[PLAY]';
+                }
+            }
 
             var timelineEl = document.getElementById('timeline');
             if (timelineEl) timelineEl.style.cursor = isEmisora ? 'default' : 'pointer';
@@ -1522,6 +1571,16 @@
             if (mode === 'emisora') {
                 return activateEmisoraEngine();
             }
+
+            // Al volver a Libre, nunca se hereda como cola el video que estaba
+            // al aire en Psicoandina. Se restaura solo la cola libre propia.
+            if (player) {
+                if (activeQueueIds.length > 0 && typeof player.cuePlaylist === 'function') {
+                    player.cuePlaylist(activeQueueIds, 0, 0);
+                } else if (typeof player.stopVideo === 'function') {
+                    player.stopVideo();
+                }
+            }
         }
 
         function getPlaybackPosition() {
@@ -1532,7 +1591,7 @@
                 var offset = broadcastEngine.currentOffset();
                 var result = broadcastEngine.findSignal(offset);
                 if (!result) return { mode: 'emisora', playing: false };
-                var next = broadcastEngine.nextSignal(result.signal.file);
+                var next = broadcastEngine.nextSignal(result.index);
                 return {
                     mode: 'emisora',
                     playing: true,
@@ -1569,7 +1628,11 @@
             var teleEl = document.getElementById('telemetry-mode');
 
             if (!pos.playing) {
-                if (teleEl) teleEl.innerText = 'EMISORA PSICOANDINA // EN ESPERA';
+                if (teleEl) {
+                    teleEl.innerText = broadcastEngine && broadcastEngine.isRunning
+                        ? 'EMISORA PSICOANDINA // EN ESPERA'
+                        : 'EMISORA PSICOANDINA // APAGADA';
+                }
                 return;
             }
 
@@ -1979,14 +2042,19 @@
         }
 
         function onPlayerStateChange(event) {
-            if (uiMode === 'emisora' && event.data === YT.PlayerState.ENDED) {
-                if (broadcastEngine && broadcastEngine.isRunning) broadcastEngine.resync();
+            updateStatusColors(event.data);
+
+            // La Emisora Psicoandina no alimenta cola, historial ni controles
+            // de transporte del Formato libre.
+            if (uiMode === 'emisora') {
+                if (event.data === YT.PlayerState.ENDED &&
+                    broadcastEngine && broadcastEngine.isRunning) {
+                    broadcastEngine.resync();
+                }
+                updateEmisoraPowerUI();
                 return;
             }
             var modeText = isShuffle ? "MODO DESCUBRIMIENTO" : "MODO DE TRABAJO PROFUNDO";
-            
-            // Sync dot and timeline pulse colors dynamically
-            updateStatusColors(event.data);
 
             if (event.data === YT.PlayerState.PLAYING) {
                 consecutiveErrors = 0; // Reset error counts on successful play
@@ -2060,6 +2128,15 @@
             var currentIndex = player && typeof player.getPlaylistIndex === 'function' ? player.getPlaylistIndex() : -1;
             
             updateStatusColors(-2); // trigger error color (red dot)
+
+            if (uiMode === 'emisora') {
+                var broadcastTitle = document.getElementById('track-title');
+                var broadcastTelemetry = document.getElementById('telemetry-mode');
+                if (broadcastTitle) broadcastTitle.innerText = 'SEÑAL PSICOANDINA NO DISPONIBLE';
+                if (broadcastTelemetry) broadcastTelemetry.innerText = 'EMISORA PSICOANDINA // ERROR DE FUENTE';
+                addLog('FUENTE PSICOANDINA NO DISPONIBLE: ' + videoId + ' (CODIGO ' + e.data + '). SE MANTIENE LA LEY TEMPORAL.', 'error');
+                return;
+            }
 
             if (videoId) {
                 trackHealth[videoId] = 'unavailable';
@@ -2318,7 +2395,7 @@
                 document.body.classList.add('mode-chosen');
                 Promise.resolve(switchMode('emisora')).then(function() {
                     if (broadcastEngine && broadcastEngine.station) {
-                        broadcastEngine.tune().catch(function(err) {
+                        startEmisora().catch(function(err) {
                             addLog('ERROR AL SINTONIZAR: ' + err.message, 'error');
                         });
                     }
@@ -2349,7 +2426,7 @@
                         addLog('EMISORA AUN NO CARGADA.', 'warn');
                         return;
                     }
-                    broadcastEngine.tune().catch(function(err) {
+                    toggleEmisoraPower().catch(function(err) {
                         addLog('ERROR AL SINTONIZAR: ' + err.message, 'error');
                     });
                     return;
@@ -2372,15 +2449,7 @@
                 flashButton('btn-stop');
 
                 if (uiMode === 'emisora') {
-                    if (broadcastEngine) broadcastEngine.stop();
-                    var progressElB = document.getElementById('progress-fill');
-                    var pulseElB = document.getElementById('pulse-indicator');
-                    var currentElB = document.getElementById('time-current');
-                    if (progressElB) progressElB.style.width = '0%';
-                    if (pulseElB) pulseElB.style.left = '0%';
-                    if (currentElB) currentElB.innerText = "00:00";
-                    addLog('EMISORA DETENIDA POR USUARIO.', 'info');
-                    showHUD('STOP');
+                    stopEmisora();
                     return;
                 }
 
@@ -2536,6 +2605,12 @@
                 case 'Space':
                     event.preventDefault();
                     flashButton('btn-play');
+                    if (uiMode === 'emisora') {
+                        toggleEmisoraPower().catch(function(err) {
+                            addLog('ERROR AL CAMBIAR ESTADO: ' + err.message, 'error');
+                        });
+                        break;
+                    }
                     if (typeof player.getPlayerState === 'function') {
                         var state = player.getPlayerState();
                         if (state === YT.PlayerState.PLAYING) {
@@ -2547,6 +2622,7 @@
                     break;
                 case 'ArrowRight':
                     event.preventDefault();
+                    if (uiMode === 'emisora') break;
                     flashButton('btn-next');
                     if (typeof player.nextVideo === 'function') {
                         addLog('TECLADO: SIGUIENTE CANAL.', 'info');
@@ -2556,6 +2632,7 @@
                     break;
                 case 'ArrowLeft':
                     event.preventDefault();
+                    if (uiMode === 'emisora') break;
                     flashButton('btn-prev');
                     if (typeof player.previousVideo === 'function') {
                         addLog('TECLADO: CANAL ANTERIOR.', 'info');
