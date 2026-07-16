@@ -1172,6 +1172,11 @@
         var uiMode = null;
         var broadcastEngine = null;
         var lastAnnouncedBroadcastId = null;
+        // Los navegadores pueden suspender un iframe al ocultar la página. No
+        // intentamos reanudar por nuestra cuenta: iOS puede bloquearlo y el
+        // sonido inesperado es peor. La siguiente acción explícita recupera
+        // el presente calculado desde epoch + programa.
+        var emisoraRecoveryRequired = false;
 
         // History tracking
         var historyList = [];
@@ -1453,7 +1458,9 @@
             var powerButton = document.getElementById('btn-play');
             var isOn = !!(broadcastEngine && broadcastEngine.isRunning);
             if (powerButton) {
-                powerButton.innerText = isOn ? '[APAGAR EMISORA]' : '[ENCENDER EMISORA]';
+                powerButton.innerText = emisoraRecoveryRequired
+                    ? '[RECUPERAR EMISORA]'
+                    : (isOn ? '[APAGAR EMISORA]' : '[ENCENDER EMISORA]');
                 powerButton.classList.toggle('active', isOn);
             }
         }
@@ -1463,11 +1470,13 @@
                 throw new Error('Emisora aún no cargada.');
             }
             await broadcastEngine.tune();
+            emisoraRecoveryRequired = false;
             updateEmisoraPowerUI();
         }
 
         function stopEmisora() {
             if (broadcastEngine) broadcastEngine.stop();
+            emisoraRecoveryRequired = false;
             updateEmisoraPowerUI();
 
             var progress = document.getElementById('progress-fill');
@@ -1481,6 +1490,12 @@
         }
 
         async function toggleEmisoraPower() {
+            if (emisoraRecoveryRequired) {
+                await startEmisora();
+                addLog('EMISORA RECUPERADA EN EL PRESENTE.', 'success');
+                showHUD('EMISORA RECUPERADA');
+                return;
+            }
             if (broadcastEngine && broadcastEngine.isRunning) {
                 stopEmisora();
                 addLog('EMISORA PSICOANDINA APAGADA.', 'info');
@@ -1633,6 +1648,7 @@
                         ? 'EMISORA PSICOANDINA // EN ESPERA'
                         : 'EMISORA PSICOANDINA // APAGADA';
                 }
+                updateMediaSession(pos);
                 return;
             }
 
@@ -1645,6 +1661,8 @@
 
             if (titleEl) titleEl.innerText = 'AL AIRE: ' + formatTrackName(pos.signal);
             if (teleEl) teleEl.innerText = 'EMISORA PSICOANDINA // TRANSMITIENDO';
+
+            updateMediaSession(pos);
 
             if (loadedSpectrumVideoId !== pos.videoId) {
                 loadPreAnalyzedSpectrum(pos.videoId);
@@ -1661,6 +1679,87 @@
                 el.classList.toggle('active', el.getAttribute('data-signal-id') === pos.videoId);
             });
         }
+
+        // Media Session aporta título y acciones a controles del sistema
+        // (teclado, centro multimedia o pantalla bloqueada) cuando el
+        // navegador lo soporta. No otorga ejecución en segundo plano.
+        function updateMediaSession(pos) {
+            if (!('mediaSession' in navigator)) return;
+
+            try {
+                var signal = pos.signal;
+                var videoData = !signal && player && typeof player.getVideoData === 'function'
+                    ? player.getVideoData()
+                    : null;
+                var title = signal ? formatTrackName(signal) : (videoData && videoData.title) || 'Radiomisor';
+                var artist = signal && signal.artist ? signal.artist : 'Psicoandino';
+                if ('MediaMetadata' in window) {
+                    navigator.mediaSession.metadata = new MediaMetadata({
+                        title: title,
+                        artist: artist,
+                        album: pos.mode === 'emisora' ? 'Emisora Psicoandina' : 'Formato libre'
+                    });
+                }
+                navigator.mediaSession.playbackState = pos.playing ? 'playing' : 'paused';
+            } catch (err) {
+                // La API es opcional y algunos navegadores implementan solo una parte.
+            }
+        }
+
+        function setMediaSessionAction(action, handler) {
+            if (!('mediaSession' in navigator)) return;
+            try {
+                navigator.mediaSession.setActionHandler(action, handler);
+            } catch (err) {
+                // Acción no disponible en este navegador.
+            }
+        }
+
+        function configureMediaSession() {
+            setMediaSessionAction('play', function() {
+                if (uiMode === 'emisora') {
+                    startEmisora().catch(function(err) { addLog('NO SE PUDO RECUPERAR EMISORA: ' + err.message, 'error'); });
+                } else if (player && typeof player.playVideo === 'function') {
+                    player.playVideo();
+                }
+            });
+            setMediaSessionAction('pause', function() {
+                if (uiMode === 'emisora') stopEmisora();
+                else if (player && typeof player.pauseVideo === 'function') player.pauseVideo();
+            });
+            setMediaSessionAction('stop', function() {
+                if (uiMode === 'emisora') stopEmisora();
+                else if (player && typeof player.stopVideo === 'function') player.stopVideo();
+            });
+            setMediaSessionAction('nexttrack', function() {
+                if (uiMode === 'libre' && player && typeof player.nextVideo === 'function') player.nextVideo();
+            });
+            setMediaSessionAction('previoustrack', function() {
+                if (uiMode === 'libre' && player && typeof player.previousVideo === 'function') player.previousVideo();
+            });
+        }
+
+        function playerIsActivelyPlaying() {
+            if (!player || typeof player.getPlayerState !== 'function' || !window.YT || !YT.PlayerState) return false;
+            var state = player.getPlayerState();
+            return state === YT.PlayerState.PLAYING || state === YT.PlayerState.BUFFERING;
+        }
+
+        function assessEmisoraAfterForeground() {
+            if (uiMode !== 'emisora' || !broadcastEngine || !broadcastEngine.isRunning) return;
+            if (!playerIsActivelyPlaying() && !emisoraRecoveryRequired) {
+                emisoraRecoveryRequired = true;
+                updateEmisoraPowerUI();
+                var telemetry = document.getElementById('telemetry-mode');
+                if (telemetry) telemetry.innerText = 'EMISORA PSICOANDINA // RECUPERACIÓN REQUERIDA';
+                addLog('SUSPENSIÓN DETECTADA. PULSA RECUPERAR EMISORA.', 'warn');
+            }
+        }
+
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) assessEmisoraAfterForeground();
+        });
+        window.addEventListener('pageshow', assessEmisoraAfterForeground);
 
         // Initialize origin state immediately so variables are set before YouTube ready callback
         OriginManager.init();
@@ -1698,9 +1797,13 @@
                 rel: 0,
                 showinfo: 0,
                 modestbranding: 1,
+                playsinline: 1,
                 index: savedIndex,
                 startSeconds: savedTime
             };
+            if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+                playerVars.origin = window.location.origin;
+            }
 
             var videoIds = OriginManager.getVideoIds();
             if (videoIds.length > 0) {
@@ -1742,6 +1845,8 @@
             
             // Initial color sync
             updateStatusColors(player.getPlayerState ? player.getPlayerState() : -1);
+            configureMediaSession();
+            updateMediaSession(getPlaybackPosition());
 
             if (isShuffle && player && typeof player.setShuffle === 'function') {
                 player.setShuffle(true);
@@ -2052,6 +2157,7 @@
                     broadcastEngine.resync();
                 }
                 updateEmisoraPowerUI();
+                updateMediaSession(getPlaybackPosition());
                 return;
             }
             var modeText = isShuffle ? "MODO DESCUBRIMIENTO" : "MODO DE TRABAJO PROFUNDO";
@@ -2120,6 +2226,7 @@
             
             // Sync tracklist state changes instantly
             syncTracklistUI();
+            updateMediaSession(getPlaybackPosition());
         }
 
         function onPlayerError(e) {
