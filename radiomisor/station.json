@@ -1,0 +1,626 @@
+{
+  "station": {
+    "name": "PSICOANDINO Radio",
+    "description": "Emisora Psicoandina — Transmisión Continua 24/7",
+    "epoch": "2026-01-01T00:00:00Z"
+  },
+  "totalDuration": 10998.43,
+  "signals": [
+    {
+      "id": "track-01",
+      "title": "[WTD] Walk The Door.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/01 - [WTD] Walk The Door..mp3",
+      "duration": 210.93
+    },
+    {
+      "id": "track-02",
+      "title": "[ECRA] En la Corte del Rey Árbol.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/02 - [ECRA] En la Corte del Rey Árbol..mp3",
+      "duration": 127.73
+    },
+    {
+      "id": "track-03",
+      "title": "[AS] Atrapada en el Salón.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/03 - [AS] Atrapada en el Salón..mp3",
+      "duration": 86.1
+    },
+    {
+      "id": "track-04",
+      "title": "Melancólico Rey (v.1)",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/04 - Melancólico Rey (v.1).mp3",
+      "duration": 106.93
+    },
+    {
+      "id": "track-05",
+      "title": "Que coño dices ？",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/05 - Que coño dices ？.mp3",
+      "duration": 100.96
+    },
+    {
+      "id": "track-06",
+      "title": "Atrapada (v.12)",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/06 - Atrapada (v.12).mp3",
+      "duration": 95.04
+    },
+    {
+      "id": "track-07",
+      "title": "Atrapada (v.11)",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/07 - Atrapada (v.11).mp3",
+      "duration": 96.52
+    },
+    {
+      "id": "track-08",
+      "title": "Dices (v.10)",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/08 - Dices (v.10).mp3",
+      "duration": 96.52
+    },
+    {
+      "id": "track-09",
+      "title": "Atrapada (v.1)",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/09 - Atrapada (v.1).mp3",
+      "duration": 98.01
+    },
+    {
+      "id": "track-10",
+      "title": "Dices (v.9)",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/10 - Dices (v.9).mp3",
+      "duration": 96.52
+    },
+    {
+      "id": "track-11",
+      "title": "Dices (v.7)",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/11 - Dices (v.7).mp3",
+      "duration": 103.95
+    },
+    {
+      "id": "track-12",
+      "title": "[VAE] La Vida Avanza en Espiral",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/12 - [VAE] La Vida Avanza en Espiral.mp3",
+      "duration": 144.08
+    },
+    {
+      "id": "track-13",
+      "title": "About You (How I Feel)(v.2)",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/13 - About You (How I Feel)(v.2).mp3",
+      "duration": 98.01
+    },
+    {
+      "id": "track-14",
+      "title": "Dices (v.5)",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/14 - Dices (v.5).mp3",
+      "duration": 147.05
+    },
+    {
+      "id": "track-15",
+      "title": "Dices (v.4)",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/15 - Dices (v.4).mp3",
+      "duration": 123.27
+    },
+    {
+      "id": "track-16",
+      "title": "Dices (v.3)",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/16 - Dices (v.3).mp3",
+      "duration": 123.27
+    },
+    {
+      "id": "track-17",
+      "title": "[SDJ] Secretos Del Jardín",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/17 - [SDJ] Secretos Del Jardín.mp3",
+      "duration": 212.21
+    },
+    {
+      "id": "track-18",
+      "title": "Secretos del Jardín v.2",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/18 - Secretos del Jardín v.2.mp3",
+      "duration": 66.79
+    },
+    {
+      "id": "track-19",
+      "title": "Secretos del Jardín v.1",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/19 - Secretos del Jardín v.1.mp3",
+      "duration": 59.37
+    },
+    {
+      "id": "track-20",
+      "title": "Jam Session Nro. 001",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/20 - Jam Session Nro. 001.mp3",
+      "duration": 255.6
+    },
+    {
+      "id": "track-21",
+      "title": "[PSS] Para Su Salud.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/21 - [PSS] Para Su Salud..mp3",
+      "duration": 182.79
+    },
+    {
+      "id": "track-22",
+      "title": "coda",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/22 - coda.mp3",
+      "duration": 102.54
+    },
+    {
+      "id": "track-23",
+      "title": "π@no (interpretación nr. 1)",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/23 - π@no (interpretación nr. 1).mp3",
+      "duration": 86.19
+    },
+    {
+      "id": "track-24",
+      "title": "#2",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/24 - #2.mp3",
+      "duration": 13.37
+    },
+    {
+      "id": "track-25",
+      "title": "[TBF] They'll Bring you Life.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/25 - [TBF] They'll Bring you Life..mp3",
+      "duration": 130.77
+    },
+    {
+      "id": "track-26",
+      "title": "[ESM] En Sus Marcas.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/26 - [ESM] En Sus Marcas..mp3",
+      "duration": 66.87
+    },
+    {
+      "id": "track-27",
+      "title": "Dices (estar atrapada)",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/27 - Dices (estar atrapada).mp3",
+      "duration": 203.52
+    },
+    {
+      "id": "track-28",
+      "title": "Atrapada (dices)",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/28 - Atrapada (dices).mp3",
+      "duration": 188.66
+    },
+    {
+      "id": "track-29",
+      "title": "[D] Dices.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/29 - [D] Dices..mp3",
+      "duration": 31.14
+    },
+    {
+      "id": "track-30",
+      "title": "In the Morning",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/30 - In the Morning.mp3",
+      "duration": 108.02
+    },
+    {
+      "id": "track-31",
+      "title": "(how I feel) About You",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/31 - (how I feel) About You.mp3",
+      "duration": 190.13
+    },
+    {
+      "id": "track-32",
+      "title": "Psicodelia Andina (demo)",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/32 - Psicodelia Andina (demo).mp3",
+      "duration": 217.15
+    },
+    {
+      "id": "track-33",
+      "title": "[PCN] Procastinación.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/33 - [PCN] Procastinación..mp3",
+      "duration": 177.14
+    },
+    {
+      "id": "track-34",
+      "title": "La otra fecha",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/34 - La otra fecha.mp3",
+      "duration": 41.54
+    },
+    {
+      "id": "track-35",
+      "title": "I Need You (metro cover)",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/35 - I Need You (metro cover).mp3",
+      "duration": 172.31
+    },
+    {
+      "id": "track-36",
+      "title": "Psicodelia Andina",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/36 - Psicodelia Andina.mp3",
+      "duration": 72.75
+    },
+    {
+      "id": "track-37",
+      "title": "El Péndulo (Joseph)",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/37 - El Péndulo (Joseph).mp3",
+      "duration": 161.91
+    },
+    {
+      "id": "track-38",
+      "title": "Oráculo (Buttheadd & Draggio)",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/38 - Oráculo (Buttheadd & Draggio).mp3",
+      "duration": 160.43
+    },
+    {
+      "id": "track-39",
+      "title": "Blues (Julian & Charls)",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/39 - Blues (Julian & Charls).mp3",
+      "duration": 164.88
+    },
+    {
+      "id": "track-40",
+      "title": "[SMN} Sinfonía para la Media Noche (la senforá).",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/40 - [SMN} Sinfonía para la Media Noche (la senforá)..mp3",
+      "duration": 454.67
+    },
+    {
+      "id": "track-41",
+      "title": "[AAA] La Arboleda de la  Aldea de Aldará.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/41 - [AAA] La Arboleda de la  Aldea de Aldará..mp3",
+      "duration": 124.82
+    },
+    {
+      "id": "track-42",
+      "title": "[SJA] Ser Joven y Adolecente.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/42 - [SJA] Ser Joven y Adolecente..mp3",
+      "duration": 72.84
+    },
+    {
+      "id": "track-43",
+      "title": "[LVF] La Venganza Fallecida.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/43 - [LVF] La Venganza Fallecida..mp3",
+      "duration": 47.47
+    },
+    {
+      "id": "track-44",
+      "title": "del Miercoles 15 de Septiembre",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/44 - del Miercoles 15 de Septiembre.mp3",
+      "duration": 37.07
+    },
+    {
+      "id": "track-45",
+      "title": "Ataduras",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/45 - Ataduras.mp3",
+      "duration": 45.98
+    },
+    {
+      "id": "track-46",
+      "title": "[MVV] Música para Vivir el Viaje.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/46 - [MVV] Música para Vivir el Viaje..mp3",
+      "duration": 119.43
+    },
+    {
+      "id": "track-47",
+      "title": "La Corte del Rey Árbol",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/47 - La Corte del Rey Árbol.mp3",
+      "duration": 89.08
+    },
+    {
+      "id": "track-48",
+      "title": "[HLC] Hacia Los Costados.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/48 - [HLC] Hacia Los Costados..mp3",
+      "duration": 88.0
+    },
+    {
+      "id": "track-49",
+      "title": "[GCP] Los Gatos se Comieron la Pauta.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/49 - [GCP] Los Gatos se Comieron la Pauta..mp3",
+      "duration": 50.46
+    },
+    {
+      "id": "track-50",
+      "title": "en la Corte del Rey Árbol (ambience)",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/50 - en la Corte del Rey Árbol (ambience).mp3",
+      "duration": 141.06
+    },
+    {
+      "id": "track-51",
+      "title": "[SPI] Sala de Espera, Parlamento Intergaláctico.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/51 - [SPI] Sala de Espera, Parlamento Intergaláctico..mp3",
+      "duration": 233.52
+    },
+    {
+      "id": "track-52",
+      "title": "[ESS] El Seminario de la Semana.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/52 - [ESS] El Seminario de la Semana..mp3",
+      "duration": 246.01
+    },
+    {
+      "id": "track-53",
+      "title": "songHealing (reConstructed)",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/53 - songHealing (reConstructed).mp3",
+      "duration": 187.17
+    },
+    {
+      "id": "track-54",
+      "title": "[MDD] Mi Dulce Mía.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/54 - [MDD] Mi Dulce Mía..mp3",
+      "duration": 160.43
+    },
+    {
+      "id": "track-55",
+      "title": "[PPT] Para Pensar por la Tarde.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/55 - [PPT] Para Pensar por la Tarde..mp3",
+      "duration": 130.7
+    },
+    {
+      "id": "track-56",
+      "title": "[ABC] Abriendo la Bóveda Celeste.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/56 - [ABC] Abriendo la Bóveda Celeste..mp3",
+      "duration": 35.59
+    },
+    {
+      "id": "track-57",
+      "title": "[MDD] Mi Dulce Mía.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/57 - [MDD] Mi Dulce Mía..mp3",
+      "duration": 118.82
+    },
+    {
+      "id": "track-58",
+      "title": "[DSA] Las Dinamicas Saciedades del Alma,",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/58 - [DSA] Las Dinamicas Saciedades del Alma,.mp3",
+      "duration": 218.38
+    },
+    {
+      "id": "track-59",
+      "title": "[DRL] De Regreso en la Luna.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/59 - [DRL] De Regreso en la Luna..mp3",
+      "duration": 34.11
+    },
+    {
+      "id": "track-60",
+      "title": "[VEC] Vieja Ética Clandestina.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/60 - [VEC] Vieja Ética Clandestina..mp3",
+      "duration": 87.61
+    },
+    {
+      "id": "track-61",
+      "title": "nanaDeZelda",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/61 - nanaDeZelda.mp3",
+      "duration": 66.8
+    },
+    {
+      "id": "track-62",
+      "title": "[EOA] El Extraño Sueño Andino.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/62 - [EOA] El Extraño Sueño Andino..mp3",
+      "duration": 191.01
+    },
+    {
+      "id": "track-63",
+      "title": "La Idea de Probarnos",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/63 - La Idea de Probarnos.mp3",
+      "duration": 35.59
+    },
+    {
+      "id": "track-64",
+      "title": "[ABE] Al Bajar las Escaleras.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/64 - [ABE] Al Bajar las Escaleras..mp3",
+      "duration": 26.68
+    },
+    {
+      "id": "track-65",
+      "title": "[NDB] No Dejes de Bailar.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/65 - [NDB] No Dejes de Bailar..mp3",
+      "duration": 81.96
+    },
+    {
+      "id": "track-66",
+      "title": "[CDA] En la Corte del Rey Árbol.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/66 - [CDA] En la Corte del Rey Árbol..mp3",
+      "duration": 112.87
+    },
+    {
+      "id": "track-67",
+      "title": "[CLM] Captura Los Momentos.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/67 - [CLM] Captura Los Momentos..mp3",
+      "duration": 72.0
+    },
+    {
+      "id": "track-68",
+      "title": "[ERA] El Reinado de Ashkera.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/68 - [ERA] El Reinado de Ashkera..mp3",
+      "duration": 84.64
+    },
+    {
+      "id": "track-69",
+      "title": "[CGT] De los Caminos Grandes a la Tierra.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/69 - [CGT] De los Caminos Grandes a la Tierra..mp3",
+      "duration": 139.69
+    },
+    {
+      "id": "track-70",
+      "title": "Como Escupir con Elegancia",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/70 - Como Escupir con Elegancia.mp3",
+      "duration": 203.64
+    },
+    {
+      "id": "track-71",
+      "title": "[CEM] Por si Costara Entenderse con el Mundo.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/71 - [CEM] Por si Costara Entenderse con el Mundo..mp3",
+      "duration": 247.15
+    },
+    {
+      "id": "track-72",
+      "title": "For your Soul",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/72 - For your Soul.mp3",
+      "duration": 118.88
+    },
+    {
+      "id": "track-73",
+      "title": "[EMA En tu Mirada el Amor.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/73 - [EMA En tu Mirada el Amor..mp3",
+      "duration": 93.62
+    },
+    {
+      "id": "track-74",
+      "title": "[PC] Pies Cansados.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/74 - [PC] Pies Cansados..mp3",
+      "duration": 130.7
+    },
+    {
+      "id": "track-75",
+      "title": "[AER] Antes de Entrar al Ring.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/75 - [AER] Antes de Entrar al Ring..mp3",
+      "duration": 142.52
+    },
+    {
+      "id": "track-76",
+      "title": "[MAF] Melodía Alegre Final.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/76 - [MAF] Melodía Alegre Final..mp3",
+      "duration": 114.36
+    },
+    {
+      "id": "track-77",
+      "title": "[SDE] Sala de Embarque.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/77 - [SDE] Sala de Embarque..mp3",
+      "duration": 262.01
+    },
+    {
+      "id": "track-78",
+      "title": "extrañoEsExtrañarse",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/78 - extrañoEsExtrañarse.mp3",
+      "duration": 129.24
+    },
+    {
+      "id": "track-79",
+      "title": "[YBD] You'd Been Defeated.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/79 - [YBD] You'd Been Defeated..mp3",
+      "duration": 87.61
+    },
+    {
+      "id": "track-80",
+      "title": "¡Hello, World!",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/80 - ¡Hello, World!.mp3",
+      "duration": 136.02
+    },
+    {
+      "id": "track-81",
+      "title": "[TVF] Todo Vuelve a Florecer.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/81 - [TVF] Todo Vuelve a Florecer..mp3",
+      "duration": 124.76
+    },
+    {
+      "id": "track-82",
+      "title": "[ESP] A la Entrada de San Pedro.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/82 - [ESP] A la Entrada de San Pedro..mp3",
+      "duration": 173.8
+    },
+    {
+      "id": "track-83",
+      "title": "[LCD] La Carretera de los Dioses.",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/83 - [LCD] La Carretera de los Dioses..mp3",
+      "duration": 131.77
+    },
+    {
+      "id": "track-84",
+      "title": "Entrada al Santuario",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/84 - Entrada al Santuario.mp3",
+      "duration": 122.9
+    },
+    {
+      "id": "track-85",
+      "title": "bar",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/85 - bar.mp3",
+      "duration": 69.77
+    },
+    {
+      "id": "track-86",
+      "title": "Sairas Doowtsol",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/86 - Sairas Doowtsol.mp3",
+      "duration": 98.01
+    },
+    {
+      "id": "track-87",
+      "title": "Ladera Sunrise",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/87 - Ladera Sunrise.mp3",
+      "duration": 66.8
+    },
+    {
+      "id": "track-88",
+      "title": "Memorias de la Maquina",
+      "artist": "Psicoandino",
+      "file": "canciones_psicoandino/88 - Memorias de la Maquina.mp3",
+      "duration": 89.39
+    }
+  ]
+}

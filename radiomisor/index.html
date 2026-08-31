@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psicoandino Radio — Emisora 24/7</title>
+    <style>
+        :root {
+            --hueso: #F5F3EC;
+            --oled: #000000;
+            --cobre: #248692;
+            --sangre: #C73A4A;
+            --musgo: #6D7C50;
+            --mostaza: #B78627;
+            --amatista: #7D5AA1;
+            --line: rgba(0,0,0,0.10);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--hueso);
+            color: var(--oled);
+            font-family: ui-monospace, 'IBM Plex Mono', Menlo, Monaco, Consolas, monospace;
+            height: 100vh;
+            overflow: hidden;
+            display: grid;
+            grid-template-rows: auto auto 1fr auto auto;
+        }
+        
+        header {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid var(--oled);
+            background-color: var(--hueso);
+            z-index: 10;
+        }
+        
+        .header-title { 
+            grid-column: 1 / 6;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .mobile-toggles {
+            display: flex;
+            grid-column: 6 / 10;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .header-status {
+            grid-column: 10 / -1;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+        
+        .constitutional-dot {
+            width: 12px;
+            height: 12px;
+            background-color: var(--oled);
+            border-radius: 50%;
+            margin-left: 10px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .constitutional-dot:hover, .constitutional-dot.active {
+            background-color: var(--cobre);
+            border-radius: 0%;
+        }
+
+        .app-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .control-deck,
+        .playlist-drawer {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 320px;
+            z-index: 20;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .control-deck {
+            left: 0;
+            transform: translateX(-100%);
+        }
+
+        .playlist-drawer {
+            right: 0;
+            transform: translateX(100%);
+        }
+
+        .app-layout.show-deck .control-deck {
+            transform: translateX(0);
+        }
+
+        .app-layout.show-playlist .playlist-drawer {
+            transform: translateX(0);
+        }
+
+        /* Left Side: Control Deck */
+        .control-deck {
+            border-right: 1px solid var(--oled);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            background-color: var(--hueso);
+        }
+        
+        .deck-section-title {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--oled);
+            padding-bottom: 6px;
+            margin-bottom: 12px;
+            color: rgba(0, 0, 0, 0.8);
+        }
+        
+        .deck-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 10px;
+        }
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px dashed rgba(0, 0, 0, 0.12);
+            padding-bottom: 4px;
+            text-transform: uppercase;
+        }
+        .stat-row span:last-child {
+            font-weight: 700;
+            color: var(--cobre);
+        }
+
+        /* Center Column: Workspace */
+        main {
+            display: flex;
+            flex-direction: column;
+            padding: 30px;
+            overflow-y: auto;
+            background-color: var(--hueso);
+            justify-content: center;
+            height: 100%;
+        }
+        
+        .workspace {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-tune {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 22px;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .btn-sintonizar {
+            background-color: var(--oled);
+            color: var(--hueso);
+            border: 2px solid var(--oled);
+            font-family: inherit;
+            font-size: clamp(18px, 5vw, 24px);
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 22px 48px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .btn-sintonizar:hover {
+            background-color: var(--cobre);
+            border-color: var(--cobre);
+        }
+        .btn-sintonizar:active {
+            transform: scale(0.97);
+        }
+        .hero-tagline {
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            opacity: 0.5;
+        }
+        .hero-libre-link {
+            background: none;
+            border: none;
+            color: var(--oled);
+            font-family: inherit;
+            font-size: 10px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            opacity: 0.45;
+            cursor: pointer;
+            padding: 6px;
+            text-decoration: underline;
+        }
+        .hero-libre-link:hover {
+            opacity: 0.8;
+            color: var(--cobre);
+        }
+
+        .workspace { display: none; }
+        body.mode-chosen .workspace { display: flex; }
+        body.mode-chosen .hero-tune { display: none; }
+        body:not(.mode-chosen) .timeline-container,
+        body:not(.mode-chosen) .controls-row {
+            display: none;
+        }
+
+        .telemetry-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            letter-spacing: 1px;
+            border-bottom: 1px dashed rgba(0, 0, 0, 0.15);
+            padding-bottom: 10px;
+            text-transform: uppercase;
+        }
+        
+        .track-display {
+            font-size: 24px;
+            font-weight: 700;
+            text-transform: uppercase;
+            line-height: 1.4;
+            word-break: break-word;
+            min-height: 68px;
+            letter-spacing: -0.5px;
+            color: var(--oled);
+        }
+
+        /* ASCII Spectrum display container */
+        .spectrum-container {
+            border: 1px solid var(--oled);
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            background-color: rgba(0, 0, 0, 0.01);
+        }
+        .spectrum-header {
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: rgba(0, 0, 0, 0.5);
+            text-transform: uppercase;
+        }
+        .spectrum-display {
+            font-family: inherit;
+            font-size: 13px;
+            color: var(--cobre);
+            letter-spacing: 2px;
+            white-space: pre;
+            overflow: hidden;
+            text-align: center;
+            font-weight: bold;
+            height: 18px;
+            transition: color 0.3s ease;
+        }
+
+        /* Console Logs Box */
+        .console-logs-container {
+            border: 1px solid var(--oled);
+            display: flex;
+            flex-direction: column;
+            height: 150px;
+            margin-top: 10px;
+        }
+        .console-header {
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            background-color: var(--oled);
+            color: var(--hueso);
+            padding: 5px 10px;
+            text-transform: uppercase;
+        }
+        .console-logs {
+            padding: 8px;
+            overflow-y: auto;
+            font-size: 10px;
+            line-height: 1.5;
+            flex: 1;
+            background-color: rgba(0, 0, 0, 0.02);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-family: inherit;
+        }
+        .log-entry { display: flex; gap: 8px; }
+        .log-time { color: rgba(0, 0, 0, 0.4); flex-shrink: 0; }
+        .log-msg { word-break: break-all; }
+        .log-entry.info .log-msg { color: var(--oled); }
+        .log-entry.warn .log-msg { color: var(--mostaza); }
+        .log-entry.error .log-msg { color: var(--sangre); font-weight: bold; }
+        .log-entry.success .log-msg { color: var(--musgo); font-weight: bold; }
+
+        /* Right Side: Playlist Drawer */
+        .playlist-drawer {
+            border-left: 1px solid var(--oled);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            height: 100%;
+            background-color: var(--hueso);
+            gap: 12px;
+        }
+        .playlist-header {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--oled);
+            padding-bottom: 6px;
+            margin-bottom: 4px;
+            flex-shrink: 0;
+            color: rgba(0, 0, 0, 0.8);
+        }
+        .playlist-section {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            flex: 1;
+        }
+        .playlist-tracks {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            overflow-y: auto;
+            flex: 1;
+        }
+        .track-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 8px;
+            font-size: 10px;
+            border: 1px solid transparent;
+            transition: all 0.15s ease;
+            text-transform: uppercase;
+            user-select: none;
+            cursor: pointer;
+        }
+        .track-item:hover {
+            background-color: rgba(0, 0, 0, 0.03);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+        .track-item.active {
+            background-color: rgba(36, 134, 146, 0.08);
+            border-color: var(--cobre);
+            color: var(--cobre);
+            font-weight: bold;
+        }
+        .track-num {
+            width: 22px;
+            color: rgba(0, 0, 0, 0.4);
+            flex-shrink: 0;
+        }
+        .track-name {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .track-status-badge {
+            font-size: 8px;
+            padding: 1px 4px;
+            border: 1px solid currentColor;
+            border-radius: 1px;
+            flex-shrink: 0;
+            font-weight: bold;
+        }
+
+        /* Stepped Volume Bar styles */
+        .volume-led-bar {
+            display: flex;
+            gap: 3px;
+            align-items: center;
+            padding: 4px 0;
+        }
+        .volume-led-step {
+            width: 8px;
+            height: 14px;
+            border: 1px solid var(--oled);
+            background-color: transparent;
+            cursor: pointer;
+            transition: background-color 0.1s ease;
+        }
+        .volume-led-step.active-low { background-color: var(--musgo); }
+        .volume-led-step.active-mid { background-color: var(--mostaza); }
+        .volume-led-step.active-high { background-color: var(--sangre); }
+
+        /* Timeline and Bottom Controls */
+        .timeline-container {
+            padding: 0 40px;
+            margin-bottom: 20px;
+        }
+        #timeline {
+            width: 100%;
+            height: 6px;
+            background-color: rgba(0, 0, 0, 0.1);
+            position: relative;
+            cursor: pointer;
+        }
+        #progress-fill {
+            height: 100%;
+            width: 0%;
+            background-color: var(--oled);
+            transition: width 0.1s linear;
+        }
+        #pulse-indicator {
+            width: 10px;
+            height: 10px;
+            background-color: var(--cobre);
+            position: absolute;
+            top: -2px;
+            left: 0%;
+            transform: translateX(-50%);
+            border-radius: 50%;
+            transition: left 0.1s linear, background-color 0.3s ease;
+        }
+        
+        .controls-row {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            align-items: center;
+            padding: 16px 40px 40px 40px;
+            background-color: var(--hueso);
+        }
+        
+        .button-group {
+            grid-column: 1 / 8;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .control-btn {
+            background: none;
+            border: none;
+            color: var(--oled);
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px;
+            transition: all 0.1s ease;
+            user-select: none;
+        }
+        .control-btn:hover { color: var(--cobre); }
+        .control-btn.btn-flash {
+            background-color: var(--cobre) !important;
+            color: var(--hueso) !important;
+            transform: scale(0.95);
+        }
+        
+        .volume-section {
+            grid-column: 8 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 16px;
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+
+        #hud-overlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background-color: var(--oled);
+            color: var(--hueso);
+            padding: 16px 24px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border: 1px solid var(--hueso);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 100;
+            transition: opacity 0.15s ease, transform 0.15s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        #hud-overlay.visible {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .mode-btn {
+            background: transparent; border: 1px solid rgba(0,0,0,0.15);
+            color: var(--oled); cursor: pointer; font-family: inherit;
+            font-size: 9px; font-weight: 700; text-transform: uppercase;
+            padding: 2px 6px; opacity: 0.5; transition: all 0.15s ease;
+        }
+        .mode-btn.active { opacity: 1; border-color: var(--cobre); color: var(--cobre); }
+
+        .vinyl-controller {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-family: inherit;
+            font-size: 9px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--oled);
+            padding-bottom: 14px;
+            margin-bottom: 16px;
+        }
+        .vinyl-controller input {
+            accent-color: var(--cobre);
+            width: 100%;
+            cursor: pointer;
+        }
+    </style>
+    <link rel="stylesheet" href="psico-header.css">
+</head>
+<body>
+
+    <div class="psico-header" style="--accent:var(--amatista)">
+        <a class="ph-brand" href="/" title="Volver a psicoandino.cl">
+            <div class="ph-motif"><div class="ph-dot-sun"></div><div class="ph-dot-shadow"></div></div>
+            <div class="ph-textblock">
+                <span class="ph-word"><span class="ph-brandname">PSICOANDINO</span><span class="ph-sep">|</span><span class="ph-system">Emisora 24/7</span></span>
+                <div class="ph-squares"><span></span><span></span><span></span><span></span></div>
+            </div>
+        </a>
+        <nav class="ph-nav">
+            <a href="#">Tactile Deck</a>
+        </nav>
+    </div>
+
+    <!-- HUD Toast Overlay -->
+    <div id="hud-overlay"></div>
+
+    <header>
+        <div class="header-title">Psicoandino Radio — Transmisión Continua</div>
+        <div class="mobile-toggles">
+            <button id="toggle-deck-btn" class="control-btn" type="button">[DECK]</button>
+            <button id="toggle-playlist-btn" class="control-btn" type="button">[PROGRAMACIÓN]</button>
+        </div>
+        <div class="header-status">
+            <span id="system-status-text">SISTEMA DETERMINISTA ACTIVO</span>
+            <div id="dot-status" class="constitutional-dot"></div>
+        </div>
+    </header>
+
+    <div class="app-layout" id="app-layout">
+        <!-- LEFT: Control Deck -->
+        <aside class="control-deck">
+            <div class="deck-section-title">SINTETIZADOR DE VINILO</div>
+            
+            <div class="vinyl-controller">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <label style="font-size:8px; font-weight:700; opacity:0.6;">RUIDO DE AGUJA</label>
+                    <button id="btn-vinyl-power" type="button" class="mode-btn">[OFF]</button>
+                </div>
+
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px; border-bottom:1px dashed rgba(0,0,0,0.1); padding-bottom:8px;">
+                    <span style="font-size:8px; opacity:0.6; width:55px;">VOLUMEN</span>
+                    <input type="range" id="slider-vinyl-master" min="0" max="100" value="80">
+                    <span id="val-vinyl-master" style="font-size:8px; color:var(--cobre); width:25px; text-align:right;">80%</span>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px 14px;">
+                    <div>
+                        <div style="display:flex; justify-content:space-between; font-size:8px; margin-bottom:3px;">
+                            <span style="opacity:0.6;">HISS</span>
+                            <span id="val-hiss" style="color:var(--cobre); font-size:8px;">30%</span>
+                        </div>
+                        <input type="range" id="slider-hiss" min="0" max="100" value="30">
+                    </div>
+                    <div>
+                        <div style="display:flex; justify-content:space-between; font-size:8px; margin-bottom:3px;">
+                            <span style="opacity:0.6;">CRACKLE</span>
+                            <span id="val-crackle" style="color:var(--cobre); font-size:8px;">25%</span>
+                        </div>
+                        <input type="range" id="slider-crackle" min="0" max="100" value="25">
+                    </div>
+                    <div>
+                        <div style="display:flex; justify-content:space-between; font-size:8px; margin-bottom:3px;">
+                            <span style="opacity:0.6;">GOLPE (33 RPM)</span>
+                            <span id="val-thump" style="color:var(--mostaza); font-size:8px;">40%</span>
+                        </div>
+                        <input type="range" id="slider-thump" min="0" max="100" value="40">
+                    </div>
+                    <div>
+                        <div style="display:flex; justify-content:space-between; font-size:8px; margin-bottom:3px;">
+                            <span style="opacity:0.6;">RUMBLE</span>
+                            <span id="val-rumble" style="color:var(--mostaza); font-size:8px;">20%</span>
+                        </div>
+                        <input type="range" id="slider-rumble" min="0" max="100" value="20">
+                    </div>
+                </div>
+            </div>
+
+            <div class="deck-section-title">TELEMETRÍA DE EMISORA</div>
+            <div class="deck-stats">
+                <div class="stat-row">
+                    <span>BLOQUE / CICLO</span>
+                    <span id="stat-cycle">#0</span>
+                </div>
+                <div class="stat-row">
+                    <span>ORDEN DE EMISIÓN</span>
+                    <span style="color:var(--cobre);">SHUFFLE DETERMINISTA</span>
+                </div>
+                <div class="stat-row">
+                    <span>PISTAS EN CATÁLOGO</span>
+                    <span id="stat-tracks-count">88</span>
+                </div>
+                <div class="stat-row">
+                    <span>DURACIÓN BLOQUE</span>
+                    <span id="stat-total-duration">3.06 H</span>
+                </div>
+                <div class="stat-row">
+                    <span>SINCRONIZACIÓN</span>
+                    <span style="color:var(--musgo);">TIME IS TRUTH</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CENTER: Workspace -->
+        <main>
+            <div class="hero-tune" id="hero-tune">
+                <button id="btn-sintonizar" class="btn-sintonizar" type="button">▶ SINTONIZAR</button>
+                <div class="hero-tagline">EMISORA PSICOANDINA — TRANSMISIÓN CONTINUA</div>
+                <button id="btn-hero-libre" class="hero-libre-link" type="button">entrar a cabina</button>
+            </div>
+            <div class="workspace">
+                <div style="display:flex; gap:8px; justify-content:center; margin-bottom:4px;">
+                    <button id="btn-mode-emisora" class="mode-btn active" type="button">[EMISORA PSICOANDINA // AL AIRE]</button>
+                </div>
+                <div class="telemetry-meta">
+                    <span id="telemetry-mode">EMISORA PSICOANDINA // EN ESPERA</span>
+                    <span id="telemetry-time-display"><span id="time-current">00:00</span> / <span id="time-total">00:00</span></span>
+                </div>
+                <div id="track-display-container">
+                    <div id="track-title" class="track-display">SISTEMA INICIALIZANDO...</div>
+                </div>
+
+                <!-- Live Monospace Spectrum analyzer -->
+                <div class="spectrum-container">
+                    <div class="spectrum-header">ANALIZADOR ESPECTRAL DE SEÑAL</div>
+                    <div id="spectrum-display" class="spectrum-display">-----------------------------------------</div>
+                </div>
+                
+                <div class="console-logs-container">
+                    <div class="console-header">SYSTEM DIAGNOSTIC LOGS</div>
+                    <div id="console-logs" class="console-logs"></div>
+                </div>
+            </div>
+        </main>
+
+        <!-- RIGHT: Playlist Drawer -->
+        <aside class="playlist-drawer">
+            <div class="playlist-header">
+                <span id="playlist-header-title">PROGRAMACIÓN DEL BLOQUE</span>
+            </div>
+
+            <div class="playlist-section active-queue-section">
+                <div class="playlist-tracks" id="playlist-tracks">
+                    <div style="font-size:10px; opacity:0.5; padding:10px; text-align:center;">CARGANDO PROGRAMACIÓN...</div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <div class="timeline-container">
+        <div id="timeline">
+            <div id="progress-fill"></div>
+            <div id="pulse-indicator"></div>
+        </div>
+    </div>
+
+    <div class="controls-row">
+        <div class="button-group">
+            <button id="btn-play" class="control-btn">[SINTONIZAR]</button>
+            <button id="btn-stop" class="control-btn">[STOP]</button>
+        </div>
+        
+        <div class="volume-section">
+            <button id="btn-vol-down" class="control-btn" style="font-size:12px; font-weight:bold; padding:2px;">-</button>
+            <div id="volume-led-bar" class="volume-led-bar">
+                <div class="volume-led-step" data-level="10"></div>
+                <div class="volume-led-step" data-level="20"></div>
+                <div class="volume-led-step" data-level="30"></div>
+                <div class="volume-led-step" data-level="40"></div>
+                <div class="volume-led-step" data-level="50"></div>
+                <div class="volume-led-step" data-level="60"></div>
+                <div class="volume-led-step" data-level="70"></div>
+                <div class="volume-led-step" data-level="80"></div>
+                <div class="volume-led-step" data-level="90"></div>
+                <div class="volume-led-step" data-level="100"></div>
+            </div>
+            <button id="btn-vol-up" class="control-btn" style="font-size:12px; font-weight:bold; padding:2px;">+</button>
+            <span id="telemetry-vol" style="font-size:10px; width:65px; text-align:right;">VOL: 80%</span>
+        </div>
+    </div>
+
+    <script src="radio-engine.js"></script>
+    <script>
+        var broadcastEngine = null;
+        var currentVolume = 80;
+        var hudTimeout = null;
+        var spectrumChars = [' ', '▂', '▃', '▄', '▅', '▆', '▇', '█'];
+        var lastAnnouncedId = null;
+        var renderedCycle = null;
+
+        // Vinyl simulation state
+        var vinylActive = false;
+        var vinylMasterVolume = 0.8;
+        var vinylAudioCtx = null;
+        var vinylInitialized = false;
+        var vinylHissGain = null, vinylCrackleGain = null, masterSummingNode = null;
+
+        function showHUD(text) {
+            var hud = document.getElementById('hud-overlay');
+            if (!hud) return;
+            hud.innerText = text.toUpperCase();
+            hud.classList.add('visible');
+            if (hudTimeout) clearTimeout(hudTimeout);
+            hudTimeout = setTimeout(() => hud.classList.remove('visible'), 800);
+        }
+
+        function flashButton(btnId) {
+            var btn = document.getElementById(btnId);
+            if (!btn) return;
+            btn.classList.add('btn-flash');
+            setTimeout(() => btn.classList.remove('btn-flash'), 150);
+        }
+
+        function addLog(msg, type = 'info') {
+            var consoleEl = document.getElementById('console-logs');
+            if (!consoleEl) return;
+            var entry = document.createElement('div');
+            entry.className = 'log-entry ' + type;
+            var now = new Date();
+            var timeStr = now.toTimeString().split(' ')[0];
+            entry.innerHTML = `<span class="log-time">[${timeStr}]</span><span class="log-msg">&gt; ${msg.toUpperCase()}</span>`;
+            consoleEl.appendChild(entry);
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        function formatTime(seconds) {
+            if (isNaN(seconds) || seconds < 0) return "00:00";
+            var mins = Math.floor(seconds / 60);
+            var secs = Math.floor(seconds % 60);
+            return (mins < 10 ? "0" + mins : mins) + ":" + (secs < 10 ? "0" + secs : secs);
+        }
+
+        function renderActiveCycleSchedule() {
+            if (!broadcastEngine || !broadcastEngine.station) return;
+            var currentCycle = broadcastEngine.currentCycle();
+            if (renderedCycle === currentCycle) return;
+
+            renderedCycle = currentCycle;
+            var container = document.getElementById('playlist-tracks');
+            var headerTitle = document.getElementById('playlist-header-title');
+            var cycleStat = document.getElementById('stat-cycle');
+
+            if (headerTitle) headerTitle.innerText = `PROGRAMACIÓN BLOQUE #${currentCycle}`;
+            if (cycleStat) cycleStat.innerText = `#${currentCycle}`;
+            if (!container) return;
+
+            container.innerHTML = '';
+            var activeSignals = broadcastEngine.getActiveSignals();
+
+            activeSignals.forEach((sig, i) => {
+                var item = document.createElement('div');
+                item.className = 'track-item';
+                item.setAttribute('data-signal-id', sig.id);
+                item.setAttribute('data-index', i);
+
+                item.innerHTML = `
+                    <span class="track-num">${String(i + 1).padStart(2, '0')}</span>
+                    <span class="track-name">${sig.title.toUpperCase()}</span>
+                    <span class="track-status-badge">${formatTime(sig.duration)}</span>
+                `;
+
+                item.addEventListener('click', async () => {
+                    addLog(`REPRODUCIENDO PISTA DIRECTA: ${sig.title.toUpperCase()}`, 'info');
+                    if (broadcastEngine) {
+                        broadcastEngine._initAudioElement();
+                        broadcastEngine.isRunning = true;
+                        broadcastEngine.audioElement.src = sig.file.split('/').map(encodeURIComponent).join('/');
+                        broadcastEngine.audioElement.currentTime = 0;
+                        try {
+                            await broadcastEngine.audioElement.play();
+                            document.getElementById('btn-play').innerText = '[PAUSA]';
+                            showHUD('PLAY');
+                        } catch(e) {
+                            addLog('ERROR DE REPRODUCCIÓN: ' + e.message, 'error');
+                        }
+                    }
+                });
+
+                container.appendChild(item);
+            });
+        }
+
+        async function initStation() {
+            broadcastEngine = new RadioEngine(msg => addLog(msg, 'info'));
+            broadcastEngine.setVolume(currentVolume / 100);
+
+            try {
+                await broadcastEngine.loadStation('station.json');
+                renderActiveCycleSchedule();
+                addLog('EMISORA PSICOANDINA LISTA PARA SINTONIZAR.', 'success');
+
+                var durHours = (broadcastEngine.station.totalDuration / 3600).toFixed(2);
+                var durEl = document.getElementById('stat-total-duration');
+                if (durEl) durEl.innerText = durHours + ' H';
+            } catch(e) {
+                addLog('ERROR AL CARGAR STATION.JSON: ' + e.message, 'error');
+            }
+        }
+
+        function updateBroadcastTelemetry() {
+            if (!broadcastEngine || !broadcastEngine.station) return;
+
+            renderActiveCycleSchedule();
+
+            var titleEl = document.getElementById('track-title');
+            var teleEl = document.getElementById('telemetry-mode');
+            var currentEl = document.getElementById('time-current');
+            var totalEl = document.getElementById('time-total');
+            var progressEl = document.getElementById('progress-fill');
+            var pulseEl = document.getElementById('pulse-indicator');
+            var dot = document.getElementById('dot-status');
+
+            if (!broadcastEngine.isRunning) {
+                if (teleEl) teleEl.innerText = 'EMISORA PSICOANDINA // EN ESPERA';
+                if (dot) dot.style.backgroundColor = 'var(--oled)';
+                return;
+            }
+
+            if (dot) dot.style.backgroundColor = 'var(--musgo)';
+
+            var offset = broadcastEngine.currentOffset();
+            var res = broadcastEngine.findSignal(offset);
+
+            if (res && res.signal) {
+                var audio = broadcastEngine.audioElement;
+                var currentSec = (audio && !isNaN(audio.currentTime)) ? audio.currentTime : res.second;
+                var totalSec = res.signal.duration;
+
+                if (currentEl) currentEl.innerText = formatTime(currentSec);
+                if (totalEl) totalEl.innerText = formatTime(totalSec);
+
+                var pct = totalSec ? (currentSec / totalSec) * 100 : 0;
+                if (progressEl) progressEl.style.width = pct + '%';
+                if (pulseEl) pulseEl.style.left = pct + '%';
+
+                if (titleEl) titleEl.innerText = res.signal.title.toUpperCase();
+                if (teleEl) teleEl.innerText = `EMISORA // BLOQUE #${broadcastEngine.currentCycle()} // PISTA ${res.index + 1}/${broadcastEngine.station.signals.length}`;
+
+                if (lastAnnouncedId !== res.signal.id) {
+                    lastAnnouncedId = res.signal.id;
+                    var next = broadcastEngine.nextSignal(res.signal.file);
+                    addLog(`AL AIRE: ${res.signal.title.toUpperCase()}`, 'success');
+                }
+
+                // Highlight active item in schedule
+                var items = document.querySelectorAll('#playlist-tracks .track-item');
+                items.forEach((el, idx) => {
+                    var isCurrent = (idx === res.index);
+                    el.classList.toggle('active', isCurrent);
+                    if (isCurrent) {
+                        el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                });
+            }
+        }
+
+        function updateSpectrum() {
+            var display = document.getElementById('spectrum-display');
+            if (!display) return;
+
+            if (!broadcastEngine || !broadcastEngine.isRunning) {
+                display.style.color = 'var(--sangre)';
+                display.innerText = '▱▱▱▱▱▱▱▱▱▱ SISTEMA EN STANDBY ▱▱▱▱▱▱▱▱▱▱';
+                return;
+            }
+
+            display.style.color = '';
+            var segments = ['', '', '', ''];
+            var length = 32;
+            var time = Date.now() * 0.005;
+            for (var i = 0; i < length; i++) {
+                var val = Math.sin(i * 0.3 + time) * Math.cos(i * 0.1 - time * 0.5);
+                val = (val + 1) / 2;
+                var noise = Math.random() * 0.3;
+                var index = Math.floor((val * 0.7 + noise * 0.3) * spectrumChars.length);
+                index = Math.max(0, Math.min(spectrumChars.length - 1, index));
+                var segmentIdx = Math.floor(i / 8);
+                segments[segmentIdx] += spectrumChars[index];
+            }
+            display.innerHTML = 
+                '<span style="color:var(--sangre)">' + segments[0] + '</span>' +
+                '<span style="color:var(--mostaza)">' + segments[1] + '</span>' +
+                '<span style="color:var(--musgo)">' + segments[2] + '</span>' +
+                '<span style="color:var(--cobre)">' + segments[3] + '</span>';
+        }
+
+        function setVolume(vol) {
+            currentVolume = Math.max(0, Math.min(100, vol));
+            if (broadcastEngine) broadcastEngine.setVolume(currentVolume / 100);
+            
+            var volTextEl = document.getElementById('telemetry-vol');
+            if (volTextEl) volTextEl.innerText = "VOL: " + currentVolume + "%";
+            
+            var steps = document.querySelectorAll('.volume-led-step');
+            steps.forEach(step => {
+                var lvl = parseInt(step.getAttribute('data-level'), 10);
+                step.className = 'volume-led-step';
+                if (lvl <= currentVolume) {
+                    if (lvl <= 40) step.classList.add('active-low');
+                    else if (lvl <= 70) step.classList.add('active-mid');
+                    else step.classList.add('active-high');
+                }
+            });
+            showHUD('VOL: ' + currentVolume + '%');
+        }
+
+        function initVinylNoise() {
+            if (vinylInitialized) return;
+            try {
+                vinylAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                var sr = vinylAudioCtx.sampleRate;
+
+                var hissBuffer = vinylAudioCtx.createBuffer(2, sr * 4, sr);
+                for (var ch = 0; ch < 2; ch++) {
+                    var d = hissBuffer.getChannelData(ch);
+                    var b = [0, 0, 0, 0, 0, 0, 0];
+                    for (var i = 0; i < d.length; i++) {
+                        var w = Math.random() * 2 - 1;
+                        b[0] = 0.99886 * b[0] + w * 0.0555179;
+                        b[1] = 0.99332 * b[1] + w * 0.0750759;
+                        b[2] = 0.96900 * b[2] + w * 0.1538520;
+                        b[3] = 0.86650 * b[3] + w * 0.3104856;
+                        b[4] = 0.55000 * b[4] + w * 0.5329522;
+                        b[5] = -0.7616  * b[5] - w * 0.0168980;
+                        b[6] = 0.115926 * w;
+                        d[i] = (b[0]+b[1]+b[2]+b[3]+b[4]+b[5]+b[6] + 0.5362 * w) * 0.08;
+                    }
+                }
+
+                var crackleBuffer = vinylAudioCtx.createBuffer(1, sr * 4, sr);
+                var cData = crackleBuffer.getChannelData(0);
+                var idx = 0;
+                while (idx < cData.length) {
+                    var interval = Math.floor(-Math.log(Math.random() + 1e-9) / 18 * sr);
+                    idx += Math.max(1, interval);
+                    if (idx < cData.length) {
+                        var amp = (Math.random() * 0.7 + 0.3) * (Math.random() > 0.5 ? 1 : -1);
+                        var decay = Math.min(Math.floor(sr * 0.004), cData.length - idx);
+                        for (var k = 0; k < decay; k++) {
+                            var t = k / sr;
+                            cData[idx + k] += amp * Math.exp(-2500 * t) * Math.cos(2 * Math.PI * 2200 * t);
+                        }
+                    }
+                }
+
+                masterSummingNode = vinylAudioCtx.createGain();
+                masterSummingNode.gain.value = vinylActive ? vinylMasterVolume : 0;
+                masterSummingNode.connect(vinylAudioCtx.destination);
+
+                function createLoopSource(buf, gainVal) {
+                    var g = vinylAudioCtx.createGain();
+                    g.gain.value = gainVal;
+                    var src = vinylAudioCtx.createBufferSource();
+                    src.buffer = buf;
+                    src.loop = true;
+                    src.connect(g);
+                    g.connect(masterSummingNode);
+                    src.start(0);
+                    return g;
+                }
+
+                vinylHissGain = createLoopSource(hissBuffer, 0.3 * 0.5);
+                vinylCrackleGain = createLoopSource(crackleBuffer, 0.25 * 0.4);
+                vinylInitialized = true;
+                addLog('SINTETIZADOR DE VINILO LISTO.', 'success');
+            } catch(e) {
+                console.error("Error vinyl audio ctx", e);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initStation();
+            setVolume(80);
+            setInterval(updateBroadcastTelemetry, 250);
+            setInterval(updateSpectrum, 100);
+
+            // Sintonizar Hero
+            document.getElementById('btn-sintonizar').addEventListener('click', async () => {
+                flashButton('btn-sintonizar');
+                document.body.classList.add('mode-chosen');
+                if (broadcastEngine) {
+                    await broadcastEngine.tune();
+                    document.getElementById('btn-play').innerText = '[PAUSA]';
+                    showHUD('AL AIRE');
+                }
+            });
+
+            document.getElementById('btn-hero-libre').addEventListener('click', () => {
+                document.body.classList.add('mode-chosen');
+            });
+
+            document.getElementById('btn-play').addEventListener('click', async () => {
+                flashButton('btn-play');
+                if (broadcastEngine) {
+                    if (broadcastEngine.isRunning) {
+                        broadcastEngine.stop();
+                        document.getElementById('btn-play').innerText = '[SINTONIZAR]';
+                        showHUD('PAUSA');
+                    } else {
+                        await broadcastEngine.tune();
+                        document.getElementById('btn-play').innerText = '[PAUSA]';
+                        showHUD('SINTONIZANDO');
+                    }
+                }
+            });
+
+            document.getElementById('btn-stop').addEventListener('click', () => {
+                flashButton('btn-stop');
+                if (broadcastEngine) {
+                    broadcastEngine.stop();
+                    document.getElementById('btn-play').innerText = '[SINTONIZAR]';
+                    showHUD('STOP');
+                }
+            });
+
+            // Volume buttons
+            document.getElementById('btn-vol-down').addEventListener('click', () => setVolume(currentVolume - 10));
+            document.getElementById('btn-vol-up').addEventListener('click', () => setVolume(currentVolume + 10));
+            document.querySelectorAll('.volume-led-step').forEach(step => {
+                step.addEventListener('click', () => setVolume(parseInt(step.getAttribute('data-level'), 10)));
+            });
+
+            // Mobile toggles
+            var appLayout = document.getElementById('app-layout');
+            document.getElementById('toggle-deck-btn').addEventListener('click', () => {
+                appLayout.classList.toggle('show-deck');
+                appLayout.classList.remove('show-playlist');
+            });
+            document.getElementById('toggle-playlist-btn').addEventListener('click', () => {
+                appLayout.classList.toggle('show-playlist');
+                appLayout.classList.remove('show-deck');
+            });
+
+            // Vinyl power toggle
+            var btnVinyl = document.getElementById('btn-vinyl-power');
+            btnVinyl.addEventListener('click', () => {
+                initVinylNoise();
+                if (vinylAudioCtx && vinylAudioCtx.state === 'suspended') vinylAudioCtx.resume();
+                vinylActive = !vinylActive;
+                if (masterSummingNode) masterSummingNode.gain.value = vinylActive ? vinylMasterVolume : 0;
+                btnVinyl.innerText = vinylActive ? '[ON]' : '[OFF]';
+                btnVinyl.classList.toggle('active', vinylActive);
+                addLog('VINILO: ' + (vinylActive ? 'ON' : 'OFF'), vinylActive ? 'success' : 'warn');
+            });
+
+            // Keyboard shortcut spacebar
+            window.addEventListener('keydown', (e) => {
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    document.getElementById('btn-play').click();
+                }
+            });
+        });
+    </script>
+    <script src="psico-header.js"></script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+.psico-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background-color: var(--hueso);
+    border-bottom: 1px solid var(--oled);
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+.ph-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--oled);
+}
+.ph-motif {
+    display: flex;
+    gap: 2px;
+}
+.ph-dot-sun {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--amatista);
+}
+.ph-dot-shadow {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--oled);
+}
+.ph-brandname {
+    font-weight: 700;
+}
+.ph-sep {
+    margin: 0 4px;
+    opacity: 0.4;
+}
+.ph-system {
+    opacity: 0.8;
+}
+.ph-squares {
+    display: inline-flex;
+    gap: 2px;
+    margin-left: 6px;
+}
+.ph-squares span {
+    width: 4px;
+    height: 4px;
+    background-color: var(--oled);
+    opacity: 0.3;
+}
+.ph-nav a {
+    color: var(--oled);
+    text-decoration: none;
+    opacity: 0.6;
+    font-weight: 700;
+}
+.ph-nav a:hover {
+    opacity: 1;
+}
