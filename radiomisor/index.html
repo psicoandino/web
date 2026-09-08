@@ -594,12 +594,12 @@
         <a class="ph-brand" href="/" title="Volver a psicoandino.cl">
             <div class="ph-motif"><div class="ph-dot-sun"></div><div class="ph-dot-shadow"></div></div>
             <div class="ph-textblock">
-                <span class="ph-word"><span class="ph-brandname">PSICOANDINO</span><span class="ph-sep">|</span><span class="ph-system">Radio v2.6</span></span>
+                <span class="ph-word"><span class="ph-brandname">PSICOANDINO</span><span class="ph-sep">|</span><span class="ph-system">Radio v2.6.2</span></span>
                 <div class="ph-squares"><span></span><span></span><span></span><span></span></div>
             </div>
         </a>
         <nav class="ph-nav">
-            <a href="#" id="link-changelog">v2.6.0 Bitácora</a>
+            <a href="#" id="link-changelog">v2.6.2 Bitácora</a>
         </nav>
     </div>
 
@@ -783,11 +783,19 @@
             </div>
 
             <div class="changelog-content">
-                <div class="changelog-ver">v2.6.0 (2026-09-08) — Actual</div>
+                <div class="changelog-ver">v2.6.2 (2026-09-08) — Actual</div>
+                <ul class="changelog-list">
+                    <li>Normalización psicoacústica logarítmica (40 Hz – 14.000 Hz) con FFT 512.</li>
+                    <li>Compensación de inclinación espectral (Equal Loudness Tilt) para evitar saturación de graves.</li>
+                    <li>Contraste dinámico equilibrado en caracteres visuales <code> ▂▃▄▅▆▇█</code>.</li>
+                </ul>
+
+                <div class="changelog-ver">v2.6.0 (2026-09-08)</div>
                 <ul class="changelog-list">
                     <li>Identificadores de estación ("Station IDs") con locución atmosférica y chimes.</li>
                     <li>Presets de ecualización analógica: [PURO], [CINTA CASSETTE], [RADIO AM].</li>
                     <li>Visor de bitácora interactivo y botón para compartir frecuencia.</li>
+                    <li>Carátula oficial para metadatos del SO (psico-cover.png).</li>
                 </ul>
 
                 <div class="changelog-ver">v2.5.0 (2026-09-08)</div>
@@ -1437,6 +1445,6 @@
             });
         });
     </script>
-    <script src="psico-header.js?v=2.6.0"></script>
+    <script src="psico-header.js?v=2.6.2"></script>
 </body>
 </html>
