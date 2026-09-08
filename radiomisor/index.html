@@ -922,15 +922,18 @@
                     addLog(`AL AIRE: ${res.signal.title.toUpperCase()} (SIGUIENTE: ${next ? next.title.toUpperCase() : 'FIN'})`, 'success');
                 }
 
-                // Highlight active item in schedule
-                var items = document.querySelectorAll('#playlist-tracks .track-item');
-                items.forEach((el, idx) => {
-                    var isCurrent = (idx === res.index);
-                    el.classList.toggle('active', isCurrent);
-                    if (isCurrent) {
-                        el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                    }
-                });
+                // Highlight active item in schedule only when track changes
+                if (window._lastTrackIndex !== res.index) {
+                    window._lastTrackIndex = res.index;
+                    var items = document.querySelectorAll('#playlist-tracks .track-item');
+                    items.forEach((el, idx) => {
+                        var isCurrent = (idx === res.index);
+                        el.classList.toggle('active', isCurrent);
+                        if (isCurrent && appLayout.classList.contains('show-playlist')) {
+                            el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        }
+                    });
+                }
             }
         }
 
@@ -1216,8 +1219,12 @@
                 document.getElementById('val-rumble').innerText = e.target.value + '%';
             });
 
-            // Keyboard shortcut spacebar
+            // Keyboard shortcut spacebar & escape
             window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closePanels();
+                    return;
+                }
                 if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
                 if (e.code === 'Space') {
                     e.preventDefault();
