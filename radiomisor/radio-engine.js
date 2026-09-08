@@ -1,7 +1,7 @@
 /*
 ---------------------------------------------------------
 Radiomisor
-RadioEngine v2.6 — True Radio Station Engine & Atmospheric Announcer
+RadioEngine v2.7 — Modular Broadcast Studio Console Engine
 ---------------------------------------------------------
 
 ✓ "Time is Truth" Deterministic Broadcast Synchronization

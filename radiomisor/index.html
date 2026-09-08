@@ -80,16 +80,17 @@
             height: 100%;
             overflow: hidden;
             position: relative;
+            transition: grid-template-columns 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Slide-out Panels */
+        /* Slide-out Panels (Default / Mobile / Minimal View) */
         .control-deck,
         .playlist-drawer,
         .changelog-drawer {
             position: absolute;
             top: 0;
             bottom: 0;
-            width: 340px;
+            width: 320px;
             max-width: 88vw;
             z-index: 50;
             background-color: var(--hueso);
@@ -109,6 +110,7 @@
             right: 0;
             border-left: 1px solid var(--oled);
             transform: translateX(100%);
+            width: 340px;
         }
 
         .changelog-drawer {
@@ -117,13 +119,14 @@
             transform: translateX(-100%);
             width: 440px;
             max-width: 90vw;
+            z-index: 60;
         }
 
         .app-layout.show-deck .control-deck { transform: translateX(0); }
         .app-layout.show-playlist .playlist-drawer { transform: translateX(0); }
         .app-layout.show-changelog .changelog-drawer { transform: translateX(0); }
 
-        /* Backdrop overlay when panel is open */
+        /* Backdrop overlay when slide panel is open */
         .panel-backdrop {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -138,6 +141,49 @@
         .app-layout.show-changelog .panel-backdrop {
             opacity: 1;
             pointer-events: auto;
+        }
+
+        /* WIDESCREEN DESKTOP STUDIO CONSOLE MODE (>= 1120px) */
+        @media (min-width: 1120px) {
+            body:not(.minimal-view) .app-layout {
+                grid-template-columns: 310px 1fr 340px;
+            }
+
+            body:not(.minimal-view) .control-deck {
+                position: relative;
+                left: auto; top: auto; bottom: auto;
+                transform: none !important;
+                box-shadow: none;
+                border-right: 1px solid var(--oled);
+                width: 100%;
+                max-width: none;
+                z-index: 10;
+            }
+
+            body:not(.minimal-view) .playlist-drawer {
+                position: relative;
+                right: auto; top: auto; bottom: auto;
+                transform: none !important;
+                box-shadow: none;
+                border-left: 1px solid var(--oled);
+                width: 100%;
+                max-width: none;
+                z-index: 10;
+            }
+
+            body:not(.minimal-view) .panel-backdrop {
+                display: none !important;
+            }
+
+            body:not(.minimal-view) #close-deck-btn,
+            body:not(.minimal-view) #close-playlist-btn {
+                display: none;
+            }
+
+            body:not(.minimal-view) #toggle-deck-btn,
+            body:not(.minimal-view) #toggle-playlist-btn {
+                display: none;
+            }
         }
 
         .deck-inner {
@@ -204,9 +250,9 @@
         .workspace {
             display: flex;
             flex-direction: column;
-            gap: 18px;
+            gap: 16px;
             width: 100%;
-            max-width: 800px;
+            max-width: 940px;
             margin: 0 auto;
         }
 
@@ -280,28 +326,57 @@
             font-size: 11px;
             letter-spacing: 1px;
             border-bottom: 1px dashed rgba(0, 0, 0, 0.15);
-            padding-bottom: 10px;
+            padding-bottom: 8px;
             text-transform: uppercase;
         }
         
         .track-display {
-            font-size: 24px;
+            font-size: clamp(20px, 3.2vw, 32px);
             font-weight: 700;
             text-transform: uppercase;
-            line-height: 1.4;
+            line-height: 1.25;
             word-break: break-word;
-            min-height: 68px;
+            min-height: 54px;
             letter-spacing: -0.5px;
             color: var(--oled);
+            display: flex;
+            align-items: center;
         }
 
-        /* ASCII Spectrum display container */
+        /* Next Track Banner */
+        .next-track-banner {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 9px;
+            letter-spacing: 0.5px;
+            padding: 6px 10px;
+            background-color: rgba(0, 0, 0, 0.03);
+            border-left: 3px solid var(--cobre);
+            text-transform: uppercase;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .next-label {
+            color: var(--cobre);
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        .next-title {
+            color: rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* Live Monospace Spectrum display container (Rack style) */
         .spectrum-container {
             border: 1px solid var(--oled);
-            padding: 10px 12px;
+            padding: 12px 16px;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 8px;
             background-color: rgba(0, 0, 0, 0.02);
         }
         .spectrum-header {
@@ -310,20 +385,31 @@
             font-size: 8px;
             font-weight: 700;
             letter-spacing: 1px;
-            color: rgba(0, 0, 0, 0.5);
+            color: rgba(0, 0, 0, 0.6);
             text-transform: uppercase;
         }
         .spectrum-display {
             font-family: inherit;
-            font-size: 14px;
+            font-size: clamp(14px, 1.8vw, 19px);
             color: var(--cobre);
-            letter-spacing: 3px;
+            letter-spacing: clamp(1px, 0.5vw, 5px);
             white-space: pre;
             overflow: hidden;
             text-align: center;
             font-weight: bold;
-            height: 20px;
+            height: 26px;
+            line-height: 26px;
             transition: color 0.2s ease;
+        }
+        .spectrum-scale {
+            display: flex;
+            justify-content: space-between;
+            font-size: 8px;
+            color: rgba(0, 0, 0, 0.45);
+            letter-spacing: 0.5px;
+            border-top: 1px dashed rgba(0, 0, 0, 0.1);
+            padding-top: 4px;
+            text-transform: uppercase;
         }
 
         /* Console Logs Box */
@@ -331,8 +417,8 @@
             border: 1px solid var(--oled);
             display: flex;
             flex-direction: column;
-            height: 130px;
-            margin-top: 4px;
+            height: 125px;
+            margin-top: 2px;
         }
         .console-header {
             display: flex;
@@ -366,13 +452,34 @@
         .log-entry.error .log-msg { color: var(--sangre); font-weight: bold; }
         .log-entry.success .log-msg { color: var(--musgo); font-weight: bold; }
 
-        /* Right Side: Playlist Drawer */
+        /* Right Side: Playlist Drawer & Search */
+        .playlist-search-wrap {
+            padding: 8px 14px;
+            border-bottom: 1px dashed rgba(0, 0, 0, 0.12);
+        }
+        .playlist-search-input {
+            width: 100%;
+            background-color: transparent;
+            border: 1px solid var(--oled);
+            padding: 6px 10px;
+            font-family: inherit;
+            font-size: 9px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            outline: none;
+            color: var(--oled);
+        }
+        .playlist-search-input:focus {
+            background-color: rgba(0, 0, 0, 0.03);
+            border-color: var(--cobre);
+        }
+
         .playlist-tracks {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 3px;
             overflow-y: auto;
-            padding: 16px;
+            padding: 12px 14px;
             flex: 1;
         }
         .track-item {
@@ -594,12 +701,12 @@
         <a class="ph-brand" href="/" title="Volver a psicoandino.cl">
             <div class="ph-motif"><div class="ph-dot-sun"></div><div class="ph-dot-shadow"></div></div>
             <div class="ph-textblock">
-                <span class="ph-word"><span class="ph-brandname">PSICOANDINO</span><span class="ph-sep">|</span><span class="ph-system">Radio v2.6.2</span></span>
+                <span class="ph-word"><span class="ph-brandname">PSICOANDINO</span><span class="ph-sep">|</span><span class="ph-system">Radio v2.7.0</span></span>
                 <div class="ph-squares"><span></span><span></span><span></span><span></span></div>
             </div>
         </a>
         <nav class="ph-nav">
-            <a href="#" id="link-changelog">v2.6.2 Bitácora</a>
+            <a href="#" id="link-changelog">v2.7.0 Bitácora</a>
         </nav>
     </div>
 
@@ -612,6 +719,7 @@
             <button id="toggle-deck-btn" class="control-btn" type="button">[DECK]</button>
             <button id="toggle-playlist-btn" class="control-btn" type="button">[PROGRAMACIÓN]</button>
             <button id="toggle-changelog-btn" class="control-btn" type="button">[LOG]</button>
+            <button id="toggle-view-mode-btn" class="control-btn" type="button" title="Alternar Vista">[VISTA: ESTUDIO]</button>
         </div>
         <div class="header-status">
             <span id="system-status-text">SISTEMA DETERMINISTA ACTIVO</span>
@@ -733,7 +841,7 @@
                 <button id="btn-hero-libre" class="hero-libre-link" type="button">entrar a cabina</button>
             </div>
             <div class="workspace">
-                <div style="display:flex; gap:8px; justify-content:center; margin-bottom:4px;">
+                <div style="display:flex; gap:8px; justify-content:center; margin-bottom:2px;">
                     <button id="btn-mode-emisora" class="mode-btn active" type="button">[EMISORA PSICOANDINA // AL AIRE]</button>
                 </div>
                 <div class="telemetry-meta">
@@ -744,13 +852,28 @@
                     <div id="track-title" class="track-display">SISTEMA INICIALIZANDO...</div>
                 </div>
 
-                <!-- Live Monospace Spectrum analyzer -->
+                <!-- Next Track Banner -->
+                <div class="next-track-banner" id="next-track-banner">
+                    <span class="next-label">SIGUIENTE PISTA:</span>
+                    <span id="next-track-title" class="next-title">EN ESPERA DE SINTONIZACIÓN</span>
+                </div>
+
+                <!-- Live Monospace Spectrum analyzer (Rack style 48-band) -->
                 <div class="spectrum-container">
                     <div class="spectrum-header">
-                        <span>ANALIZADOR ESPECTRAL EN VIVO (FFT 64-BIN)</span>
-                        <span id="spectrum-mode-badge" style="color:var(--cobre);">FEED ACTIVO</span>
+                        <span>ANALIZADOR ESPECTRAL EN VIVO (FFT 512-BIN // 48 BANDAS)</span>
+                        <span id="spectrum-mode-badge" style="color:var(--cobre);">FEED ACTIVO (40Hz - 14kHz)</span>
                     </div>
-                    <div id="spectrum-display" class="spectrum-display">-----------------------------------------</div>
+                    <div id="spectrum-display" class="spectrum-display">------------------------------------------------</div>
+                    <div class="spectrum-scale">
+                        <span>40Hz</span>
+                        <span>120Hz</span>
+                        <span>350Hz</span>
+                        <span>1kHz</span>
+                        <span>3kHz</span>
+                        <span>7kHz</span>
+                        <span>14kHz</span>
+                    </div>
                 </div>
                 
                 <div class="console-logs-container">
@@ -770,6 +893,10 @@
                 <button id="close-playlist-btn" class="control-btn" style="padding:2px 6px;">[X]</button>
             </div>
 
+            <div class="playlist-search-wrap">
+                <input type="text" id="playlist-search-input" placeholder="🔍 BUSCAR ENTRE 109 PISTAS..." class="playlist-search-input">
+            </div>
+
             <div class="playlist-tracks" id="playlist-tracks">
                 <div style="font-size:10px; opacity:0.5; padding:10px; text-align:center;">CARGANDO PROGRAMACIÓN...</div>
             </div>
@@ -783,7 +910,15 @@
             </div>
 
             <div class="changelog-content">
-                <div class="changelog-ver">v2.6.2 (2026-09-08) — Actual</div>
+                <div class="changelog-ver">v2.7.0 (2026-09-08) — Actual</div>
+                <ul class="changelog-list">
+                    <li>Consola de Estudio Modular de 3 Columnas (Desktop): Cabina Deck, Master y Programación en vivo.</li>
+                    <li>Analizador Espectral Expandido de 48 Bandas con regla de frecuencias analógica (40Hz - 14kHz).</li>
+                    <li>Buscador de canciones en tiempo real para el catálogo de 109 pistas.</li>
+                    <li>Banner de próxima pista y selector de vista [VISTA: ESTUDIO] / [VISTA: ENFOQUE].</li>
+                </ul>
+
+                <div class="changelog-ver">v2.6.2 (2026-09-08)</div>
                 <ul class="changelog-list">
                     <li>Normalización psicoacústica logarítmica (40 Hz – 14.000 Hz) con FFT 512.</li>
                     <li>Compensación de inclinación espectral (Equal Loudness Tilt) para evitar saturación de graves.</li>
@@ -861,7 +996,7 @@
         </div>
     </div>
 
-    <script src="radio-engine.js?v=2.6.2"></script>
+    <script src="radio-engine.js?v=2.7.0"></script>
     <script>
         var broadcastEngine = null;
         var currentVolume = 80;
@@ -1033,6 +1168,13 @@
                     addLog(`AL AIRE: ${res.signal.title.toUpperCase()} (SIGUIENTE: ${next ? next.title.toUpperCase() : 'FIN'})`, 'success');
                 }
 
+                // Update Next Track Preview Banner
+                var nextSig = broadcastEngine.nextSignal(res.signal.file);
+                var nextTitleEl = document.getElementById('next-track-title');
+                if (nextTitleEl) {
+                    nextTitleEl.innerText = nextSig ? `${nextSig.title.toUpperCase()} [${formatTime(nextSig.duration)}]` : 'FIN DEL BLOQUE (REINICIANDO)';
+                }
+
                 // Highlight active item in schedule only when track changes
                 if (window._lastTrackIndex !== res.index) {
                     window._lastTrackIndex = res.index;
@@ -1048,7 +1190,7 @@
             }
         }
 
-        // REAL AUDIO FFT SPECTROGRAM VISUALIZER WITH LOGARITHMIC BARK/OCTAVE BANDS & EQUAL LOUDNESS COMPENSATION
+        // REAL AUDIO FFT SPECTROGRAM VISUALIZER (48-BAND RACK LOGARITHMIC SCALE)
         var freqBuffer = new Uint8Array(256);
         var spectrumBands = [];
         (function initSpectrumBands() {
@@ -1057,15 +1199,17 @@
             var sampleRate = 44100.0;
             var fftSize = 512;
             var binWidth = sampleRate / fftSize; // ~86.13 Hz per bin
-            for (var i = 0; i < 32; i++) {
-                var fLow = fMin * Math.pow(fMax / fMin, i / 32.0);
-                var fHigh = fMin * Math.pow(fMax / fMin, (i + 1) / 32.0);
+            var totalBands = 48;
+            for (var i = 0; i < totalBands; i++) {
+                var fLow = fMin * Math.pow(fMax / fMin, i / float(totalBands));
+                var fHigh = fMin * Math.pow(fMax / fMin, (i + 1) / float(totalBands));
                 var bStart = Math.max(0, Math.floor(fLow / binWidth));
                 var bEnd = Math.max(bStart + 1, Math.ceil(fHigh / binWidth));
-                // Perceptual tilt: equalizes energy across spectrum so bass pulses cleanly without pinning
-                var weight = 0.78 + (i / 31.0) * 0.68;
+                // Perceptual tilt: equalizes energy across 48 bands
+                var weight = 0.76 + (i / (totalBands - 1)) * 0.72;
                 spectrumBands.push({ start: bStart, end: bEnd, weight: weight });
             }
+            function float(x) { return parseFloat(x); }
         })();
 
         function updateSpectrum() {
@@ -1074,7 +1218,7 @@
 
             if (!broadcastEngine || !broadcastEngine.isRunning) {
                 display.style.color = 'var(--sangre)';
-                display.innerText = '▱▱▱▱▱▱▱▱▱▱ SISTEMA EN STANDBY ▱▱▱▱▱▱▱▱▱▱';
+                display.innerText = '▱▱▱▱▱▱▱▱▱▱▱▱ SISTEMA EN STANDBY ▱▱▱▱▱▱▱▱▱▱▱▱';
                 return;
             }
 
@@ -1088,8 +1232,8 @@
                 }
                 broadcastEngine.analyser.getByteFrequencyData(freqBuffer);
 
-                // Map 32 logarithmically-spaced frequency bands
-                for (var i = 0; i < 32; i++) {
+                // Map 48 logarithmically-spaced frequency bands (12 per color segment)
+                for (var i = 0; i < 48; i++) {
                     var band = spectrumBands[i];
                     var sum = 0;
                     var count = 0;
@@ -1099,22 +1243,22 @@
                     }
                     var avg = count > 0 ? (sum / count) : 0;
 
-                    // Dynamic contrast expansion: prevents bass from pegging at 100%
-                    var norm = Math.max(0, (avg - 18) / (255 - 18));
+                    // Dynamic contrast expansion: smooth punchy bounce across full scale
+                    var norm = Math.max(0, (avg - 16) / (255 - 16));
                     var scaled = Math.pow(norm, 1.25) * band.weight;
                     var charIdx = Math.floor(scaled * spectrumChars.length);
                     charIdx = Math.max(0, Math.min(spectrumChars.length - 1, charIdx));
 
-                    var segmentIdx = Math.floor(i / 8);
+                    var segmentIdx = Math.floor(i / 12);
                     segments[segmentIdx] += spectrumChars[charIdx];
                 }
             } else {
                 var time = Date.now() * 0.005;
-                for (var i = 0; i < 32; i++) {
-                    var val = (Math.sin(i * 0.3 + time) * Math.cos(i * 0.1 - time * 0.5) + 1) / 2;
+                for (var i = 0; i < 48; i++) {
+                    var val = (Math.sin(i * 0.25 + time) * Math.cos(i * 0.08 - time * 0.4) + 1) / 2;
                     var charIdx = Math.floor(val * spectrumChars.length);
                     charIdx = Math.max(0, Math.min(spectrumChars.length - 1, charIdx));
-                    var segmentIdx = Math.floor(i / 8);
+                    var segmentIdx = Math.floor(i / 12);
                     segments[segmentIdx] += spectrumChars[charIdx];
                 }
             }
@@ -1346,6 +1490,43 @@
             closeChangelogBtn.addEventListener('click', closePanels);
             backdrop.addEventListener('click', closePanels);
 
+            // Studio vs Minimal View Mode Toggle
+            var toggleViewModeBtn = document.getElementById('toggle-view-mode-btn');
+            var savedViewMode = localStorage.getItem('psico_view_mode') || 'studio';
+            if (savedViewMode === 'minimal') {
+                document.body.classList.add('minimal-view');
+                if (toggleViewModeBtn) toggleViewModeBtn.innerText = '[VISTA: ENFOQUE]';
+            }
+
+            if (toggleViewModeBtn) {
+                toggleViewModeBtn.addEventListener('click', () => {
+                    document.body.classList.toggle('minimal-view');
+                    var isMinimal = document.body.classList.contains('minimal-view');
+                    toggleViewModeBtn.innerText = isMinimal ? '[VISTA: ENFOQUE]' : '[VISTA: ESTUDIO]';
+                    localStorage.setItem('psico_view_mode', isMinimal ? 'minimal' : 'studio');
+                    showHUD(isMinimal ? 'VISTA ENFOQUE' : 'VISTA ESTUDIO');
+                    addLog('MODO DE VISTA: ' + (isMinimal ? 'ENFOQUE / MINIMAL' : 'ESTUDIO COMPLETO'), 'info');
+                });
+            }
+
+            // Playlist Real-time Search Filter
+            var searchInput = document.getElementById('playlist-search-input');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    var query = e.target.value.toLowerCase().trim();
+                    var items = document.querySelectorAll('#playlist-tracks .track-item');
+                    items.forEach(item => {
+                        var nameEl = item.querySelector('.track-name');
+                        var text = nameEl ? nameEl.innerText.toLowerCase() : '';
+                        if (!query || text.includes(query)) {
+                            item.style.display = 'flex';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            }
+
             // Vinyl power toggle
             var btnVinyl = document.getElementById('btn-vinyl-power');
             btnVinyl.addEventListener('click', () => {
@@ -1445,6 +1626,6 @@
             });
         });
     </script>
-    <script src="psico-header.js?v=2.6.2"></script>
+    <script src="psico-header.js?v=2.7.0"></script>
 </body>
 </html>

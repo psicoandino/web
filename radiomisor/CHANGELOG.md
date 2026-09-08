@@ -4,6 +4,16 @@ Todos los cambios notables en este proyecto se documentan en este archivo siguie
 
 ---
 
+## [2.7.0] - 2026-09-08
+### Añadido
+* **Consola de Estudio Modular de 3 Columnas (Desktop >= 1120px):** Aprovechamiento inteligente del espacio en pantallas medianas y grandes con disposición tipo hardware rack (Cabina/Deck izquierda, Master Broadcast central y Programación derecha).
+* **Analizador Espectral Expandido de 48 Bandas:** Espectrograma de alta resolución que llena el ancho de la consola con regla de escala de frecuencias (`40Hz` a `14kHz`).
+* **Buscador Dinámico en Catálogo de 109 Pistas:** Filtrado instantáneo por texto en el panel de programación.
+* **Banner de Siguiente Pista en Transmisión:** Indicador permanente de la próxima canción y su duración.
+* **Selector de Modo de Vista (`[VISTA: ESTUDIO] / [VISTA: ENFOQUE]`):** Conmutador rápido para alternar entre consola de estudio completa o reproductor minimalista con guardado en preferencias locales.
+
+---
+
 ## [2.6.2] - 2026-09-08
 ### Mejorado
 * **Normalización Logarítmica del Espectro FFT:** Implementada escala psicoacústica logarítmica (40 Hz - 14.000 Hz) con compensación de inclinación espectral (*equal loudness tilt*) y resolución FFT de 512 bins, eliminando la saturación continua en frecuencias graves (`--sangre`) y logrando una respuesta dinámica y reactiva en todo el rango tonal.
