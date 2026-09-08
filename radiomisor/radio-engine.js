@@ -1,17 +1,16 @@
 /*
 ---------------------------------------------------------
 Radiomisor
-RadioEngine v2.2 — Robust True Radio Station Engine
+RadioEngine v2.5 — True Radio Station Engine & Web Audio Matrix
 ---------------------------------------------------------
 
-Broadcast Engine for Psicoandino Radio
-
-✓ Load Station (station.json)
-✓ Safe URL encoding (RFC 3986 with brackets & spaces)
-✓ Bulletproof HTML5 Audio with loadedmetadata seek handling
-✓ Deterministic Cycle-based Seeded Shuffle (Mulberry32 PRNG)
-✓ Prefetch & Auto-advance
-✓ Real-time telemetry & drift compensation
+✓ "Time is Truth" Deterministic Broadcast Synchronization
+✓ Cycle-based Seeded Shuffle (Mulberry32 PRNG)
+✓ Real Audio FFT Analyser Integration (AnalyserNode)
+✓ Tuning Sweep Analog Sound FX (Dial Frequency Lock)
+✓ Native MediaSession API (Lockscreen & Mobile OS controls)
+✓ Robust RFC 3986 URL Encoding & Safe Seeking
+✓ Instant Transition Prefetching
 
 ---------------------------------------------------------
 */
@@ -53,6 +52,12 @@ class RadioEngine {
         this.currentSignal = null;
         this.prefetchAudio = null;
 
+        // Web Audio routing & FFT Analyser
+        this.audioCtx = null;
+        this.analyser = null;
+        this.sourceNode = null;
+        this.gainNode = null;
+
         this._cachedCycle = null;
         this._activeSignals = null;
     }
@@ -81,8 +86,93 @@ class RadioEngine {
         }
     }
 
+    initWebAudioGraph() {
+        if (!this.audioCtx) {
+            const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+            this.audioCtx = new AudioContextClass();
+        }
+
+        if (this.audioCtx.state === 'suspended') {
+            this.audioCtx.resume();
+        }
+
+        if (!this.analyser) {
+            this.analyser = this.audioCtx.createAnalyser();
+            this.analyser.fftSize = 128;
+            this.analyser.smoothingTimeConstant = 0.8;
+
+            this.gainNode = this.audioCtx.createGain();
+            this.gainNode.gain.value = this.volume;
+
+            if (this.audioElement && !this.sourceNode) {
+                this.sourceNode = this.audioCtx.createMediaElementSource(this.audioElement);
+                this.sourceNode.connect(this.analyser);
+                this.analyser.connect(this.gainNode);
+                this.gainNode.connect(this.audioCtx.destination);
+            }
+        }
+    }
+
+    playTuningSweepFX() {
+        try {
+            if (!this.audioCtx) return;
+            const now = this.audioCtx.currentTime;
+
+            // 1. Noise burst
+            const bufferSize = Math.floor(this.audioCtx.sampleRate * 0.35);
+            const buffer = this.audioCtx.createBuffer(1, bufferSize, this.audioCtx.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = Math.random() * 2 - 1;
+            }
+
+            const noiseSource = this.audioCtx.createBufferSource();
+            noiseSource.buffer = buffer;
+
+            // Bandpass filter swept across radio frequencies
+            const filter = this.audioCtx.createBiquadFilter();
+            filter.type = 'bandpass';
+            filter.Q.value = 3.5;
+            filter.frequency.setValueAtTime(300, now);
+            filter.frequency.exponentialRampToValueAtTime(2800, now + 0.18);
+            filter.frequency.exponentialRampToValueAtTime(700, now + 0.33);
+
+            // Heterodyne whistle (radio dial scan)
+            const osc = this.audioCtx.createOscillator();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(880, now);
+            osc.frequency.exponentialRampToValueAtTime(1400, now + 0.15);
+            osc.frequency.exponentialRampToValueAtTime(480, now + 0.33);
+
+            const oscGain = this.audioCtx.createGain();
+            oscGain.gain.setValueAtTime(0.04, now);
+            oscGain.gain.linearRampToValueAtTime(0, now + 0.32);
+            osc.connect(oscGain);
+            oscGain.connect(this.audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.34);
+
+            const noiseGain = this.audioCtx.createGain();
+            noiseGain.gain.setValueAtTime(0.18, now);
+            noiseGain.gain.linearRampToValueAtTime(0.22, now + 0.15);
+            noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.34);
+
+            noiseSource.connect(filter);
+            filter.connect(noiseGain);
+            noiseGain.connect(this.audioCtx.destination);
+
+            noiseSource.start(now);
+            noiseSource.stop(now + 0.35);
+        } catch(e) {
+            console.warn("Tuning FX skipped", e);
+        }
+    }
+
     setVolume(val) {
         this.volume = Math.max(0, Math.min(1, val));
+        if (this.gainNode) {
+            this.gainNode.gain.value = this.volume;
+        }
         if (this.audioElement) {
             this.audioElement.volume = this.volume;
         }
@@ -153,6 +243,7 @@ class RadioEngine {
         if (!this.audioElement) {
             this.audioElement = new Audio();
             this.audioElement.preload = "auto";
+            this.audioElement.crossOrigin = "anonymous";
             this.audioElement.volume = this.volume;
             this.audioElement.muted = false;
 
@@ -160,11 +251,10 @@ class RadioEngine {
                 this.handleTrackEnded();
             });
 
-            this.audioElement.addEventListener("error", (e) => {
-                console.error("[RadioEngine] Error en audio:", e, this.audioElement.error);
+            this.audioElement.addEventListener("error", () => {
                 const code = this.audioElement.error ? this.audioElement.error.code : "N/A";
                 const msg = this.audioElement.error ? this.audioElement.error.message : "";
-                this.status(`ERROR DE AUDIO (${code}): ${msg}. REINTENTANDO EN 1S...`);
+                this.status(`REAJUSTANDO FRECUENCIA (${code})...`);
                 if (this.isRunning) {
                     setTimeout(() => this.playCurrentBroadcast(), 1000);
                 }
@@ -172,12 +262,18 @@ class RadioEngine {
         }
     }
 
-    async tune() {
+    async tune(playFX = true) {
         if (!this.station) {
             await this.loadStation("station.json");
         }
 
         this._initAudioElement();
+        this.initWebAudioGraph();
+
+        if (playFX) {
+            this.playTuningSweepFX();
+        }
+
         this.isRunning = true;
         await this.playCurrentBroadcast();
     }
@@ -203,14 +299,12 @@ class RadioEngine {
         const isSameFile = audio.src && (audio.src.endsWith(encodedUrl) || audio.src.endsWith(rawFile));
 
         if (isSameFile && !audio.paused && audio.readyState >= 2) {
-            // Ya está sonando el archivo actual; sincronizamos si hay desfase
             if (Math.abs(audio.currentTime - startSecond) > 3) {
                 audio.currentTime = startSecond;
             }
             return;
         }
 
-        // Asignamos nueva fuente
         audio.src = encodedUrl;
         audio.volume = this.volume;
 
@@ -221,9 +315,10 @@ class RadioEngine {
                 }
                 await audio.play();
                 this.status(`▶ AL AIRE: ${result.signal.title} [BLOQUE #${this.currentCycle()} // ${result.index + 1}/${this.station.signals.length}]`);
+                this.updateOSMediaSession();
             } catch (err) {
                 console.error("[RadioEngine] Error iniciando play():", err);
-                this.status("AVISO: Haz clic en [SINTONIZAR] para permitir audio en el navegador (" + err.message + ")");
+                this.status("AVISO: Haz clic en [SINTONIZAR] para permitir audio (" + err.message + ")");
             }
         };
 
@@ -234,10 +329,44 @@ class RadioEngine {
             audio.load();
         }
 
-        // Prefetch de la siguiente canción
         const next = this.nextSignal(result.signal.file);
         if (next) {
             this.prefetch(next);
+        }
+    }
+
+    updateOSMediaSession() {
+        if (!('mediaSession' in navigator) || !this.currentSignal) return;
+        try {
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: this.currentSignal.title,
+                artist: "Psicoandino",
+                album: `Psicoandino Radio (Bloque #${this.currentCycle()})`,
+                artwork: [
+                    { src: 'psico-cover.png', sizes: '512x512', type: 'image/png' }
+                ]
+            });
+            navigator.mediaSession.playbackState = this.isRunning ? "playing" : "paused";
+
+            navigator.mediaSession.setActionHandler('play', () => this.tune(false));
+            navigator.mediaSession.setActionHandler('pause', () => this.stop());
+            navigator.mediaSession.setActionHandler('nexttrack', () => this.skipNext());
+        } catch(e) {
+            console.warn("MediaSession error", e);
+        }
+    }
+
+    skipNext() {
+        if (!this.currentSignal) return;
+        const next = this.nextSignal(this.currentSignal.file);
+        if (next) {
+            this.status(`SALTANDO A: ${next.title.toUpperCase()}`);
+            this._initAudioElement();
+            this.currentSignal = next;
+            this.audioElement.src = encodePath(next.file);
+            this.audioElement.currentTime = 0;
+            this.audioElement.play().catch(() => {});
+            this.updateOSMediaSession();
         }
     }
 
@@ -260,6 +389,9 @@ class RadioEngine {
         this.isRunning = false;
         if (this.audioElement) {
             this.audioElement.pause();
+        }
+        if ('mediaSession' in navigator) {
+            navigator.mediaSession.playbackState = "paused";
         }
         this.status("EMISORA DETENIDA (STANDBY).");
     }

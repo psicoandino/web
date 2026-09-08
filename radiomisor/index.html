@@ -31,7 +31,7 @@
             display: grid;
             grid-template-columns: repeat(12, 1fr);
             align-items: center;
-            padding: 16px;
+            padding: 14px 20px;
             border-bottom: 1px solid var(--oled);
             background-color: var(--hueso);
             z-index: 10;
@@ -49,7 +49,7 @@
             display: flex;
             grid-column: 6 / 10;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
         }
         
         .header-status {
@@ -69,9 +69,9 @@
             margin-left: 10px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .constitutional-dot:hover, .constitutional-dot.active {
-            background-color: var(--cobre);
-            border-radius: 0%;
+        .constitutional-dot.active {
+            background-color: var(--musgo);
+            box-shadow: 0 0 8px var(--musgo);
         }
 
         .app-layout {
@@ -82,24 +82,31 @@
             position: relative;
         }
 
+        /* Slide-out Panels */
         .control-deck,
         .playlist-drawer {
             position: absolute;
             top: 0;
             bottom: 0;
             width: 320px;
-            z-index: 20;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            max-width: 85vw;
+            z-index: 50;
+            background-color: var(--hueso);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
         }
 
         .control-deck {
             left: 0;
+            border-right: 1px solid var(--oled);
             transform: translateX(-100%);
         }
 
         .playlist-drawer {
             right: 0;
+            border-left: 1px solid var(--oled);
             transform: translateX(100%);
         }
 
@@ -111,14 +118,42 @@
             transform: translateX(0);
         }
 
+        /* Backdrop overlay when panel is open */
+        .panel-backdrop {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.25);
+            z-index: 40;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+        .app-layout.show-deck .panel-backdrop,
+        .app-layout.show-playlist .panel-backdrop {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
         /* Left Side: Control Deck */
-        .control-deck {
-            border-right: 1px solid var(--oled);
+        .deck-inner {
             padding: 20px;
+            overflow-y: auto;
             display: flex;
             flex-direction: column;
-            overflow-y: auto;
-            background-color: var(--hueso);
+            gap: 16px;
+            flex: 1;
+        }
+        
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--oled);
+            padding: 16px 20px;
         }
         
         .deck-section-title {
@@ -126,10 +161,10 @@
             font-weight: 700;
             letter-spacing: 1px;
             text-transform: uppercase;
-            border-bottom: 1px solid var(--oled);
+            border-bottom: 1px dashed var(--line);
             padding-bottom: 6px;
-            margin-bottom: 12px;
-            color: rgba(0, 0, 0, 0.8);
+            margin-bottom: 10px;
+            color: rgba(0, 0, 0, 0.85);
         }
         
         .deck-stats {
@@ -141,7 +176,7 @@
         .stat-row {
             display: flex;
             justify-content: space-between;
-            border-bottom: 1px dashed rgba(0, 0, 0, 0.12);
+            border-bottom: 1px dashed rgba(0, 0, 0, 0.08);
             padding-bottom: 4px;
             text-transform: uppercase;
         }
@@ -154,7 +189,7 @@
         main {
             display: flex;
             flex-direction: column;
-            padding: 30px;
+            padding: 24px;
             overflow-y: auto;
             background-color: var(--hueso);
             justify-content: center;
@@ -164,7 +199,7 @@
         .workspace {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 18px;
             width: 100%;
             max-width: 800px;
             margin: 0 auto;
@@ -258,13 +293,15 @@
         /* ASCII Spectrum display container */
         .spectrum-container {
             border: 1px solid var(--oled);
-            padding: 8px;
+            padding: 10px 12px;
             display: flex;
             flex-direction: column;
-            gap: 4px;
-            background-color: rgba(0, 0, 0, 0.01);
+            gap: 6px;
+            background-color: rgba(0, 0, 0, 0.02);
         }
         .spectrum-header {
+            display: flex;
+            justify-content: space-between;
             font-size: 8px;
             font-weight: 700;
             letter-spacing: 1px;
@@ -273,15 +310,15 @@
         }
         .spectrum-display {
             font-family: inherit;
-            font-size: 13px;
+            font-size: 14px;
             color: var(--cobre);
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             white-space: pre;
             overflow: hidden;
             text-align: center;
             font-weight: bold;
-            height: 18px;
-            transition: color 0.3s ease;
+            height: 20px;
+            transition: color 0.2s ease;
         }
 
         /* Console Logs Box */
@@ -289,8 +326,8 @@
             border: 1px solid var(--oled);
             display: flex;
             flex-direction: column;
-            height: 150px;
-            margin-top: 10px;
+            height: 140px;
+            margin-top: 4px;
         }
         .console-header {
             font-size: 9px;
@@ -307,7 +344,7 @@
             font-size: 10px;
             line-height: 1.5;
             flex: 1;
-            background-color: rgba(0, 0, 0, 0.02);
+            background-color: rgba(0, 0, 0, 0.01);
             display: flex;
             flex-direction: column;
             gap: 4px;
@@ -322,38 +359,12 @@
         .log-entry.success .log-msg { color: var(--musgo); font-weight: bold; }
 
         /* Right Side: Playlist Drawer */
-        .playlist-drawer {
-            border-left: 1px solid var(--oled);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            height: 100%;
-            background-color: var(--hueso);
-            gap: 12px;
-        }
-        .playlist-header {
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border-bottom: 1px solid var(--oled);
-            padding-bottom: 6px;
-            margin-bottom: 4px;
-            flex-shrink: 0;
-            color: rgba(0, 0, 0, 0.8);
-        }
-        .playlist-section {
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            flex: 1;
-        }
         .playlist-tracks {
             display: flex;
             flex-direction: column;
             gap: 4px;
             overflow-y: auto;
+            padding: 16px;
             flex: 1;
         }
         .track-item {
@@ -369,17 +380,17 @@
             cursor: pointer;
         }
         .track-item:hover {
-            background-color: rgba(0, 0, 0, 0.03);
+            background-color: rgba(0, 0, 0, 0.04);
             border-color: rgba(0, 0, 0, 0.1);
         }
         .track-item.active {
-            background-color: rgba(36, 134, 146, 0.08);
+            background-color: rgba(36, 134, 146, 0.1);
             border-color: var(--cobre);
             color: var(--cobre);
             font-weight: bold;
         }
         .track-num {
-            width: 22px;
+            width: 26px;
             color: rgba(0, 0, 0, 0.4);
             flex-shrink: 0;
         }
@@ -464,7 +475,7 @@
         
         .control-btn {
             background: none;
-            border: none;
+            border: 1px solid transparent;
             color: var(--oled);
             cursor: pointer;
             font-family: inherit;
@@ -474,15 +485,19 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 6px;
+            padding: 6px 10px;
             transition: all 0.1s ease;
             user-select: none;
         }
-        .control-btn:hover { color: var(--cobre); }
+        .control-btn:hover { color: var(--cobre); border-color: var(--cobre); }
         .control-btn.btn-flash {
             background-color: var(--cobre) !important;
             color: var(--hueso) !important;
             transform: scale(0.95);
+        }
+        .control-btn.active {
+            color: var(--cobre);
+            border-color: var(--cobre);
         }
         
         .volume-section {
@@ -521,23 +536,20 @@
         }
 
         .mode-btn {
-            background: transparent; border: 1px solid rgba(0,0,0,0.15);
+            background: transparent; border: 1px solid rgba(0,0,0,0.2);
             color: var(--oled); cursor: pointer; font-family: inherit;
             font-size: 9px; font-weight: 700; text-transform: uppercase;
-            padding: 2px 6px; opacity: 0.5; transition: all 0.15s ease;
+            padding: 3px 8px; transition: all 0.15s ease;
         }
-        .mode-btn.active { opacity: 1; border-color: var(--cobre); color: var(--cobre); }
+        .mode-btn.active { border-color: var(--cobre); color: var(--cobre); background-color: rgba(36, 134, 146, 0.05); }
 
         .vinyl-controller {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 8px;
             font-family: inherit;
             font-size: 9px;
             text-transform: uppercase;
-            border-bottom: 1px solid var(--oled);
-            padding-bottom: 14px;
-            margin-bottom: 16px;
         }
         .vinyl-controller input {
             accent-color: var(--cobre);
@@ -553,7 +565,7 @@
         <a class="ph-brand" href="/" title="Volver a psicoandino.cl">
             <div class="ph-motif"><div class="ph-dot-sun"></div><div class="ph-dot-shadow"></div></div>
             <div class="ph-textblock">
-                <span class="ph-word"><span class="ph-brandname">PSICOANDINO</span><span class="ph-sep">|</span><span class="ph-system">Emisora 24/7</span></span>
+                <span class="ph-word"><span class="ph-brandname">PSICOANDINO</span><span class="ph-sep">|</span><span class="ph-system">Radio 24/7</span></span>
                 <div class="ph-squares"><span></span><span></span><span></span><span></span></div>
             </div>
         </a>
@@ -578,75 +590,83 @@
     </header>
 
     <div class="app-layout" id="app-layout">
+        <!-- Backdrop -->
+        <div class="panel-backdrop" id="panel-backdrop"></div>
+
         <!-- LEFT: Control Deck -->
-        <aside class="control-deck">
-            <div class="deck-section-title">SINTETIZADOR DE VINILO</div>
-            
-            <div class="vinyl-controller">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                    <label style="font-size:8px; font-weight:700; opacity:0.6;">RUIDO DE AGUJA</label>
-                    <button id="btn-vinyl-power" type="button" class="mode-btn">[OFF]</button>
-                </div>
-
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px; border-bottom:1px dashed rgba(0,0,0,0.1); padding-bottom:8px;">
-                    <span style="font-size:8px; opacity:0.6; width:55px;">VOLUMEN</span>
-                    <input type="range" id="slider-vinyl-master" min="0" max="100" value="80">
-                    <span id="val-vinyl-master" style="font-size:8px; color:var(--cobre); width:25px; text-align:right;">80%</span>
-                </div>
-
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px 14px;">
-                    <div>
-                        <div style="display:flex; justify-content:space-between; font-size:8px; margin-bottom:3px;">
-                            <span style="opacity:0.6;">HISS</span>
-                            <span id="val-hiss" style="color:var(--cobre); font-size:8px;">30%</span>
-                        </div>
-                        <input type="range" id="slider-hiss" min="0" max="100" value="30">
-                    </div>
-                    <div>
-                        <div style="display:flex; justify-content:space-between; font-size:8px; margin-bottom:3px;">
-                            <span style="opacity:0.6;">CRACKLE</span>
-                            <span id="val-crackle" style="color:var(--cobre); font-size:8px;">25%</span>
-                        </div>
-                        <input type="range" id="slider-crackle" min="0" max="100" value="25">
-                    </div>
-                    <div>
-                        <div style="display:flex; justify-content:space-between; font-size:8px; margin-bottom:3px;">
-                            <span style="opacity:0.6;">GOLPE (33 RPM)</span>
-                            <span id="val-thump" style="color:var(--mostaza); font-size:8px;">40%</span>
-                        </div>
-                        <input type="range" id="slider-thump" min="0" max="100" value="40">
-                    </div>
-                    <div>
-                        <div style="display:flex; justify-content:space-between; font-size:8px; margin-bottom:3px;">
-                            <span style="opacity:0.6;">RUMBLE</span>
-                            <span id="val-rumble" style="color:var(--mostaza); font-size:8px;">20%</span>
-                        </div>
-                        <input type="range" id="slider-rumble" min="0" max="100" value="20">
-                    </div>
-                </div>
+        <aside class="control-deck" id="control-deck">
+            <div class="panel-header">
+                <span>SINTETIZADOR DE VINILO</span>
+                <button id="close-deck-btn" class="control-btn" style="padding:2px 6px;">[X]</button>
             </div>
+            
+            <div class="deck-inner">
+                <div class="vinyl-controller">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                        <span style="font-size:9px; font-weight:700;">MOTOR ANALÓGICO</span>
+                        <button id="btn-vinyl-power" type="button" class="mode-btn">[OFF]</button>
+                    </div>
 
-            <div class="deck-section-title">TELEMETRÍA DE EMISORA</div>
-            <div class="deck-stats">
-                <div class="stat-row">
-                    <span>BLOQUE / CICLO</span>
-                    <span id="stat-cycle">#0</span>
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px; border-bottom:1px dashed rgba(0,0,0,0.1); padding-bottom:8px;">
+                        <span style="font-size:8px; opacity:0.6; width:55px;">VOL VINILO</span>
+                        <input type="range" id="slider-vinyl-master" min="0" max="100" value="80">
+                        <span id="val-vinyl-master" style="font-size:8px; color:var(--cobre); width:25px; text-align:right;">80%</span>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px 14px;">
+                        <div>
+                            <div style="display:flex; justify-content:space-between; font-size:8px; margin-bottom:3px;">
+                                <span style="opacity:0.6;">HISS</span>
+                                <span id="val-hiss" style="color:var(--cobre); font-size:8px;">30%</span>
+                            </div>
+                            <input type="range" id="slider-hiss" min="0" max="100" value="30">
+                        </div>
+                        <div>
+                            <div style="display:flex; justify-content:space-between; font-size:8px; margin-bottom:3px;">
+                                <span style="opacity:0.6;">CRACKLE</span>
+                                <span id="val-crackle" style="color:var(--cobre); font-size:8px;">25%</span>
+                            </div>
+                            <input type="range" id="slider-crackle" min="0" max="100" value="25">
+                        </div>
+                        <div>
+                            <div style="display:flex; justify-content:space-between; font-size:8px; margin-bottom:3px;">
+                                <span style="opacity:0.6;">GOLPE (33 RPM)</span>
+                                <span id="val-thump" style="color:var(--mostaza); font-size:8px;">40%</span>
+                            </div>
+                            <input type="range" id="slider-thump" min="0" max="100" value="40">
+                        </div>
+                        <div>
+                            <div style="display:flex; justify-content:space-between; font-size:8px; margin-bottom:3px;">
+                                <span style="opacity:0.6;">RUMBLE</span>
+                                <span id="val-rumble" style="color:var(--mostaza); font-size:8px;">20%</span>
+                            </div>
+                            <input type="range" id="slider-rumble" min="0" max="100" value="20">
+                        </div>
+                    </div>
                 </div>
-                <div class="stat-row">
-                    <span>ORDEN DE EMISIÓN</span>
-                    <span style="color:var(--cobre);">SHUFFLE DETERMINISTA</span>
-                </div>
-                <div class="stat-row">
-                    <span>PISTAS EN CATÁLOGO</span>
-                    <span id="stat-tracks-count">88</span>
-                </div>
-                <div class="stat-row">
-                    <span>DURACIÓN BLOQUE</span>
-                    <span id="stat-total-duration">3.06 H</span>
-                </div>
-                <div class="stat-row">
-                    <span>SINCRONIZACIÓN</span>
-                    <span style="color:var(--musgo);">TIME IS TRUTH</span>
+
+                <div class="deck-section-title" style="margin-top:16px;">TELEMETRÍA DE EMISORA</div>
+                <div class="deck-stats">
+                    <div class="stat-row">
+                        <span>BLOQUE / CICLO</span>
+                        <span id="stat-cycle">#0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>ORDEN DE EMISIÓN</span>
+                        <span style="color:var(--cobre);">SHUFFLE DETERMINISTA</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>PISTAS EN CATÁLOGO</span>
+                        <span id="stat-tracks-count">109</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>DURACIÓN BLOQUE</span>
+                        <span id="stat-total-duration">4.0 H</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>SINCRONIZACIÓN</span>
+                        <span style="color:var(--musgo);">TIME IS TRUTH</span>
+                    </div>
                 </div>
             </div>
         </aside>
@@ -672,7 +692,10 @@
 
                 <!-- Live Monospace Spectrum analyzer -->
                 <div class="spectrum-container">
-                    <div class="spectrum-header">ANALIZADOR ESPECTRAL DE SEÑAL</div>
+                    <div class="spectrum-header">
+                        <span>ANALIZADOR ESPECTRAL DE FRECUENCIA EN VIVO (FFT)</span>
+                        <span id="spectrum-mode-badge" style="color:var(--cobre);">DIRECT FEED</span>
+                    </div>
                     <div id="spectrum-display" class="spectrum-display">-----------------------------------------</div>
                 </div>
                 
@@ -684,15 +707,14 @@
         </main>
 
         <!-- RIGHT: Playlist Drawer -->
-        <aside class="playlist-drawer">
-            <div class="playlist-header">
+        <aside class="playlist-drawer" id="playlist-drawer">
+            <div class="panel-header">
                 <span id="playlist-header-title">PROGRAMACIÓN DEL BLOQUE</span>
+                <button id="close-playlist-btn" class="control-btn" style="padding:2px 6px;">[X]</button>
             </div>
 
-            <div class="playlist-section active-queue-section">
-                <div class="playlist-tracks" id="playlist-tracks">
-                    <div style="font-size:10px; opacity:0.5; padding:10px; text-align:center;">CARGANDO PROGRAMACIÓN...</div>
-                </div>
+            <div class="playlist-tracks" id="playlist-tracks">
+                <div style="font-size:10px; opacity:0.5; padding:10px; text-align:center;">CARGANDO PROGRAMACIÓN...</div>
             </div>
         </aside>
     </div>
@@ -741,9 +763,10 @@
         // Vinyl simulation state
         var vinylActive = false;
         var vinylMasterVolume = 0.8;
+        var vinylSliders = { hiss: 30, crackle: 25, thump: 40, rumble: 20 };
         var vinylAudioCtx = null;
         var vinylInitialized = false;
-        var vinylHissGain = null, vinylCrackleGain = null, masterSummingNode = null;
+        var vinylHissGain = null, vinylCrackleGain = null, vinylThumpGain = null, vinylRumbleGain = null, masterSummingNode = null;
 
         function showHUD(text) {
             var hud = document.getElementById('hud-overlay');
@@ -789,9 +812,11 @@
             var container = document.getElementById('playlist-tracks');
             var headerTitle = document.getElementById('playlist-header-title');
             var cycleStat = document.getElementById('stat-cycle');
+            var countStat = document.getElementById('stat-tracks-count');
 
             if (headerTitle) headerTitle.innerText = `PROGRAMACIÓN BLOQUE #${currentCycle}`;
             if (cycleStat) cycleStat.innerText = `#${currentCycle}`;
+            if (countStat) countStat.innerText = `${broadcastEngine.station.signals.length}`;
             if (!container) return;
 
             container.innerHTML = '';
@@ -810,16 +835,19 @@
                 `;
 
                 item.addEventListener('click', async () => {
-                    addLog(`REPRODUCIENDO PISTA DIRECTA: ${sig.title.toUpperCase()}`, 'info');
+                    addLog(`SINTONIZANDO PISTA: ${sig.title.toUpperCase()}`, 'info');
                     if (broadcastEngine) {
                         broadcastEngine._initAudioElement();
+                        broadcastEngine.initWebAudioGraph();
                         broadcastEngine.isRunning = true;
+                        broadcastEngine.currentSignal = sig;
                         broadcastEngine.audioElement.src = sig.file.split('/').map(encodeURIComponent).join('/');
                         broadcastEngine.audioElement.currentTime = 0;
                         try {
                             await broadcastEngine.audioElement.play();
                             document.getElementById('btn-play').innerText = '[PAUSA]';
                             showHUD('PLAY');
+                            broadcastEngine.updateOSMediaSession();
                         } catch(e) {
                             addLog('ERROR DE REPRODUCCIÓN: ' + e.message, 'error');
                         }
@@ -828,6 +856,8 @@
 
                 container.appendChild(item);
             });
+
+            addLog(`ACTUALIZADA PROGRAMACIÓN DETERMINISTA: BLOQUE #${currentCycle} (${activeSignals.length} PISTAS)`, 'info');
         }
 
         async function initStation() {
@@ -862,11 +892,11 @@
 
             if (!broadcastEngine.isRunning) {
                 if (teleEl) teleEl.innerText = 'EMISORA PSICOANDINA // EN ESPERA';
-                if (dot) dot.style.backgroundColor = 'var(--oled)';
+                if (dot) dot.classList.remove('active');
                 return;
             }
 
-            if (dot) dot.style.backgroundColor = 'var(--musgo)';
+            if (dot) dot.classList.add('active');
 
             var offset = broadcastEngine.currentOffset();
             var res = broadcastEngine.findSignal(offset);
@@ -889,7 +919,7 @@
                 if (lastAnnouncedId !== res.signal.id) {
                     lastAnnouncedId = res.signal.id;
                     var next = broadcastEngine.nextSignal(res.signal.file);
-                    addLog(`AL AIRE: ${res.signal.title.toUpperCase()}`, 'success');
+                    addLog(`AL AIRE: ${res.signal.title.toUpperCase()} (SIGUIENTE: ${next ? next.title.toUpperCase() : 'FIN'})`, 'success');
                 }
 
                 // Highlight active item in schedule
@@ -904,6 +934,8 @@
             }
         }
 
+        // REAL AUDIO FFT SPECTROGRAM VISUALIZER
+        var freqBuffer = new Uint8Array(64);
         function updateSpectrum() {
             var display = document.getElementById('spectrum-display');
             if (!display) return;
@@ -916,17 +948,30 @@
 
             display.style.color = '';
             var segments = ['', '', '', ''];
-            var length = 32;
-            var time = Date.now() * 0.005;
-            for (var i = 0; i < length; i++) {
-                var val = Math.sin(i * 0.3 + time) * Math.cos(i * 0.1 - time * 0.5);
-                val = (val + 1) / 2;
-                var noise = Math.random() * 0.3;
-                var index = Math.floor((val * 0.7 + noise * 0.3) * spectrumChars.length);
-                index = Math.max(0, Math.min(spectrumChars.length - 1, index));
-                var segmentIdx = Math.floor(i / 8);
-                segments[segmentIdx] += spectrumChars[index];
+
+            if (broadcastEngine.analyser) {
+                broadcastEngine.analyser.getByteFrequencyData(freqBuffer);
+
+                // Downsample 64 FFT bins to 32 characters
+                for (var i = 0; i < 32; i++) {
+                    var binVal = (freqBuffer[i * 2] + freqBuffer[i * 2 + 1]) / 2; // 0..255
+                    var charIdx = Math.floor((binVal / 255) * spectrumChars.length);
+                    charIdx = Math.max(0, Math.min(spectrumChars.length - 1, charIdx));
+                    var segmentIdx = Math.floor(i / 8);
+                    segments[segmentIdx] += spectrumChars[charIdx];
+                }
+            } else {
+                // Fallback simulation if Analyser isn't connected yet
+                var time = Date.now() * 0.005;
+                for (var i = 0; i < 32; i++) {
+                    var val = (Math.sin(i * 0.3 + time) * Math.cos(i * 0.1 - time * 0.5) + 1) / 2;
+                    var charIdx = Math.floor(val * spectrumChars.length);
+                    charIdx = Math.max(0, Math.min(spectrumChars.length - 1, charIdx));
+                    var segmentIdx = Math.floor(i / 8);
+                    segments[segmentIdx] += spectrumChars[charIdx];
+                }
             }
+
             display.innerHTML = 
                 '<span style="color:var(--sangre)">' + segments[0] + '</span>' +
                 '<span style="color:var(--mostaza)">' + segments[1] + '</span>' +
@@ -954,12 +999,14 @@
             showHUD('VOL: ' + currentVolume + '%');
         }
 
+        // FULL 4-CHANNEL ANALOG VINYL SYNTHESIZER
         function initVinylNoise() {
             if (vinylInitialized) return;
             try {
                 vinylAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 var sr = vinylAudioCtx.sampleRate;
 
+                // 1. Pink noise for Surface Hiss
                 var hissBuffer = vinylAudioCtx.createBuffer(2, sr * 4, sr);
                 for (var ch = 0; ch < 2; ch++) {
                     var d = hissBuffer.getChannelData(ch);
@@ -977,11 +1024,12 @@
                     }
                 }
 
+                // 2. Poisson Crackle
                 var crackleBuffer = vinylAudioCtx.createBuffer(1, sr * 4, sr);
                 var cData = crackleBuffer.getChannelData(0);
                 var idx = 0;
                 while (idx < cData.length) {
-                    var interval = Math.floor(-Math.log(Math.random() + 1e-9) / 18 * sr);
+                    var interval = Math.floor(-Math.log(Math.random() + 1e-9) / 20 * sr);
                     idx += Math.max(1, interval);
                     if (idx < cData.length) {
                         var amp = (Math.random() * 0.7 + 0.3) * (Math.random() > 0.5 ? 1 : -1);
@@ -991,6 +1039,24 @@
                             cData[idx + k] += amp * Math.exp(-2500 * t) * Math.cos(2 * Math.PI * 2200 * t);
                         }
                     }
+                }
+
+                // 3. Periodic Scratch Thump (33 1/3 RPM)
+                var thumpBuffer = vinylAudioCtx.createBuffer(1, Math.round(sr * 1.8), sr);
+                var tData = thumpBuffer.getChannelData(0);
+                for (var k = 0; k < Math.min(Math.round(sr * 0.12), tData.length); k++) {
+                    var t = k / sr;
+                    tData[k] = 0.5 * Math.exp(-t / 0.07) * Math.sin(2 * Math.PI * 12 * t);
+                }
+
+                // 4. Turntable Motor Rumble
+                var rumbleBuffer = vinylAudioCtx.createBuffer(1, sr * 4, sr);
+                var rData = rumbleBuffer.getChannelData(0);
+                var rumbleVal = 0;
+                for (var i = 0; i < rData.length; i++) {
+                    rumbleVal += (Math.random() * 2 - 1) * 0.005;
+                    rumbleVal *= 0.995;
+                    rData[i] = rumbleVal;
                 }
 
                 masterSummingNode = vinylAudioCtx.createGain();
@@ -1009,10 +1075,13 @@
                     return g;
                 }
 
-                vinylHissGain = createLoopSource(hissBuffer, 0.3 * 0.5);
-                vinylCrackleGain = createLoopSource(crackleBuffer, 0.25 * 0.4);
+                vinylHissGain = createLoopSource(hissBuffer, (vinylSliders.hiss / 100) * 0.25);
+                vinylCrackleGain = createLoopSource(crackleBuffer, (vinylSliders.crackle / 100) * 0.3);
+                vinylThumpGain = createLoopSource(thumpBuffer, (vinylSliders.thump / 100) * 0.35);
+                vinylRumbleGain = createLoopSource(rumbleBuffer, (vinylSliders.rumble / 100) * 0.3);
+
                 vinylInitialized = true;
-                addLog('SINTETIZADOR DE VINILO LISTO.', 'success');
+                addLog('MOTOR DE VINILO Y RUIDO BLANCO ACTIVO.', 'success');
             } catch(e) {
                 console.error("Error vinyl audio ctx", e);
             }
@@ -1022,16 +1091,16 @@
             initStation();
             setVolume(80);
             setInterval(updateBroadcastTelemetry, 250);
-            setInterval(updateSpectrum, 100);
+            setInterval(updateSpectrum, 60);
 
             // Sintonizar Hero
             document.getElementById('btn-sintonizar').addEventListener('click', async () => {
                 flashButton('btn-sintonizar');
                 document.body.classList.add('mode-chosen');
                 if (broadcastEngine) {
-                    await broadcastEngine.tune();
+                    await broadcastEngine.tune(true);
                     document.getElementById('btn-play').innerText = '[PAUSA]';
-                    showHUD('AL AIRE');
+                    showHUD('SINTONIZADO');
                 }
             });
 
@@ -1047,7 +1116,7 @@
                         document.getElementById('btn-play').innerText = '[SINTONIZAR]';
                         showHUD('PAUSA');
                     } else {
-                        await broadcastEngine.tune();
+                        await broadcastEngine.tune(true);
                         document.getElementById('btn-play').innerText = '[PAUSA]';
                         showHUD('SINTONIZANDO');
                     }
@@ -1070,16 +1139,43 @@
                 step.addEventListener('click', () => setVolume(parseInt(step.getAttribute('data-level'), 10)));
             });
 
-            // Mobile toggles
+            // Mobile & Desktop Deck / Playlist Panel Toggles
             var appLayout = document.getElementById('app-layout');
-            document.getElementById('toggle-deck-btn').addEventListener('click', () => {
-                appLayout.classList.toggle('show-deck');
-                appLayout.classList.remove('show-playlist');
+            var toggleDeckBtn = document.getElementById('toggle-deck-btn');
+            var togglePlaylistBtn = document.getElementById('toggle-playlist-btn');
+            var closeDeckBtn = document.getElementById('close-deck-btn');
+            var closePlaylistBtn = document.getElementById('close-playlist-btn');
+            var backdrop = document.getElementById('panel-backdrop');
+
+            function closePanels() {
+                appLayout.classList.remove('show-deck', 'show-playlist');
+                toggleDeckBtn.classList.remove('active');
+                togglePlaylistBtn.classList.remove('active');
+            }
+
+            toggleDeckBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                var isOpen = appLayout.classList.contains('show-deck');
+                closePanels();
+                if (!isOpen) {
+                    appLayout.classList.add('show-deck');
+                    toggleDeckBtn.classList.add('active');
+                }
             });
-            document.getElementById('toggle-playlist-btn').addEventListener('click', () => {
-                appLayout.classList.toggle('show-playlist');
-                appLayout.classList.remove('show-deck');
+
+            togglePlaylistBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                var isOpen = appLayout.classList.contains('show-playlist');
+                closePanels();
+                if (!isOpen) {
+                    appLayout.classList.add('show-playlist');
+                    togglePlaylistBtn.classList.add('active');
+                }
             });
+
+            closeDeckBtn.addEventListener('click', closePanels);
+            closePlaylistBtn.addEventListener('click', closePanels);
+            backdrop.addEventListener('click', closePanels);
 
             // Vinyl power toggle
             var btnVinyl = document.getElementById('btn-vinyl-power');
@@ -1093,8 +1189,36 @@
                 addLog('VINILO: ' + (vinylActive ? 'ON' : 'OFF'), vinylActive ? 'success' : 'warn');
             });
 
+            // Vinyl slider bindings
+            document.getElementById('slider-vinyl-master').addEventListener('input', (e) => {
+                vinylMasterVolume = parseFloat(e.target.value) / 100;
+                if (masterSummingNode && vinylActive) masterSummingNode.gain.value = vinylMasterVolume;
+                document.getElementById('val-vinyl-master').innerText = e.target.value + '%';
+            });
+            document.getElementById('slider-hiss').addEventListener('input', (e) => {
+                vinylSliders.hiss = parseFloat(e.target.value);
+                if (vinylHissGain) vinylHissGain.gain.value = (vinylSliders.hiss / 100) * 0.25;
+                document.getElementById('val-hiss').innerText = e.target.value + '%';
+            });
+            document.getElementById('slider-crackle').addEventListener('input', (e) => {
+                vinylSliders.crackle = parseFloat(e.target.value);
+                if (vinylCrackleGain) vinylCrackleGain.gain.value = (vinylSliders.crackle / 100) * 0.3;
+                document.getElementById('val-crackle').innerText = e.target.value + '%';
+            });
+            document.getElementById('slider-thump').addEventListener('input', (e) => {
+                vinylSliders.thump = parseFloat(e.target.value);
+                if (vinylThumpGain) vinylThumpGain.gain.value = (vinylSliders.thump / 100) * 0.35;
+                document.getElementById('val-thump').innerText = e.target.value + '%';
+            });
+            document.getElementById('slider-rumble').addEventListener('input', (e) => {
+                vinylSliders.rumble = parseFloat(e.target.value);
+                if (vinylRumbleGain) vinylRumbleGain.gain.value = (vinylSliders.rumble / 100) * 0.3;
+                document.getElementById('val-rumble').innerText = e.target.value + '%';
+            });
+
             // Keyboard shortcut spacebar
             window.addEventListener('keydown', (e) => {
+                if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
                 if (e.code === 'Space') {
                     e.preventDefault();
                     document.getElementById('btn-play').click();
