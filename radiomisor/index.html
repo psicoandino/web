@@ -38,7 +38,7 @@
         }
         
         .header-title { 
-            grid-column: 1 / 6;
+            grid-column: 1 / 5;
             font-size: 13px;
             font-weight: 700;
             letter-spacing: 1px;
@@ -47,9 +47,9 @@
         
         .mobile-toggles {
             display: flex;
-            grid-column: 6 / 10;
+            grid-column: 5 / 10;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
         }
         
         .header-status {
@@ -84,12 +84,13 @@
 
         /* Slide-out Panels */
         .control-deck,
-        .playlist-drawer {
+        .playlist-drawer,
+        .changelog-drawer {
             position: absolute;
             top: 0;
             bottom: 0;
-            width: 320px;
-            max-width: 85vw;
+            width: 340px;
+            max-width: 88vw;
             z-index: 50;
             background-color: var(--hueso);
             box-shadow: 0 4px 24px rgba(0,0,0,0.2);
@@ -110,13 +111,17 @@
             transform: translateX(100%);
         }
 
-        .app-layout.show-deck .control-deck {
-            transform: translateX(0);
+        .changelog-drawer {
+            left: 0;
+            border-right: 1px solid var(--oled);
+            transform: translateX(-100%);
+            width: 440px;
+            max-width: 90vw;
         }
 
-        .app-layout.show-playlist .playlist-drawer {
-            transform: translateX(0);
-        }
+        .app-layout.show-deck .control-deck { transform: translateX(0); }
+        .app-layout.show-playlist .playlist-drawer { transform: translateX(0); }
+        .app-layout.show-changelog .changelog-drawer { transform: translateX(0); }
 
         /* Backdrop overlay when panel is open */
         .panel-backdrop {
@@ -129,12 +134,12 @@
             transition: opacity 0.2s ease;
         }
         .app-layout.show-deck .panel-backdrop,
-        .app-layout.show-playlist .panel-backdrop {
+        .app-layout.show-playlist .panel-backdrop,
+        .app-layout.show-changelog .panel-backdrop {
             opacity: 1;
             pointer-events: auto;
         }
 
-        /* Left Side: Control Deck */
         .deck-inner {
             padding: 20px;
             overflow-y: auto;
@@ -326,10 +331,13 @@
             border: 1px solid var(--oled);
             display: flex;
             flex-direction: column;
-            height: 140px;
+            height: 130px;
             margin-top: 4px;
         }
         .console-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             font-size: 9px;
             font-weight: 700;
             letter-spacing: 1.5px;
@@ -470,7 +478,7 @@
             grid-column: 1 / 8;
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
         }
         
         .control-btn {
@@ -556,6 +564,27 @@
             width: 100%;
             cursor: pointer;
         }
+
+        .changelog-content {
+            padding: 20px;
+            overflow-y: auto;
+            font-size: 11px;
+            line-height: 1.6;
+            flex: 1;
+        }
+        .changelog-ver {
+            font-weight: 700;
+            color: var(--cobre);
+            border-bottom: 1px solid var(--oled);
+            padding-bottom: 4px;
+            margin-top: 14px;
+            margin-bottom: 8px;
+        }
+        .changelog-list {
+            list-style: square;
+            padding-left: 16px;
+            margin-bottom: 10px;
+        }
     </style>
     <link rel="stylesheet" href="psico-header.css">
 </head>
@@ -565,12 +594,12 @@
         <a class="ph-brand" href="/" title="Volver a psicoandino.cl">
             <div class="ph-motif"><div class="ph-dot-sun"></div><div class="ph-dot-shadow"></div></div>
             <div class="ph-textblock">
-                <span class="ph-word"><span class="ph-brandname">PSICOANDINO</span><span class="ph-sep">|</span><span class="ph-system">Radio 24/7</span></span>
+                <span class="ph-word"><span class="ph-brandname">PSICOANDINO</span><span class="ph-sep">|</span><span class="ph-system">Radio v2.6</span></span>
                 <div class="ph-squares"><span></span><span></span><span></span><span></span></div>
             </div>
         </a>
         <nav class="ph-nav">
-            <a href="#">Tactile Deck</a>
+            <a href="#" id="link-changelog">v2.6.0 Bitácora</a>
         </nav>
     </div>
 
@@ -582,6 +611,7 @@
         <div class="mobile-toggles">
             <button id="toggle-deck-btn" class="control-btn" type="button">[DECK]</button>
             <button id="toggle-playlist-btn" class="control-btn" type="button">[PROGRAMACIÓN]</button>
+            <button id="toggle-changelog-btn" class="control-btn" type="button">[LOG]</button>
         </div>
         <div class="header-status">
             <span id="system-status-text">SISTEMA DETERMINISTA ACTIVO</span>
@@ -596,14 +626,15 @@
         <!-- LEFT: Control Deck -->
         <aside class="control-deck" id="control-deck">
             <div class="panel-header">
-                <span>SINTETIZADOR DE VINILO</span>
+                <span>CABINA DE CONTROL (DECK)</span>
                 <button id="close-deck-btn" class="control-btn" style="padding:2px 6px;">[X]</button>
             </div>
             
             <div class="deck-inner">
+                <!-- SINTETIZADOR DE VINILO -->
                 <div class="vinyl-controller">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-                        <span style="font-size:9px; font-weight:700;">MOTOR ANALÓGICO</span>
+                    <div class="deck-section-title" style="display:flex; justify-content:space-between; align-items:center;">
+                        <span>SINTETIZADOR DE VINILO</span>
                         <button id="btn-vinyl-power" type="button" class="mode-btn">[OFF]</button>
                     </div>
 
@@ -645,7 +676,27 @@
                     </div>
                 </div>
 
-                <div class="deck-section-title" style="margin-top:16px;">TELEMETRÍA DE EMISORA</div>
+                <!-- PRESETS DE TEXTURA TONAL -->
+                <div style="margin-top:8px;">
+                    <div class="deck-section-title">ECUALIZACIÓN DE SEÑAL</div>
+                    <div style="display:flex; gap:6px;">
+                        <button id="tone-puro" class="mode-btn active" type="button">[PURO]</button>
+                        <button id="tone-cassette" class="mode-btn" type="button">[CINTA]</button>
+                        <button id="tone-am" class="mode-btn" type="button">[RADIO AM]</button>
+                    </div>
+                </div>
+
+                <!-- VOZ DE EMISORA E IDENTIFICADORES -->
+                <div style="margin-top:8px;">
+                    <div class="deck-section-title" style="display:flex; justify-content:space-between; align-items:center;">
+                        <span>VOZ DE ESTACIÓN (ID)</span>
+                        <button id="btn-voice-toggle" class="mode-btn active" type="button">[VOZ: ON]</button>
+                    </div>
+                    <button id="btn-voice-test" class="control-btn" style="width:100%; font-size:9px; border:1px solid var(--oled); margin-top:4px;">[🎙️ EMITIR IDENTIFICADOR AHORA]</button>
+                </div>
+
+                <!-- TELEMETRÍA -->
+                <div class="deck-section-title" style="margin-top:14px;">TELEMETRÍA DE EMISORA</div>
                 <div class="deck-stats">
                     <div class="stat-row">
                         <span>BLOQUE / CICLO</span>
@@ -668,6 +719,9 @@
                         <span style="color:var(--musgo);">TIME IS TRUTH</span>
                     </div>
                 </div>
+
+                <!-- COMPARTIR -->
+                <button id="btn-share-freq" class="control-btn" style="width:100%; font-size:10px; border:1px solid var(--cobre); color:var(--cobre); margin-top:10px;">[🔗 COMPARTIR FRECUENCIA]</button>
             </div>
         </aside>
 
@@ -693,14 +747,17 @@
                 <!-- Live Monospace Spectrum analyzer -->
                 <div class="spectrum-container">
                     <div class="spectrum-header">
-                        <span>ANALIZADOR ESPECTRAL DE FRECUENCIA EN VIVO (FFT)</span>
-                        <span id="spectrum-mode-badge" style="color:var(--cobre);">DIRECT FEED</span>
+                        <span>ANALIZADOR ESPECTRAL EN VIVO (FFT 64-BIN)</span>
+                        <span id="spectrum-mode-badge" style="color:var(--cobre);">FEED ACTIVO</span>
                     </div>
                     <div id="spectrum-display" class="spectrum-display">-----------------------------------------</div>
                 </div>
                 
                 <div class="console-logs-container">
-                    <div class="console-header">SYSTEM DIAGNOSTIC LOGS</div>
+                    <div class="console-header">
+                        <span>SYSTEM DIAGNOSTIC LOGS</span>
+                        <span id="log-clear-btn" style="cursor:pointer; opacity:0.6;">[LIMPIAR]</span>
+                    </div>
                     <div id="console-logs" class="console-logs"></div>
                 </div>
             </div>
@@ -717,6 +774,50 @@
                 <div style="font-size:10px; opacity:0.5; padding:10px; text-align:center;">CARGANDO PROGRAMACIÓN...</div>
             </div>
         </aside>
+
+        <!-- LEFT/OVERLAY: Changelog Drawer -->
+        <aside class="changelog-drawer" id="changelog-drawer">
+            <div class="panel-header">
+                <span>BITÁCORA DE VERSIONES</span>
+                <button id="close-changelog-btn" class="control-btn" style="padding:2px 6px;">[X]</button>
+            </div>
+
+            <div class="changelog-content">
+                <div class="changelog-ver">v2.6.0 (2026-09-08) — Actual</div>
+                <ul class="changelog-list">
+                    <li>Identificadores de estación ("Station IDs") con locución atmosférica y chimes.</li>
+                    <li>Presets de ecualización analógica: [PURO], [CINTA CASSETTE], [RADIO AM].</li>
+                    <li>Visor de bitácora interactivo y botón para compartir frecuencia.</li>
+                </ul>
+
+                <div class="changelog-ver">v2.5.0 (2026-09-08)</div>
+                <ul class="changelog-list">
+                    <li>Catálogo ampliado a 109 canciones (~4.0 horas de música continua).</li>
+                    <li>Analizador de espectro FFT reactivo en tiempo real (`AnalyserNode`).</li>
+                    <li>Efecto de sintonización analógica (Dial Sweep FX).</li>
+                    <li>Soporte de MediaSession API en pantalla de bloqueo y teclado.</li>
+                    <li>Corrección del panel [DECK] y síntesis analógica de 4 canales.</li>
+                </ul>
+
+                <div class="changelog-ver">v2.2.0 (2026-08-31)</div>
+                <ul class="changelog-list">
+                    <li>Rotación determinista por ciclo con PRNG Mulberry32.</li>
+                    <li>Codificación segura RFC 3986 para archivos con corchetes y tildes.</li>
+                    <li>Sincronización `loadedmetadata` sin desfase temporal.</li>
+                </ul>
+
+                <div class="changelog-ver">v2.0.0 (2026-08-31)</div>
+                <ul class="changelog-list">
+                    <li>Motor autónomo local con archivos MP3 de alta fidelidad.</li>
+                    <li>Generación de `station.json` y modularización en `/radiomisor`.</li>
+                </ul>
+
+                <div class="changelog-ver">v1.6.0 (2026-08-22)</div>
+                <ul class="changelog-list">
+                    <li>Diseño inicial Tactile Deck brutalista con la regla "Time is Truth".</li>
+                </ul>
+            </div>
+        </aside>
     </div>
 
     <div class="timeline-container">
@@ -730,6 +831,7 @@
         <div class="button-group">
             <button id="btn-play" class="control-btn">[SINTONIZAR]</button>
             <button id="btn-stop" class="control-btn">[STOP]</button>
+            <button id="btn-skip" class="control-btn" title="SIGUIENTE">[SALTAR ❯]</button>
         </div>
         
         <div class="volume-section">
@@ -857,7 +959,7 @@
                 container.appendChild(item);
             });
 
-            addLog(`ACTUALIZADA PROGRAMACIÓN DETERMINISTA: BLOQUE #${currentCycle} (${activeSignals.length} PISTAS)`, 'info');
+            addLog(`PROGRAMACIÓN DETERMINISTA: BLOQUE #${currentCycle} (${activeSignals.length} PISTAS)`, 'info');
         }
 
         async function initStation() {
@@ -964,7 +1066,6 @@
                     segments[segmentIdx] += spectrumChars[charIdx];
                 }
             } else {
-                // Fallback simulation if Analyser isn't connected yet
                 var time = Date.now() * 0.005;
                 for (var i = 0; i < 32; i++) {
                     var val = (Math.sin(i * 0.3 + time) * Math.cos(i * 0.1 - time * 0.5) + 1) / 2;
@@ -1009,7 +1110,6 @@
                 vinylAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 var sr = vinylAudioCtx.sampleRate;
 
-                // 1. Pink noise for Surface Hiss
                 var hissBuffer = vinylAudioCtx.createBuffer(2, sr * 4, sr);
                 for (var ch = 0; ch < 2; ch++) {
                     var d = hissBuffer.getChannelData(ch);
@@ -1027,7 +1127,6 @@
                     }
                 }
 
-                // 2. Poisson Crackle
                 var crackleBuffer = vinylAudioCtx.createBuffer(1, sr * 4, sr);
                 var cData = crackleBuffer.getChannelData(0);
                 var idx = 0;
@@ -1044,7 +1143,6 @@
                     }
                 }
 
-                // 3. Periodic Scratch Thump (33 1/3 RPM)
                 var thumpBuffer = vinylAudioCtx.createBuffer(1, Math.round(sr * 1.8), sr);
                 var tData = thumpBuffer.getChannelData(0);
                 for (var k = 0; k < Math.min(Math.round(sr * 0.12), tData.length); k++) {
@@ -1052,7 +1150,6 @@
                     tData[k] = 0.5 * Math.exp(-t / 0.07) * Math.sin(2 * Math.PI * 12 * t);
                 }
 
-                // 4. Turntable Motor Rumble
                 var rumbleBuffer = vinylAudioCtx.createBuffer(1, sr * 4, sr);
                 var rData = rumbleBuffer.getChannelData(0);
                 var rumbleVal = 0;
@@ -1135,6 +1232,14 @@
                 }
             });
 
+            document.getElementById('btn-skip').addEventListener('click', () => {
+                flashButton('btn-skip');
+                if (broadcastEngine) {
+                    broadcastEngine.skipNext();
+                    showHUD('SIGUIENTE PISTA');
+                }
+            });
+
             // Volume buttons
             document.getElementById('btn-vol-down').addEventListener('click', () => setVolume(currentVolume - 10));
             document.getElementById('btn-vol-up').addEventListener('click', () => setVolume(currentVolume + 10));
@@ -1142,18 +1247,22 @@
                 step.addEventListener('click', () => setVolume(parseInt(step.getAttribute('data-level'), 10)));
             });
 
-            // Mobile & Desktop Deck / Playlist Panel Toggles
+            // Mobile & Desktop Deck / Playlist / Changelog Panel Toggles
             var appLayout = document.getElementById('app-layout');
             var toggleDeckBtn = document.getElementById('toggle-deck-btn');
             var togglePlaylistBtn = document.getElementById('toggle-playlist-btn');
+            var toggleChangelogBtn = document.getElementById('toggle-changelog-btn');
+            var linkChangelog = document.getElementById('link-changelog');
             var closeDeckBtn = document.getElementById('close-deck-btn');
             var closePlaylistBtn = document.getElementById('close-playlist-btn');
+            var closeChangelogBtn = document.getElementById('close-changelog-btn');
             var backdrop = document.getElementById('panel-backdrop');
 
             function closePanels() {
-                appLayout.classList.remove('show-deck', 'show-playlist');
+                appLayout.classList.remove('show-deck', 'show-playlist', 'show-changelog');
                 toggleDeckBtn.classList.remove('active');
                 togglePlaylistBtn.classList.remove('active');
+                toggleChangelogBtn.classList.remove('active');
             }
 
             toggleDeckBtn.addEventListener('click', (e) => {
@@ -1176,8 +1285,22 @@
                 }
             });
 
+            function openChangelog(e) {
+                if (e) e.stopPropagation();
+                var isOpen = appLayout.classList.contains('show-changelog');
+                closePanels();
+                if (!isOpen) {
+                    appLayout.classList.add('show-changelog');
+                    toggleChangelogBtn.classList.add('active');
+                }
+            }
+
+            toggleChangelogBtn.addEventListener('click', openChangelog);
+            linkChangelog.addEventListener('click', (e) => { e.preventDefault(); openChangelog(e); });
+
             closeDeckBtn.addEventListener('click', closePanels);
             closePlaylistBtn.addEventListener('click', closePanels);
+            closeChangelogBtn.addEventListener('click', closePanels);
             backdrop.addEventListener('click', closePanels);
 
             // Vinyl power toggle
@@ -1217,6 +1340,52 @@
                 vinylSliders.rumble = parseFloat(e.target.value);
                 if (vinylRumbleGain) vinylRumbleGain.gain.value = (vinylSliders.rumble / 100) * 0.3;
                 document.getElementById('val-rumble').innerText = e.target.value + '%';
+            });
+
+            // Tone Presets
+            ['puro', 'cassette', 'am'].forEach(id => {
+                var btn = document.getElementById('tone-' + id);
+                if (btn) {
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('[id^="tone-"]').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        var preset = (id === 'am') ? 'radio-am' : id;
+                        if (broadcastEngine) broadcastEngine.applyTonePreset(preset);
+                        addLog('PRESET DE TONO: ' + id.toUpperCase(), 'info');
+                        showHUD('TONO ' + id.toUpperCase());
+                    });
+                }
+            });
+
+            // Station Voice Controls
+            var btnVoiceToggle = document.getElementById('btn-voice-toggle');
+            btnVoiceToggle.addEventListener('click', () => {
+                if (broadcastEngine) {
+                    broadcastEngine.voiceEnabled = !broadcastEngine.voiceEnabled;
+                    btnVoiceToggle.innerText = broadcastEngine.voiceEnabled ? '[VOZ: ON]' : '[VOZ: OFF]';
+                    btnVoiceToggle.classList.toggle('active', broadcastEngine.voiceEnabled);
+                    addLog('VOZ DE ESTACIÓN: ' + (broadcastEngine.voiceEnabled ? 'ACTIVADA' : 'DESACTIVADA'), 'info');
+                    showHUD(broadcastEngine.voiceEnabled ? 'VOZ ON' : 'VOZ OFF');
+                }
+            });
+
+            document.getElementById('btn-voice-test').addEventListener('click', () => {
+                if (broadcastEngine) {
+                    broadcastEngine.speakStationId();
+                    showHUD('LOCUCIÓN EMITIDA');
+                }
+            });
+
+            // Share Frequency
+            document.getElementById('btn-share-freq').addEventListener('click', () => {
+                navigator.clipboard.writeText(window.location.href);
+                showHUD('FRECUENCIA COPIADA');
+                addLog('ENLACE DE FRECUENCIA COPIADO AL PORTAPAPELES.', 'success');
+            });
+
+            // Clear Log button
+            document.getElementById('log-clear-btn').addEventListener('click', () => {
+                document.getElementById('console-logs').innerHTML = '';
             });
 
             // Keyboard shortcut spacebar & escape

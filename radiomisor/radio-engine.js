@@ -1,13 +1,15 @@
 /*
 ---------------------------------------------------------
 Radiomisor
-RadioEngine v2.5 — True Radio Station Engine & Web Audio Matrix
+RadioEngine v2.6 — True Radio Station Engine & Atmospheric Announcer
 ---------------------------------------------------------
 
 ✓ "Time is Truth" Deterministic Broadcast Synchronization
 ✓ Cycle-based Seeded Shuffle (Mulberry32 PRNG)
 ✓ Real Audio FFT Analyser Integration (AnalyserNode)
 ✓ Tuning Sweep Analog Sound FX (Dial Frequency Lock)
+✓ Atmospheric Station Voice Identifiers (Radio Drops & Chimes)
+✓ Analog Tone Presets (Puro, Cassette, Radio AM)
 ✓ Native MediaSession API (Lockscreen & Mobile OS controls)
 ✓ Robust RFC 3986 URL Encoding & Safe Seeking
 ✓ Instant Transition Prefetching
@@ -57,6 +59,13 @@ class RadioEngine {
         this.analyser = null;
         this.sourceNode = null;
         this.gainNode = null;
+        this.toneFilterLow = null;
+        this.toneFilterHigh = null;
+
+        // Station Voice & Interludes
+        this.voiceEnabled = true;
+        this.lastStationIdTrack = -1;
+        this.tonePreset = 'puro'; // 'puro', 'cassette', 'radio-am'
 
         this._cachedCycle = null;
         this._activeSignals = null;
@@ -104,12 +113,46 @@ class RadioEngine {
             this.gainNode = this.audioCtx.createGain();
             this.gainNode.gain.value = this.volume;
 
+            // Tone Filters
+            this.toneFilterLow = this.audioCtx.createBiquadFilter();
+            this.toneFilterLow.type = 'lowshelf';
+            this.toneFilterLow.frequency.value = 320;
+            this.toneFilterLow.gain.value = 0;
+
+            this.toneFilterHigh = this.audioCtx.createBiquadFilter();
+            this.toneFilterHigh.type = 'highshelf';
+            this.toneFilterHigh.frequency.value = 4500;
+            this.toneFilterHigh.gain.value = 0;
+
             if (this.audioElement && !this.sourceNode) {
                 this.sourceNode = this.audioCtx.createMediaElementSource(this.audioElement);
-                this.sourceNode.connect(this.analyser);
+                this.sourceNode.connect(this.toneFilterLow);
+                this.toneFilterLow.connect(this.toneFilterHigh);
+                this.toneFilterHigh.connect(this.analyser);
                 this.analyser.connect(this.gainNode);
                 this.gainNode.connect(this.audioCtx.destination);
             }
+
+            this.applyTonePreset(this.tonePreset);
+        }
+    }
+
+    applyTonePreset(preset) {
+        this.tonePreset = preset;
+        if (!this.toneFilterLow || !this.toneFilterHigh) return;
+
+        if (preset === 'cassette') {
+            // Warm lows, subtle high roll-off
+            this.toneFilterLow.gain.value = 3.5;
+            this.toneFilterHigh.gain.value = -4.0;
+        } else if (preset === 'radio-am') {
+            // Cut extreme lows and highs, boost mids
+            this.toneFilterLow.gain.value = -6.0;
+            this.toneFilterHigh.gain.value = -12.0;
+        } else {
+            // Puro / Flat
+            this.toneFilterLow.gain.value = 0;
+            this.toneFilterHigh.gain.value = 0;
         }
     }
 
@@ -118,7 +161,7 @@ class RadioEngine {
             if (!this.audioCtx) return;
             const now = this.audioCtx.currentTime;
 
-            // 1. Noise burst
+            // Noise burst
             const bufferSize = Math.floor(this.audioCtx.sampleRate * 0.35);
             const buffer = this.audioCtx.createBuffer(1, bufferSize, this.audioCtx.sampleRate);
             const data = buffer.getChannelData(0);
@@ -129,7 +172,6 @@ class RadioEngine {
             const noiseSource = this.audioCtx.createBufferSource();
             noiseSource.buffer = buffer;
 
-            // Bandpass filter swept across radio frequencies
             const filter = this.audioCtx.createBiquadFilter();
             filter.type = 'bandpass';
             filter.Q.value = 3.5;
@@ -137,7 +179,6 @@ class RadioEngine {
             filter.frequency.exponentialRampToValueAtTime(2800, now + 0.18);
             filter.frequency.exponentialRampToValueAtTime(700, now + 0.33);
 
-            // Heterodyne whistle (radio dial scan)
             const osc = this.audioCtx.createOscillator();
             osc.type = 'sine';
             osc.frequency.setValueAtTime(880, now);
@@ -165,6 +206,51 @@ class RadioEngine {
             noiseSource.stop(now + 0.35);
         } catch(e) {
             console.warn("Tuning FX skipped", e);
+        }
+    }
+
+    playStationChime() {
+        if (!this.audioCtx) return;
+        const now = this.audioCtx.currentTime;
+        [523.25, 659.25, 783.99].forEach((freq, idx) => {
+            const osc = this.audioCtx.createOscillator();
+            const gain = this.audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.value = freq;
+            gain.gain.setValueAtTime(0.04, now + idx * 0.1);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.1 + 0.6);
+            osc.connect(gain);
+            gain.connect(this.audioCtx.destination);
+            osc.start(now + idx * 0.1);
+            osc.stop(now + idx * 0.1 + 0.7);
+        });
+    }
+
+    speakStationId(customText = null) {
+        if (!this.voiceEnabled || !('speechSynthesis' in window)) return;
+        try {
+            window.speechSynthesis.cancel();
+            const cycle = this.currentCycle();
+            const phrases = [
+                `Estás en sintonía de Psicoandino Radio. Transmisión continua en el bloque número ${cycle}.`,
+                `Psicoandino Radio. Frecuencia cósmica activa.`,
+                `Emisora Psicoandina. Música para vivir el viaje.`,
+                `Transmitiendo desde los Andes. Psicoandino Radio, veinticuatro horas.`
+            ];
+            const text = customText || phrases[Math.floor(Math.random() * phrases.length)];
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'es-ES';
+            utterance.pitch = 0.82; // Deep, atmospheric radio voice
+            utterance.rate = 0.92;
+            utterance.volume = 0.65;
+
+            this.playStationChime();
+            setTimeout(() => {
+                window.speechSynthesis.speak(utterance);
+                this.status(`🎙️ IDENTIFICADOR DE ESTACIÓN: "${text}"`);
+            }, 300);
+        } catch(e) {
+            console.warn("SpeechSynthesis error", e);
         }
     }
 
@@ -316,6 +402,12 @@ class RadioEngine {
                 await audio.play();
                 this.status(`▶ AL AIRE: ${result.signal.title} [BLOQUE #${this.currentCycle()} // ${result.index + 1}/${this.station.signals.length}]`);
                 this.updateOSMediaSession();
+
+                // Announce station ID every 5 tracks if starting near beginning of track
+                if (result.index % 5 === 0 && result.index !== this.lastStationIdTrack && startSecond < 6) {
+                    this.lastStationIdTrack = result.index;
+                    this.speakStationId();
+                }
             } catch (err) {
                 console.error("[RadioEngine] Error iniciando play():", err);
                 this.status("AVISO: Haz clic en [SINTONIZAR] para permitir audio (" + err.message + ")");
