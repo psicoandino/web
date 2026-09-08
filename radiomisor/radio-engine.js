@@ -107,8 +107,10 @@ class RadioEngine {
 
         if (!this.analyser) {
             this.analyser = this.audioCtx.createAnalyser();
-            this.analyser.fftSize = 128;
-            this.analyser.smoothingTimeConstant = 0.8;
+            this.analyser.fftSize = 512;
+            this.analyser.smoothingTimeConstant = 0.82;
+            this.analyser.minDecibels = -85;
+            this.analyser.maxDecibels = -22;
 
             this.gainNode = this.audioCtx.createGain();
             this.gainNode.gain.value = this.volume;

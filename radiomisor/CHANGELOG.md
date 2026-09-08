@@ -4,6 +4,12 @@ Todos los cambios notables en este proyecto se documentan en este archivo siguie
 
 ---
 
+## [2.6.2] - 2026-09-08
+### Mejorado
+* **Normalización Logarítmica del Espectro FFT:** Implementada escala psicoacústica logarítmica (40 Hz - 14.000 Hz) con compensación de inclinación espectral (*equal loudness tilt*) y resolución FFT de 512 bins, eliminando la saturación continua en frecuencias graves (`--sangre`) y logrando una respuesta dinámica y reactiva en todo el rango tonal.
+
+---
+
 ## [2.6.0] - 2026-09-08
 ### Añadido
 * **Identificadores Atmosféricos de Estación (`Station ID`):** Campanilla analógica de 3 tonos y síntesis de locución ("Estás en sintonía de Psicoandino Radio...") automática y manual.

@@ -853,7 +853,7 @@
         </div>
     </div>
 
-    <script src="radio-engine.js?v=2.6.0"></script>
+    <script src="radio-engine.js?v=2.6.2"></script>
     <script>
         var broadcastEngine = null;
         var currentVolume = 80;
@@ -1040,8 +1040,26 @@
             }
         }
 
-        // REAL AUDIO FFT SPECTROGRAM VISUALIZER
-        var freqBuffer = new Uint8Array(64);
+        // REAL AUDIO FFT SPECTROGRAM VISUALIZER WITH LOGARITHMIC BARK/OCTAVE BANDS & EQUAL LOUDNESS COMPENSATION
+        var freqBuffer = new Uint8Array(256);
+        var spectrumBands = [];
+        (function initSpectrumBands() {
+            var fMin = 40.0;
+            var fMax = 14000.0;
+            var sampleRate = 44100.0;
+            var fftSize = 512;
+            var binWidth = sampleRate / fftSize; // ~86.13 Hz per bin
+            for (var i = 0; i < 32; i++) {
+                var fLow = fMin * Math.pow(fMax / fMin, i / 32.0);
+                var fHigh = fMin * Math.pow(fMax / fMin, (i + 1) / 32.0);
+                var bStart = Math.max(0, Math.floor(fLow / binWidth));
+                var bEnd = Math.max(bStart + 1, Math.ceil(fHigh / binWidth));
+                // Perceptual tilt: equalizes energy across spectrum so bass pulses cleanly without pinning
+                var weight = 0.78 + (i / 31.0) * 0.68;
+                spectrumBands.push({ start: bStart, end: bEnd, weight: weight });
+            }
+        })();
+
         function updateSpectrum() {
             var display = document.getElementById('spectrum-display');
             if (!display) return;
@@ -1056,13 +1074,29 @@
             var segments = ['', '', '', ''];
 
             if (broadcastEngine.analyser) {
+                var binCount = broadcastEngine.analyser.frequencyBinCount;
+                if (freqBuffer.length !== binCount) {
+                    freqBuffer = new Uint8Array(binCount);
+                }
                 broadcastEngine.analyser.getByteFrequencyData(freqBuffer);
 
-                // Downsample 64 FFT bins to 32 characters
+                // Map 32 logarithmically-spaced frequency bands
                 for (var i = 0; i < 32; i++) {
-                    var binVal = (freqBuffer[i * 2] + freqBuffer[i * 2 + 1]) / 2; // 0..255
-                    var charIdx = Math.floor((binVal / 255) * spectrumChars.length);
+                    var band = spectrumBands[i];
+                    var sum = 0;
+                    var count = 0;
+                    for (var b = band.start; b < band.end && b < freqBuffer.length; b++) {
+                        sum += freqBuffer[b];
+                        count++;
+                    }
+                    var avg = count > 0 ? (sum / count) : 0;
+
+                    // Dynamic contrast expansion: prevents bass from pegging at 100%
+                    var norm = Math.max(0, (avg - 18) / (255 - 18));
+                    var scaled = Math.pow(norm, 1.25) * band.weight;
+                    var charIdx = Math.floor(scaled * spectrumChars.length);
                     charIdx = Math.max(0, Math.min(spectrumChars.length - 1, charIdx));
+
                     var segmentIdx = Math.floor(i / 8);
                     segments[segmentIdx] += spectrumChars[charIdx];
                 }
