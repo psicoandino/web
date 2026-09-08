@@ -4,6 +4,18 @@ Todos los cambios notables en este proyecto se documentan en este archivo siguie
 
 ---
 
+## [2.6.0] - 2026-09-08
+### Añadido
+* **Identificadores Atmosféricos de Estación (`Station ID`):** Campanilla analógica de 3 tonos y síntesis de locución ("Estás en sintonía de Psicoandino Radio...") automática y manual.
+* **Presets de Ecualización Analógica:** Modos de textura seleccionables en vivo ([Puro], [Cinta / Cassette], [Radio AM]).
+* **Carátula Oficial de Transmisión (`psico-cover.png`):** Badge gráfico de alta resolución 512x512 para metadatos del sistema operativo y pantalla de bloqueo.
+* **Control de Caché de Scripts:** Inclusión de parámetros de versión para asegurar la carga inmediata de las últimas funciones en navegadores locales y web.
+
+### Corregido
+* **Ámbito Global de Telemetría (`appLayout`):** Resolución de excepción `ReferenceError` al inicializar la lectura del estado de paneles.
+
+---
+
 ## [2.5.0] - 2026-09-08
 ### Añadido
 * **Catálogo Completo de 109 Canciones:** Integradas las 21 nuevas canciones del perfil `elpsicoandino` a las 88 existentes de `psicoandino`, completando ~4.0 horas de transmisión continua.

@@ -853,7 +853,7 @@
         </div>
     </div>
 
-    <script src="radio-engine.js"></script>
+    <script src="radio-engine.js?v=2.6.0"></script>
     <script>
         var broadcastEngine = null;
         var currentVolume = 80;
@@ -861,6 +861,7 @@
         var spectrumChars = [' ', '▂', '▃', '▄', '▅', '▆', '▇', '█'];
         var lastAnnouncedId = null;
         var renderedCycle = null;
+        var appLayout = null;
 
         // Vinyl simulation state
         var vinylActive = false;
@@ -1031,7 +1032,7 @@
                     items.forEach((el, idx) => {
                         var isCurrent = (idx === res.index);
                         el.classList.toggle('active', isCurrent);
-                        if (isCurrent && appLayout.classList.contains('show-playlist')) {
+                        if (isCurrent && appLayout && appLayout.classList.contains('show-playlist')) {
                             el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                         }
                     });
@@ -1248,7 +1249,7 @@
             });
 
             // Mobile & Desktop Deck / Playlist / Changelog Panel Toggles
-            var appLayout = document.getElementById('app-layout');
+            appLayout = document.getElementById('app-layout');
             var toggleDeckBtn = document.getElementById('toggle-deck-btn');
             var togglePlaylistBtn = document.getElementById('toggle-playlist-btn');
             var toggleChangelogBtn = document.getElementById('toggle-changelog-btn');
@@ -1402,6 +1403,6 @@
             });
         });
     </script>
-    <script src="psico-header.js"></script>
+    <script src="psico-header.js?v=2.6.0"></script>
 </body>
 </html>
