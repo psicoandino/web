@@ -21,7 +21,10 @@ body { margin: 0; background: var(--paper); }
 .skip-link { position: absolute; left: 1rem; top: -4rem; background: var(--ink); color: white; padding: .6rem .8rem; z-index: 5; }
 .skip-link:focus { top: 1rem; }
 .site-header, main, .site-footer { width: min(100% - 2rem, 1080px); margin-inline: auto; }
-.site-header { display: flex; align-items: end; justify-content: space-between; gap: 1rem; padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--line); }
+.site-header { position: relative; display: flex; align-items: end; justify-content: space-between; gap: 1rem; padding: 2.5rem 0 2rem; border-bottom: 1px solid var(--line); }
+.site-home-link { position: absolute; top: .35rem; left: 0; min-height: 2rem; padding: .45rem .15rem; color: var(--muted); font: .64rem var(--mono); letter-spacing: .1em; text-decoration: none; }
+.site-home-link:hover { color: var(--ink); }
+.site-home-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .eyebrow, .section-kicker, .status, label, .hint, .muted, .mode, .site-footer, .axis-label, .body-code, .detail-label, .meta, select, input { font-family: var(--mono); }
 .eyebrow, .section-kicker { margin: 0 0 .45rem; color: var(--muted); font-size: .7rem; letter-spacing: .12em; }
 h1, h2, p { margin-top: 0; }

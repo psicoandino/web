@@ -4,8 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Psicoandino — System diagram</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/fonts.css">
 <style>
   :root {
     --cobre: #248692; --musgo: #6D7C50; --mostaza: #B78627; --sangre: #C73A4A;
@@ -18,11 +17,12 @@
   a { color: inherit; }
 
   .psico-header { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; min-height: 64px; padding: 10px 24px; border-bottom: 1px solid var(--line); background: var(--hueso); }
-  .ph-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .ph-brand { display: flex; align-items: center; gap: 12px; min-height: 44px; text-decoration: none; }
+  .ph-brand:focus-visible { outline: 2px solid var(--cobre); outline-offset: 5px; }
   .ph-motif { width: 16px; height: 16px; border-radius: 50%; background: var(--amatista); }
   .ph-word { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 700; }
-  .volver { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; opacity: .55; text-decoration: none; }
-  .volver:hover { opacity: 1; }
+  .volver { display: inline-flex; align-items: center; min-height: 44px; margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; opacity: .55; text-decoration: none; }
+  .volver:hover, .volver:focus-visible { opacity: 1; }
 
   main { max-width: 980px; margin: 0 auto; padding: 32px 32px 0; }
   .eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.55; display: block; margin-bottom: 10px; }

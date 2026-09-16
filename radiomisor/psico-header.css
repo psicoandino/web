@@ -15,6 +15,10 @@
     text-decoration: none;
     color: var(--oled);
 }
+.ph-brand:focus-visible {
+    outline: 2px solid var(--cobre);
+    outline-offset: 4px;
+}
 .ph-motif {
     display: flex;
     gap: 2px;
@@ -53,11 +57,24 @@
     opacity: 0.3;
 }
 .ph-nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     color: var(--oled);
     text-decoration: none;
     opacity: 0.6;
     font-weight: 700;
 }
-.ph-nav a:hover {
+.ph-nav a:hover, .ph-nav a:focus-visible {
     opacity: 1;
+}
+.ph-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0 12px;
+}
+@media (max-width: 480px) {
+    .psico-header { flex-wrap: wrap; row-gap: 4px; }
+    .ph-nav { width: 100%; }
 }
