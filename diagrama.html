@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Psicoandino — Diagrama del sistema</title>
+<title>Psicoandino — System diagram</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
@@ -47,9 +47,9 @@
   </div>
 
   <main>
-    <span class="eyebrow">Investigación · evidenceOS</span>
-    <h1>El sistema que estamos armando</h1>
-    <p class="lead">Cribado de revisiones sistemáticas, derivado y auditable. Cada paso deja evidencia — nadie opina sobre si un artículo entra o sale, un chequeo lo decide.</p>
+    <span class="eyebrow">Research · evidenceOS</span>
+    <h1>The system we are building</h1>
+    <p class="lead">Systematic-review screening, derived and auditable. Every step leaves evidence — no one gives an opinion on whether an article enters or leaves; an explicit check decides.</p>
 
     <svg viewBox="0 0 980 360" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -58,73 +58,73 @@
         </marker>
       </defs>
 
-      <!-- fila 1 -->
+      <!-- row 1 -->
       <g>
         <rect class="nodo-rect" x="20" y="40" width="150" height="64" rx="6"/>
-        <text class="nodo-txt nodo-eyebrow" x="34" y="60" opacity="0.55">ENTRADA</text>
-        <text class="nodo-txt" x="34" y="82" font-weight="600">Intuición</text>
-        <text class="nodo-txt" x="34" y="98" opacity="0.7" font-size="11.5">del investigador</text>
+        <text class="nodo-txt nodo-eyebrow" x="34" y="60" opacity="0.55">INPUT</text>
+        <text class="nodo-txt" x="34" y="82" font-weight="600">Intuition</text>
+        <text class="nodo-txt" x="34" y="98" opacity="0.7" font-size="11.5">from the researcher</text>
       </g>
 
       <path class="flecha" d="M170,72 H230"/>
 
       <g>
         <rect class="nodo-rect" x="230" y="40" width="150" height="64" rx="6" stroke="var(--cobre)"/>
-        <text class="nodo-txt nodo-eyebrow" x="244" y="60" opacity="0.55">DERIVA</text>
+        <text class="nodo-txt nodo-eyebrow" x="244" y="60" opacity="0.55">DERIVE</text>
         <text class="nodo-txt" x="244" y="82" font-weight="600">PECO</text>
-        <text class="nodo-txt" x="244" y="98" opacity="0.7" font-size="11.5">pregunta estructurada</text>
+        <text class="nodo-txt" x="244" y="98" opacity="0.7" font-size="11.5">structured question</text>
       </g>
 
       <path class="flecha" d="M380,72 H440"/>
 
       <g>
         <rect class="nodo-rect" x="440" y="40" width="150" height="64" rx="6" stroke="var(--cobre)"/>
-        <text class="nodo-txt nodo-eyebrow" x="454" y="60" opacity="0.55">DERIVA</text>
-        <text class="nodo-txt" x="454" y="82" font-weight="600">Palabras clave</text>
-        <text class="nodo-txt" x="454" y="98" opacity="0.7" font-size="11.5">para la búsqueda</text>
+        <text class="nodo-txt nodo-eyebrow" x="454" y="60" opacity="0.55">DERIVE</text>
+        <text class="nodo-txt" x="454" y="82" font-weight="600">Keywords</text>
+        <text class="nodo-txt" x="454" y="98" opacity="0.7" font-size="11.5">for the search</text>
       </g>
 
       <path class="flecha" d="M590,72 H650"/>
 
       <g>
         <rect class="nodo-rect" x="650" y="40" width="150" height="64" rx="6"/>
-        <text class="nodo-txt nodo-eyebrow" x="664" y="60" opacity="0.55">FUENTE</text>
+        <text class="nodo-txt nodo-eyebrow" x="664" y="60" opacity="0.55">SOURCE</text>
         <text class="nodo-txt" x="664" y="82" font-weight="600">Scopus</text>
-        <text class="nodo-txt" x="664" y="98" opacity="0.7" font-size="11.5">corpus bruto</text>
+        <text class="nodo-txt" x="664" y="98" opacity="0.7" font-size="11.5">raw corpus</text>
       </g>
 
       <path class="flecha" d="M725,104 V150"/>
 
-      <!-- fila 2: cribado -->
+      <!-- row 2: screening -->
       <g>
         <rect class="nodo-rect" x="440" y="150" width="360" height="72" rx="6" stroke="var(--mostaza)" stroke-width="1.6"/>
-        <text class="nodo-txt nodo-eyebrow" x="454" y="172" opacity="0.55">CRIBADO — el corazón del sistema</text>
-        <text class="nodo-txt" x="454" y="196" font-weight="600">Se deriva, nunca se opina</text>
-        <text class="nodo-txt" x="454" y="212" opacity="0.7" font-size="11.5">chequeo entra/sale por criterio explícito</text>
+        <text class="nodo-txt nodo-eyebrow" x="454" y="172" opacity="0.55">SCREENING — the heart of the system</text>
+        <text class="nodo-txt" x="454" y="196" font-weight="600">Derived, never opined</text>
+        <text class="nodo-txt" x="454" y="212" opacity="0.7" font-size="11.5">explicit criterion decides what enters and leaves</text>
       </g>
 
       <path class="flecha" d="M620,222 V270"/>
 
-      <!-- fila 3: auditoria -->
+      <!-- row 3: audit -->
       <g>
         <rect class="nodo-rect" x="440" y="270" width="360" height="70" rx="6" stroke="var(--amatista)" stroke-width="1.6"/>
-        <text class="nodo-txt nodo-eyebrow" x="454" y="292" opacity="0.55">SALIDA</text>
-        <text class="nodo-txt" x="454" y="316" font-weight="600">Registro inmutable</text>
-        <text class="nodo-txt" x="454" y="332" opacity="0.7" font-size="11.5">procedencia intacta · la decisión queda</text>
+        <text class="nodo-txt nodo-eyebrow" x="454" y="292" opacity="0.55">OUTPUT</text>
+        <text class="nodo-txt" x="454" y="316" font-weight="600">Immutable record</text>
+        <text class="nodo-txt" x="454" y="332" opacity="0.7" font-size="11.5">provenance intact · the decision remains</text>
       </g>
 
       <path class="flecha" d="M440,306 H240"/>
 
       <g>
         <rect class="nodo-rect" x="60" y="270" width="180" height="70" rx="6"/>
-        <text class="nodo-txt nodo-eyebrow" x="74" y="292" opacity="0.55">NO ESCALA A MANO</text>
-        <text class="nodo-txt" x="74" y="316" font-weight="600">Auditoría humana</text>
-        <text class="nodo-txt" x="74" y="332" opacity="0.7" font-size="11.5">revisa el trazo, no cada fila</text>
+        <text class="nodo-txt nodo-eyebrow" x="74" y="292" opacity="0.55">DOES NOT SCALE BY HAND</text>
+        <text class="nodo-txt" x="74" y="316" font-weight="600">Human audit</text>
+        <text class="nodo-txt" x="74" y="332" opacity="0.7" font-size="11.5">reviews the trace, not every row</text>
       </g>
 
     </svg>
 
-    <p class="nota">En construcción — este diagrama se actualiza a medida que el pipeline se estabiliza. La evidencia real vive en git, no acá.</p>
+    <p class="nota">In progress — this diagram evolves as the pipeline stabilizes. The real evidence lives in git, not here.</p>
   </main>
 
 </body>

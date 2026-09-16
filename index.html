@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Psicoandino — Sistemas digitales, escritura y método</title>
-<meta name="description" content="Investigación para el conocimiento y el desarrollo. Sistemas digitales, escritura y método, construidos desde Los Andes.">
+<title>Psicoandino — Digital systems, writing, and method</title>
+<meta name="description" content="Research for knowledge and development. Digital systems, writing, and method, built from the Andes.">
 
 <meta property="og:title" content="Psicoandino">
-<meta property="og:description" content="La belleza de conseguir el máximo potencial con la mínima cantidad de recursos.">
+<meta property="og:description" content="The beauty of reaching maximum potential with the fewest resources.">
 <meta property="og:type" content="website">
-<meta property="og:locale" content="es_CL">
+<meta property="og:locale" content="en_US">
 <meta property="og:url" content="https://psicoandino.cl">
 <meta property="og:image" content="https://psicoandino.cl/assets/logos/android-chrome-512x512.png">
 <meta name="twitter:card" content="summary">
@@ -44,7 +44,7 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* una sola pantalla: la página cabe sin scroll; el footer fijo reserva su franja */
+  /* one screen: the page fits without scrolling; the fixed footer reserves its band */
   body {
     min-height: 100dvh;
     display: flex;
@@ -53,7 +53,7 @@
     text-align: right;
   }
 
-  /* el espacio negativo intencional, revelado al seleccionar */
+  /* intentional negative space, revealed on selection */
   ::selection { background: var(--amatista); color: var(--hueso); }
 
   .eyebrow {
@@ -73,7 +73,7 @@
 
   a { color: inherit; text-decoration: none; }
 
-  /* ---------- HEADER: inline, la raíz no depende de nada externo ---------- */
+  /* ---------- HEADER: inline, the root depends on nothing external ---------- */
   .psico-header { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: flex-end; min-height: 64px; padding: 10px 24px; border-bottom: 1px solid var(--line); background: var(--hueso); }
   .ph-brand { display: flex; align-items: center; gap: 12px; order: 2; }
   .ph-brand:focus-visible { outline: 2px solid var(--cobre); outline-offset: 5px; }
@@ -98,7 +98,7 @@
 
   .hero .eyebrow { display: block; margin-bottom: 14px; }
 
-  /* coreografía de entrada: la página amanece una sola vez */
+  /* entrance choreography: the page dawns once */
   .alba {
     opacity: 0;
     transform: translateY(8px);
@@ -150,7 +150,7 @@
     margin-top: 12px;
   }
 
-  /* ---------- SIGNATURE MOTIF: el sol amatista, eclipsado en loop, revela las 4 montañas ---------- */
+  /* ---------- SIGNATURE MOTIF: the amethyst sun, eclipsed in a loop, reveals the 4 mountains ---------- */
   .motif {
     width: 100%;
     max-width: 1080px;
@@ -200,7 +200,7 @@
   .motif-squares span:nth-child(2) { background: var(--mostaza); animation-delay: 0.30s; }
   .motif-squares span:nth-child(3) { background: var(--musgo);   animation-delay: 0.45s; }
   .motif-squares span:nth-child(4) { background: var(--cobre);   animation-delay: 0.60s; }
-  /* amatista no aparece acá — es el sol, no una montaña (ver logo/logo.001.jpeg) */
+  /* amethyst does not appear here — it is the sun, not a mountain (see logo/logo.001.jpeg) */
 
   @keyframes eclipse {
     0%, 20% { transform: translateX(0%); }
@@ -217,7 +217,7 @@
     .motif-squares span { opacity: 1; }
   }
 
-  /* ---------- RAMAS: tres columnas, una pantalla ---------- */
+  /* ---------- BRANCHES: three columns, one screen ---------- */
   .ramas {
     width: 100%;
     max-width: 1080px;
@@ -238,9 +238,9 @@
     flex-direction: column;
     gap: 10px;
   }
-  /* las celdas no son links: no reaccionan al hover — sólo las filas reaccionan */
+  /* cells are not links: they do not react on hover — only rows react */
 
-  /* barra llena = sistemas operando · barra hueca = rama en formación */
+  /* full bar = operating systems · hollow bar = branch in formation */
   .rama-accent {
     width: 22px;
     height: 4px;
@@ -276,7 +276,7 @@
     font-size: 14px;
   }
 
-  /* fila completa cliqueable — el link deja de ser sólo la palabra */
+  /* full row is clickable — the link is no longer just the word */
   .rama li a.fila {
     display: flex;
     align-items: baseline;
@@ -305,7 +305,7 @@
   .rama li a.fila:hover .flecha,
   .rama li a.fila:focus-visible .flecha { opacity: 0.5; }
 
-  /* filas sin link: quietas al hover — lo que no reacciona, no es cliqueable */
+  /* rows without links stay quiet on hover — what does not react is not clickable */
   .rama li.fila-quieta {
     display: flex;
     align-items: baseline;
@@ -330,7 +330,7 @@
   .estado.marcha  { background: rgba(36,134,146,0.12); color: var(--cobre); }
   .estado.pendiente { background: rgba(183,134,39,0.14); color: var(--mostaza); }
 
-  /* haikus: la idea en tres líneas, con aire entre una y otra */
+  /* haiku: the idea in three lines, with air between them */
   .haikus {
     display: flex;
     flex-direction: column;
@@ -439,10 +439,10 @@
   </div>
 
   <section class="hero">
-    <span class="eyebrow alba alba-1">Investigación para el Conocimiento y el Desarrollo</span>
+    <span class="eyebrow alba alba-1">Research for Knowledge and Development</span>
     <h1 class="alba alba-2">Psicoandino</h1>
-    <p class="alba alba-3">La belleza de conseguir el máximo potencial con la mínima cantidad de recursos.</p>
-    <p class="puente alba alba-4">Sistemas digitales, escritura y método — construidos desde Los Andes. Lo que sale de acá lo gobierna quien lo usa: reglas, protocolo, evidencia.</p>
+    <p class="alba alba-3">The beauty of reaching maximum potential with the fewest resources.</p>
+    <p class="puente alba alba-4">Digital systems, writing, and method — built from the Andes. What comes out of here is governed by whoever uses it: rules, protocol, evidence.</p>
     <p class="firma alba alba-5">Ricardo Moreno · Santiago de Chile</p>
   </section>
 
@@ -459,44 +459,45 @@
 
     <div class="rama">
       <div class="rama-accent en-formacion" style="border-color:var(--musgo)"></div>
-      <h2>Investigación</h2>
-      <div class="rama-sub">Rigor que comprueba otro.</div>
+      <h2>Research</h2>
+      <div class="rama-sub">Rigor that another person can verify.</div>
       <ul>
-        <li><a class="fila" href="diagrama.html"><span class="rotulo"><span class="flecha">→</span> Diagrama del sistema</span> <span class="estado pendiente">En construcción</span></a></li>
+        <li><a class="fila" href="diagrama.html"><span class="rotulo"><span class="flecha">→</span> System diagram</span> <span class="estado pendiente">In progress</span></a></li>
       </ul>
     </div>
 
     <div class="rama">
       <div class="rama-accent" style="background:var(--cobre)"></div>
-      <h2>Desarrollo</h2>
-      <div class="rama-sub">Sistemas que operan.</div>
+      <h2>Development</h2>
+      <div class="rama-sub">Systems that operate.</div>
       <ul>
-        <li><a class="fila" href="radiomisor/"><span class="rotulo"><span class="flecha">→</span> Radiomisor — sintonía accesible</span> <span class="estado marcha">Marcha Blanca</span></a></li>
-        <li class="fila-quieta">evidenceOS <span class="estado pendiente">En construcción</span></li>
+        <li><a class="fila" href="radiomisor/"><span class="rotulo"><span class="flecha">→</span> Radiomisor — accessible listening</span> <span class="estado marcha">Pilot</span></a></li>
+        <li><a class="fila" href="astransys/"><span class="rotulo"><span class="flecha">→</span> Astransys — celestial architecture</span> <span class="estado pendiente">Laboratory</span></a></li>
+        <li class="fila-quieta">evidenceOS <span class="estado pendiente">In progress</span></li>
       </ul>
     </div>
 
-    <!-- Arquitectura: guardada, no eliminada. Sacada de la vista al pasar a 2 columnas (Investigación / Desarrollo).
+    <!-- Architecture: saved, not deleted. Hidden when the layout moved to 2 columns (Research / Development).
     <div class="rama">
       <div class="rama-accent" style="background:var(--amatista)"></div>
-      <h2>Arquitectura</h2>
-      <div class="rama-sub">Determinista primero. El modelo, después y local.</div>
+      <h2>Architecture</h2>
+      <div class="rama-sub">Deterministic first. The model comes later, and stays local.</div>
       <ul>
-        <li class="fila-quieta">Taller Psicoandino — agentes con soberanía local <span class="estado marcha">En uso</span></li>
+        <li class="fila-quieta">Psicoandino Workshop — agents with local sovereignty <span class="estado marcha">In use</span></li>
       </ul>
       <div class="haikus">
-        <p class="haiku">Primero lo que no
-necesita modelo:
-Python, chequeos, Git.</p>
-        <p class="haiku">Modelos locales,
-uno por clase de trabajo.
-Los datos no salen.</p>
-        <p class="haiku">Los motores reportan.
-Nunca reparan.
-Repara la mano.</p>
-        <p class="haiku">Lo que se construye
-lo gobierna quien lo usa.
-Soberanía.</p>
+        <p class="haiku">First, what does not
+need a model:
+Python, checks, Git.</p>
+        <p class="haiku">Local models,
+one for each kind of work.
+The data stays in.</p>
+        <p class="haiku">Engines report.
+They never repair.
+The hand repairs.</p>
+        <p class="haiku">What gets built
+is governed by whoever uses it.
+Sovereignty.</p>
       </div>
     </div>
     -->
@@ -505,7 +506,7 @@ Soberanía.</p>
 
   <footer>
     <div class="footer-inner">
-      <a class="footer-sello" href="#" title="Volver a la fuente" aria-label="Volver arriba">
+      <a class="footer-sello" href="#" title="Back to source" aria-label="Back to top">
         <div class="footer-sun"><div class="footer-shadow"></div></div>
         <span class="footer-marca">PSICOANDINO</span>
       </a>
