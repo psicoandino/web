@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Psicoandino — Who we are / Methodology (draft)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cobre: #248692; --musgo: #6D7C50; --mostaza: #B78627; --sangre: #C73A4A;
+    --hueso: #F5F3EC; --oled: #000000; --amatista: #7D5AA1; --line: rgba(0,0,0,0.10);
+
+    /* tocá estos valores para ajustar el font a gusto — Newsreader va de 400 a 700, itálica opcional con font-style */
+    --peso-titulo: 600;
+    --peso-cuerpo: 500;
+    --tracking-titulo: -0.01em;
+    --tracking-cuerpo: 0em;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--hueso); color: var(--oled); font-family: 'Newsreader', serif; -webkit-font-smoothing: antialiased; }
+  body { padding-bottom: 60px; text-align: right; }
+  ::selection { background: var(--amatista); color: var(--hueso); }
+  .eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.55; display:block; }
+  h1, h2, h3 { font-family: 'Newsreader', serif; margin: 0; letter-spacing: var(--tracking-titulo); font-weight: var(--peso-titulo); }
+  a { color: inherit; text-decoration: none; }
+
+  .psico-header { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: flex-end; min-height: 64px; padding: 10px 24px; border-bottom: 1px solid var(--line); background: var(--hueso); }
+  .ph-brand { display: flex; align-items: center; gap: 12px; order: 2; }
+  .ph-motif { position: relative; width: 16px; height: 16px; border-radius: 50%; overflow: hidden; }
+  .ph-dot-sun { position: absolute; inset: 0; background: var(--amatista); }
+  .ph-dot-shadow { position: absolute; inset: 0; background: var(--oled); transition: transform .65s cubic-bezier(.65,0,.35,1); }
+  .ph-motif:hover .ph-dot-shadow { transform: translateX(105%); }
+  .ph-word { font-family: 'IBM Plex Mono', monospace; font-size: 13px; }
+  .ph-brandname { font-weight: 700; }
+  .ph-nav { order: 1; margin-right: 22px; display: flex; gap: 22px; }
+  .ph-nav a { font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; opacity: .55; }
+  .ph-nav a:hover, .ph-nav a.activa { opacity: 1; }
+
+  main { max-width: 900px; margin: 0 auto; padding: clamp(24px, 5vh, 48px) 32px 0; }
+
+  section.bloque { margin-bottom: 44px; }
+  section.bloque h1 { font-size: clamp(26px, 3.2vw, 36px); font-weight: 600; margin-bottom: 6px; }
+  section.bloque .eyebrow { margin-bottom: 12px; }
+
+  .lead {
+    font-size: 18px; line-height: 1.6; max-width: 62ch; opacity: 0.85;
+    font-weight: var(--peso-cuerpo); letter-spacing: var(--tracking-cuerpo);
+    margin: 0 0 14px 0; margin-left: auto;
+  }
+  .lead:last-child { margin-bottom: 0; }
+
+  .principios {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .principio {
+    background: var(--hueso);
+    padding: 16px 18px;
+  }
+  .principio .accent { width: 18px; height: 3px; margin-bottom: 8px; margin-left: auto; }
+  .principio h3 { font-size: 15.5px; font-weight: var(--peso-titulo); margin-bottom: 4px; }
+  .principio p { font-size: 14.5px; line-height: 1.5; opacity: 0.75; margin: 0; font-weight: var(--peso-cuerpo); font-family: 'Newsreader', serif; }
+
+  @media (max-width: 640px) {
+    .principios { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="psico-header">
+    <a class="ph-brand" href="index.html" title="Psicoandino">
+      <div class="ph-motif"><div class="ph-dot-sun"></div><div class="ph-dot-shadow"></div></div>
+      <span class="ph-word"><span class="ph-brandname">PSICOANDINO</span></span>
+    </a>
+    <nav class="ph-nav">
+      <a href="index.html">Home</a>
+      <a href="#" class="activa">Who we are</a>
+    </nav>
+  </div>
+
+  <main>
+
+    <section class="bloque">
+      <span class="eyebrow">Who we are</span>
+      <h1>A workshop, not an agency.</h1>
+      <p class="lead">Psicoandino is tools, and one person who uses them — Ricardo Alberto, building from the Andes, Santiago de Chile.</p>
+      <p class="lead">We don't sell promises: we show systems that operate, and systems still in formation, marked without decoration. What this site claims is only what the code and the git history can prove — what isn't in a commit didn't happen.</p>
+      <p class="lead">The question that moves us: how much can be reached with the least amount of resources, without losing rigor. Research for knowledge and development — not research for the title, but method someone else can audit and repeat.</p>
+    </section>
+
+    <section class="bloque">
+      <span class="eyebrow">Methodology</span>
+      <h1>Deterministic first. The model, second, and local.</h1>
+      <p class="lead">Before asking anything of a model, we ask what Python can already derive, what a check can already verify, what git already recorded. A model enters only when the work demands real cognitive generation and no rule can replace it.</p>
+      <p class="lead">The engines report, they never repair — the hand corrects, the engine observes. Every step leaves a trace: what was done, with what, and which check confirms it. Nobody opines on whether something worked; it's measured, or it stays open.</p>
+      <p class="lead">A correction never overwrites the failed attempt. Errors and reversions are kept as evidence, not cleaned out of the history. What gets built is governed by whoever uses it: visible rules, protocol, evidence — never authority by default.</p>
+
+      <div class="principios">
+        <div class="principio">
+          <div class="accent" style="background:var(--cobre)"></div>
+          <h3>Evidence over conversation</h3>
+          <p>Git, refs and checks are authoritative. Chat is not a record.</p>
+        </div>
+        <div class="principio">
+          <div class="accent" style="background:var(--musgo)"></div>
+          <h3>One irreducible decision per session</h3>
+          <p>Everything else is rows and engines running on their own.</p>
+        </div>
+        <div class="principio">
+          <div class="accent" style="background:var(--mostaza)"></div>
+          <h3>Local models, one per class of work</h3>
+          <p>Chosen deliberately. Data doesn't leave the workshop.</p>
+        </div>
+        <div class="principio">
+          <div class="accent" style="background:var(--amatista)"></div>
+          <h3>Failures are preserved, not erased</h3>
+          <p>A fix is a new row naming the old one — never a rewrite.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+</body>
+</html>

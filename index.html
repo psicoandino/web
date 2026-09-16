@@ -83,6 +83,9 @@
   @media (prefers-reduced-motion: reduce) { .ph-dot-shadow { transition: none; } }
   .ph-word { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; letter-spacing: .04em; white-space: nowrap; }
   .ph-brandname { font-weight: 700; letter-spacing: .02em; }
+  .ph-nav { margin-left: auto; display: flex; gap: 22px; }
+  .ph-nav a { font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; opacity: .55; transition: opacity .15s ease; }
+  .ph-nav a:hover, .ph-nav a:focus-visible { opacity: 1; }
 
   /* ---------- HERO ---------- */
   .hero {
@@ -427,6 +430,9 @@
       <div class="ph-motif" tabindex="0" title="Amatista"><div class="ph-dot-sun"></div><div class="ph-dot-shadow"></div></div>
       <span class="ph-word"><span class="ph-brandname">PSICOANDINO</span></span>
     </a>
+    <nav class="ph-nav">
+      <a href="about.html">Who we are</a>
+    </nav>
   </div>
 
   <section class="hero">
