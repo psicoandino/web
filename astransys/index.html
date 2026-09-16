@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f1e8">
+  <title>Astransys · arquitectura celeste</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#result">Saltar al resultado</a>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">PSICOANDINO · MOTOR LOCAL</p>
+      <h1>ASTRANSYS</h1>
+      <p class="lede">Una fecha. La arquitectura celeste.</p>
+    </div>
+    <p id="worker-status" class="status" role="status">motor listo</p>
+  </header>
+
+  <main>
+    <section class="card input-card" aria-labelledby="input-title">
+      <div class="section-kicker">01 · instante</div>
+      <h2 id="input-title">Abrir una fecha</h2>
+      <p class="muted">La fecha es obligatoria. La hora y el lugar aparecen solo cuando los necesitas.</p>
+      <form id="calc-form">
+        <div class="field">
+          <label for="input-date">Fecha UTC de referencia</label>
+          <input id="input-date" name="date" type="date" min="1800-01-01" max="2100-12-31" required>
+        </div>
+        <div class="quick-actions" aria-label="Acciones rápidas de fecha">
+          <button type="button" class="secondary" id="today-button">Hoy</button>
+          <button type="button" class="secondary" id="now-button">Ahora</button>
+        </div>
+        <button class="primary" type="submit" id="calculate-button">Calcular arquitectura <span aria-hidden="true">→</span></button>
+
+        <details class="disclosure" id="time-disclosure">
+          <summary>Agregar hora exacta <span>opcional · UTC</span></summary>
+          <div class="disclosure-body">
+            <label for="input-time">Hora UTC</label>
+            <input id="input-time" name="time" type="time" step="1">
+            <p class="hint">La hora civil por zona horaria no está disponible en este MVP: no se usa el tzdb del navegador silenciosamente.</p>
+          </div>
+        </details>
+
+        <details class="disclosure" id="place-disclosure">
+          <summary>Agregar lugar <span>opcional · GeoNames offline</span></summary>
+          <div class="disclosure-body">
+            <label for="continent-select">Continente</label>
+            <select id="continent-select"><option value="">Elegir continente</option></select>
+            <label for="country-select">País</label>
+            <select id="country-select" disabled><option value="">Elegir país</option></select>
+            <label for="city-select">Ciudad</label>
+            <select id="city-select" disabled><option value="">Elegir ciudad</option></select>
+            <p id="place-note" class="hint">El catálogo se carga solo al abrir este panel. La ciudad es un punto aproximado; la altura usada será 0 m como referencia explícita.</p>
+          </div>
+        </details>
+
+        <details class="disclosure advanced" id="advanced-disclosure">
+          <summary>Laboratorio avanzado <span>casas experimentales</span></summary>
+          <div class="disclosure-body">
+            <label for="houses-select">Sistema de casas</label>
+            <select id="houses-select">
+              <option value="none">No calcular</option>
+              <option value="equal">Equal desde ASC</option>
+              <option value="porphyry">Porphyry</option>
+              <option value="compare">Comparar Equal / Porphyry</option>
+            </select>
+            <p class="hint">Partición convencional de la esfera; no es una propiedad física ni una capa inicial.</p>
+            <p id="houses-status" class="house-status" role="status">Las casas se retirarán al recalcular con «No calcular».</p>
+          </div>
+        </details>
+
+        <p id="form-error" class="error" role="alert" hidden></p>
+      </form>
+      <div class="input-states" aria-label="Estado de entrada">
+        <div><span>Fecha</span><strong id="state-date">pendiente</strong></div>
+        <div><span>Hora</span><strong id="state-time">referencia 12:00 UTC</strong></div>
+        <div><span>Lugar</span><strong id="state-place">geocéntrico</strong></div>
+        <div><span>Marco local</span><strong id="state-frame">requiere hora y lugar</strong></div>
+      </div>
+    </section>
+
+    <section class="card result-card" id="result" aria-labelledby="result-title" aria-live="polite">
+      <div class="result-head">
+        <div>
+          <div class="section-kicker">02 · lectura</div>
+          <h2 id="result-title">El lienzo espera una fecha</h2>
+          <p id="result-iso" class="result-iso" hidden></p>
+        </div>
+        <div class="mode-switch" role="group" aria-label="Modo de lectura">
+          <button type="button" class="mode active" data-mode="diorama" aria-pressed="true">Diorama</button>
+          <button type="button" class="mode" data-mode="summary" aria-pressed="false">Resumen</button>
+          <button type="button" class="mode" data-mode="science" aria-pressed="false">Ciencia</button>
+        </div>
+      </div>
+
+      <div id="assumptions" class="assumption" hidden></div>
+      <div id="axes" class="axes" hidden></div>
+      <section id="houses-panel" class="houses-panel" hidden aria-labelledby="houses-panel-title"></section>
+      <div id="body-list" class="body-list">
+        <p class="empty">El resultado aparecerá aquí. La primera vista conserva solo el territorio Astransys.</p>
+      </div>
+      <section id="focus-panel" class="focus-panel" hidden aria-labelledby="focus-title"></section>
+      <section id="science-panel" class="science-panel" hidden aria-labelledby="science-title"></section>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Offline · sin backend · sin tracking · cálculo en Web Worker.</p>
+    <p><a href="./ATTRIBUTION.md">Fuentes y atribuciones</a> · Astronomy Engine 2.1.19 · GeoNames CC BY 4.0</p>
+  </footer>
+  <script type="module" src="./app.mjs"></script>
+</body>
+</html>

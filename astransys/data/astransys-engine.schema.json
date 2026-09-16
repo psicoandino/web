@@ -1,0 +1,639 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://psicoandino.github.io/astransys/schema/astransys-engine-1.5.json",
+  "title": "Astransys Engine result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "input", "bodies", "localFrame", "localFrameReason", "provenance"],
+  "properties": {
+    "schemaVersion": { "const": "1.5.0" },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["utc", "center", "observer", "inputCompleteness", "timeStatus", "locationStatus", "originalInput", "referenceUtc", "windowStartUtc", "windowEndUtc", "assumptions"],
+      "properties": {
+        "utc": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}Z$"
+        },
+        "center": { "const": "Earth" },
+        "observer": { "const": "geocenter" },
+        "inputCompleteness": { "enum": ["date-only", "date-time", "date-location", "date-time-location"] },
+        "timeStatus": { "enum": ["exact", "date-only-reference"] },
+        "locationStatus": { "enum": ["provided", "missing"] },
+        "originalInput": {
+          "anyOf": [
+            { "type": "null" },
+            { "$ref": "#/$defs/originalInput" }
+          ]
+        },
+        "locationMetadata": {
+          "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/locationMetadata" }]
+        },
+        "civilConversion": {
+          "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/civilConversion" }]
+        },
+        "referenceUtc": { "$ref": "#/$defs/utcTimestamp" },
+        "windowStartUtc": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/utcTimestamp" }] },
+        "windowEndUtc": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/utcTimestamp" }] },
+        "assumptions": { "type": "array", "items": { "type": "string" } }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "inputCompleteness": { "const": "date-only" },
+            "timeStatus": { "const": "date-only-reference" },
+            "locationStatus": { "const": "missing" },
+            "windowStartUtc": { "$ref": "#/$defs/utcTimestamp" },
+            "windowEndUtc": { "$ref": "#/$defs/utcTimestamp" }
+          }
+        },
+        {
+          "properties": {
+            "inputCompleteness": { "const": "date-location" },
+            "timeStatus": { "const": "date-only-reference" },
+            "locationStatus": { "const": "provided" },
+            "windowStartUtc": { "$ref": "#/$defs/utcTimestamp" },
+            "windowEndUtc": { "$ref": "#/$defs/utcTimestamp" }
+          }
+        },
+        {
+          "properties": {
+            "inputCompleteness": { "const": "date-time" },
+            "timeStatus": { "const": "exact" },
+            "locationStatus": { "const": "missing" },
+            "windowStartUtc": { "type": "null" },
+            "windowEndUtc": { "type": "null" }
+          }
+        },
+        {
+          "properties": {
+            "inputCompleteness": { "const": "date-time-location" },
+            "timeStatus": { "const": "exact" },
+            "locationStatus": { "const": "provided" },
+            "windowStartUtc": { "type": "null" },
+            "windowEndUtc": { "type": "null" }
+          }
+        }
+      ]
+    },
+    "bodies": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "items": { "$ref": "#/$defs/body" }
+    },
+    "localFrame": {
+      "anyOf": [
+        { "type": "null" },
+        { "$ref": "#/$defs/localFrame" }
+      ]
+    },
+    "localFrameReason": {
+      "type": ["string", "null"],
+      "enum": ["exact-time-required", "observer-required", null]
+    },
+    "houses": {
+      "oneOf": [
+        { "$ref": "#/$defs/houseSet" },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["equal", "porphyry"],
+          "properties": {
+            "equal": { "$ref": "#/$defs/houseSet" },
+            "porphyry": { "$ref": "#/$defs/houseSet" }
+          }
+        }
+      ]
+    },
+    "provenance": { "$ref": "#/$defs/provenance" }
+  },
+  "$defs": {
+    "utcTimestamp": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}Z$"
+    },
+    "originalInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["date", "timeProvided", "locationProvided"],
+      "properties": {
+        "date": { "type": "string", "minLength": 1 },
+        "timeProvided": { "type": "boolean" },
+        "locationProvided": { "type": "boolean" }
+      }
+    },
+    "locationMetadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "geonameId": { "type": ["integer", "null"] },
+        "name": { "type": ["string", "null"] },
+        "admin1": { "type": ["string", "null"] },
+        "countryCode": { "type": ["string", "null"] },
+        "timezone": { "type": ["string", "null"] },
+        "latitude": { "type": ["number", "null"] },
+        "longitude": { "type": ["number", "null"] },
+        "source": { "type": ["string", "null"] },
+        "heightSource": { "type": ["string", "null"] }
+      }
+    },
+    "civilConversion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["localDate", "localTime", "timeZone", "status", "utc", "candidates", "tzdbVersion"],
+      "properties": {
+        "localDate": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+        "localTime": { "type": "string", "pattern": "^[0-9]{2}:[0-9]{2}:[0-9]{2}$" },
+        "timeZone": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["unique", "ambiguous", "nonexistent"] },
+        "utc": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/utcTimestamp" }] },
+        "candidates": { "type": "array", "items": { "$ref": "#/$defs/utcTimestamp" } },
+        "tzdbVersion": { "type": "string", "minLength": 1 }
+      }
+    },
+    "finiteNumber": { "type": "number" },
+    "body": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["body", "symbol", "displayName", "vector", "corrections", "distanceAU", "equatorial", "ecliptic", "constellation", "actualSky", "astransysTerritory", "motion", "crossing"],
+      "properties": {
+        "body": { "enum": ["Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"] },
+        "symbol": { "type": "string", "minLength": 1 },
+        "displayName": { "type": "string", "minLength": 1 },
+        "vector": {
+          "type": "object", "additionalProperties": false,
+          "required": ["xAU", "yAU", "zAU", "frame", "center"],
+          "properties": {
+            "xAU": { "$ref": "#/$defs/finiteNumber" },
+            "yAU": { "$ref": "#/$defs/finiteNumber" },
+            "zAU": { "$ref": "#/$defs/finiteNumber" },
+            "frame": { "const": "EQJ" },
+            "center": { "const": "Earth" }
+          }
+        },
+        "corrections": {
+          "type": "object", "additionalProperties": false,
+          "required": ["lightTimeApplied", "aberrationApplied", "gravitationalDeflectionApplied", "note"],
+          "properties": {
+            "lightTimeApplied": { "type": "boolean" },
+            "aberrationApplied": { "type": "boolean" },
+            "gravitationalDeflectionApplied": { "type": "boolean" },
+            "note": { "type": "string" }
+          }
+        },
+        "distanceAU": { "type": "number", "exclusiveMinimum": 0 },
+        "equatorial": {
+          "type": "object", "additionalProperties": false,
+          "required": ["raHours", "decDeg", "frame", "epoch"],
+          "properties": {
+            "raHours": { "type": "number", "minimum": 0, "exclusiveMaximum": 24 },
+            "decDeg": { "type": "number", "minimum": -90, "maximum": 90 },
+            "frame": { "const": "EQJ" }, "epoch": { "const": "J2000" }
+          }
+        },
+        "ecliptic": {
+          "type": "object", "additionalProperties": false,
+          "required": ["longitudeDeg", "latitudeDeg", "frame"],
+          "properties": {
+            "longitudeDeg": { "type": "number", "minimum": 0, "exclusiveMaximum": 360 },
+            "latitudeDeg": { "type": "number", "minimum": -90, "maximum": 90 },
+            "frame": { "const": "of-date true ecliptic" }
+          }
+        },
+        "constellation": {
+          "type": "object", "additionalProperties": false,
+          "required": ["symbol", "name", "ra1875Hours", "dec1875Deg", "boundaryStatus", "boundaryDistanceEstimateArcmin", "boundaryMethod", "boundarySearchRadiusArcmin", "boundaryAmbiguousThresholdArcmin", "boundaryNearThresholdArcmin"],
+          "properties": {
+            "symbol": { "type": "string", "pattern": "^[A-Z][a-z]{2}$" },
+            "name": { "type": "string" },
+            "ra1875Hours": { "type": "number", "minimum": 0, "exclusiveMaximum": 24 },
+            "dec1875Deg": { "type": "number", "minimum": -90, "maximum": 90 },
+            "boundaryStatus": { "enum": ["clear", "near-boundary", "ambiguous", "unmeasured"] },
+            "boundaryDistanceEstimateArcmin": { "type": ["number", "null"], "minimum": 0 },
+            "boundaryMethod": { "type": "string" },
+            "boundarySearchRadiusArcmin": { "type": "number", "exclusiveMinimum": 0 },
+            "boundaryAmbiguousThresholdArcmin": { "const": 2 },
+            "boundaryNearThresholdArcmin": { "const": 10 }
+          }
+        },
+        "motion": {
+          "type": "object", "additionalProperties": false,
+          "required": ["longitudeRateDegPerDay", "state", "stepSeconds", "thresholdDegPerDay", "method"],
+          "properties": {
+            "longitudeRateDegPerDay": { "type": "number" },
+            "state": { "enum": ["direct", "retrograde", "stationary"] },
+            "stepSeconds": { "const": 3600 },
+            "thresholdDegPerDay": { "const": 0.005 },
+            "method": { "type": "string" }
+          }
+        },
+        "actualSky": { "$ref": "#/$defs/actualSky" },
+        "astransysTerritory": { "$ref": "#/$defs/astransysTerritory" },
+        "crossing": { "$ref": "#/$defs/crossing" }
+      }
+    },
+    "crossing": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "nextConstellation", "travelAlongPathDeg", "elapsedDays", "elapsedJulianYears", "crossingUtc", "search", "nextAstransysTerritory", "travelAlongProjectedPathDeg", "projectedElapsedDays", "projectedElapsedJulianYears", "projectedCrossingUtc", "projectedSearch"],
+      "properties": {
+        "status": { "enum": ["found", "not-found-within-validity", "disabled"] },
+        "nextConstellation": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object", "additionalProperties": false,
+              "required": ["symbol", "name"],
+              "properties": { "symbol": { "type": "string", "pattern": "^[A-Z][a-z]{2}$" }, "name": { "type": "string" } }
+            }
+          ]
+        },
+        "travelAlongPathDeg": { "type": ["number", "null"], "minimum": 0 },
+        "elapsedDays": { "type": ["number", "null"], "minimum": 0 },
+        "elapsedJulianYears": { "type": ["number", "null"], "minimum": 0 },
+        "crossingUtc": { "type": ["string", "null"] },
+        "nextAstransysTerritory": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object", "additionalProperties": false,
+              "required": ["symbol", "name"],
+              "properties": {
+                "symbol": { "enum": ["Ari", "Tau", "Gem", "Cnc", "Leo", "Vir", "Lib", "Sco", "Oph", "Sgr", "Cap", "Aqr", "Psc"] },
+                "name": { "type": "string" }
+              }
+            }
+          ]
+        },
+        "travelAlongProjectedPathDeg": { "type": ["number", "null"], "minimum": 0 },
+        "projectedElapsedDays": { "type": ["number", "null"], "minimum": 0 },
+        "projectedElapsedJulianYears": { "type": ["number", "null"], "minimum": 0 },
+        "projectedCrossingUtc": { "type": ["string", "null"] },
+        "search": {
+          "type": "object", "additionalProperties": false,
+          "required": ["method"],
+          "properties": {
+            "method": { "type": "string" },
+            "limitUtc": { "type": "string" },
+            "samplingStepDays": { "type": "number", "exclusiveMinimum": 0 },
+            "pathMethod": { "type": "string" },
+            "samplingMaxAngularStepDeg": { "type": "number", "minimum": 0 },
+            "methodConfidence": { "type": "string" },
+            "limitation": { "type": "string" },
+            "refinementToleranceSeconds": { "const": 1 },
+            "confirmedBeforeAfter": { "type": "boolean" }
+          }
+        },
+        "projectedSearch": {
+          "type": "object", "additionalProperties": false,
+          "required": ["method"],
+          "properties": {
+            "method": { "type": "string" },
+            "limitUtc": { "type": "string" },
+            "samplingStepDays": { "type": "number", "exclusiveMinimum": 0 },
+            "pathMethod": { "type": "string" },
+            "samplingMaxAngularStepDeg": { "type": "number", "minimum": 0 },
+            "methodConfidence": { "type": "string" },
+            "limitation": { "type": "string" },
+            "refinementToleranceSeconds": { "const": 1 },
+            "confirmedBeforeAfter": { "type": "boolean" }
+          }
+        }
+      }
+    },
+    "actualSky": {
+      "type": "object", "additionalProperties": false,
+      "required": ["center", "frame", "constellation", "ecliptic", "equatorial"],
+      "properties": {
+        "center": { "const": "Earth" },
+        "frame": { "const": "geocentric" },
+        "constellation": { "$ref": "#/$defs/constellation" },
+        "ecliptic": { "$ref": "#/$defs/ecliptic" },
+        "equatorial": { "$ref": "#/$defs/equatorial" }
+      }
+    },
+    "astransysTerritory": {
+      "type": "object", "additionalProperties": false,
+      "required": ["symbol", "name", "eclipticLongitudeDeg", "eclipticLatitudeDeg", "coordinates", "constellation", "method", "source"],
+      "properties": {
+        "symbol": { "enum": ["Ari", "Tau", "Gem", "Cnc", "Leo", "Vir", "Lib", "Sco", "Oph", "Sgr", "Cap", "Aqr", "Psc"] },
+        "name": { "type": "string" },
+        "eclipticLongitudeDeg": { "type": "number", "minimum": 0, "exclusiveMaximum": 360 },
+        "eclipticLatitudeDeg": { "const": 0 },
+        "coordinates": {
+          "type": "object", "additionalProperties": false,
+          "required": ["eclipticOfDate", "equatorialOfDate", "equatorialJ2000"],
+          "properties": {
+            "eclipticOfDate": { "$ref": "#/$defs/vector3" },
+            "equatorialOfDate": { "$ref": "#/$defs/vector3" },
+            "equatorialJ2000": { "$ref": "#/$defs/vector3" }
+          }
+        },
+        "constellation": { "$ref": "#/$defs/constellation" },
+        "method": { "type": "string" },
+        "source": { "type": "string" }
+      }
+    },
+    "ecliptic": {
+      "type": "object", "additionalProperties": false,
+      "required": ["longitudeDeg", "latitudeDeg", "frame"],
+      "properties": {
+        "longitudeDeg": { "type": "number", "minimum": 0, "exclusiveMaximum": 360 },
+        "latitudeDeg": { "type": "number", "minimum": -90, "maximum": 90 },
+        "frame": { "const": "of-date true ecliptic" }
+      }
+    },
+    "equatorial": {
+      "type": "object", "additionalProperties": false,
+      "required": ["raHours", "decDeg", "frame", "epoch"],
+      "properties": {
+        "raHours": { "type": "number", "minimum": 0, "exclusiveMaximum": 24 },
+        "decDeg": { "type": "number", "minimum": -90, "maximum": 90 },
+        "frame": { "const": "EQJ" },
+        "epoch": { "const": "J2000" }
+      }
+    },
+    "constellation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["symbol", "name", "ra1875Hours", "dec1875Deg", "boundaryStatus", "boundaryDistanceEstimateArcmin", "boundaryMethod", "boundarySearchRadiusArcmin", "boundaryAmbiguousThresholdArcmin", "boundaryNearThresholdArcmin"],
+      "properties": {
+        "symbol": { "type": "string", "pattern": "^[A-Z][a-z]{2}$" },
+        "name": { "type": "string" },
+        "ra1875Hours": { "type": "number", "minimum": 0, "exclusiveMaximum": 24 },
+        "dec1875Deg": { "type": "number", "minimum": -90, "maximum": 90 },
+        "boundaryStatus": { "enum": ["clear", "near-boundary", "ambiguous", "unmeasured"] },
+        "boundaryDistanceEstimateArcmin": { "type": ["number", "null"], "minimum": 0 },
+        "boundaryMethod": { "type": "string" },
+        "boundarySearchRadiusArcmin": { "type": "number", "exclusiveMinimum": 0 },
+        "boundaryAmbiguousThresholdArcmin": { "const": 2 },
+        "boundaryNearThresholdArcmin": { "const": 10 }
+      }
+    },
+    "localFrame": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "input", "time", "frames", "geometry", "angles", "method", "warnings"],
+      "properties": {
+        "status": { "enum": ["ok", "near-pole", "pole-degenerate"] },
+        "input": { "$ref": "#/$defs/localInput" },
+        "time": {
+          "type": "object", "additionalProperties": false,
+          "required": ["gastHours", "lastHours", "siderealConvention", "utcApproximatelyUt1", "ut1MinusUtcSeconds", "earthOrientationSource", "earthOrientationModel", "timeUncertainty"],
+          "properties": {
+            "gastHours": { "type": "number", "minimum": 0, "exclusiveMaximum": 24 },
+            "lastHours": { "type": "number", "minimum": 0, "exclusiveMaximum": 24 },
+            "siderealConvention": { "type": "string" },
+            "utcApproximatelyUt1": { "const": true },
+            "ut1MinusUtcSeconds": { "type": ["number", "null"] },
+            "earthOrientationSource": { "type": "string" },
+            "earthOrientationModel": { "type": "string" },
+            "timeUncertainty": {
+              "type": "object", "additionalProperties": false,
+              "required": ["status", "statement"],
+              "properties": {
+                "status": { "enum": ["unquantified"] },
+                "statement": { "type": "string" }
+              }
+            }
+          }
+        },
+        "frames": {
+          "type": "object", "additionalProperties": false,
+          "required": ["horizontal", "equatorial", "ecliptic"],
+          "properties": {
+            "horizontal": { "type": "string" },
+            "equatorial": { "type": "string" },
+            "ecliptic": { "type": "string" }
+          }
+        },
+        "geometry": {
+          "type": "object", "additionalProperties": false,
+          "required": ["horizon", "meridian", "zenith", "nadir"],
+          "properties": {
+            "horizon": { "$ref": "#/$defs/plane" },
+            "meridian": { "$ref": "#/$defs/plane" },
+            "zenith": { "$ref": "#/$defs/frameVector" },
+            "nadir": { "$ref": "#/$defs/frameVector" }
+          }
+        },
+        "angles": {
+          "type": "object", "additionalProperties": false,
+          "required": ["ascendant", "descendant", "midheaven", "imumCoeli"],
+          "properties": {
+            "ascendant": { "$ref": "#/$defs/anglePoint" },
+            "descendant": { "$ref": "#/$defs/anglePoint" },
+            "midheaven": { "$ref": "#/$defs/anglePoint" },
+            "imumCoeli": { "$ref": "#/$defs/anglePoint" }
+          }
+        },
+        "method": {
+          "type": "object", "additionalProperties": false,
+          "required": ["intersections", "refraction", "houses", "numericalTolerance"],
+          "properties": {
+            "intersections": { "type": "string" },
+            "refraction": { "const": "none" },
+            "houses": { "const": "not calculated" },
+            "numericalTolerance": { "type": "string" }
+          }
+        },
+        "warnings": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "localInput": {
+      "type": "object", "additionalProperties": false,
+      "required": ["utc", "latitudeDeg", "longitudeDeg", "longitudeConvention", "heightMeters", "heightSource", "heightSemantics", "datum"],
+      "properties": {
+        "utc": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}Z$" },
+        "latitudeDeg": { "type": "number", "minimum": -90, "maximum": 90 },
+        "longitudeDeg": { "type": "number", "minimum": -180, "maximum": 180 },
+        "longitudeConvention": { "const": "east-positive degrees from Greenwich" },
+        "heightMeters": { "type": "number" },
+        "heightSource": { "type": "string", "minLength": 1 },
+        "heightSemantics": { "type": "string" },
+        "datum": { "const": "WGS84 geodetic coordinates (Astronomy Engine Earth ellipsoid)" }
+      }
+    },
+    "frameVector": {
+      "type": "object", "additionalProperties": false,
+      "required": ["horizontal", "equatorialOfDate", "eclipticOfDate"],
+      "properties": {
+        "horizontal": { "$ref": "#/$defs/vector3" },
+        "equatorialOfDate": { "$ref": "#/$defs/vector3" },
+        "eclipticOfDate": { "$ref": "#/$defs/vector3" }
+      }
+    },
+    "vector3": {
+      "type": "object", "additionalProperties": false,
+      "required": ["x", "y", "z"],
+      "properties": {
+        "x": { "type": "number" }, "y": { "type": "number" }, "z": { "type": "number" }
+      }
+    },
+    "plane": {
+      "type": "object", "additionalProperties": false,
+      "required": ["name", "equation", "normal", "basis"],
+      "properties": {
+        "name": { "type": "string" },
+        "equation": { "type": "string" },
+        "normal": { "$ref": "#/$defs/frameVector" },
+        "basis": {
+          "type": "object", "additionalProperties": false,
+          "properties": {
+            "north": { "$ref": "#/$defs/frameVector" },
+            "west": { "$ref": "#/$defs/frameVector" },
+            "zenith": { "$ref": "#/$defs/frameVector" }
+          },
+          "minProperties": 2
+        }
+      }
+    },
+    "anglePoint": {
+      "type": "object", "additionalProperties": false,
+      "required": ["name", "angleStatus", "eclipticLongitudeDeg", "eclipticLatitudeDeg", "rightAscensionHours", "declinationDeg", "vector", "horizontal"],
+      "properties": {
+        "name": { "enum": ["ASC", "DSC", "MC", "IC"] },
+        "angleStatus": { "enum": ["geometric", "geometric-near-pole", "conventional-at-pole"] },
+        "eclipticLongitudeDeg": { "type": "number", "minimum": 0, "exclusiveMaximum": 360 },
+        "eclipticLatitudeDeg": { "const": 0 },
+        "rightAscensionHours": { "type": "number", "minimum": 0, "exclusiveMaximum": 24 },
+        "declinationDeg": { "type": "number", "minimum": -90, "maximum": 90 },
+        "vector": {
+          "type": "object", "additionalProperties": false,
+          "required": ["eclipticOfDate", "equatorialOfDate"],
+          "properties": {
+            "eclipticOfDate": { "$ref": "#/$defs/vector3" },
+            "equatorialOfDate": { "$ref": "#/$defs/vector3" }
+          }
+        },
+        "horizontal": {
+          "type": "object", "additionalProperties": false,
+          "required": ["vector", "altitudeDeg", "azimuthDeg"],
+          "properties": {
+            "vector": { "$ref": "#/$defs/vector3" },
+            "altitudeDeg": { "type": "number", "minimum": -90, "maximum": 90 },
+            "azimuthDeg": { "type": "number", "minimum": 0, "exclusiveMaximum": 360 }
+          }
+        }
+      }
+    },
+    "houseAssignment": {
+      "type": "object", "additionalProperties": false,
+      "required": ["body", "status", "house", "cusp", "neighboringHouses", "longitudeDeg", "toleranceArcsec"],
+      "properties": {
+        "body": { "type": "string" },
+        "symbol": { "type": "string" },
+        "status": { "enum": ["valid", "on-cusp", "model-mismatch"] },
+        "house": { "type": ["integer", "null"], "minimum": 1, "maximum": 12 },
+        "cusp": { "type": ["integer", "null"], "minimum": 1, "maximum": 12 },
+        "neighboringHouses": {
+          "type": ["array", "null"], "minItems": 2, "maxItems": 2,
+          "items": { "type": "integer", "minimum": 1, "maximum": 12 }
+        },
+        "longitudeDeg": { "type": "number", "minimum": 0, "exclusiveMaximum": 360 },
+        "toleranceArcsec": { "type": "number", "minimum": 0 }
+      }
+    },
+    "houseSet": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "system", "definition", "source", "input", "localFrameStatus", "angles", "cusps", "assignments", "warnings", "polarStatus", "toleranceArcsec", "orderValidated", "diagnostics"],
+      "properties": {
+        "status": { "enum": ["valid", "invalid-input", "polar-undefined", "singular", "numerically-unstable", "model-mismatch"] },
+        "system": { "type": ["string", "null"], "enum": ["equal", "porphyry", null] },
+        "definition": { "type": ["string", "null"] },
+        "source": { "type": ["string", "null"] },
+        "input": {
+          "type": "object", "additionalProperties": false,
+          "required": ["utc", "latitudeDeg", "longitudeDeg", "heightMeters", "longitudeConvention"],
+          "properties": {
+            "utc": { "anyOf": [{ "$ref": "#/$defs/utcTimestamp" }, { "type": "null" }] },
+            "latitudeDeg": { "type": ["number", "null"], "minimum": -90, "maximum": 90 },
+            "longitudeDeg": { "type": ["number", "null"], "minimum": -180, "maximum": 180 },
+            "heightMeters": { "type": ["number", "null"] },
+            "longitudeConvention": { "const": "east-positive degrees" }
+          }
+        },
+        "localFrameStatus": { "type": ["string", "null"], "enum": ["ok", "near-pole", "pole-degenerate", null] },
+        "angles": {
+          "anyOf": [{ "type": "null" }, { "type": "object", "additionalProperties": false,
+          "required": ["lastHours", "armcDeg", "ascDeg", "mcDeg", "dscDeg", "icDeg"],
+          "properties": {
+            "lastHours": { "type": "number", "minimum": 0, "exclusiveMaximum": 24 },
+            "armcDeg": { "type": "number", "minimum": 0, "exclusiveMaximum": 360 },
+            "ascDeg": { "type": "number", "minimum": 0, "exclusiveMaximum": 360 },
+            "mcDeg": { "type": "number", "minimum": 0, "exclusiveMaximum": 360 },
+            "dscDeg": { "type": "number", "minimum": 0, "exclusiveMaximum": 360 },
+            "icDeg": { "type": "number", "minimum": 0, "exclusiveMaximum": 360 }
+          }}]
+        },
+        "cusps": {
+          "anyOf": [{ "type": "object", "maxProperties": 0 }, { "type": "object", "additionalProperties": false,
+          "required": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+          "patternProperties": { "^(?:[1-9]|1[0-2])$": { "type": "number", "minimum": 0, "exclusiveMaximum": 360 } }
+          }]
+        },
+        "assignments": { "type": "array", "items": { "$ref": "#/$defs/houseAssignment" } },
+        "warnings": { "type": "array", "items": { "type": "string" } },
+        "polarStatus": { "enum": ["ordinary", "high-latitude", "undefined", "singular"] },
+        "toleranceArcsec": { "type": ["number", "null"], "minimum": 0 },
+        "orderValidated": { "type": "boolean" },
+        "diagnostics": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object", "additionalProperties": false,
+              "properties": {
+                "rawInput": {
+                  "type": "object", "additionalProperties": false,
+                  "properties": {
+                    "system": { "type": ["string", "null"] },
+                    "utc": { "type": ["string", "null"] },
+                    "latitudeDeg": { "type": ["string", "null"] },
+                    "longitudeDeg": { "type": ["string", "null"] },
+                    "localFrameStatus": { "type": ["string", "null"] }
+                  }
+                },
+                "invalidCusps": {
+                  "type": "object", "additionalProperties": false,
+                  "required": ["reason", "uniqueCount", "expectedCount", "orderValidated"],
+                  "properties": {
+                    "reason": { "type": "string" },
+                    "uniqueCount": { "type": "integer", "minimum": 0 },
+                    "expectedCount": { "const": 12 },
+                    "orderValidated": { "const": false }
+                  }
+                },
+                "singularReason": { "type": "string" }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "provenance": {
+      "type": "object", "additionalProperties": false,
+      "required": ["engine", "engineVersion", "ephemerisModel", "coordinates", "constellationSource", "inputTimeScale", "utcApproximatelyUt1", "timeScaleNote", "terrestrialTimeDaysSinceJ2000", "universalTimeDaysSinceJ2000", "deltaTSeconds", "deltaTModel", "precisionNominalArcmin", "precisionStatement", "recommendedInterval", "warnings", "networkRequired"],
+      "properties": {
+        "engine": { "const": "Astronomy Engine" },
+        "engineVersion": { "const": "2.1.19" },
+        "ephemerisModel": { "type": "string" },
+        "coordinates": { "type": "string" },
+        "constellationSource": { "type": "string" },
+        "inputTimeScale": { "const": "UTC" },
+        "utcApproximatelyUt1": { "const": true },
+        "timeScaleNote": { "type": "string" },
+        "terrestrialTimeDaysSinceJ2000": { "type": "number" },
+        "universalTimeDaysSinceJ2000": { "type": "number" },
+        "deltaTSeconds": { "type": "number" },
+        "deltaTModel": { "type": "string" },
+        "precisionNominalArcmin": { "const": 1 },
+        "precisionStatement": { "type": "string" },
+        "recommendedInterval": {
+          "type": "object", "additionalProperties": false,
+          "required": ["startYear", "endYear", "note"],
+          "properties": { "startYear": { "const": 1800 }, "endYear": { "const": 2100 }, "note": { "type": "string" } }
+        },
+        "warnings": { "type": "array", "items": { "type": "string" } },
+        "networkRequired": { "const": false }
+      }
+    }
+  }
+}
