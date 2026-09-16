@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Psicoandino — Diagrama del sistema</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cobre: #248692; --musgo: #6D7C50; --mostaza: #B78627; --sangre: #C73A4A;
+    --hueso: #F5F3EC; --oled: #000000; --amatista: #7D5AA1; --line: rgba(0,0,0,0.14);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--hueso); color: var(--oled); font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+  body { padding-bottom: 40px; }
+  h1 { font-family: 'Space Grotesk', sans-serif; margin: 0; font-size: clamp(22px, 3vw, 30px); }
+  a { color: inherit; }
+
+  .psico-header { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; min-height: 64px; padding: 10px 24px; border-bottom: 1px solid var(--line); background: var(--hueso); }
+  .ph-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .ph-motif { width: 16px; height: 16px; border-radius: 50%; background: var(--amatista); }
+  .ph-word { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 700; }
+  .volver { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; opacity: .55; text-decoration: none; }
+  .volver:hover { opacity: 1; }
+
+  main { max-width: 980px; margin: 0 auto; padding: 32px 32px 0; }
+  .eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.55; display: block; margin-bottom: 10px; }
+  main p.lead { font-size: 15px; line-height: 1.55; max-width: 62ch; opacity: .8; margin: 8px 0 28px; }
+
+  svg { width: 100%; height: auto; }
+  .nodo-rect { fill: var(--hueso); stroke: var(--oled); stroke-width: 1.4; }
+  .nodo-txt { font-family: 'Inter', sans-serif; font-size: 13px; fill: var(--oled); }
+  .nodo-eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: .05em; text-transform: uppercase; }
+  .flecha { stroke: var(--oled); stroke-width: 1.4; fill: none; marker-end: url(#punta); opacity: .55; }
+  .nota { font-family: 'IBM Plex Mono', monospace; font-size: 10px; opacity: .55; }
+</style>
+</head>
+<body>
+
+  <div class="psico-header">
+    <a class="ph-brand" href="index.html">
+      <div class="ph-motif"></div>
+      <span class="ph-word">PSICOANDINO</span>
+    </a>
+    <a class="volver" href="index.html">← Home</a>
+  </div>
+
+  <main>
+    <span class="eyebrow">Investigación · evidenceOS</span>
+    <h1>El sistema que estamos armando</h1>
+    <p class="lead">Cribado de revisiones sistemáticas, derivado y auditable. Cada paso deja evidencia — nadie opina sobre si un artículo entra o sale, un chequeo lo decide.</p>
+
+    <svg viewBox="0 0 980 360" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="punta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="black" opacity="0.55"/>
+        </marker>
+      </defs>
+
+      <!-- fila 1 -->
+      <g>
+        <rect class="nodo-rect" x="20" y="40" width="150" height="64" rx="6"/>
+        <text class="nodo-txt nodo-eyebrow" x="34" y="60" opacity="0.55">ENTRADA</text>
+        <text class="nodo-txt" x="34" y="82" font-weight="600">Intuición</text>
+        <text class="nodo-txt" x="34" y="98" opacity="0.7" font-size="11.5">del investigador</text>
+      </g>
+
+      <path class="flecha" d="M170,72 H230"/>
+
+      <g>
+        <rect class="nodo-rect" x="230" y="40" width="150" height="64" rx="6" stroke="var(--cobre)"/>
+        <text class="nodo-txt nodo-eyebrow" x="244" y="60" opacity="0.55">DERIVA</text>
+        <text class="nodo-txt" x="244" y="82" font-weight="600">PECO</text>
+        <text class="nodo-txt" x="244" y="98" opacity="0.7" font-size="11.5">pregunta estructurada</text>
+      </g>
+
+      <path class="flecha" d="M380,72 H440"/>
+
+      <g>
+        <rect class="nodo-rect" x="440" y="40" width="150" height="64" rx="6" stroke="var(--cobre)"/>
+        <text class="nodo-txt nodo-eyebrow" x="454" y="60" opacity="0.55">DERIVA</text>
+        <text class="nodo-txt" x="454" y="82" font-weight="600">Palabras clave</text>
+        <text class="nodo-txt" x="454" y="98" opacity="0.7" font-size="11.5">para la búsqueda</text>
+      </g>
+
+      <path class="flecha" d="M590,72 H650"/>
+
+      <g>
+        <rect class="nodo-rect" x="650" y="40" width="150" height="64" rx="6"/>
+        <text class="nodo-txt nodo-eyebrow" x="664" y="60" opacity="0.55">FUENTE</text>
+        <text class="nodo-txt" x="664" y="82" font-weight="600">Scopus</text>
+        <text class="nodo-txt" x="664" y="98" opacity="0.7" font-size="11.5">corpus bruto</text>
+      </g>
+
+      <path class="flecha" d="M725,104 V150"/>
+
+      <!-- fila 2: cribado -->
+      <g>
+        <rect class="nodo-rect" x="440" y="150" width="360" height="72" rx="6" stroke="var(--mostaza)" stroke-width="1.6"/>
+        <text class="nodo-txt nodo-eyebrow" x="454" y="172" opacity="0.55">CRIBADO — el corazón del sistema</text>
+        <text class="nodo-txt" x="454" y="196" font-weight="600">Se deriva, nunca se opina</text>
+        <text class="nodo-txt" x="454" y="212" opacity="0.7" font-size="11.5">chequeo entra/sale por criterio explícito</text>
+      </g>
+
+      <path class="flecha" d="M620,222 V270"/>
+
+      <!-- fila 3: auditoria -->
+      <g>
+        <rect class="nodo-rect" x="440" y="270" width="360" height="70" rx="6" stroke="var(--amatista)" stroke-width="1.6"/>
+        <text class="nodo-txt nodo-eyebrow" x="454" y="292" opacity="0.55">SALIDA</text>
+        <text class="nodo-txt" x="454" y="316" font-weight="600">Registro inmutable</text>
+        <text class="nodo-txt" x="454" y="332" opacity="0.7" font-size="11.5">procedencia intacta · la decisión queda</text>
+      </g>
+
+      <path class="flecha" d="M440,306 H240"/>
+
+      <g>
+        <rect class="nodo-rect" x="60" y="270" width="180" height="70" rx="6"/>
+        <text class="nodo-txt nodo-eyebrow" x="74" y="292" opacity="0.55">NO ESCALA A MANO</text>
+        <text class="nodo-txt" x="74" y="316" font-weight="600">Auditoría humana</text>
+        <text class="nodo-txt" x="74" y="332" opacity="0.7" font-size="11.5">revisa el trazo, no cada fila</text>
+      </g>
+
+    </svg>
+
+    <p class="nota">En construcción — este diagrama se actualiza a medida que el pipeline se estabiliza. La evidencia real vive en git, no acá.</p>
+  </main>
+
+</body>
+</html>
