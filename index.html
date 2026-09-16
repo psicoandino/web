@@ -36,15 +36,20 @@
 
   * { box-sizing: border-box; }
 
-  html { scroll-behavior: smooth; }
-  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-
   html, body {
     margin: 0;
     background: var(--hueso);
     color: var(--oled);
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
+  }
+
+  /* una sola pantalla: la página cabe sin scroll; el footer fijo reserva su franja */
+  body {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 60px;
   }
 
   /* el espacio negativo intencional, revelado al seleccionar */
@@ -67,8 +72,8 @@
 
   a { color: inherit; text-decoration: none; }
 
-  /* ---------- HEADER: inline, la raíz no depende de assets/shell ---------- */
-  .psico-header { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; min-height: 72px; padding: 12px 24px; border-bottom: 1px solid var(--line); background: var(--hueso); }
+  /* ---------- HEADER: inline, la raíz no depende de nada externo ---------- */
+  .psico-header { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; min-height: 64px; padding: 10px 24px; border-bottom: 1px solid var(--line); background: var(--hueso); }
   .ph-brand { display: flex; align-items: center; gap: 12px; }
   .ph-brand:focus-visible { outline: 2px solid var(--cobre); outline-offset: 5px; }
   .ph-motif { position: relative; width: 16px; height: 16px; flex: 0 0 auto; border-radius: 50%; overflow: hidden; }
@@ -81,13 +86,13 @@
 
   /* ---------- HERO ---------- */
   .hero {
-    max-width: 880px;
+    width: 100%;
+    max-width: 1080px;
     margin: 0 auto;
-    padding: 40px 28px 16px;
-    text-align: left;
+    padding: clamp(14px, 3vh, 30px) 32px 0;
   }
 
-  .hero .eyebrow { display: block; margin-bottom: 28px; }
+  .hero .eyebrow { display: block; margin-bottom: 14px; }
 
   /* coreografía de entrada: la página amanece una sola vez */
   .alba {
@@ -101,6 +106,7 @@
   .alba-4 { animation-delay: 0.38s; }
   .alba-5 { animation-delay: 0.48s; }
   .alba-6 { animation-delay: 0.60s; }
+  .alba-7 { animation-delay: 0.74s; }
   @keyframes amanecer {
     to { opacity: 1; transform: translateY(0); }
   }
@@ -109,25 +115,25 @@
   }
 
   .hero h1 {
-    font-size: clamp(34px, 5vw, 54px);
+    font-size: clamp(30px, 4vw, 44px);
     font-weight: 600;
-    line-height: 1.15;
+    line-height: 1.12;
     max-width: 14ch;
   }
 
   .hero p {
-    font-size: 18px;
-    line-height: 1.6;
+    font-size: 17px;
+    line-height: 1.5;
     max-width: 52ch;
-    margin-top: 22px;
+    margin: 14px 0 0;
     opacity: 0.82;
   }
 
   .hero .puente {
-    font-size: 15px;
-    line-height: 1.55;
-    max-width: 48ch;
-    margin-top: 10px;
+    font-size: 14.5px;
+    line-height: 1.5;
+    max-width: 56ch;
+    margin-top: 8px;
     opacity: 0.6;
   }
 
@@ -136,20 +142,20 @@
     font-size: 12px;
     letter-spacing: 0.03em;
     opacity: 0.45;
-    margin-top: 22px;
+    margin-top: 12px;
   }
 
   /* ---------- SIGNATURE MOTIF: el sol amatista, eclipsado en loop, revela las 4 montañas ---------- */
   .motif {
-    margin: 8px auto 0;
     width: 100%;
-    max-width: 880px;
+    max-width: 1080px;
+    margin: 0 auto;
     padding: 0 32px;
   }
 
   .motif-track {
     position: relative;
-    height: 96px;
+    height: clamp(44px, 7vh, 64px);
     display: flex;
     align-items: center;
   }
@@ -157,8 +163,8 @@
   .motif-sun {
     position: absolute;
     left: 0;
-    width: 40px;
-    height: 40px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     overflow: hidden;
     background: var(--amatista);
@@ -173,13 +179,13 @@
 
   .motif-squares {
     display: flex;
-    gap: 14px;
-    margin-left: 76px;
+    gap: 10px;
+    margin-left: 54px;
   }
 
   .motif-squares span {
-    width: 40px;
-    height: 40px;
+    width: 28px;
+    height: 28px;
     display: inline-block;
     opacity: 0;
     animation: rise 3.4s ease-in-out infinite;
@@ -206,25 +212,26 @@
     .motif-squares span { opacity: 1; }
   }
 
-  /* ---------- RAMAS ---------- */
+  /* ---------- RAMAS: tres columnas, una pantalla ---------- */
   .ramas {
-    max-width: 880px;
-    margin: 48px auto 0;
-    padding: 0 32px 32px;
+    width: 100%;
+    max-width: 1080px;
+    margin: clamp(8px, 2vh, 20px) auto 0;
+    padding: 0 32px 20px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 1px;
     background: var(--line);
     border: 1px solid var(--line);
+    background-clip: padding-box;
   }
 
   .rama {
     background: var(--hueso);
-    padding: 36px 32px;
+    padding: 22px 22px 24px;
     display: flex;
     flex-direction: column;
-    gap: 14px;
-    min-height: 220px;
+    gap: 10px;
   }
   /* las celdas no son links: no reaccionan al hover — sólo las filas reaccionan */
 
@@ -239,42 +246,28 @@
     height: 4px;
   }
 
-  /* reveal al scroll, sutil */
-  .rama.oculta {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  .rama.visible {
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .rama.oculta { opacity: 1; transform: none; }
-  }
-
   .rama h2 {
-    font-size: 22px;
+    font-size: 19px;
     font-weight: 600;
   }
 
   .rama .rama-sub {
-    font-size: 14px;
+    font-size: 13.5px;
     opacity: 0.65;
-    margin-top: -8px;
+    margin-top: -6px;
   }
 
   .rama ul {
     list-style: none;
-    margin: 8px 0 0;
+    margin: 4px 0 0;
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
   }
 
   .rama li {
-    font-size: 15px;
+    font-size: 14px;
   }
 
   /* fila completa cliqueable — el link deja de ser sólo la palabra */
@@ -313,6 +306,7 @@
     justify-content: space-between;
     gap: 12px;
     padding: 4px 6px;
+    margin: -4px -6px;
   }
 
   .estado {
@@ -328,37 +322,40 @@
   }
 
   .estado.marcha  { background: rgba(36,134,146,0.12); color: var(--cobre); }
-  .estado.reposo  { background: rgba(0,0,0,0.06); color: var(--oled); opacity: 0.55; }
   .estado.pendiente { background: rgba(183,134,39,0.14); color: var(--mostaza); }
 
-  .rama-vacia {
+  /* haikus: la idea en tres líneas, con aire entre una y otra */
+  .haikus {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 6px;
+  }
+  .haiku {
+    margin: 0;
     font-size: 14px;
-    opacity: 0.5;
-    font-style: italic;
+    line-height: 1.5;
+    opacity: 0.8;
+    white-space: pre-line;
   }
 
-  .rama .rama-texto { font-size: 14.5px; line-height: 1.6; margin: 4px 0 0; opacity: 0.8; }
-
-  @media (max-width: 640px) {
+  @media (max-width: 900px) {
     .ramas { grid-template-columns: 1fr; }
-    body { padding-bottom: 160px; }
-    .rama { min-height: 0; }
     .rama li a.fila { padding: 8px 6px; margin: -8px -6px; }
-    .motif-squares { gap: 10px; }
-    .motif-squares span { width: 32px; height: 32px; }
-    .motif-sun { width: 32px; height: 32px; }
-    .motif-squares { margin-left: 62px; }
+    body { padding-bottom: 150px; }
   }
 
-  /* ---------- FOOTER: banda oled, el contrapunto de vacío que el resto de la página no usa ---------- */
+  /* ---------- FOOTER: banda oled fija, siempre visible ---------- */
   footer {
-    position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 50;
     background: var(--oled);
     color: var(--hueso);
   }
 
   .footer-inner {
-    max-width: 880px;
+    max-width: 1080px;
     margin: 0 auto;
     padding: 14px 32px;
     display: flex;
@@ -367,7 +364,6 @@
     flex-wrap: wrap;
     gap: 8px 24px;
   }
-  body { padding-bottom: 96px; }
 
   .footer-sello {
     display: flex;
@@ -429,9 +425,7 @@
   <div class="psico-header">
     <a class="ph-brand" href="." title="Psicoandino">
       <div class="ph-motif" tabindex="0" title="Amatista"><div class="ph-dot-sun"></div><div class="ph-dot-shadow"></div></div>
-      <div class="ph-textblock">
-        <span class="ph-word"><span class="ph-brandname">PSICOANDINO</span></span>
-      </div>
+      <span class="ph-word"><span class="ph-brandname">PSICOANDINO</span></span>
     </a>
   </div>
 
@@ -452,7 +446,7 @@
     </div>
   </div>
 
-  <section class="ramas">
+  <section class="ramas alba alba-7">
 
     <div class="rama">
       <div class="rama-accent" style="background:var(--cobre)"></div>
@@ -461,6 +455,11 @@
       <ul>
         <li><a class="fila" href="radiomisor/"><span class="rotulo"><span class="flecha">→</span> Radiomisor — sintonía accesible</span> <span class="estado marcha">Marcha Blanca</span></a></li>
       </ul>
+      <div class="haikus">
+        <p class="haiku">Canciones propias,
+sintonía accesible:
+entrar al flujo.</p>
+      </div>
     </div>
 
     <div class="rama">
@@ -468,9 +467,45 @@
       <h2>Investigación</h2>
       <div class="rama-sub">Rigor que comprueba otro.</div>
       <ul>
-        <li class="fila-quieta">evidenceOS — revisiones sistemáticas de literatura, sistematizadas <span class="estado pendiente">En construcción</span></li>
+        <li class="fila-quieta">evidenceOS — revisiones sistemáticas <span class="estado pendiente">En construcción</span></li>
       </ul>
-      <p class="rama-texto">Una intuición entra; salen la pregunta, sus componentes PECO y las palabras clave. El cribado que sigue se deriva y se audita: no se opina. A mano, la revisión sistemática no escala; a máquina, pierde el rigor sin el cual el documento no entra a WoS ni a Scopus. Cada registro es inmutable y conserva su procedencia; el modelo de lenguaje local ayuda a derivar y la decisión queda registrada. Meta-análisis: después.</p>
+      <div class="haikus">
+        <p class="haiku">Entra una intuición.
+Sale la pregunta, el PECO,
+las palabras clave.</p>
+        <p class="haiku">El cribado se deriva
+y se audita.
+Nadie opina.</p>
+        <p class="haiku">A mano no escala.
+A máquina pierde el rigor
+y no entra a Scopus.</p>
+        <p class="haiku">Registro inmutable,
+procedencia intacta:
+la decisión queda.</p>
+      </div>
+    </div>
+
+    <div class="rama">
+      <div class="rama-accent" style="background:var(--amatista)"></div>
+      <h2>Arquitectura</h2>
+      <div class="rama-sub">Determinista primero. El modelo, después y local.</div>
+      <ul>
+        <li class="fila-quieta">Taller Psicoandino — agentes con soberanía local <span class="estado marcha">En uso</span></li>
+      </ul>
+      <div class="haikus">
+        <p class="haiku">Primero lo que no
+necesita modelo:
+Python, chequeos, Git.</p>
+        <p class="haiku">Modelos locales,
+uno por clase de trabajo.
+Los datos no salen.</p>
+        <p class="haiku">Los motores reportan.
+Nunca reparan.
+Repara la mano.</p>
+        <p class="haiku">Lo que se construye
+lo gobierna quien lo usa.
+Soberanía.</p>
+      </div>
     </div>
 
   </section>
@@ -491,24 +526,5 @@
     </div>
   </footer>
 
-  <script>
-  (function(){
-    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var ramas = document.querySelectorAll('.rama');
-    if (reduced || !('IntersectionObserver' in window)) return;
-
-    ramas.forEach(function(r){ r.classList.add('oculta'); });
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if (e.isIntersecting){
-          e.target.classList.remove('oculta');
-          e.target.classList.add('visible');
-          io.unobserve(e.target);
-        }
-      });
-    }, { rootMargin: '0px 0px -8% 0px' });
-    ramas.forEach(function(r){ io.observe(r); });
-  })();
-  </script>
 </body>
 </html>
