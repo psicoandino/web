@@ -21,7 +21,6 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/shell/psico-header.css">
 <style>
   :root {
     --cobre: #248692;
@@ -68,9 +67,17 @@
 
   a { color: inherit; text-decoration: none; }
 
-  /* ---------- ROOT HEADER: brand only, no system name, no squares ---------- */
-  /* En la fuente no hace falta "| Sistema" — estás en Psicoandino mismo. */
-  .psico-header .ph-textblock { gap: 0; }
+  /* ---------- HEADER: inline, la raíz no depende de assets/shell ---------- */
+  .psico-header { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; min-height: 72px; padding: 12px 24px; border-bottom: 1px solid var(--line); background: var(--hueso); }
+  .ph-brand { display: flex; align-items: center; gap: 12px; }
+  .ph-brand:focus-visible { outline: 2px solid var(--cobre); outline-offset: 5px; }
+  .ph-motif { position: relative; width: 16px; height: 16px; flex: 0 0 auto; border-radius: 50%; overflow: hidden; }
+  .ph-dot-sun { position: absolute; inset: 0; background: var(--amatista); }
+  .ph-dot-shadow { position: absolute; inset: 0; background: var(--oled); transition: transform .65s cubic-bezier(.65,0,.35,1); }
+  .ph-motif:hover .ph-dot-shadow, .ph-motif:focus .ph-dot-shadow { transform: translateX(105%); }
+  @media (prefers-reduced-motion: reduce) { .ph-dot-shadow { transition: none; } }
+  .ph-word { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 13px; letter-spacing: .04em; white-space: nowrap; }
+  .ph-brandname { font-weight: 700; letter-spacing: .02em; }
 
   /* ---------- HERO ---------- */
   .hero {
@@ -330,8 +337,11 @@
     font-style: italic;
   }
 
+  .rama .rama-texto { font-size: 14.5px; line-height: 1.6; margin: 4px 0 0; opacity: 0.8; }
+
   @media (max-width: 640px) {
     .ramas { grid-template-columns: 1fr; }
+    body { padding-bottom: 160px; }
     .rama { min-height: 0; }
     .rama li a.fila { padding: 8px 6px; margin: -8px -6px; }
     .motif-squares { gap: 10px; }
@@ -342,7 +352,7 @@
 
   /* ---------- FOOTER: banda oled, el contrapunto de vacío que el resto de la página no usa ---------- */
   footer {
-    margin-top: 64px;
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
     background: var(--oled);
     color: var(--hueso);
   }
@@ -350,13 +360,14 @@
   .footer-inner {
     max-width: 880px;
     margin: 0 auto;
-    padding: 48px 32px 56px;
+    padding: 14px 32px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 24px;
+    gap: 8px 24px;
   }
+  body { padding-bottom: 96px; }
 
   .footer-sello {
     display: flex;
@@ -448,18 +459,18 @@
       <h2>Desarrollo</h2>
       <div class="rama-sub">Sistemas que operan.</div>
       <ul>
-        <li><a class="fila" href="https://evidenceos.web.app"><span class="rotulo"><span class="flecha">→</span> evidenceOS — investigación con fuente en cada afirmación</span> <span class="estado marcha">Marcha Blanca</span></a></li>
         <li><a class="fila" href="radiomisor/"><span class="rotulo"><span class="flecha">→</span> Radiomisor — sintonía accesible</span> <span class="estado marcha">Marcha Blanca</span></a></li>
       </ul>
     </div>
 
     <div class="rama">
       <div class="rama-accent en-formacion" style="border-color:var(--musgo)"></div>
-      <h2>Método</h2>
-      <div class="rama-sub">La forma de pensar, transferible.</div>
+      <h2>Investigación</h2>
+      <div class="rama-sub">Rigor que comprueba otro.</div>
       <ul>
-        <li class="fila-quieta">Metodología Psicoandino — reglas, protocolo, evidencia <span class="estado pendiente">En construcción</span></li>
+        <li class="fila-quieta">evidenceOS — revisiones sistemáticas de literatura, sistematizadas <span class="estado pendiente">En construcción</span></li>
       </ul>
+      <p class="rama-texto">Una intuición entra; salen la pregunta, sus componentes PECO y las palabras clave. El cribado que sigue se deriva y se audita: no se opina. A mano, la revisión sistemática no escala; a máquina, pierde el rigor sin el cual el documento no entra a WoS ni a Scopus. Cada registro es inmutable y conserva su procedencia; el modelo de lenguaje local ayuda a derivar y la decisión queda registrada. Meta-análisis: después.</p>
     </div>
 
   </section>
@@ -480,7 +491,6 @@
     </div>
   </footer>
 
-  <script src="assets/shell/psico-header.js"></script>
   <script>
   (function(){
     var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
