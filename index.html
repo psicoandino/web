@@ -75,7 +75,6 @@ if(pts.length&&pts[pts.length-1].mx>x1-axZ/2){pts[pts.length-1].mx=x1-axZ/2;for(
 pts.forEach(p=>{out+=`<line x1="${p.bx.toFixed(1)}" y1="${y0-8}" x2="${p.bx.toFixed(1)}" y2="${y1+8}" stroke="currentColor" stroke-width="1" opacity="0.08"/><use href="#zod-${p.sym}" x="${(p.mx-axZ/2).toFixed(1)}" y="${(y1+10).toFixed(1)}" width="${axZ}" height="${axZ}" opacity="0.48" filter="url(#hand)"/>`;});
 out+=`<line x1="${x1.toFixed(1)}" y1="${y0-8}" x2="${x1.toFixed(1)}" y2="${y1+8}" stroke="currentColor" stroke-width="1" opacity="0.08"/>`;}
 const rows=ORDER.map(name=>({name,c:lonOf(name,now),p1:lonOf(name,new Date(now.getTime()-3600000))}));
-if(Astro)rows.sort((a,b)=>b.c.au-a.c.au);
 rows.forEach(({name,c,p1},i)=>{const y=y0+(i/9)*(y1-y0),x=x0+(c.lon/360)*(x1-x0);
 const seg=bnds&&bnds.find(g=>g.sym===c.z),inDeg=seg?(((c.lon-seg.a+360)%360)):(c.lon%30),deg=inDeg.toFixed(1),dlon=((c.lon-p1.lon+540)%360)-180,rate=(dlon*24).toFixed(2)+'°/d',ret=dlon<-0.0002?' ℞':'';
 const z=c.z,op=(0.5+0.5*(i/9)).toFixed(2),auS=c.au?(c.au<0.01?c.au.toFixed(4):c.au.toFixed(2))+' AU':'';
