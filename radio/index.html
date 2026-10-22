@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light" />
+  <title>PSICOANDINO — radio</title>
+  <link rel="stylesheet" href="visual/styles.css" />
+  <link rel="stylesheet" href="screen.css" />
+</head>
+<body>
+  <main id="stage" aria-label="PSICOANDINO radio">
+    <canvas id="field" width="1920" height="1080"></canvas>
+    <aside id="now-playing" aria-live="polite">
+      <span class="music-mark" aria-hidden="true"></span>
+      <span id="track-line">PSICOANDINO — radio</span>
+      <span id="on-air"></span>
+    </aside>
+    <nav id="controls">
+      <a id="home" href="../">PSICOANDINO</a>
+      <button id="vinyl" type="button" aria-pressed="false" hidden>vinyl</button>
+      <button id="tune-in" type="button">tune in</button>
+    </nav>
+  </main>
+  <script src="visual/config.js"></script>
+  <script src="visual/src/core.js"></script>
+  <script src="visual/src/audio.js"></script>
+  <script src="visual/src/engine.js"></script>
+  <script src="vinyl.js"></script>
+  <script src="radio-engine.js"></script>
+  <script src="shared-clock.js"></script>
+  <script src="screen.js"></script>
+</body>
+</html>

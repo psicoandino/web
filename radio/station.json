@@ -1,0 +1,1754 @@
+{
+ "format": "RM-STATION-1",
+ "signals": [
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/01 - [WTD] Walk The Door..mp3",
+   "duration": 210.9339455782313,
+   "file": "signal_001.rsig",
+   "gainDb": -3.4,
+   "id": "track-001",
+   "loudness": {
+    "integratedLufs": -12.6,
+    "truePeakDbfs": -1.4
+   },
+   "sha256": "848363a8351c4c20b24bd9bf3cdde650b2d74389ad276d43fb46fe0539b2626d",
+   "title": "[WTD] Walk The Door.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/02 - [ECRA] En la Corte del Rey Árbol..mp3",
+   "duration": 127.73151927437642,
+   "file": "signal_002.rsig",
+   "gainDb": 1.5,
+   "id": "track-002",
+   "loudness": {
+    "integratedLufs": -17.5,
+    "truePeakDbfs": -6.3
+   },
+   "sha256": "b93b2aaede504cbd4e6cbb68ed7757794158830a5d33a4fe792dc79a9c3d12e0",
+   "title": "[ECRA] En la Corte del Rey Árbol.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/03 - [AS] Atrapada en el Salón..mp3",
+   "duration": 86.09814058956916,
+   "file": "signal_003.rsig",
+   "gainDb": -3.1,
+   "id": "track-003",
+   "loudness": {
+    "integratedLufs": -12.9,
+    "truePeakDbfs": 0.2
+   },
+   "sha256": "afc6d58ce18fb87e69683d003ee1334795aac5a72ea67403ed2046a437586335",
+   "title": "[AS] Atrapada en el Salón.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/04 - Melancólico Rey (v.1).mp3",
+   "duration": 106.92643990929706,
+   "file": "signal_004.rsig",
+   "gainDb": -0.5,
+   "id": "track-004",
+   "loudness": {
+    "integratedLufs": -17.6,
+    "truePeakDbfs": -0.5
+   },
+   "sha256": "a62f395f93ea639007196bd84f029b287b8f88f41459b72ab4a606643d0fa77b",
+   "title": "Melancólico Rey (v.1)",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/05 - Que coño dices ？.mp3",
+   "duration": 100.95891156462585,
+   "file": "signal_005.rsig",
+   "gainDb": -2.0,
+   "id": "track-005",
+   "loudness": {
+    "integratedLufs": -14.0,
+    "truePeakDbfs": -0.0
+   },
+   "sha256": "640fcce6050feda9d00232afd8cb41a962fef47ba751a0bc0e4ecf4e87b58f16",
+   "title": "Que coño dices ？",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/06 - Atrapada (v.12).mp3",
+   "duration": 95.0378231292517,
+   "file": "signal_006.rsig",
+   "gainDb": -0.7,
+   "id": "track-006",
+   "loudness": {
+    "integratedLufs": -18.9,
+    "truePeakDbfs": -0.3
+   },
+   "sha256": "45537fa74e1a34bc201cd8175a3fd3655014fd1491476ec8b2a658a36604ce96",
+   "title": "Atrapada (v.12)",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/07 - Atrapada (v.11).mp3",
+   "duration": 96.52390022675738,
+   "file": "signal_007.rsig",
+   "gainDb": -0.3,
+   "id": "track-007",
+   "loudness": {
+    "integratedLufs": -18.6,
+    "truePeakDbfs": -0.7
+   },
+   "sha256": "4f7ed34e174eca6ba5db041fcac7205bcf1c992f482d47ee712f83326fbcde1d",
+   "title": "Atrapada (v.11)",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/08 - Dices (v.10).mp3",
+   "duration": 96.52390022675738,
+   "file": "signal_008.rsig",
+   "gainDb": -0.4,
+   "id": "track-008",
+   "loudness": {
+    "integratedLufs": -20.3,
+    "truePeakDbfs": -0.6
+   },
+   "sha256": "5b10a717eecd5c49eed01f79b58d0f08cf0bbbda679cf09927532437d46ec7de",
+   "title": "Dices (v.10)",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/09 - Atrapada (v.1).mp3",
+   "duration": 98.00997732426303,
+   "file": "signal_009.rsig",
+   "gainDb": -0.4,
+   "id": "track-009",
+   "loudness": {
+    "integratedLufs": -18.7,
+    "truePeakDbfs": -0.6
+   },
+   "sha256": "6628e0c1bf9c6089897829a4f97b9dab1afbbc97765c952dcde551ab9f97f225",
+   "title": "Atrapada (v.1)",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/10 - Dices (v.9).mp3",
+   "duration": 96.52390022675738,
+   "file": "signal_010.rsig",
+   "gainDb": -0.4,
+   "id": "track-010",
+   "loudness": {
+    "integratedLufs": -17.8,
+    "truePeakDbfs": -0.6
+   },
+   "sha256": "402855832c21217ef670f4dc984bd7ef9c75f30771024ed9b259593ee7e580d9",
+   "title": "Dices (v.9)",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/100 - Formas y figuras (con severidad y misericordia).mp3",
+   "duration": 130.3225850340136,
+   "file": "signal_011.rsig",
+   "gainDb": 5.5,
+   "id": "track-011",
+   "loudness": {
+    "integratedLufs": -22.6,
+    "truePeakDbfs": -6.5
+   },
+   "sha256": "779ba9c2f82f28fca2ad245f513dc174a2a99fc7e953858447c112607349614d",
+   "title": "Formas y figuras (con severidad y misericordia)",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/101 - vi.. La Sonata Dulce Mía.mp3",
+   "duration": 141.07913832199546,
+   "file": "signal_012.rsig",
+   "gainDb": 2.1,
+   "id": "track-012",
+   "loudness": {
+    "integratedLufs": -18.5,
+    "truePeakDbfs": -3.1
+   },
+   "sha256": "c48f549839bb47df7c69cc4b6f9ff68c9bda87302ad4ec75a3b9944ea7d2c850",
+   "title": "vi.. La Sonata Dulce Mía",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/102 - La Sonata Dulce Mía (coda).mp3",
+   "duration": 40.025895691609975,
+   "file": "signal_013.rsig",
+   "gainDb": 2.5,
+   "id": "track-013",
+   "loudness": {
+    "integratedLufs": -18.5,
+    "truePeakDbfs": -4.7
+   },
+   "sha256": "4fb8f650f6c09d9151b4ea5a3d361501b5f7ce2a4c029483fb63920362e31d75",
+   "title": "La Sonata Dulce Mía (coda)",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/103 - La Sonata Dulce Mía.mp3",
+   "duration": 111.37079365079364,
+   "file": "signal_014.rsig",
+   "gainDb": 9.6,
+   "id": "track-014",
+   "loudness": {
+    "integratedLufs": -27.0,
+    "truePeakDbfs": -10.6
+   },
+   "sha256": "edd3be49246415af0b4c2f1cd907671574ae31b31a4dd522eba741514bb3be65",
+   "title": "La Sonata Dulce Mía",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/104 - vii. El Regreso a la Luna (coda).mp3",
+   "duration": 35.67566893424036,
+   "file": "signal_015.rsig",
+   "gainDb": 7.4,
+   "id": "track-015",
+   "loudness": {
+    "integratedLufs": -23.6,
+    "truePeakDbfs": -8.4
+   },
+   "sha256": "30dfe978c216d26f4453cea3576175ab42ac826f30b7062826fea76f16390de7",
+   "title": "vii. El Regreso a la Luna (coda)",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/105 - v. El Proyecto del Tiempo.mp3",
+   "duration": 109.88183673469388,
+   "file": "signal_016.rsig",
+   "gainDb": 0.0,
+   "id": "track-016",
+   "loudness": {
+    "integratedLufs": -17.6,
+    "truePeakDbfs": -1.0
+   },
+   "sha256": "30586be532612b480895e058bf30cce15e50bab7e0e78ed5bf0b3476d71f3aed",
+   "title": "v. El Proyecto del Tiempo",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/106 - viii. La Redención de los Espíritus.mp3",
+   "duration": 114.33718820861678,
+   "file": "signal_017.rsig",
+   "gainDb": 4.1,
+   "id": "track-017",
+   "loudness": {
+    "integratedLufs": -20.1,
+    "truePeakDbfs": -7.9
+   },
+   "sha256": "c7ad2a9f30b1b9b4f07756a29f0ac209a643abc5437838fc7e7eb23c9835fa16",
+   "title": "viii. La Redención de los Espíritus",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/107 - iiii. El Amor No Mentirá.mp3",
+   "duration": 86.17972789115646,
+   "file": "signal_018.rsig",
+   "gainDb": 1.4,
+   "id": "track-018",
+   "loudness": {
+    "integratedLufs": -17.4,
+    "truePeakDbfs": -6.6
+   },
+   "sha256": "48d7bdc110e6f9cb643bc6c24e898c350bffaa4c78b239a110cb7692eb05fc98",
+   "title": "iiii. El Amor No Mentirá",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/108 - ii. A Través de los Pasillos de las Puertas.mp3",
+   "duration": 138.11442176870747,
+   "file": "signal_019.rsig",
+   "gainDb": -3.5,
+   "id": "track-019",
+   "loudness": {
+    "integratedLufs": -12.5,
+    "truePeakDbfs": -4.4
+   },
+   "sha256": "00bbdb80874876c91b16611a59bb1c54b14bbd070d84280db34b18da507792f9",
+   "title": "ii. A Través de los Pasillos de las Puertas",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/109 - iii. El Melancohólico Solitario del Rey Árbol.mp3",
+   "duration": 127.71077097505669,
+   "file": "signal_020.rsig",
+   "gainDb": 0.7,
+   "id": "track-020",
+   "loudness": {
+    "integratedLufs": -16.7,
+    "truePeakDbfs": -6.5
+   },
+   "sha256": "d3a726a6ab1b6ea19e5d76b5da279134cfa905001251fc61b03b8cce51bbd63f",
+   "title": "iii. El Melancohólico Solitario del Rey Árbol",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/11 - Dices (v.7).mp3",
+   "duration": 103.95428571428572,
+   "file": "signal_021.rsig",
+   "gainDb": -0.9,
+   "id": "track-021",
+   "loudness": {
+    "integratedLufs": -15.1,
+    "truePeakDbfs": -0.1
+   },
+   "sha256": "045cfe7ee7a5627fe3381b0579ab5d368c339f1135ce9632d1f47cc916c30b35",
+   "title": "Dices (v.7)",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/12 - [VAE] La Vida Avanza en Espiral.mp3",
+   "duration": 144.07836734693876,
+   "file": "signal_022.rsig",
+   "gainDb": 2.3,
+   "id": "track-022",
+   "loudness": {
+    "integratedLufs": -18.3,
+    "truePeakDbfs": -7.3
+   },
+   "sha256": "910f6e67ba93e470fc8a2129687e1784e054e9ddd45ace07700111c62be47999",
+   "title": "[VAE] La Vida Avanza en Espiral",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/13 - About You (How I Feel)(v.2).mp3",
+   "duration": 98.00997732426303,
+   "file": "signal_023.rsig",
+   "gainDb": 1.1,
+   "id": "track-023",
+   "loudness": {
+    "integratedLufs": -17.1,
+    "truePeakDbfs": -6.7
+   },
+   "sha256": "872d763b9544b7dd4fb323970279b618599174d3a14d6c1b124ac87abfcd98b8",
+   "title": "About You (How I Feel)(v.2)",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/14 - Dices (v.5).mp3",
+   "duration": 147.0505215419501,
+   "file": "signal_024.rsig",
+   "gainDb": 3.6,
+   "id": "track-024",
+   "loudness": {
+    "integratedLufs": -19.6,
+    "truePeakDbfs": -7.3
+   },
+   "sha256": "5b3ea1624e8bf7a2b276ca3bab1e5c68cef06f817db94b3de44d80151ebed76b",
+   "title": "Dices (v.5)",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/15 - Dices (v.4).mp3",
+   "duration": 123.27328798185941,
+   "file": "signal_025.rsig",
+   "gainDb": -0.2,
+   "id": "track-025",
+   "loudness": {
+    "integratedLufs": -15.8,
+    "truePeakDbfs": -6.6
+   },
+   "sha256": "cb80d4d6dad9f8b816a658bae7640a6187c6a29649294ef66def1b8411c6ac92",
+   "title": "Dices (v.4)",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/16 - Dices (v.3).mp3",
+   "duration": 123.27328798185941,
+   "file": "signal_026.rsig",
+   "gainDb": -0.6,
+   "id": "track-026",
+   "loudness": {
+    "integratedLufs": -17.6,
+    "truePeakDbfs": -0.4
+   },
+   "sha256": "5ea8ac1d49762ecea2e472372fcba6a6e010b7b170f605df6b80dca51eb130b3",
+   "title": "Dices (v.3)",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/17 - [SDJ] Secretos Del Jardín.mp3",
+   "duration": 212.2105215419501,
+   "file": "signal_027.rsig",
+   "gainDb": 0.3,
+   "id": "track-027",
+   "loudness": {
+    "integratedLufs": -18.4,
+    "truePeakDbfs": -1.3
+   },
+   "sha256": "9010aeee48817b9074a5ed171e24e07e8ae89dfa3ef4cb602cbdca9fed8c76dc",
+   "title": "[SDJ] Secretos Del Jardín",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/18 - Secretos del Jardín v.2.mp3",
+   "duration": 66.78947845804989,
+   "file": "signal_028.rsig",
+   "gainDb": -0.4,
+   "id": "track-028",
+   "loudness": {
+    "integratedLufs": -17.5,
+    "truePeakDbfs": -0.6
+   },
+   "sha256": "d24e3114e02971f71740ba76845c188945d438f356abb1ebb323e10484d8beb2",
+   "title": "Secretos del Jardín v.2",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/19 - Secretos del Jardín v.1.mp3",
+   "duration": 59.371972789115645,
+   "file": "signal_029.rsig",
+   "gainDb": -1.0,
+   "id": "track-029",
+   "loudness": {
+    "integratedLufs": -15.0,
+    "truePeakDbfs": -0.6
+   },
+   "sha256": "1a07ea1c84d2635b1dead8eefbb68d6e69e51d3a931727de5da63f502d05e282",
+   "title": "Secretos del Jardín v.1",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/20 - Jam Session Nro. 001.mp3",
+   "duration": 255.60380952380953,
+   "file": "signal_030.rsig",
+   "gainDb": -0.7,
+   "id": "track-030",
+   "loudness": {
+    "integratedLufs": -17.8,
+    "truePeakDbfs": -0.3
+   },
+   "sha256": "fd53b53958605f7dda9bfb1459c3233250deb3a5d7076c7e1008a245ff716015",
+   "title": "Jam Session Nro. 001",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/21 - [PSS] Para Su Salud..mp3",
+   "duration": 182.78603174603174,
+   "file": "signal_031.rsig",
+   "gainDb": 0.6,
+   "id": "track-031",
+   "loudness": {
+    "integratedLufs": -18.7,
+    "truePeakDbfs": -1.6
+   },
+   "sha256": "fc43dabbad2f9b60676a56468948e943e1bd6c94776121807d6da68a36168ed3",
+   "title": "[PSS] Para Su Salud.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/22 - coda.mp3",
+   "duration": 102.53786848072562,
+   "file": "signal_032.rsig",
+   "gainDb": 0.6,
+   "id": "track-032",
+   "loudness": {
+    "integratedLufs": -16.6,
+    "truePeakDbfs": -2.8
+   },
+   "sha256": "18c07e29619b2b7a69872bce183c44102c8fae4c67ae1000ec02b13e1170e0b8",
+   "title": "coda",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/23 - π@no (interpretación nr. 1).mp3",
+   "duration": 86.19102040816327,
+   "file": "signal_033.rsig",
+   "gainDb": 0.6,
+   "id": "track-033",
+   "loudness": {
+    "integratedLufs": -16.6,
+    "truePeakDbfs": -2.7
+   },
+   "sha256": "8c662567c13252d323d21e45e3afa5af9eaf7b8fc81344d530f7f335f98f7496",
+   "title": "π@no (interpretación nr. 1)",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/24 - #2.mp3",
+   "duration": 13.373242630385487,
+   "file": "signal_034.rsig",
+   "gainDb": 8.3,
+   "id": "track-034",
+   "loudness": {
+    "integratedLufs": -24.3,
+    "truePeakDbfs": -11.8
+   },
+   "sha256": "ff38f5bc336bc89d4ceeb8121ca23ba4c19ebb5e644ece8b57d74bd054547038",
+   "title": "#2",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/25 - [TBF] They'll Bring you Life..mp3",
+   "duration": 130.77333333333334,
+   "file": "signal_035.rsig",
+   "gainDb": 2.1,
+   "id": "track-035",
+   "loudness": {
+    "integratedLufs": -18.1,
+    "truePeakDbfs": -6.5
+   },
+   "sha256": "2445baa49c5581257340b03deaec344a0f0c36760dfb25ed98dc034fbbca9457",
+   "title": "[TBF] They'll Bring you Life.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/26 - [ESM] En Sus Marcas..mp3",
+   "duration": 66.87201814058957,
+   "file": "signal_036.rsig",
+   "gainDb": -0.1,
+   "id": "track-036",
+   "loudness": {
+    "integratedLufs": -17.3,
+    "truePeakDbfs": -0.9
+   },
+   "sha256": "fdb4a36aca557c11d4050e8ba665c375e93166e2419d4b7efb43143ff1e2eb55",
+   "title": "[ESM] En Sus Marcas.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/27 - Dices (estar atrapada).mp3",
+   "duration": 203.52145124716554,
+   "file": "signal_037.rsig",
+   "gainDb": 2.6,
+   "id": "track-037",
+   "loudness": {
+    "integratedLufs": -18.6,
+    "truePeakDbfs": -7.1
+   },
+   "sha256": "80899814c60bfcb143638d6ce32019edb3aeeed550d359924076319201ba159a",
+   "title": "Dices (estar atrapada)",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/28 - Atrapada (dices).mp3",
+   "duration": 188.66068027210883,
+   "file": "signal_038.rsig",
+   "gainDb": 2.6,
+   "id": "track-038",
+   "loudness": {
+    "integratedLufs": -18.6,
+    "truePeakDbfs": -7.2
+   },
+   "sha256": "eaab8899928770eece28886f42c813d742260ff033b75839d2efea34c7c1193e",
+   "title": "Atrapada (dices)",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/29 - [D] Dices..mp3",
+   "duration": 31.136507936507936,
+   "file": "signal_039.rsig",
+   "gainDb": 4.1,
+   "id": "track-039",
+   "loudness": {
+    "integratedLufs": -21.6,
+    "truePeakDbfs": -5.1
+   },
+   "sha256": "515938273ea1cf6929bb4225fcb2f17d9eb3a47a3eb1edf0033f5d7db4566698",
+   "title": "[D] Dices.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/30 - In the Morning.mp3",
+   "duration": 108.01777777777778,
+   "file": "signal_040.rsig",
+   "gainDb": 0.0,
+   "id": "track-040",
+   "loudness": {
+    "integratedLufs": -17.8,
+    "truePeakDbfs": -1.0
+   },
+   "sha256": "cc5b1caec5f16661f331cbcf3d373ec342975f86a0e21b7bd9d201f4e42ef229",
+   "title": "In the Morning",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/31 - (how I feel) About You.mp3",
+   "duration": 190.12598639455783,
+   "file": "signal_041.rsig",
+   "gainDb": 2.4,
+   "id": "track-041",
+   "loudness": {
+    "integratedLufs": -19.7,
+    "truePeakDbfs": -3.4
+   },
+   "sha256": "439c33e88bb1264b86e5472ad6b8f916fa8c4c86c21523afe525003c64cbdb3f",
+   "title": "(how I feel) About You",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/32 - Psicodelia Andina (demo).mp3",
+   "duration": 217.15156462585034,
+   "file": "signal_042.rsig",
+   "gainDb": 2.8,
+   "id": "track-042",
+   "loudness": {
+    "integratedLufs": -23.5,
+    "truePeakDbfs": -3.8
+   },
+   "sha256": "8761736e25cc1af5737a033667df11ac53e6faf36127f9ab55a63eb389508af6",
+   "title": "Psicodelia Andina (demo)",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/33 - [PCN] Procastinación..mp3",
+   "duration": 177.14358276643992,
+   "file": "signal_043.rsig",
+   "gainDb": 5.8,
+   "id": "track-043",
+   "loudness": {
+    "integratedLufs": -21.8,
+    "truePeakDbfs": -7.5
+   },
+   "sha256": "632bd9d758862cf91611dc32bcbfe0a135f3c272e8664b3699cce38a26c21630",
+   "title": "[PCN] Procastinación.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/34 - La otra fecha.mp3",
+   "duration": 41.53904761904762,
+   "file": "signal_044.rsig",
+   "gainDb": 15.9,
+   "id": "track-044",
+   "loudness": {
+    "integratedLufs": -33.2,
+    "truePeakDbfs": -16.9
+   },
+   "sha256": "6888a78999773b54f312ec7070b69eb2abf35919a20843c11005c3affb480728",
+   "title": "La otra fecha",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/35 - I Need You (metro cover).mp3",
+   "duration": 172.31383219954648,
+   "file": "signal_045.rsig",
+   "gainDb": 0.3,
+   "id": "track-045",
+   "loudness": {
+    "integratedLufs": -16.8,
+    "truePeakDbfs": -1.3
+   },
+   "sha256": "5f8c4a3b611d793f02bb3deacda6e6541036e34123ea02d1e076377c07aeceaa",
+   "title": "I Need You (metro cover)",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/36 - Psicodelia Andina.mp3",
+   "duration": 72.74666666666667,
+   "file": "signal_046.rsig",
+   "gainDb": -0.8,
+   "id": "track-046",
+   "loudness": {
+    "integratedLufs": -15.6,
+    "truePeakDbfs": -0.2
+   },
+   "sha256": "7e6e205b4067e5385cb100fe949d3cf0fa0ab64c311ec7839e0739585c3eec72",
+   "title": "Psicodelia Andina",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/37 - El Péndulo (Joseph).mp3",
+   "duration": 161.9112925170068,
+   "file": "signal_047.rsig",
+   "gainDb": 2.2,
+   "id": "track-047",
+   "loudness": {
+    "integratedLufs": -20.5,
+    "truePeakDbfs": -3.2
+   },
+   "sha256": "c63ca20dd2cc30994df4b11200a5a4cdea3307e65a62d0425b0d9f9b89101b2a",
+   "title": "El Péndulo (Joseph)",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/38 - Oráculo (Buttheadd & Draggio).mp3",
+   "duration": 160.42521541950114,
+   "file": "signal_048.rsig",
+   "gainDb": 2.9,
+   "id": "track-048",
+   "loudness": {
+    "integratedLufs": -21.3,
+    "truePeakDbfs": -3.9
+   },
+   "sha256": "698cd99a0863fe44980803c017b5631b7ed0b103ee786c5b7970fd1501cb51d8",
+   "title": "Oráculo (Buttheadd & Draggio)",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/39 - Blues (Julian & Charls).mp3",
+   "duration": 164.88344671201813,
+   "file": "signal_049.rsig",
+   "gainDb": -0.4,
+   "id": "track-049",
+   "loudness": {
+    "integratedLufs": -18.1,
+    "truePeakDbfs": -0.6
+   },
+   "sha256": "ce0809a616347863db2fcd4445f0c44ee3745fd9199418fd13a8269db7c871e9",
+   "title": "Blues (Julian & Charls)",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/40 - [SMN} Sinfonía para la Media Noche (la senforá)..mp3",
+   "duration": 454.66848072562357,
+   "file": "signal_050.rsig",
+   "gainDb": -0.4,
+   "id": "track-050",
+   "loudness": {
+    "integratedLufs": -18.9,
+    "truePeakDbfs": -0.6
+   },
+   "sha256": "c0e922af303131580cdb39f6485489547d1fbfa7c2e79cc85e98bf7aabdc3f82",
+   "title": "[SMN} Sinfonía para la Media Noche (la senforá).",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/41 - [AAA] La Arboleda de la  Aldea de Aldará..mp3",
+   "duration": 124.82215419501134,
+   "file": "signal_051.rsig",
+   "gainDb": 2.0,
+   "id": "track-051",
+   "loudness": {
+    "integratedLufs": -18.6,
+    "truePeakDbfs": -3.0
+   },
+   "sha256": "210823ed9289a048b4ae8811aa55e94fcbde5930b91cd8f66d8d757e8831b71e",
+   "title": "[AAA] La Arboleda de la  Aldea de Aldará.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/42 - [SJA] Ser Joven y Adolecente..mp3",
+   "duration": 72.83954648526077,
+   "file": "signal_052.rsig",
+   "gainDb": 7.2,
+   "id": "track-052",
+   "loudness": {
+    "integratedLufs": -23.5,
+    "truePeakDbfs": -8.2
+   },
+   "sha256": "519ce12a6d809d17dc92b06fe4b70ec6b8ffe5f7dcb3673af6968da8384c5d56",
+   "title": "[SJA] Ser Joven y Adolecente.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/43 - [LVF] La Venganza Fallecida..mp3",
+   "duration": 47.47013605442177,
+   "file": "signal_053.rsig",
+   "gainDb": 1.5,
+   "id": "track-053",
+   "loudness": {
+    "integratedLufs": -17.5,
+    "truePeakDbfs": -4.3
+   },
+   "sha256": "98449e4ffd88574bbb43897c94aad1b5b4da55353cc2d73fa7012ac47ed4de3e",
+   "title": "[LVF] La Venganza Fallecida.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/44 - del Miercoles 15 de Septiembre.mp3",
+   "duration": 37.06759637188209,
+   "file": "signal_054.rsig",
+   "gainDb": 3.1,
+   "id": "track-054",
+   "loudness": {
+    "integratedLufs": -23.1,
+    "truePeakDbfs": -4.1
+   },
+   "sha256": "243e73aeaac8fd8ac24dd53c11f1810a93947871d0d421b300dc40e59b066713",
+   "title": "del Miercoles 15 de Septiembre",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/45 - Ataduras.mp3",
+   "duration": 45.9840589569161,
+   "file": "signal_055.rsig",
+   "gainDb": 3.9,
+   "id": "track-055",
+   "loudness": {
+    "integratedLufs": -21.8,
+    "truePeakDbfs": -4.9
+   },
+   "sha256": "54e468753ee885abfc0ffbd81881f22cf795d8edf947250b53192ad30a49d8c9",
+   "title": "Ataduras",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/46 - [MVV] Música para Vivir el Viaje..mp3",
+   "duration": 119.4258276643991,
+   "file": "signal_056.rsig",
+   "gainDb": -0.1,
+   "id": "track-056",
+   "loudness": {
+    "integratedLufs": -19.0,
+    "truePeakDbfs": -0.9
+   },
+   "sha256": "be1cb0d3c6a210df49636ad9963c33004248b80bf8cc14c62c263ae99b58a12e",
+   "title": "[MVV] Música para Vivir el Viaje.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/47 - La Corte del Rey Árbol.mp3",
+   "duration": 89.08063492063492,
+   "file": "signal_057.rsig",
+   "gainDb": 7.9,
+   "id": "track-057",
+   "loudness": {
+    "integratedLufs": -26.9,
+    "truePeakDbfs": -8.9
+   },
+   "sha256": "7ddfe01679d82987bf182508449a7ff3c45aed3ca49b86ce2e3432714b0aca09",
+   "title": "La Corte del Rey Árbol",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/48 - [HLC] Hacia Los Costados..mp3",
+   "duration": 88.0021768707483,
+   "file": "signal_058.rsig",
+   "gainDb": -0.3,
+   "id": "track-058",
+   "loudness": {
+    "integratedLufs": -17.4,
+    "truePeakDbfs": -0.7
+   },
+   "sha256": "76a5ba13c85492ee2c86564cca182aea947786640db5450db7f03b964efab2d7",
+   "title": "[HLC] Hacia Los Costados.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/49 - [GCP] Los Gatos se Comieron la Pauta..mp3",
+   "duration": 50.455510204081634,
+   "file": "signal_059.rsig",
+   "gainDb": 1.4,
+   "id": "track-059",
+   "loudness": {
+    "integratedLufs": -17.4,
+    "truePeakDbfs": -2.4
+   },
+   "sha256": "954478d5f2ae68fc7ee2b3292ba18b2f98c61d370bf9b1aa0c8f42111d19cf96",
+   "title": "[GCP] Los Gatos se Comieron la Pauta.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/50 - en la Corte del Rey Árbol (ambience).mp3",
+   "duration": 141.0597732426304,
+   "file": "signal_060.rsig",
+   "gainDb": -0.6,
+   "id": "track-060",
+   "loudness": {
+    "integratedLufs": -16.3,
+    "truePeakDbfs": -0.4
+   },
+   "sha256": "ea76ad475de04ce9a08001ab768e5c61f34746ecb6458afd5ba99485592b4fe3",
+   "title": "en la Corte del Rey Árbol (ambience)",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/51 - [SPI] Sala de Espera, Parlamento Intergaláctico..mp3",
+   "duration": 233.52163265306123,
+   "file": "signal_061.rsig",
+   "gainDb": -0.3,
+   "id": "track-061",
+   "loudness": {
+    "integratedLufs": -17.8,
+    "truePeakDbfs": -0.7
+   },
+   "sha256": "87bc6cbe12126b804a1e7cc0a3fabaff36b1607155d0aec1065403a1ebbcc245",
+   "title": "[SPI] Sala de Espera, Parlamento Intergaláctico.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/52 - [ESS] El Seminario de la Semana..mp3",
+   "duration": 246.01396825396824,
+   "file": "signal_062.rsig",
+   "gainDb": -0.2,
+   "id": "track-062",
+   "loudness": {
+    "integratedLufs": -15.8,
+    "truePeakDbfs": -1.7
+   },
+   "sha256": "75a155e87c1de3198803f04258b83a783c704e4200417d31ea2185a0f31eed1c",
+   "title": "[ESS] El Seminario de la Semana.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/53 - songHealing (reConstructed).mp3",
+   "duration": 187.17460317460316,
+   "file": "signal_063.rsig",
+   "gainDb": 5.6,
+   "id": "track-063",
+   "loudness": {
+    "integratedLufs": -24.6,
+    "truePeakDbfs": -6.6
+   },
+   "sha256": "068fca245bc8829814c8ef996172cf70a0352c42f920e637cb796b32a0aee4c6",
+   "title": "songHealing (reConstructed)",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/54 - [MDD] Mi Dulce Mía..mp3",
+   "duration": 160.42521541950114,
+   "file": "signal_064.rsig",
+   "gainDb": 1.1,
+   "id": "track-064",
+   "loudness": {
+    "integratedLufs": -21.1,
+    "truePeakDbfs": -2.1
+   },
+   "sha256": "8bb969de3a178786e89af0a98a637f2f3d34541fa7982750376eb7710f6fd9fd",
+   "title": "[MDD] Mi Dulce Mía.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/55 - [PPT] Para Pensar por la Tarde..mp3",
+   "duration": 130.70367346938775,
+   "file": "signal_065.rsig",
+   "gainDb": 1.9,
+   "id": "track-065",
+   "loudness": {
+    "integratedLufs": -20.4,
+    "truePeakDbfs": -2.9
+   },
+   "sha256": "d0e8f140a8cbc943cf781ad895f224932c7171f5d5a068042c7fe3a1430dcc10",
+   "title": "[PPT] Para Pensar por la Tarde.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/56 - [ABC] Abriendo la Bóveda Celeste..mp3",
+   "duration": 35.594739229024945,
+   "file": "signal_066.rsig",
+   "gainDb": 4.0,
+   "id": "track-066",
+   "loudness": {
+    "integratedLufs": -20.1,
+    "truePeakDbfs": -5.0
+   },
+   "sha256": "8a8866c349f602d8769483195b35a3ac6ba2ce392bba1aa4daca0d6fb79f60fc",
+   "title": "[ABC] Abriendo la Bóveda Celeste.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/57 - [MDD] Mi Dulce Mía..mp3",
+   "duration": 118.8150566893424,
+   "file": "signal_067.rsig",
+   "gainDb": 5.8,
+   "id": "track-067",
+   "loudness": {
+    "integratedLufs": -23.4,
+    "truePeakDbfs": -6.8
+   },
+   "sha256": "3a0abdf2987924eff90dd9c365d70165dc9f7001285704163dd39b7ef09c59e1",
+   "title": "[MDD] Mi Dulce Mía.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/58 - [DSA] Las Dinamicas Saciedades del Alma,.mp3",
+   "duration": 218.38222222222223,
+   "file": "signal_068.rsig",
+   "gainDb": -0.5,
+   "id": "track-068",
+   "loudness": {
+    "integratedLufs": -16.6,
+    "truePeakDbfs": -0.5
+   },
+   "sha256": "8bd5f8fc70b141252e04f6fb6045b169db2fcd5f9ee2b51574fe5afa72e76885",
+   "title": "[DSA] Las Dinamicas Saciedades del Alma,",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/59 - [DRL] De Regreso en la Luna..mp3",
+   "duration": 34.108662131519274,
+   "file": "signal_069.rsig",
+   "gainDb": 0.5,
+   "id": "track-069",
+   "loudness": {
+    "integratedLufs": -17.4,
+    "truePeakDbfs": -1.5
+   },
+   "sha256": "d3f279eba3554bd07959db4670cc0f4880b77c9a5710ab258699d2d57001b33e",
+   "title": "[DRL] De Regreso en la Luna.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/60 - [VEC] Vieja Ética Clandestina..mp3",
+   "duration": 87.60743764172335,
+   "file": "signal_070.rsig",
+   "gainDb": 2.0,
+   "id": "track-070",
+   "loudness": {
+    "integratedLufs": -18.8,
+    "truePeakDbfs": -3.0
+   },
+   "sha256": "8701dc3ef3896c0614dc7f06ff1dd3bb40ceba80ba04b8b022111148f6bfbbae",
+   "title": "[VEC] Vieja Ética Clandestina.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/61 - nanaDeZelda.mp3",
+   "duration": 66.80235827664399,
+   "file": "signal_071.rsig",
+   "gainDb": -0.1,
+   "id": "track-071",
+   "loudness": {
+    "integratedLufs": -18.1,
+    "truePeakDbfs": -0.9
+   },
+   "sha256": "f18aa29eed635f2deba7fe40ea987420196543e3af9afcc58b198c120f292514",
+   "title": "nanaDeZelda",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/62 - [EOA] El Extraño Sueño Andino..mp3",
+   "duration": 191.00589569160996,
+   "file": "signal_072.rsig",
+   "gainDb": -0.3,
+   "id": "track-072",
+   "loudness": {
+    "integratedLufs": -20.2,
+    "truePeakDbfs": -0.7
+   },
+   "sha256": "53d1d77a3a9afa01ae230756accf9df968223a74e6ac7c26d19aa7ce739585c4",
+   "title": "[EOA] El Extraño Sueño Andino.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/63 - La Idea de Probarnos.mp3",
+   "duration": 35.594739229024945,
+   "file": "signal_073.rsig",
+   "gainDb": -0.3,
+   "id": "track-073",
+   "loudness": {
+    "integratedLufs": -18.5,
+    "truePeakDbfs": -0.7
+   },
+   "sha256": "2357e282c8b0724b363891450f8b641e8c8c0289698891d1d3571b43b27d30eb",
+   "title": "La Idea de Probarnos",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/64 - [ABE] Al Bajar las Escaleras..mp3",
+   "duration": 26.67827664399093,
+   "file": "signal_074.rsig",
+   "gainDb": 0.1,
+   "id": "track-074",
+   "loudness": {
+    "integratedLufs": -19.0,
+    "truePeakDbfs": -1.1
+   },
+   "sha256": "b0d7c8bcc9f96b398d95e2673e56ad26d952ed98e6e394e41a3cda75f42b294f",
+   "title": "[ABE] Al Bajar las Escaleras.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/65 - [NDB] No Dejes de Bailar..mp3",
+   "duration": 81.96498866213152,
+   "file": "signal_075.rsig",
+   "gainDb": -0.6,
+   "id": "track-075",
+   "loudness": {
+    "integratedLufs": -22.9,
+    "truePeakDbfs": -0.4
+   },
+   "sha256": "f05ff957d5f32a14ad77cee78437d573225f79dd7c572b28b277ff040944f4ce",
+   "title": "[NDB] No Dejes de Bailar.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/66 - [CDA] En la Corte del Rey Árbol..mp3",
+   "duration": 112.87074829931973,
+   "file": "signal_076.rsig",
+   "gainDb": 2.9,
+   "id": "track-076",
+   "loudness": {
+    "integratedLufs": -20.4,
+    "truePeakDbfs": -3.9
+   },
+   "sha256": "722f458c32dceecc2e28255f8bacab2fa98bb9cc87974e7def8e02864fb84329",
+   "title": "[CDA] En la Corte del Rey Árbol.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/67 - [CLM] Captura Los Momentos..mp3",
+   "duration": 72.00362811791383,
+   "file": "signal_077.rsig",
+   "gainDb": -0.5,
+   "id": "track-077",
+   "loudness": {
+    "integratedLufs": -16.8,
+    "truePeakDbfs": -0.5
+   },
+   "sha256": "d2454d8d8e117dccdd487b88594eb43e1fe7ffc9c9a6460d107ac6bc60f9e4f6",
+   "title": "[CLM] Captura Los Momentos.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/68 - [ERA] El Reinado de Ashkera..mp3",
+   "duration": 84.63528344671202,
+   "file": "signal_078.rsig",
+   "gainDb": -0.4,
+   "id": "track-078",
+   "loudness": {
+    "integratedLufs": -17.8,
+    "truePeakDbfs": -0.6
+   },
+   "sha256": "515d7ec48c40f62ff2c9b5149dfeb2260b10921e7c05c3d767fd5db6abe2b347",
+   "title": "[ERA] El Reinado de Ashkera.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/69 - [CGT] De los Caminos Grandes a la Tierra..mp3",
+   "duration": 139.68979591836734,
+   "file": "signal_079.rsig",
+   "gainDb": -1.2,
+   "id": "track-079",
+   "loudness": {
+    "integratedLufs": -14.8,
+    "truePeakDbfs": 0.0
+   },
+   "sha256": "f0bf531ce24371814c74d114a70c642e5e22335842f010df872518475d50fa52",
+   "title": "[CGT] De los Caminos Grandes a la Tierra.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/70 - Como Escupir con Elegancia.mp3",
+   "duration": 203.63755102040815,
+   "file": "signal_080.rsig",
+   "gainDb": 5.7,
+   "id": "track-080",
+   "loudness": {
+    "integratedLufs": -23.8,
+    "truePeakDbfs": -6.7
+   },
+   "sha256": "8e310c4a54561c327d308e0c7fe27adbd5c9ea038f5d82412d23e84cd7ffd333",
+   "title": "Como Escupir con Elegancia",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/71 - [CEM] Por si Costara Entenderse con el Mundo..mp3",
+   "duration": 247.15174603174603,
+   "file": "signal_081.rsig",
+   "gainDb": -0.4,
+   "id": "track-081",
+   "loudness": {
+    "integratedLufs": -19.0,
+    "truePeakDbfs": -0.6
+   },
+   "sha256": "a781c549c2d7e753dbad6a9f92283bb49495b97ce9b48faa214721c1c1bb81be",
+   "title": "[CEM] Por si Costara Entenderse con el Mundo.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/72 - For your Soul.mp3",
+   "duration": 118.88471655328799,
+   "file": "signal_082.rsig",
+   "gainDb": 4.7,
+   "id": "track-082",
+   "loudness": {
+    "integratedLufs": -23.2,
+    "truePeakDbfs": -5.7
+   },
+   "sha256": "a54462e5e5f8394258af373a1e9dcc5e16e77fc025f3d93da4e72b97d9342cd8",
+   "title": "For your Soul",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/73 - [EMA En tu Mirada el Amor..mp3",
+   "duration": 93.62140589569161,
+   "file": "signal_083.rsig",
+   "gainDb": -1.1,
+   "id": "track-083",
+   "loudness": {
+    "integratedLufs": -17.9,
+    "truePeakDbfs": 0.1
+   },
+   "sha256": "d820c5cd0c2ea59085cba61bce03e80bb5c3e9fdcd827d674c981d72fc809442",
+   "title": "[EMA En tu Mirada el Amor.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/74 - [PC] Pies Cansados..mp3",
+   "duration": 130.70367346938775,
+   "file": "signal_084.rsig",
+   "gainDb": 1.5,
+   "id": "track-084",
+   "loudness": {
+    "integratedLufs": -21.5,
+    "truePeakDbfs": -2.5
+   },
+   "sha256": "e8736d5a8ddc04033f810e61fd8a673d798842b858df5b49b9079fceabd254a6",
+   "title": "[PC] Pies Cansados.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/75 - [AER] Antes de Entrar al Ring..mp3",
+   "duration": 142.52263038548753,
+   "file": "signal_085.rsig",
+   "gainDb": 1.3,
+   "id": "track-085",
+   "loudness": {
+    "integratedLufs": -18.2,
+    "truePeakDbfs": -2.3
+   },
+   "sha256": "6b65277dbf4fe48ef1eb2793771716abfba9e80e2e9aac8b42694f57d17b22d7",
+   "title": "[AER] Antes de Entrar al Ring.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/76 - [MAF] Melodía Alegre Final..mp3",
+   "duration": 114.3568253968254,
+   "file": "signal_086.rsig",
+   "gainDb": 0.0,
+   "id": "track-086",
+   "loudness": {
+    "integratedLufs": -17.8,
+    "truePeakDbfs": -1.0
+   },
+   "sha256": "c912d32b895e8ba7b34581b18cb2defe2c4e4c93cb5fb5b98cbecd6ee08afe98",
+   "title": "[MAF] Melodía Alegre Final.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/77 - [SDE] Sala de Embarque..mp3",
+   "duration": 262.01251700680274,
+   "file": "signal_087.rsig",
+   "gainDb": 0.1,
+   "id": "track-087",
+   "loudness": {
+    "integratedLufs": -16.9,
+    "truePeakDbfs": -1.1
+   },
+   "sha256": "865c48228e453c57974d663d802bd5207d34c30c48d37928d79a42d859def9ae",
+   "title": "[SDE] Sala de Embarque.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/78 - extrañoEsExtrañarse.mp3",
+   "duration": 129.24081632653062,
+   "file": "signal_088.rsig",
+   "gainDb": -0.9,
+   "id": "track-088",
+   "loudness": {
+    "integratedLufs": -16.8,
+    "truePeakDbfs": -0.1
+   },
+   "sha256": "2e155ede053416eb0344d69bca59a07e4e55e484a99f1f198fd598a85b581f43",
+   "title": "extrañoEsExtrañarse",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/79 - [YBD] You'd Been Defeated..mp3",
+   "duration": 87.60743764172335,
+   "file": "signal_089.rsig",
+   "gainDb": -1.4,
+   "id": "track-089",
+   "loudness": {
+    "integratedLufs": -14.6,
+    "truePeakDbfs": -1.1
+   },
+   "sha256": "3da656be733fcd25d5cf6a9efddc106d922e3b2a981cba22b146abc1bd6466ad",
+   "title": "[YBD] You'd Been Defeated.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/80 - ¡Hello, World!.mp3",
+   "duration": 136.02104308390022,
+   "file": "signal_090.rsig",
+   "gainDb": 3.1,
+   "id": "track-090",
+   "loudness": {
+    "integratedLufs": -21.8,
+    "truePeakDbfs": -4.1
+   },
+   "sha256": "cda095dd922ac3c3c241150dc17d34f9584d9e924f35adc8dd479f9161f80173",
+   "title": "¡Hello, World!",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/81 - [TVF] Todo Vuelve a Florecer..mp3",
+   "duration": 124.75936507936508,
+   "file": "signal_091.rsig",
+   "gainDb": -0.4,
+   "id": "track-091",
+   "loudness": {
+    "integratedLufs": -21.4,
+    "truePeakDbfs": -0.6
+   },
+   "sha256": "a1ac450435ae1985256d78da732110976aa1f16d673f62eadc2c441acffbaf0e",
+   "title": "[TVF] Todo Vuelve a Florecer.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/82 - [ESP] A la Entrada de San Pedro..mp3",
+   "duration": 173.79990929705215,
+   "file": "signal_092.rsig",
+   "gainDb": -0.6,
+   "id": "track-092",
+   "loudness": {
+    "integratedLufs": -18.0,
+    "truePeakDbfs": -0.4
+   },
+   "sha256": "fbdfbad5b76f7747da65d72d49e8bf36abdf1a7585c3bb24607fc0089b04685f",
+   "title": "[ESP] A la Entrada de San Pedro.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/83 - [LCD] La Carretera de los Dioses..mp3",
+   "duration": 131.77179138321995,
+   "file": "signal_093.rsig",
+   "gainDb": 3.9,
+   "id": "track-093",
+   "loudness": {
+    "integratedLufs": -21.4,
+    "truePeakDbfs": -4.9
+   },
+   "sha256": "a129f1916727d5fc7e74b52ff1072ca5759b35201a044034955abcbc39ef0998",
+   "title": "[LCD] La Carretera de los Dioses.",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/84 - Entrada al Santuario.mp3",
+   "duration": 122.90176870748299,
+   "file": "signal_094.rsig",
+   "gainDb": 4.1,
+   "id": "track-094",
+   "loudness": {
+    "integratedLufs": -21.7,
+    "truePeakDbfs": -5.1
+   },
+   "sha256": "7cf0dd2a7329406ecac30ace861c288e2ea97436438b22a1c286a061557b6b28",
+   "title": "Entrada al Santuario",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/85 - bar.mp3",
+   "duration": 69.77451247165533,
+   "file": "signal_095.rsig",
+   "gainDb": 0.6,
+   "id": "track-095",
+   "loudness": {
+    "integratedLufs": -17.6,
+    "truePeakDbfs": -1.6
+   },
+   "sha256": "78154437bb174140a2879d17c108a36e10137454f3f434ebb220f2267febf50d",
+   "title": "bar",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/86 - Sairas Doowtsol.mp3",
+   "duration": 98.00997732426303,
+   "file": "signal_096.rsig",
+   "gainDb": 1.8,
+   "id": "track-096",
+   "loudness": {
+    "integratedLufs": -17.8,
+    "truePeakDbfs": -5.7
+   },
+   "sha256": "6c59411317b9077f8ca5ea4cebbd5c813e8b97a138150dcb1e488819d580cd3f",
+   "title": "Sairas Doowtsol",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/87 - Ladera Sunrise.mp3",
+   "duration": 66.80235827664399,
+   "file": "signal_097.rsig",
+   "gainDb": -0.8,
+   "id": "track-097",
+   "loudness": {
+    "integratedLufs": -17.5,
+    "truePeakDbfs": -0.2
+   },
+   "sha256": "602d72ef70f733d4123c92a02c8d615048948d2d34de6bdf79ac404a47f72c4c",
+   "title": "Ladera Sunrise",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/88 - Memorias de la Maquina.mp3",
+   "duration": 89.39102040816327,
+   "file": "signal_098.rsig",
+   "gainDb": -1.6,
+   "id": "track-098",
+   "loudness": {
+    "integratedLufs": -14.4,
+    "truePeakDbfs": -0.6
+   },
+   "sha256": "8bddc859e70591bf776e4bde4134eb8c2f46f61300c2c8e87a023363f51a40f7",
+   "title": "Memorias de la Maquina",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/89 - Todo vuelve a florecer.mp3",
+   "duration": 104.93834467120182,
+   "file": "signal_099.rsig",
+   "gainDb": -0.7,
+   "id": "track-099",
+   "loudness": {
+    "integratedLufs": -15.3,
+    "truePeakDbfs": -4.0
+   },
+   "sha256": "0d16989a9a09d8b1c68efc5b0a874a101b704dec84537f9b58e255d5b7a4c1ef",
+   "title": "Todo vuelve a florecer",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/90 - DANCE TRHOUGH CYCLES.mp3",
+   "duration": 288.0,
+   "file": "signal_100.rsig",
+   "gainDb": -0.7,
+   "id": "track-100",
+   "loudness": {
+    "integratedLufs": -16.8,
+    "truePeakDbfs": -0.3
+   },
+   "sha256": "4c3876598899aea121acce288ece7d8f2469e63ea9fbe57ac24deb58e4d6fbdf",
+   "title": "DANCE TRHOUGH CYCLES",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/91 - pianoCreatives2.mp3",
+   "duration": 271.87065759637187,
+   "file": "signal_101.rsig",
+   "gainDb": 6.7,
+   "id": "track-101",
+   "loudness": {
+    "integratedLufs": -23.2,
+    "truePeakDbfs": -7.7
+   },
+   "sha256": "24a7b6847ee15f566876115c14c115867313fad146179bad1aefab061ea00d59",
+   "title": "pianoCreatives2",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/92 - PUEDES HACER LO QUE SEA.mp3",
+   "duration": 115.8609977324263,
+   "file": "signal_102.rsig",
+   "gainDb": -2.6,
+   "id": "track-102",
+   "loudness": {
+    "integratedLufs": -13.4,
+    "truePeakDbfs": -1.0
+   },
+   "sha256": "526a80c5f92e79baa1547b5f17cc33abc3b586afcd6c38fc9228d0d87875f093",
+   "title": "PUEDES HACER LO QUE SEA",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/93 - El Pasillo de las Puertas.mp3",
+   "duration": 54.89585034013606,
+   "file": "signal_103.rsig",
+   "gainDb": -0.5,
+   "id": "track-103",
+   "loudness": {
+    "integratedLufs": -19.3,
+    "truePeakDbfs": -0.5
+   },
+   "sha256": "6f0ea25336d7fb6d00bb0b32e392874f5ff23c28f9610fa8268f0d3902a9ae13",
+   "title": "El Pasillo de las Puertas",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/94 - El Ascenso.mp3",
+   "duration": 48.948684807256235,
+   "file": "signal_104.rsig",
+   "gainDb": -0.6,
+   "id": "track-104",
+   "loudness": {
+    "integratedLufs": -15.4,
+    "truePeakDbfs": -1.5
+   },
+   "sha256": "be4d1c95adfcba6574c7ff625d680501dd38da56a041ed0c5a48824ee2bef79b",
+   "title": "El Ascenso",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/95 - Project 2 - 17 - 10 - 22 23.54.mp3",
+   "duration": 223.68931972789116,
+   "file": "signal_105.rsig",
+   "gainDb": -0.4,
+   "id": "track-105",
+   "loudness": {
+    "integratedLufs": -19.5,
+    "truePeakDbfs": -0.6
+   },
+   "sha256": "2e1755671c1ef2cee48ec74c3229e1bf260534d75a67d33022e2178ef41ee2de",
+   "title": "Project 2 - 17 - 10 - 22 23.54",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/96 - Felineidad.mp3",
+   "duration": 170.74027210884353,
+   "file": "signal_106.rsig",
+   "gainDb": -0.4,
+   "id": "track-106",
+   "loudness": {
+    "integratedLufs": -18.4,
+    "truePeakDbfs": -0.6
+   },
+   "sha256": "97caaf0992a7ae0f346c96c376f2a3607f25e3b763d3400df58dd40752639a6d",
+   "title": "Felineidad",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/97 - Felineidad (Desde el cielo de los gatos).mp3",
+   "duration": 47.395873015873015,
+   "file": "signal_107.rsig",
+   "gainDb": 0.7,
+   "id": "track-107",
+   "loudness": {
+    "integratedLufs": -21.1,
+    "truePeakDbfs": -1.7
+   },
+   "sha256": "44f30ef35573e20d797a90a943eb43895f57b4b594351b5e659b64783fabb1bb",
+   "title": "Felineidad (Desde el cielo de los gatos)",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/98 - Sessions One (unmixed).mp3",
+   "duration": 894.7666893424037,
+   "file": "signal_108.rsig",
+   "gainDb": 0.1,
+   "id": "track-108",
+   "loudness": {
+    "integratedLufs": -20.5,
+    "truePeakDbfs": -1.1
+   },
+   "sha256": "2aadcab87e06097b033026144893fea3168d29e5be4cd05ef7c9db6ea8139227",
+   "title": "Sessions One (unmixed)",
+   "year": null
+  },
+  {
+   "album": null,
+   "artist": "Psicoandino",
+   "audioFile": "../../radiomisor/canciones_psicoandino/99 - i. Sala de Conferencias.mp3",
+   "duration": 121.29959183673469,
+   "file": "signal_109.rsig",
+   "gainDb": 5.7,
+   "id": "track-109",
+   "loudness": {
+    "integratedLufs": -21.7,
+    "truePeakDbfs": -7.2
+   },
+   "sha256": "6f8c64fe9a6acbf618ba70869f7ba07bc3ab0438d3a5876a8d267ea421ac9ef4",
+   "title": "i. Sala de Conferencias",
+   "year": null
+  }
+ ],
+ "station": {
+  "epoch": "2026-01-01T00:00:00Z",
+  "name": "PSICOANDINO Radio"
+ },
+ "totalDuration": 14375.53873015873
+}

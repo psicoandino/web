@@ -1,0 +1,75 @@
+/* acousticOS screen in the site's style (release 1, the director, 2026-10-22): the canon's fonts, no boxes, the world fitted 16:9, everything aligned right. Written by Claude (the thinker). */
+@font-face { font-family: 'Newsreader'; src: url('fonts/newsreader.woff2') format('woff2'); font-display: swap; }
+@font-face { font-family: 'Fraunces'; src: url('fonts/fraunces.woff2') format('woff2'); font-display: swap; }
+
+#field {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#now-playing {
+  top: auto;
+  bottom: clamp(62px, 9vh, 96px);
+  right: clamp(18px, 3.6vw, 66px);
+  min-height: 0;
+  padding: 0;
+  background: none;
+  color: var(--oled);
+  font: 400 clamp(17px, 1.5vw, 24px)/1.3 'Fraunces', serif;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+#on-air { font: 400 13px/1 'Newsreader', serif; opacity: .6; }
+body[data-mode="oled"] #stage { background: var(--oled); }
+body[data-mode="oled"] #now-playing, body[data-mode="oled"] #controls a, body[data-mode="oled"] #controls button { color: var(--hueso); }
+.music-mark { display: none; }
+
+#controls {
+  position: absolute;
+  right: clamp(18px, 3.6vw, 66px);
+  bottom: clamp(18px, 3.4vh, 42px);
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+#controls a, #controls button {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--oled);
+  font: 400 15px/1 'Newsreader', serif;
+  text-decoration: none;
+  cursor: pointer;
+}
+#home { opacity: .55; }
+#vinyl { opacity: .55; }
+#vinyl[aria-pressed="true"] { opacity: 1; color: var(--mostaza); }
+#stage::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: min(560px, 100%);
+  height: 240px;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 100% 100%, var(--hueso) 0%, var(--hueso) 30%, transparent 72%);
+}
+body[data-mode="oled"] #stage::after { background: radial-gradient(ellipse at 100% 100%, var(--oled) 0%, var(--oled) 30%, transparent 72%); }
+#now-playing, #controls { z-index: 2; }
+#field { opacity: 0; transition: opacity 1.6s ease; }
+#field.ready { opacity: 1; }
+#now-playing, #track-line { white-space: normal; overflow: visible; text-overflow: clip; text-align: right; }
+#now-playing { max-width: calc(100vw - 36px); }
+#track-line, #on-air { transition: opacity .4s ease; }
+#tune-in::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: var(--sangre);
+  vertical-align: 1px;
+}
