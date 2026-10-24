@@ -7,7 +7,6 @@ import { ticks } from './axis.mjs';
 
 const TICKERS = [['SPY', 'spy_us_d.csv'], ['QQQ', 'qqq_us_d.csv'], ['AAPL', 'aapl_us_d.csv'], ['GLD', 'gld_us_d.csv'], ['TLT', 'tlt_us_d.csv']];
 const RANGES = [['1Y', 365], ['5Y', 1826], ['10Y', 3652], ['All', Infinity]];
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const pct = (x) => (x >= 0 ? '+' : '') + (x * 100).toFixed(3) + '%';
 const nap = () => new Promise((r) => setTimeout(r, 4));
@@ -148,18 +147,6 @@ export async function mount(root, menuPane) {
     if (b - a < minS) { b = Math.min(d1, a + minS); a = Math.max(d0, b - minS); }
     win = { a, b };
     renderTop(); draw(); drawVisor();
-  }
-
-  function ticks(a, b, PW) {
-    const months = (b - a) / 30.44, step = [1, 3, 6, 12, 24, 60, 120].find((s) => PW / (months / s) >= 78) || 120, out = [];
-    const da = new Date(a * 864e5);
-    let mm = Math.ceil((da.getUTCFullYear() * 12 + da.getUTCMonth()) / step) * step;
-    for (; ; mm += step) {
-      const dn = Date.UTC(Math.floor(mm / 12), mm % 12, 1) / 864e5;
-      if (dn > b) break;
-      if (dn >= a) out.push({ dn, label: step >= 12 ? String(Math.floor(mm / 12)) : MONTHS[mm % 12] + (mm % 12 === 0 ? ' ' + Math.floor(mm / 12) : '') });
-    }
-    return out;
   }
 
   function draw() {
